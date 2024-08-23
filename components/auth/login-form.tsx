@@ -29,10 +29,12 @@ export function LoginForm() {
 		startTransition(async () => {
 			const response = await login(values);
 
-			toast({
-				description: response.error || response.success,
-				variant: !!response.error ? 'destructive' : 'default',
-			});
+			if (!!response) {
+				toast({
+					description: response?.error ?? response?.success ?? 'An error occurred.',
+					variant: !!response?.error ? 'destructive' : 'default',
+				});
+			}
 		});
 	}
 
