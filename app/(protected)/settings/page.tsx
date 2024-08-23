@@ -3,6 +3,7 @@ import { auth } from '@/auth';
 
 export default async function SettingsPage() {
 	const session = await auth();
+
 	return (
 		<main>
 			{JSON.stringify(session)}

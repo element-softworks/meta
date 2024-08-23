@@ -5,3 +5,5 @@ Set database provider in schema.prisma, set DATABASE_URL in .env, npx prisma gen
 Add auth secret; any unique value: npx auth secret
 
 Routing: control protected routes inside of routes.ts
+
+Set provider client and secret ids
