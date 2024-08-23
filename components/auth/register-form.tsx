@@ -51,14 +51,14 @@ export function RegisterForm() {
 								name="name"
 								label="Name"
 								render={({ field }) => (
-									<Input disabled={isPending} placeholder="" {...field} />
+									<Input {...field} disabled={isPending} placeholder="" />
 								)}
 							/>
 							<FormInput
 								name="email"
 								label="Email"
 								render={({ field }) => (
-									<Input disabled={isPending} placeholder="" {...field} />
+									<Input {...field} disabled={isPending} placeholder="" />
 								)}
 							/>
 
@@ -67,10 +67,10 @@ export function RegisterForm() {
 								label="Password"
 								render={({ field }) => (
 									<Input
-										disabled={isPending}
-										type="password"
-										placeholder=""
 										{...field}
+										disabled={isPending}
+										placeholder=""
+										type="password"
 									/>
 								)}
 							/>
