@@ -1,33 +1,34 @@
 'use client';
 
-import { LoginSchema } from '@/schemas';
+import { register } from '@/actions/register';
+import { RegisterSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useTransition } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
+import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
-import { login } from '@/actions/login';
-import { useTransition } from 'react';
-import { toast } from '../ui/use-toast';
 
-export function LoginForm() {
+export function RegisterForm() {
 	const [isPending, startTransition] = useTransition();
 
-	const form = useForm<z.infer<typeof LoginSchema>>({
-		resolver: zodResolver(LoginSchema),
+	const form = useForm<z.infer<typeof RegisterSchema>>({
+		resolver: zodResolver(RegisterSchema),
 		defaultValues: {
 			email: '',
 			password: '',
+			name: '',
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof LoginSchema>) {
+	async function onSubmit(values: z.infer<typeof RegisterSchema>) {
 		startTransition(async () => {
-			const response = await login(values);
+			const response = await register(values);
 
 			toast({
 				description: response.error || response.success,
@@ -40,12 +41,19 @@ export function LoginForm() {
 		<div className="">
 			<Card className="min-w-96">
 				<CardHeader>
-					<CardTitle>Login</CardTitle>
-					<CardDescription>Login form</CardDescription>
+					<CardTitle>Register</CardTitle>
+					<CardDescription>Register form</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+							<FormInput
+								name="name"
+								label="Name"
+								render={({ field }) => (
+									<Input disabled={isPending} placeholder="" {...field} />
+								)}
+							/>
 							<FormInput
 								name="email"
 								label="Email"
@@ -68,7 +76,7 @@ export function LoginForm() {
 							/>
 
 							<Button disabled={isPending} className="w-full" type="submit">
-								Login
+								Register
 							</Button>
 						</form>
 					</Form>
