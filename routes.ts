@@ -11,7 +11,7 @@ export const publicRoutes = ['/'];
  * @param {string[]} authRoutes - Array of auth routes
  */
 
-export const authRoutes = ['/auth/login', '/auth/register'];
+export const authRoutes = ['/auth/login', '/auth/register', '/auth/error'];
 
 /**
  * @description: API routes

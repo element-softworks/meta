@@ -7,3 +7,5 @@ Add auth secret; any unique value: npx auth secret
 Routing: control protected routes inside of routes.ts
 
 Set provider client and secret ids
+
+Emails, https://resend.com

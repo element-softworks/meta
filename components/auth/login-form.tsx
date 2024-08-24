@@ -11,10 +11,26 @@ import { Input } from '../ui/input';
 import { FormInput } from './form-input';
 import { Social } from './social';
 import { login } from '@/actions/login';
-import { useTransition } from 'react';
+import { useEffect, useTransition } from 'react';
 import { toast } from '../ui/use-toast';
+import { useSearchParams, useRouter } from 'next/navigation';
 
 export function LoginForm() {
+	const searchParams = useSearchParams();
+	const router = useRouter();
+	const urlError =
+		searchParams.get('error') === 'OAuthAccountNotLinked'
+			? 'Email already in use with another account'
+			: '';
+
+	if (urlError) {
+		toast({
+			description: urlError,
+			variant: 'destructive',
+		});
+		router.replace('/auth/login');
+	}
+
 	const [isPending, startTransition] = useTransition();
 
 	const form = useForm<z.infer<typeof LoginSchema>>({
