@@ -18,7 +18,7 @@ export function useQuery<T, R>({ queryFn }: { queryFn: (values?: T) => Promise<a
 	const [data, setData] = useState<QueryResponse>();
 	const [isPending, startTransition] = useTransition();
 
-	const query = async (values: T | undefined) => {
+	const query = async (values?: T | undefined) => {
 		let response: QueryResponse;
 
 		startTransition(() => {
@@ -28,10 +28,12 @@ export function useQuery<T, R>({ queryFn }: { queryFn: (values?: T) => Promise<a
 				if (response?.success) setQueryStatus('success');
 				else setQueryStatus('error');
 
-				toast({
-					description: response?.error ?? response?.success ?? 'An error occurred.',
-					variant: response?.error ? 'destructive' : 'default',
-				});
+				if (!!response?.error || !!response?.success) {
+					toast({
+						description: response?.error ?? response?.success ?? 'An error occurred.',
+						variant: response?.error ? 'destructive' : 'default',
+					});
+				}
 
 				setData(response);
 			});

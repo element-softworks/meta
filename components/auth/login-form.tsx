@@ -1,19 +1,19 @@
 'use client';
 
+import { login } from '@/actions/login';
+import { useQuery } from '@/hooks/useQuery';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
+import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
-import { login } from '@/actions/login';
-import { toast } from '../ui/use-toast';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { useQuery } from '@/hooks/useQuery';
 
 type LoginFormProps = z.infer<typeof LoginSchema>;
 
@@ -35,12 +35,8 @@ export function LoginForm() {
 		router.replace('/auth/login');
 	}
 
-	const {
-		query: loginQuery,
-		isLoading,
-		data,
-	} = useQuery<LoginFormProps, LoginResponse>({
-		queryFn: (values) => login(values!),
+	const { query: loginQuery, isLoading } = useQuery<LoginFormProps, LoginResponse>({
+		queryFn: async (values) => await login(values!),
 	});
 
 	const form = useForm<LoginFormProps>({

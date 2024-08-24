@@ -1,15 +1,14 @@
 'use client';
 
+import { newVerification } from '@/actions/new-verification';
+import { useQuery } from '@/hooks/useQuery';
+import { Check } from 'lucide-react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useCallback, useEffect, useRef } from 'react';
+import { FaExclamation } from 'react-icons/fa';
 import { BeatLoader } from 'react-spinners';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState, useTransition } from 'react';
-import { newVerification } from '@/actions/new-verification';
-import { toast } from '../ui/use-toast';
-import { Check } from 'lucide-react';
-import { FaExclamation } from 'react-icons/fa';
-import Link from 'next/link';
-import { useQuery } from '@/hooks/useQuery';
 
 interface NewVerificationFormProps {}
 export function NewVerificationForm(props: NewVerificationFormProps) {
@@ -17,13 +16,8 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 	const token = searchParams.get('token');
 	const hasFired = useRef(false);
 
-	const {
-		query: newVerificationQuery,
-		status,
-		data,
-		isLoading,
-	} = useQuery({
-		queryFn: () => newVerification(token),
+	const { query: newVerificationQuery, status } = useQuery({
+		queryFn: async () => await newVerification(token),
 	});
 
 	const onSubmit = useCallback(async () => {
