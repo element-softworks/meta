@@ -11,9 +11,13 @@ import { Input } from '../ui/input';
 import { FormInput } from './form-input';
 import { Social } from './social';
 import { login } from '@/actions/login';
-import { useEffect, useTransition } from 'react';
 import { toast } from '../ui/use-toast';
 import { useSearchParams, useRouter } from 'next/navigation';
+import { useQuery } from '@/hooks/useQuery';
+
+type LoginFormProps = z.infer<typeof LoginSchema>;
+
+type LoginResponse = { details: string };
 
 export function LoginForm() {
 	const searchParams = useSearchParams();
@@ -31,9 +35,15 @@ export function LoginForm() {
 		router.replace('/auth/login');
 	}
 
-	const [isPending, startTransition] = useTransition();
+	const {
+		query: loginQuery,
+		isLoading,
+		data,
+	} = useQuery<LoginFormProps, LoginResponse>({
+		queryFn: (values) => login(values!),
+	});
 
-	const form = useForm<z.infer<typeof LoginSchema>>({
+	const form = useForm<LoginFormProps>({
 		resolver: zodResolver(LoginSchema),
 		defaultValues: {
 			email: '',
@@ -41,17 +51,9 @@ export function LoginForm() {
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof LoginSchema>) {
-		startTransition(async () => {
-			const response = await login(values);
-
-			if (!!response) {
-				toast({
-					description: response?.error ?? response?.success ?? 'An error occurred.',
-					variant: !!response?.error ? 'destructive' : 'default',
-				});
-			}
-		});
+	async function onSubmit(values: LoginFormProps) {
+		if (!values) return;
+		await loginQuery(values);
 	}
 
 	return (
@@ -68,7 +70,7 @@ export function LoginForm() {
 								name="email"
 								label="Email"
 								render={({ field }) => (
-									<Input disabled={isPending} placeholder="" {...field} />
+									<Input disabled={isLoading} placeholder="" {...field} />
 								)}
 							/>
 
@@ -77,7 +79,7 @@ export function LoginForm() {
 								label="Password"
 								render={({ field }) => (
 									<Input
-										disabled={isPending}
+										disabled={isLoading}
 										type="password"
 										placeholder=""
 										{...field}
@@ -85,7 +87,7 @@ export function LoginForm() {
 								)}
 							/>
 
-							<Button disabled={isPending} className="w-full" type="submit">
+							<Button disabled={isLoading} className="w-full" type="submit">
 								Login
 							</Button>
 						</form>

@@ -5,11 +5,12 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendVerificationEmail = async (verificationToken: VerificationToken) => {
-	const confirmationLink = `http://localhost:3000/auth/new-verifcation?token=${verificationToken.token}`;
+	const confirmationLink = `http://localhost:3000/auth/new-verification?token=${verificationToken.token}`;
 
 	try {
+		console.log(process.env.RESEND_FROM_EMAIL, 'resend from email');
 		const { data, error } = await resend.emails.send({
-			from: 'onboarding@resend.dev',
+			from: `${process.env.RESEND_FROM_EMAIL}`,
 			to: verificationToken.email,
 			subject: 'Please verify your email',
 			react: AuthEmailTemplate({
