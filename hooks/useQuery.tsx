@@ -1,7 +1,7 @@
 'use client';
 
 import { toast } from '@/components/ui/use-toast';
-import { useState, useTransition } from 'react';
+import { useEffect, useState, useTransition } from 'react';
 
 /**
  * A custom hook to handle query requests.
@@ -11,20 +11,33 @@ import { useState, useTransition } from 'react';
  */
 
 // Generic type T for input values and R for response type
-export function useQuery<T, R>({ queryFn }: { queryFn: (values?: T) => Promise<any> }) {
+export function useQuery<T, R>({
+	queryFn,
+	onCompleted,
+}: {
+	queryFn: (values?: T) => Promise<any>;
+	onCompleted?: (data?: { success?: string; error?: string } & R) => void;
+}) {
 	type QueryResponse = { success?: string; error?: string } & R;
 
 	const [queryStatus, setQueryStatus] = useState<'error' | 'success'>();
 	const [data, setData] = useState<QueryResponse>();
 	const [isPending, startTransition] = useTransition();
 
+	useEffect(() => {
+		if (!data) return;
+		onCompleted?.(data);
+	}, [data]);
+
 	const query = async (values?: T | undefined) => {
 		let response: QueryResponse;
 
-		startTransition(() => {
+		await startTransition(async () => {
 			// Execute the queryFn within the transition
-			queryFn(values).then((res) => {
+			const responseData = await queryFn(values).then((res) => {
 				response = res as QueryResponse;
+				setData(response);
+
 				if (response?.success) setQueryStatus('success');
 				else setQueryStatus('error');
 
@@ -35,14 +48,14 @@ export function useQuery<T, R>({ queryFn }: { queryFn: (values?: T) => Promise<a
 					});
 				}
 
-				setData(response);
+				return response;
 			});
 
-			return; // This ensures the callback returns void
+			return;
 		});
 
 		return;
 	};
 
-	return { query, status: queryStatus, data, isLoading: isPending };
+	return { query, status: queryStatus, data, isLoading: isPending, onCompleted };
 }

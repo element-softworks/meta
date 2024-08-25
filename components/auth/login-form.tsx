@@ -15,12 +15,17 @@ import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 type LoginFormProps = z.infer<typeof LoginSchema>;
 
-type LoginResponse = {};
+type LoginResponse = {
+	twoFactor?: boolean;
+};
 
 export function LoginForm() {
+	const [showTwoFactor, setShowTwoFactor] = useState(false);
+
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const urlError =
@@ -36,21 +41,37 @@ export function LoginForm() {
 		router.replace('/auth/login');
 	}
 
-	const { query: loginQuery, isLoading } = useQuery<LoginFormProps, LoginResponse>({
-		queryFn: async (values) => await login(values!),
+	const {
+		query: loginQuery,
+		isLoading,
+		data: loginData,
+	} = useQuery<LoginFormProps, LoginResponse>({
+		queryFn: async (values) => await login(values!, showTwoFactor),
+		onCompleted: (data) => {
+			console.log(data, 'cheeeeeese');
+
+			if (data?.error === 'Invalid credentials, check your email and password and try again.')
+				setShowTwoFactor(false);
+
+			if (data?.twoFactor && !showTwoFactor) {
+				setShowTwoFactor(true);
+			}
+		},
 	});
 
 	const form = useForm<LoginFormProps>({
 		resolver: zodResolver(LoginSchema),
 		defaultValues: {
 			email: '',
+			code: '',
 			password: '',
 		},
 	});
 
 	async function onSubmit(values: LoginFormProps) {
 		if (!values) return;
-		await loginQuery(values);
+		const response = await loginQuery(values);
+		console.log(response, 'response data');
 	}
 
 	return (
@@ -63,37 +84,57 @@ export function LoginForm() {
 				<CardContent>
 					<Form {...form}>
 						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-							<FormInput
-								name="email"
-								label="Email"
-								render={({ field }) => (
-									<Input
-										{...field}
-										disabled={isLoading}
-										placeholder="john.doe@example.com"
+							{showTwoFactor && (
+								<>
+									<FormInput
+										name="code"
+										label="Code"
+										render={({ field }) => (
+											<Input
+												{...field}
+												disabled={isLoading}
+												placeholder="123456"
+											/>
+										)}
 									/>
-								)}
-							/>
+								</>
+							)}
 
-							<FormInput
-								name="password"
-								label="Password"
-								render={({ field }) => (
-									<Input
-										{...field}
-										disabled={isLoading}
-										type="password"
-										placeholder="******"
+							{!showTwoFactor && (
+								<>
+									<FormInput
+										name="email"
+										label="Email"
+										render={({ field }) => (
+											<Input
+												{...field}
+												disabled={isLoading}
+												placeholder="john.doe@example.com"
+											/>
+										)}
 									/>
-								)}
-							/>
+
+									<FormInput
+										name="password"
+										label="Password"
+										render={({ field }) => (
+											<Input
+												{...field}
+												disabled={isLoading}
+												type="password"
+												placeholder="******"
+											/>
+										)}
+									/>
+								</>
+							)}
 							<div>
 								<Button size="sm" variant="link" asChild className="px-0">
 									<Link href="/auth/reset">Forgot password</Link>
 								</Button>
 
 								<Button disabled={isLoading} className="w-full" type="submit">
-									Login
+									{showTwoFactor ? 'Confirm' : 'Login'}
 								</Button>
 							</div>
 						</form>
