@@ -14,9 +14,13 @@ import { useEffect, useState, useTransition } from 'react';
 export function useQuery<T, R>({
 	queryFn,
 	onCompleted,
+	onSuccess,
+	onError,
 }: {
 	queryFn: (values?: T) => Promise<any>;
 	onCompleted?: (data?: { success?: string; error?: string } & R) => void;
+	onSuccess?: (data?: { success?: string; error?: string } & R) => void;
+	onError?: (data?: { success?: string; error?: string } & R) => void;
 }) {
 	type QueryResponse = { success?: string; error?: string } & R;
 
@@ -27,6 +31,9 @@ export function useQuery<T, R>({
 	useEffect(() => {
 		if (!data) return;
 		onCompleted?.(data);
+
+		if (data?.success) onSuccess?.(data);
+		if (data?.error) onError?.(data);
 	}, [data]);
 
 	const query = async (values?: T | undefined) => {
@@ -57,5 +64,5 @@ export function useQuery<T, R>({
 		return;
 	};
 
-	return { query, status: queryStatus, data, isLoading: isPending, onCompleted };
+	return { query, status: queryStatus, data, isLoading: isPending };
 }

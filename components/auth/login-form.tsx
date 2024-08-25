@@ -48,11 +48,15 @@ export function LoginForm() {
 	} = useQuery<LoginFormProps, LoginResponse>({
 		queryFn: async (values) => await login(values!, showTwoFactor),
 		onCompleted: (data) => {
-			console.log(data, 'cheeeeeese');
-
-			if (data?.error === 'Invalid credentials, check your email and password and try again.')
+			//If the user entered the incorrect details after 2fa, send back to login details
+			if (
+				data?.error === 'Invalid credentials, check your email and password and try again.'
+			) {
 				setShowTwoFactor(false);
+				form.setValue('code', '');
+			}
 
+			//If the user has two-factor enabled, show the two-factor form
 			if (data?.twoFactor && !showTwoFactor) {
 				setShowTwoFactor(true);
 			}
