@@ -11,7 +11,6 @@ export const newVerification = async (token: string | null) => {
 
 	const existingToken = await getVerificationTokenByToken(token);
 
-	console.log(existingToken, 'existingToken');
 	if (!existingToken) {
 		return { error: 'Invalid token' };
 	}
@@ -36,8 +35,6 @@ export const newVerification = async (token: string | null) => {
 	await db.verificationToken.delete({
 		where: { id: existingToken.id },
 	});
-
-	console.log('Email verified successfully');
 
 	return { success: 'Email verified successfully' };
 };

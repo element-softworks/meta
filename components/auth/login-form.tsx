@@ -14,10 +14,11 @@ import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
+import Link from 'next/link';
 
 type LoginFormProps = z.infer<typeof LoginSchema>;
 
-type LoginResponse = { details: string };
+type LoginResponse = {};
 
 export function LoginForm() {
 	const searchParams = useSearchParams();
@@ -66,7 +67,11 @@ export function LoginForm() {
 								name="email"
 								label="Email"
 								render={({ field }) => (
-									<Input disabled={isLoading} placeholder="" {...field} />
+									<Input
+										{...field}
+										disabled={isLoading}
+										placeholder="john.doe@example.com"
+									/>
 								)}
 							/>
 
@@ -75,17 +80,22 @@ export function LoginForm() {
 								label="Password"
 								render={({ field }) => (
 									<Input
+										{...field}
 										disabled={isLoading}
 										type="password"
-										placeholder=""
-										{...field}
+										placeholder="******"
 									/>
 								)}
 							/>
+							<div>
+								<Button size="sm" variant="link" asChild className="px-0">
+									<Link href="/auth/reset">Forgot password</Link>
+								</Button>
 
-							<Button disabled={isLoading} className="w-full" type="submit">
-								Login
-							</Button>
+								<Button disabled={isLoading} className="w-full" type="submit">
+									Login
+								</Button>
+							</div>
 						</form>
 					</Form>
 					<Social className="mt-2" />

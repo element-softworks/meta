@@ -40,9 +40,7 @@ export function FormInput(props: FormInputProps) {
 			render={(inputProps) => (
 				<FormItem>
 					{props.label ? <FormLabel>{props.label}</FormLabel> : null}
-					<FormControl>
-						<Input placeholder="" {...inputProps.field} />
-					</FormControl>
+					<FormControl>{props.render({ ...inputProps })}</FormControl>
 					{props.description ? (
 						<FormDescription>{props.description}</FormDescription>
 					) : null}
