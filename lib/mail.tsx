@@ -37,7 +37,7 @@ export const sendTwoFactorTokenEmail = async (twoFactorToken: TwoFactorToken) =>
 };
 
 export const sendVerificationEmail = async (verificationToken: VerificationToken) => {
-	const confirmationLink = `http://localhost:3000/auth/new-verification?token=${verificationToken.token}`;
+	const confirmationLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/new-verification?token=${verificationToken.token}`;
 
 	try {
 		const { data, error } = await resend.emails.send({
@@ -66,7 +66,7 @@ export const sendVerificationEmail = async (verificationToken: VerificationToken
 };
 
 export const sendPasswordResetEmail = async (passwordResetToken: PasswordResetToken) => {
-	const confirmationLink = `http://localhost:3000/auth/new-password?token=${passwordResetToken.token}`;
+	const confirmationLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/new-password?token=${passwordResetToken.token}`;
 
 	try {
 		const { data, error } = await resend.emails.send({
