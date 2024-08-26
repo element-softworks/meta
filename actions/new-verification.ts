@@ -27,9 +27,13 @@ export const newVerification = async (token: string | null) => {
 		return { error: 'User not found' };
 	}
 
+	//If a new email is provided, update the email to the new email
 	await db.user.update({
 		where: { id: existingUser.id },
-		data: { emailVerified: new Date(), email: existingToken.email },
+		data: {
+			emailVerified: new Date(),
+			email: !!existingToken.newEmail ? existingToken.newEmail : existingToken.email,
+		},
 	});
 
 	await db.verificationToken.delete({

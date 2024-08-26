@@ -36,7 +36,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
 		}
 
 		// Generate a verification token and send it to the user via email
-		const verificationToken = await generateVerificationToken(values.email);
+		const verificationToken = await generateVerificationToken(dbUser.email, values.email);
 		const data = await sendVerificationEmail(verificationToken);
 
 		if (data.error) {

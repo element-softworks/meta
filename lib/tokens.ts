@@ -28,11 +28,12 @@ export const generateTwoFactorToken = async (email: string) => {
 };
 
 //Generate email verification token for credentials authentication method
-export const generateVerificationToken = async (email: string) => {
+export const generateVerificationToken = async (currentEmail: string, newEmail?: string) => {
 	const token = uuidv4();
 	const expiresAt = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
 
-	const existingToken = await getVerificationTokenByEmail(email);
+	//If new email is provided, send the email to the new email address to verify it
+	const existingToken = await getVerificationTokenByEmail(!!newEmail ? newEmail : currentEmail);
 
 	// If a token already exists, delete it
 	if (existingToken) {
@@ -42,7 +43,8 @@ export const generateVerificationToken = async (email: string) => {
 	const verificationToken = await db.verificationToken.create({
 		data: {
 			token,
-			email,
+			email: currentEmail,
+			newEmail: newEmail ?? null,
 			expiresAt,
 		},
 	});

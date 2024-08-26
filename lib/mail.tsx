@@ -42,7 +42,9 @@ export const sendVerificationEmail = async (verificationToken: VerificationToken
 	try {
 		const { data, error } = await resend.emails.send({
 			from: `${process.env.RESEND_FROM_EMAIL}`,
-			to: verificationToken.email,
+			to: !!verificationToken?.newEmail
+				? verificationToken.newEmail
+				: verificationToken.email,
 			subject: 'Please verify your email',
 			react: AuthEmailTemplate({
 				title: 'Verify your email',
