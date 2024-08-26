@@ -27,6 +27,8 @@ export function LoginForm() {
 	const [showTwoFactor, setShowTwoFactor] = useState(false);
 
 	const searchParams = useSearchParams();
+	const callbackUrl = searchParams.get('callbackUrl');
+
 	const router = useRouter();
 	const urlError =
 		searchParams.get('error') === 'OAuthAccountNotLinked'
@@ -42,7 +44,7 @@ export function LoginForm() {
 	}
 
 	const { query: loginQuery, isLoading } = useQuery<LoginFormProps, LoginResponse>({
-		queryFn: async (values) => await login(values!, showTwoFactor),
+		queryFn: async (values) => await login(values!, showTwoFactor, callbackUrl),
 		onCompleted: (data) => {
 			//If the user entered the incorrect details after 2fa, send back to login details
 			if (

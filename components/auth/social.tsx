@@ -4,14 +4,19 @@ import { FaGithub } from 'react-icons/fa';
 import { Button } from '../ui/button';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 
 interface SocialProps {
 	className?: string;
 }
 export function Social(props: SocialProps) {
+	const searchParams = useSearchParams();
+	const callbackUrl = searchParams.get('callbackUrl');
+
+	console.log('callbackUrl', callbackUrl);
 	const onClick = (provider: 'google' | 'github') => {
 		signIn(provider, {
-			redirectTo: DEFAULT_LOGIN_REDIRECT,
+			callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
 		});
 	};
 
