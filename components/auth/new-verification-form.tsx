@@ -1,7 +1,7 @@
 'use client';
 
 import { newVerification } from '@/actions/new-verification';
-import { useQuery } from '@/hooks/useQuery';
+import { useQuery } from '@/hooks/use-query';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';

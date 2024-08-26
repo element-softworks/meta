@@ -1,10 +1,12 @@
 'use client';
 
 import { login } from '@/actions/login';
-import { useQuery } from '@/hooks/useQuery';
+import { useQuery } from '@/hooks/use-query';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '../ui/button';
@@ -14,8 +16,6 @@ import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 type LoginFormProps = z.infer<typeof LoginSchema>;
 
@@ -41,11 +41,7 @@ export function LoginForm() {
 		router.replace('/auth/login');
 	}
 
-	const {
-		query: loginQuery,
-		isLoading,
-		data: loginData,
-	} = useQuery<LoginFormProps, LoginResponse>({
+	const { query: loginQuery, isLoading } = useQuery<LoginFormProps, LoginResponse>({
 		queryFn: async (values) => await login(values!, showTwoFactor),
 		onCompleted: (data) => {
 			//If the user entered the incorrect details after 2fa, send back to login details

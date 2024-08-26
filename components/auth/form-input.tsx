@@ -21,6 +21,7 @@ import * as z from 'zod';
 import { LoginSchema } from '@/schemas';
 
 interface FormInputProps {
+	visible?: boolean;
 	name: string;
 	label?: string;
 	description?: string;
@@ -32,7 +33,13 @@ interface FormInputProps {
 }
 
 export function FormInput(props: FormInputProps) {
+	const { visible = true } = props;
 	const { control } = useFormContext();
+
+	if (!visible) {
+		return null;
+	}
+
 	return (
 		<FormField
 			control={control}

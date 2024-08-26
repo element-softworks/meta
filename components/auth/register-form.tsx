@@ -13,7 +13,7 @@ import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
-import { useQuery } from '@/hooks/useQuery';
+import { useQuery } from '@/hooks/use-query';
 
 type RegisterFormProps = z.infer<typeof RegisterSchema>;
 

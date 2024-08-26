@@ -1,7 +1,7 @@
 'use client';
 
 import { login } from '@/actions/login';
-import { useQuery } from '@/hooks/useQuery';
+import { useQuery } from '@/hooks/use-query';
 import { LoginSchema, ResetSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
