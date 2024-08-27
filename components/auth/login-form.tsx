@@ -10,7 +10,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
@@ -144,7 +143,7 @@ export function LoginForm() {
 			<Social className="mt-2" />
 
 			<p className="px-8 text-center text-sm text-muted-foreground">
-				Don't have an account yet?{' '}
+				{"Don't"} have an account yet?{' '}
 				<Button asChild variant="link" className="px-0 text-muted-foreground">
 					<Link href="/auth/register">Register now</Link>
 				</Button>
