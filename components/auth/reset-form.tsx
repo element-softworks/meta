@@ -38,7 +38,6 @@ export function ResetForm() {
 	async function onSubmit(values: ResetFormProps) {
 		if (!values) return;
 		resetQuery(values);
-		console.log(values);
 	}
 
 	return (

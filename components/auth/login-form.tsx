@@ -78,9 +78,13 @@ export function LoginForm() {
 	return (
 		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
 			<div className="mb-4 ">
-				<h1 className="text-2xl font-semibold tracking-tight">Login to your account</h1>
+				<h1 className="text-2xl font-semibold tracking-tight">
+					{showTwoFactor ? 'Enter 2FA code' : 'Login to your account'}
+				</h1>
 				<p className="text-sm text-muted-foreground">
-					Enter your email and password to login to your account
+					{showTwoFactor
+						? 'Enter the two factor code sent to your email address'
+						: 'Enter your email and password to login to your account'}
 				</p>
 			</div>
 			<Form {...form}>
@@ -124,7 +128,7 @@ export function LoginForm() {
 
 					<div>
 						<Button isLoading={isLoading} className="w-full" type="submit">
-							{showTwoFactor ? 'Confirm' : 'Login with email'}
+							{showTwoFactor ? 'Confirm 2FA code' : 'Login with email'}
 						</Button>
 					</div>
 				</form>

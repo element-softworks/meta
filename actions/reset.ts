@@ -1,5 +1,6 @@
 'use server';
 
+import { getAccountByUserId } from '@/data/account';
 import { getUserByEmail } from '@/data/user';
 import { db } from '@/lib/db';
 import { sendPasswordResetEmail } from '@/lib/mail';
@@ -20,6 +21,11 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
 
 	if (!existingUser) {
 		return { error: 'User not found' };
+	}
+
+	const isOAuth = await getAccountByUserId(existingUser.id);
+	if (isOAuth) {
+		return { error: 'User is registered with a provider, cannot reset password here' };
 	}
 
 	// Generate a verification token and send it to the user via email
