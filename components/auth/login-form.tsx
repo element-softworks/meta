@@ -74,11 +74,10 @@ export function LoginForm() {
 	async function onSubmit(values: LoginFormProps) {
 		if (!values) return;
 		const response = await loginQuery(values);
-		console.log(response, 'response data');
 	}
 
 	return (
-		<div className=" flex flex-col gap-4">
+		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
 			<div className="mb-4 ">
 				<h1 className="text-2xl font-semibold tracking-tight">Login to your account</h1>
 				<p className="text-sm text-muted-foreground">

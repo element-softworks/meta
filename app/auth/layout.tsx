@@ -23,10 +23,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
 	console.log(randomBackgroundImageIndex, 'randomBackgroundImageIndex');
 	return (
-		<main className="auth-layout h-full">
+		<main className="auth-layout h-full max-w-full">
 			{AuthButton}
 
-			<section className="flex flex-col md:flex-row md:gap-10 h-full ">
+			<section className="flex flex-col md:flex-row  h-full ">
 				<section className="h-full justify-center items-center flex p-4 flex-1">
 					{children}
 				</section>
@@ -43,7 +43,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 					</div>
 
 					<div className="z-10 relative md:flex items-center justify-center flex-1 hidden">
-						<div className="text-center">
+						<div className="text-start">
 							<p className="text-3xl font-semibold tracking-tight">Welcome</p>
 						</div>
 					</div>
@@ -53,7 +53,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 							streamlining my workflow and allowing me to exceed client expectations
 							every time.”
 						</p>
-						<footer className="md:text-xs lg:text-sm">Sofia Davis</footer>
+						<footer className="md:text-xs lg:text-sm">Nathan Carter</footer>
 					</blockquote>
 				</aside>
 			</section>
