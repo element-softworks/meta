@@ -84,7 +84,7 @@ export function ResetForm() {
 			<p className="px-8 text-center text-sm text-muted-foreground">
 				Remember your details?{' '}
 				<Button asChild variant="link" className="px-0 text-muted-foreground">
-					<Link href="/auth/register">Login now</Link>
+					<Link href="/auth/login">Login now</Link>
 				</Button>
 			</p>
 		</div>

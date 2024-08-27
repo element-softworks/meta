@@ -9,26 +9,34 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 
 	const isLogin = location === '/auth/login';
 
+	const randomBackgroundImageIndex = Math.floor(Math.random() * 6) + 1;
+
 	const AuthButton = isLogin ? (
-		<Button variant="ghost" className="top-4 md:top-8 left-4 md:left-8 absolute " asChild>
+		<Button
+			variant="ghost"
+			className="top-4 md:top-8 left-4 md:left-8 absolute hidden md:block"
+			asChild
+		>
 			<Link href={'/auth/register'}>Register</Link>
 		</Button>
 	) : (
-		<Button variant="ghost" className="top-4 md:top-8 left-4 md:left-8 absolute " asChild>
+		<Button
+			variant="ghost"
+			className="top-4 md:top-8 left-4 md:left-8 absolute hidden md:block"
+			asChild
+		>
 			<Link href="/auth/login">Login</Link>
 		</Button>
 	);
 
-	const randomBackgroundImageIndex = Math.floor(Math.random() * 6) + 1;
-
-	console.log(randomBackgroundImageIndex, 'randomBackgroundImageIndex');
 	return (
-		<main className="auth-layout h-full max-w-full">
-			{AuthButton}
-
-			<section className="flex flex-col md:flex-row  h-full ">
-				<section className="h-full justify-center items-center flex p-4 flex-1">
-					{children}
+		<main className="auth-layout h-screen max-w-full">
+			<section className="flex flex-col md:flex-row min-h-screen ">
+				<section className="min-h-screen flex-1 justify-center-center">
+					{AuthButton}
+					<div className="justify-center items-center flex flex-col min-h-screen mb-auto p-4 md:p-8">
+						{children}
+					</div>
 				</section>
 				<aside className="md:flex hidden flex-col w-1/2 bg-zinc-900  flex-0 md:flex-1 relative text-white p-8">
 					<div
