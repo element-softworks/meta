@@ -13,6 +13,7 @@ import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { FormInput } from './form-input';
 import { reset } from '@/actions/reset';
+import { Social } from './social';
 
 type ResetFormProps = z.infer<typeof ResetSchema>;
 
@@ -34,8 +35,6 @@ export function ResetForm() {
 		},
 	});
 
-	console.log(data, 'data');
-
 	async function onSubmit(values: ResetFormProps) {
 		if (!values) return;
 		resetQuery(values);
@@ -43,41 +42,51 @@ export function ResetForm() {
 	}
 
 	return (
-		<div className="">
-			<Card className="min-w-96">
-				<CardHeader>
-					<CardTitle>Forgot your password?</CardTitle>
-					<CardDescription>Reset password form</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-							<FormInput
-								name="email"
-								label="Email"
-								render={({ field }) => (
-									<Input
-										{...field}
-										disabled={isLoading}
-										placeholder="john.doe@example.com"
-									/>
-								)}
+		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
+			<div className="mb-4 ">
+				<h1 className="text-2xl font-semibold tracking-tight">Forgot your password?</h1>
+				<p className="text-sm text-muted-foreground">
+					Enter your account email to start your password reset
+				</p>
+			</div>
+
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					<FormInput
+						name="email"
+						label="Email"
+						render={({ field }) => (
+							<Input
+								{...field}
+								disabled={isLoading}
+								placeholder="john.doe@example.com"
 							/>
+						)}
+					/>
 
-							<div>
-								<Button size="sm" variant="link" asChild className="px-0">
-									<Link href="/auth/login">Back to login</Link>
-								</Button>
+					<Button className="w-full" type="submit" isLoading={isLoading}>
+						Send password reset
+					</Button>
+				</form>
+			</Form>
+			<div className="relative mt-2">
+				<div className="absolute inset-0 flex items-center">
+					<span className="w-full border-t"></span>
+				</div>
+				<div className="relative flex justify-center text-xs uppercase">
+					<span className="bg-background px-2 text-muted-foreground">
+						Or continue with
+					</span>
+				</div>
+			</div>
+			<Social className="mt-2" />
 
-								<Button className="w-full" type="submit" disabled={isLoading}>
-									Send email reset
-								</Button>
-							</div>
-						</form>
-					</Form>
-					{/* <Social className="mt-2" /> */}
-				</CardContent>
-			</Card>
+			<p className="px-8 text-center text-sm text-muted-foreground">
+				Remember your details?{' '}
+				<Button asChild variant="link" className="px-0 text-muted-foreground">
+					<Link href="/auth/register">Login now</Link>
+				</Button>
+			</p>
 		</div>
 	);
 }

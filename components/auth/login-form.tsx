@@ -110,13 +110,21 @@ export function LoginForm() {
 									/>
 								)}
 							/>
-
-							<PasswordInput isLoading={isLoading} name="password" label="Password" />
+							<div>
+								<PasswordInput
+									isLoading={isLoading}
+									name="password"
+									label="Password"
+								/>
+								<Button size="sm" variant="link" asChild className="px-0">
+									<Link href="/auth/reset">Forgot password?</Link>
+								</Button>
+							</div>
 						</>
 					)}
 
 					<div>
-						<Button disabled={isLoading} className="w-full" type="submit">
+						<Button isLoading={isLoading} className="w-full" type="submit">
 							{showTwoFactor ? 'Confirm' : 'Login with email'}
 						</Button>
 					</div>

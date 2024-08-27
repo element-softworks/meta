@@ -41,11 +41,12 @@ export function PasswordInput(props: PasswordInputProps) {
 						type={showPassword ? 'text' : 'password'}
 						placeholder={props.placeholder ?? showPassword ? 'password' : '********'}
 					/>
+
 					<Button
 						type="button"
 						variant="ghost"
 						size="icon"
-						className="absolute right-0 p-0 top-0 text-muted-foreground"
+						className="absolute right-0 p-0 bottom-0 text-muted-foreground"
 					>
 						{passwordIcon()}
 					</Button>

@@ -1,20 +1,17 @@
 'use client';
 
-import { login } from '@/actions/login';
+import { newPassword } from '@/actions/new-password';
 import { useQuery } from '@/hooks/use-query';
-import { LoginSchema, NewPasswordSchema, ResetSchema } from '@/schemas';
+import { NewPasswordSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { PasswordInput } from '../inputs/password-input';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Form } from '../ui/form';
-import { Input } from '../ui/input';
-import { FormInput } from './form-input';
-import { reset } from '@/actions/reset';
-import { useSearchParams } from 'next/navigation';
-import { newPassword } from '@/actions/new-password';
+import { Social } from './social';
 
 type NewPasswordProps = z.infer<typeof NewPasswordSchema>;
 
@@ -30,6 +27,9 @@ export function NewPasswordForm() {
 		data,
 	} = useQuery<NewPasswordProps, NewPasswordResponse>({
 		queryFn: async (values) => await newPassword(values!, token),
+		onCompleted: (data) => {
+			form.reset();
+		},
 	});
 
 	const form = useForm<NewPasswordProps>({
@@ -39,50 +39,44 @@ export function NewPasswordForm() {
 		},
 	});
 
-	console.log(data, 'data');
-
 	async function onSubmit(values: NewPasswordProps) {
 		if (!values) return;
 		newPasswordQuery(values);
 	}
 
 	return (
-		<div className="">
-			<Card className="min-w-96">
-				<CardHeader>
-					<CardTitle>Reset your password</CardTitle>
-					<CardDescription>Enter your new details below</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-							<FormInput
-								name="password"
-								label="New password"
-								render={({ field }) => (
-									<Input
-										{...field}
-										disabled={isLoading}
-										type="password"
-										placeholder="*****"
-									/>
-								)}
-							/>
+		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
+			<div className="mb-4 ">
+				<h1 className="text-2xl font-semibold tracking-tight">Reset your password</h1>
+				<p className="text-sm text-muted-foreground">Enter your new password below</p>
+			</div>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					<PasswordInput isLoading={isLoading} name="password" label="New password" />
 
-							<div>
-								<Button size="sm" variant="link" asChild className="px-0">
-									<Link href="/auth/login">Back to login</Link>
-								</Button>
+					<div>
+						<Button size="sm" variant="link" asChild className="px-0">
+							<Link href="/auth/login">Back to login</Link>
+						</Button>
 
-								<Button className="w-full" type="submit" disabled={isLoading}>
-									Reset password
-								</Button>
-							</div>
-						</form>
-					</Form>
-					{/* <Social className="mt-2" /> */}
-				</CardContent>
-			</Card>
+						<Button className="w-full" type="submit" isLoading={isLoading}>
+							Reset password
+						</Button>
+					</div>
+				</form>
+			</Form>
+
+			<div className="relative mt-2">
+				<div className="absolute inset-0 flex items-center">
+					<span className="w-full border-t"></span>
+				</div>
+				<div className="relative flex justify-center text-xs uppercase">
+					<span className="bg-background px-2 text-muted-foreground">
+						Or continue with
+					</span>
+				</div>
+			</div>
+			<Social className="mt-2" />
 		</div>
 	);
 }
