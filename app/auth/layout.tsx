@@ -10,11 +10,11 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 	const isLogin = location === '/auth/login';
 
 	const AuthButton = isLogin ? (
-		<Button variant="ghost" className="top-4 md:top-8 left-4 md:left-8 absolute py-0">
+		<Button variant="ghost" className="top-4 md:top-8 left-4 md:left-8 absolute " asChild>
 			<Link href={'/auth/register'}>Register</Link>
 		</Button>
 	) : (
-		<Button variant="ghost" className="top-4 md:top-8 left-4 md:left-8 absolute py-0">
+		<Button variant="ghost" className="top-4 md:top-8 left-4 md:left-8 absolute " asChild>
 			<Link href="/auth/login">Login</Link>
 		</Button>
 	);

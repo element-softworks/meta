@@ -16,12 +16,14 @@ export function PasswordInput(props: PasswordInputProps) {
 	function passwordIcon() {
 		return !showPassword ? (
 			<EyeOff
+				aria-label="Show password"
 				size={20}
 				onClick={() => setShowPassword(!showPassword)}
 				className="cursor-pointer"
 			/>
 		) : (
 			<EyeIcon
+				aria-label="Hide password"
 				size={20}
 				onClick={() => setShowPassword(!showPassword)}
 				className="cursor-pointer"
