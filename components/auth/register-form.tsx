@@ -14,6 +14,8 @@ import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
 import { useQuery } from '@/hooks/use-query';
+import { LoaderCircle } from 'lucide-react';
+import { PasswordInput } from '../inputs/password-input';
 
 type RegisterFormProps = z.infer<typeof RegisterSchema>;
 
@@ -29,6 +31,9 @@ export function RegisterForm() {
 
 	const { query: registerQuery, isLoading } = useQuery<RegisterFormProps, {}>({
 		queryFn: async (values) => await register(values!),
+		onSuccess: () => {
+			form.reset();
+		},
 	});
 
 	async function onSubmit(values: z.infer<typeof RegisterSchema>) {
@@ -60,6 +65,8 @@ export function RegisterForm() {
 								)}
 							/>
 
+							<PasswordInput isLoading={isLoading} name="password" label="Password" />
+
 							<FormInput
 								name="password"
 								label="Password"
@@ -73,7 +80,7 @@ export function RegisterForm() {
 								)}
 							/>
 
-							<Button disabled={isLoading} className="w-full" type="submit">
+							<Button isLoading={isLoading} className="w-full" type="submit">
 								Register
 							</Button>
 						</form>

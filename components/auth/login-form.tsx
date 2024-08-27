@@ -16,6 +16,7 @@ import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
+import { PasswordInput } from '../inputs/password-input';
 
 type LoginFormProps = z.infer<typeof LoginSchema>;
 
@@ -77,73 +78,70 @@ export function LoginForm() {
 	}
 
 	return (
-		<div className="">
-			<Card className="min-w-96">
-				<CardHeader>
-					<CardTitle>Login</CardTitle>
-					<CardDescription>Login form</CardDescription>
-				</CardHeader>
-				<CardContent>
-					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-							{showTwoFactor && (
-								<>
-									<FormInput
-										name="code"
-										label="Code"
-										render={({ field }) => (
-											<Input
-												{...field}
-												disabled={isLoading}
-												placeholder="123456"
-											/>
-										)}
-									/>
-								</>
-							)}
+		<div className=" flex flex-col gap-4">
+			<div className="mb-4 ">
+				<h1 className="text-2xl font-semibold tracking-tight">Login to your account</h1>
+				<p className="text-sm text-muted-foreground">
+					Enter your email and password to login to your account
+				</p>
+			</div>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+					{showTwoFactor && (
+						<>
+							<FormInput
+								name="code"
+								render={({ field }) => (
+									<Input {...field} disabled={isLoading} placeholder="123456" />
+								)}
+							/>
+						</>
+					)}
 
-							{!showTwoFactor && (
-								<>
-									<FormInput
-										name="email"
-										label="Email"
-										render={({ field }) => (
-											<Input
-												{...field}
-												disabled={isLoading}
-												placeholder="john.doe@example.com"
-											/>
-										)}
+					{!showTwoFactor && (
+						<>
+							<FormInput
+								name="email"
+								label="Email"
+								render={({ field }) => (
+									<Input
+										{...field}
+										disabled={isLoading}
+										placeholder="john.doe@example.com"
 									/>
+								)}
+							/>
 
-									<FormInput
-										name="password"
-										label="Password"
-										render={({ field }) => (
-											<Input
-												{...field}
-												disabled={isLoading}
-												type="password"
-												placeholder="******"
-											/>
-										)}
-									/>
-								</>
-							)}
-							<div>
-								<Button size="sm" variant="link" asChild className="px-0">
-									<Link href="/auth/reset">Forgot password</Link>
-								</Button>
+							<PasswordInput isLoading={isLoading} name="password" label="Password" />
+						</>
+					)}
 
-								<Button disabled={isLoading} className="w-full" type="submit">
-									{showTwoFactor ? 'Confirm' : 'Login'}
-								</Button>
-							</div>
-						</form>
-					</Form>
-					<Social className="mt-2" />
-				</CardContent>
-			</Card>
+					<div>
+						<Button disabled={isLoading} className="w-full" type="submit">
+							{showTwoFactor ? 'Confirm' : 'Login with email'}
+						</Button>
+					</div>
+				</form>
+			</Form>
+
+			<div className="relative mt-2">
+				<div className="absolute inset-0 flex items-center">
+					<span className="w-full border-t"></span>
+				</div>
+				<div className="relative flex justify-center text-xs uppercase">
+					<span className="bg-background px-2 text-muted-foreground">
+						Or continue with
+					</span>
+				</div>
+			</div>
+			<Social className="mt-2" />
+
+			<p className="px-8 text-center text-sm text-muted-foreground">
+				Don't have an account yet?{' '}
+				<Button asChild variant="link" className="px-0 text-muted-foreground">
+					<Link href="/auth/register">Register now</Link>
+				</Button>
+			</p>
 		</div>
 	);
 }

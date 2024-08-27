@@ -28,7 +28,8 @@ export function Social(props: SocialProps) {
 				size="lg"
 				onClick={() => onClick('google')}
 			>
-				<FcGoogle />
+				<FcGoogle size={17} />
+				<span className="ml-1 font-normal">Google</span>
 			</Button>
 
 			<Button
@@ -37,7 +38,8 @@ export function Social(props: SocialProps) {
 				size="lg"
 				onClick={() => onClick('github')}
 			>
-				<FaGithub />
+				<FaGithub size={17} />
+				<span className="ml-1 font-normal">Github</span>
 			</Button>
 		</div>
 	);
