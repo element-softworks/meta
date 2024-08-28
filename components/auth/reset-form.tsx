@@ -26,6 +26,9 @@ export function ResetForm() {
 		data,
 	} = useQuery<ResetFormProps, ResetResponse>({
 		queryFn: async (values) => await reset(values!),
+		onCompleted: (data) => {
+			form.reset();
+		},
 	});
 
 	const form = useForm<ResetFormProps>({
@@ -37,7 +40,7 @@ export function ResetForm() {
 
 	async function onSubmit(values: ResetFormProps) {
 		if (!values) return;
-		resetQuery(values);
+		await resetQuery(values);
 	}
 
 	return (

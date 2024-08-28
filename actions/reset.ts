@@ -9,6 +9,7 @@ import { ResetSchema } from '@/schemas';
 import * as z from 'zod';
 
 export const reset = async (values: z.infer<typeof ResetSchema>) => {
+	console.log('resettings');
 	const validatedFields = ResetSchema.safeParse(values);
 
 	if (!validatedFields.success) {
@@ -35,6 +36,8 @@ export const reset = async (values: z.infer<typeof ResetSchema>) => {
 	if (data.error) {
 		return { error: data.error };
 	}
+
+	console.log('Password reset email sent to', email);
 
 	return { success: 'Confirmation email sent' };
 };
