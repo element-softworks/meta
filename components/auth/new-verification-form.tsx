@@ -59,7 +59,7 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 				</div>
 			)}
 
-			<Button size="sm" variant="link" asChild className="px-0 justify-start">
+			<Button isLoading={false} className="w-full mt-2">
 				<Link href="/auth/login">Back to login</Link>
 			</Button>
 
