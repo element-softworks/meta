@@ -12,6 +12,8 @@ import { generateTwoFactorToken } from '@/lib/tokens';
 import { getTwoFactorTokenByEmail } from '@/data/two-factor-token';
 import { db } from '@/lib/db';
 import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
+import { NextResponse } from 'next/server';
+import { redirect } from 'next/navigation';
 
 export const login = async (
 	values: z.infer<typeof LoginSchema>,
@@ -90,9 +92,10 @@ export const login = async (
 		await signIn('credentials', {
 			email,
 			password,
-			redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+			redirect: true,
+			redirectTo: callbackUrl ?? DEFAULT_LOGIN_REDIRECT,
 		});
-		return { success: 'Logged in successfully.' };
+		// return { success: 'Logged in successfully.' };
 	} catch (error) {
 		if (error instanceof AuthError) {
 			switch (error.type) {
@@ -109,4 +112,6 @@ export const login = async (
 
 		throw error;
 	}
+
+	// return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT));
 };

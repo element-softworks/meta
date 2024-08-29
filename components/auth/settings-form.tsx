@@ -2,41 +2,34 @@
 
 import { settings } from '@/actions/settings';
 import { useQuery } from '@/hooks/use-query';
-import { LoginSchema, SettingsSchema } from '@/schemas';
+import { ExtendedUser } from '@/next-auth';
+import { SettingsSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { UserRole } from '@prisma/client';
+import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { TwoFactorCheckInput } from '../inputs/two-factor-check-input';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import {
-	Form,
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '../ui/form';
+import { Form } from '../ui/form';
 import { Input } from '../ui/input';
-import { FormInput } from './form-input';
-import { useSession } from 'next-auth/react';
-import { useCurrentUser } from '@/hooks/use-current-user';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { UserRole } from '@prisma/client';
-import { Switch } from '../ui/switch';
-import { Label } from '../ui/label';
-import { TwoFactorCheckInput } from '../inputs/two-factor-check-input';
+import { FormInput } from './form-input';
 
-type SettingsFormProps = z.infer<typeof SettingsSchema>;
+type SettingsFormInputProps = z.infer<typeof SettingsSchema>;
 
 type SettingsResponse = {};
 
-export function SettingsForm() {
-	//TODO: Confirm all the fields update correctly, especially email field in prod
-	const user = useCurrentUser();
+interface SettingsFormProps {
+	user: ExtendedUser | undefined;
+}
+
+export function SettingsForm(props: SettingsFormProps) {
+	const { user } = props;
 	const { update } = useSession();
 
-	const form = useForm<SettingsFormProps>({
+	const form = useForm<SettingsFormInputProps>({
 		resolver: zodResolver(SettingsSchema),
 		defaultValues: {
 			name: user?.name ?? undefined,
@@ -48,14 +41,14 @@ export function SettingsForm() {
 		},
 	});
 
-	const { query: settingsQuery, isLoading } = useQuery<SettingsFormProps, SettingsResponse>({
+	const { query: settingsQuery, isLoading } = useQuery<SettingsFormInputProps, SettingsResponse>({
 		queryFn: async (values) => await settings(values!),
 		onCompleted: (data) => {
 			update();
 		},
 	});
 
-	async function onSubmit(values: SettingsFormProps) {
+	async function onSubmit(values: SettingsFormInputProps) {
 		if (!values) return;
 		const response = await settingsQuery(values);
 		console.log(response, 'response data');
@@ -128,7 +121,11 @@ export function SettingsForm() {
 							/>
 
 							<div>
-								<Button disabled={isLoading} className="w-full" type="submit">
+								<Button
+									disabled={isLoading || !user}
+									className="w-full"
+									type="submit"
+								>
 									Save
 								</Button>
 							</div>
