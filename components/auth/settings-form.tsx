@@ -51,7 +51,6 @@ export function SettingsForm(props: SettingsFormProps) {
 	async function onSubmit(values: SettingsFormInputProps) {
 		if (!values) return;
 		const response = await settingsQuery(values);
-		console.log(response, 'response data');
 	}
 
 	return (

@@ -1,39 +1,14 @@
-'use client';
-import { Button } from '@/components/ui/button';
+import { AuthLayoutButton } from '@/components/auth/auth-layout-button';
 import { FrameIcon } from 'lucide-react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
-	const location = usePathname();
-
-	const isLogin = location === '/auth/login';
-
 	const randomBackgroundImageIndex = Math.floor(Math.random() * 6) + 1;
-
-	const AuthButton = isLogin ? (
-		<Button
-			variant="ghost"
-			className="top-4 md:top-8 left-4 md:left-8 absolute hidden md:block"
-			asChild
-		>
-			<Link href={'/auth/register'}>Register</Link>
-		</Button>
-	) : (
-		<Button
-			variant="ghost"
-			className="top-4 md:top-8 left-4 md:left-8 absolute hidden md:block"
-			asChild
-		>
-			<Link href="/auth/login">Login</Link>
-		</Button>
-	);
 
 	return (
 		<main className="auth-layout h-screen max-w-full">
 			<section className="flex flex-col md:flex-row min-h-screen ">
 				<section className="min-h-screen flex-1 justify-center-center">
-					{AuthButton}
+					<AuthLayoutButton />
 					<div className="justify-center items-center flex flex-col min-h-screen mb-auto p-4 md:p-8">
 						{children}
 					</div>
