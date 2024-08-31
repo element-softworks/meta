@@ -1,10 +1,8 @@
-import { AuthEmailTemplate } from '@/components/email-templates/auth-email-template';
-import {
-	PasswordResetToken,
-	TwoFactorConfirmation,
-	TwoFactorToken,
-	VerificationToken,
-} from '@prisma/client';
+import { PasswordResetEmailTemplate } from '@/components/email-templates/password-reset-email-template';
+import { TokenEmailTemplate } from '@/components/email-templates/token-email-template';
+import { VerifyEmailEmailTemplate } from '@/components/email-templates/verify-email-email-template';
+import { getUserByEmail } from '@/data/user';
+import { PasswordResetToken, TwoFactorToken, VerificationToken } from '@prisma/client';
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -15,14 +13,9 @@ export const sendTwoFactorTokenEmail = async (twoFactorToken: TwoFactorToken) =>
 			from: `${process.env.RESEND_FROM_EMAIL}`,
 			to: twoFactorToken.email,
 			subject: 'Your two-factor authentication code',
-			react: AuthEmailTemplate({
-				title: 'Confirmation code',
-				description: (
-					<div>
-						<p>Your two-factor authentication code is:</p>
-						<h2>{twoFactorToken.token}</h2>
-					</div>
-				),
+			react: TokenEmailTemplate({
+				confirmationCode: twoFactorToken.token,
+				codeDuration: '5 minutes',
 			}),
 		});
 
@@ -39,21 +32,20 @@ export const sendTwoFactorTokenEmail = async (twoFactorToken: TwoFactorToken) =>
 export const sendVerificationEmail = async (verificationToken: VerificationToken) => {
 	const confirmationLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/new-verification?token=${verificationToken.token}`;
 
+	const changeEmail = !!verificationToken?.newEmail;
+
+	const email = !!verificationToken?.newEmail
+		? verificationToken.newEmail
+		: verificationToken.email;
 	try {
 		const { data, error } = await resend.emails.send({
 			from: `${process.env.RESEND_FROM_EMAIL}`,
-			to: !!verificationToken?.newEmail
-				? verificationToken.newEmail
-				: verificationToken.email,
-			subject: 'Please verify your email',
-			react: AuthEmailTemplate({
-				title: 'Verify your email',
-				description: (
-					<div>
-						<p>Click the link below to verify your email address.</p>
-						<a href={confirmationLink}>{confirmationLink}</a>
-					</div>
-				),
+			to: email,
+			subject: `Please verify your email ${changeEmail ? 'change' : 'address'}`,
+			react: VerifyEmailEmailTemplate({
+				type: changeEmail ? 'change' : 'setup',
+				userFirstname: email,
+				verifyEmailLink: confirmationLink,
 			}),
 		});
 
@@ -70,19 +62,16 @@ export const sendVerificationEmail = async (verificationToken: VerificationToken
 export const sendPasswordResetEmail = async (passwordResetToken: PasswordResetToken) => {
 	const confirmationLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/new-password?token=${passwordResetToken.token}`;
 
+	const currentUser = await getUserByEmail(passwordResetToken.email);
+
 	try {
 		const { data, error } = await resend.emails.send({
 			from: `${process.env.RESEND_FROM_EMAIL}`,
 			to: passwordResetToken.email,
 			subject: 'Please confirm your password reset',
-			react: AuthEmailTemplate({
-				title: 'Reset your password',
-				description: (
-					<div>
-						<p>Click the link below to reset your password.</p>
-						<a href={confirmationLink}>{confirmationLink}</a>
-					</div>
-				),
+			react: PasswordResetEmailTemplate({
+				resetPasswordLink: confirmationLink,
+				userFirstname: currentUser?.name ?? passwordResetToken.email,
 			}),
 		});
 

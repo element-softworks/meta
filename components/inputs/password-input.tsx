@@ -42,6 +42,7 @@ export function PasswordInput(props: PasswordInputProps) {
 						disabled={props.isLoading}
 						type={showPassword ? 'text' : 'password'}
 						placeholder={props.placeholder ?? showPassword ? 'password' : '********'}
+						autoComplete="on"
 					/>
 
 					<Button
