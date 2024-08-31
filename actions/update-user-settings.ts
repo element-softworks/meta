@@ -30,9 +30,9 @@ export const updateUserSettings = async (values: z.infer<typeof SettingsSchema>)
 			name: values.name,
 			role: values.role,
 			isTwoFactorEnabled: values.isTwoFactorEnabled,
-
 			email: undefined,
 			password: undefined,
+			emailVerified: undefined,
 		},
 	});
 
