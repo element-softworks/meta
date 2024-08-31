@@ -61,61 +61,50 @@ export function SettingsForm(props: SettingsFormProps) {
 
 	return (
 		<div className="">
-			<Card className="min-w-96">
-				<CardHeader>
-					<CardTitle>Settings</CardTitle>
-					<CardDescription>Update user settings</CardDescription>
-				</CardHeader>
-				<CardContent className="space-y-4">
-					<Form {...form}>
-						<form className="space-y-4">
-							<FormInput
-								name="name"
-								label="Name"
-								render={({ field }) => <Input {...field} disabled={isLoading} />}
-							/>
+			<div className="space-y-4">
+				<Form {...form}>
+					<form className="space-y-4">
+						<FormInput
+							name="name"
+							label="Name"
+							render={({ field }) => <Input {...field} disabled={isLoading} />}
+						/>
 
-							<TwoFactorCheckInput
-								visible={!user?.isOAuth}
-								name="isTwoFactorEnabled"
-								isLoading={isLoading}
-							/>
+						<TwoFactorCheckInput
+							visible={!user?.isOAuth}
+							name="isTwoFactorEnabled"
+							isLoading={isLoading}
+						/>
 
-							<FormInput
-								name="role"
-								label="Role"
-								render={({ field }) => (
-									<Select
-										disabled={isLoading || user?.role !== UserRole.ADMIN}
-										onValueChange={field.onChange}
-										defaultValue={field.value}
-									>
-										<SelectTrigger>
-											<SelectValue placeholder="Select a role" />
-										</SelectTrigger>
-										<SelectContent>
-											<SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
-											<SelectItem value={UserRole.USER}>User</SelectItem>
-										</SelectContent>
-									</Select>
-								)}
-							/>
-						</form>
-					</Form>
+						<FormInput
+							name="role"
+							label="Role"
+							render={({ field }) => (
+								<Select
+									disabled={isLoading || user?.role !== UserRole.ADMIN}
+									onValueChange={field.onChange}
+									defaultValue={field.value}
+								>
+									<SelectTrigger>
+										<SelectValue placeholder="Select a role" />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
+										<SelectItem value={UserRole.USER}>User</SelectItem>
+									</SelectContent>
+								</Select>
+							)}
+						/>
+					</form>
+				</Form>
 
-					<Button
-						disabled={isLoading || !user}
-						className="w-full"
-						onClick={form.handleSubmit(onSubmit)}
-					>
-						Save
-					</Button>
-
-					<ChangeEmailForm user={user} />
-
-					<ResetPasswordForm user={user} />
-				</CardContent>
-			</Card>
+				<Button
+					disabled={isLoading || !user || !form.formState.isDirty}
+					onClick={form.handleSubmit(onSubmit)}
+				>
+					Save details
+				</Button>
+			</div>
 		</div>
 	);
 }

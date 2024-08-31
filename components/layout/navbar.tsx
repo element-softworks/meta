@@ -30,10 +30,12 @@ export function Navbar() {
 
 	return (
 		<nav className="py-6 px-8 flex flex-row justify-between items-center h-24">
-			<div className="z-10 flex items-center text-lg font-light">
-				<FrameIcon className="mr-2" size={30} />
-				NextJS SaaS Boilerplate
-			</div>
+			<Link href="/">
+				<div className="z-10 flex items-center text-lg font-light">
+					<FrameIcon className="mr-2" size={30} />
+					NextJS SaaS Boilerplate
+				</div>
+			</Link>
 
 			{isMobile ? (
 				<DropdownMenu onOpenChange={(open) => setNavOpen(open)}>

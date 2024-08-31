@@ -72,8 +72,7 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 					/>
 
 					<Button
-						disabled={isLoading || !user}
-						className="w-full"
+						disabled={isLoading || !user || !form.formState.isDirty}
 						onClick={form.handleSubmit(onSubmit)}
 					>
 						Change password

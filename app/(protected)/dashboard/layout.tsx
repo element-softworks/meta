@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 						icon={<CreditCard size={20} />}
 					/>
 				</Sidebar>
-				<main className="items-center justify-center flex w-full bg-muted">{children}</main>
+				<main className="w-full p-6">{children}</main>
 			</div>
 		</div>
 	);

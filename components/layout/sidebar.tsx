@@ -4,6 +4,7 @@ import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { ThemeSwitch } from './theme-switch';
 
 export interface SidebarItemProps {
 	link: string;
@@ -33,11 +34,11 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
 
 	return (
 		<aside
-			className={`${isMobile ? 'w-0' : 'w-[360px]'} bg-white border-border transition-all ${
+			className={`${isMobile ? 'w-0' : 'w-[360px]'} border-border transition-all  ${
 				isMobile ? 'px-0 py-6' : 'p-6 border-r'
 			} `}
 		>
-			<div className="flex flex-col gap-2">{children}</div>
+			<div className="flex flex-col gap-2 flex-1">{children}</div>
 		</aside>
 	);
 }
