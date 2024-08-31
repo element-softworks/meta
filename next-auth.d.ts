@@ -4,6 +4,7 @@ import { DefaultSession } from 'next-auth';
 export type ExtendedUser = DefaultSession['user'] & {
 	role: UserRole;
 	isTwoFactorEnabled: boolean;
+	emailVerified: string;
 	isOAuth: boolean;
 };
 
@@ -22,6 +23,7 @@ declare module 'next-auth/jwt' {
 		/** OpenID ID Token */
 		role: UserRole;
 		isTwoFactorEnabled: boolean;
+		emailVerified: string;
 		isOAuth: boolean;
 	}
 }

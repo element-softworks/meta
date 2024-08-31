@@ -11,7 +11,7 @@ export default async function SettingsPage() {
 		<main className="flex flex-col max-w-2xl gap-6">
 			<div className="">
 				<p className="text-xl font-bold">Account settings</p>
-				<p className="text-muted-foreground text-sm">Edit your account settings below.</p>
+				<p className="text-muted-foreground text-sm">Edit your account settings below</p>
 			</div>
 
 			<Separator />
