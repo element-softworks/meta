@@ -1,5 +1,6 @@
-import { Navbar } from '@/components/navbar';
-import { Sidebar } from '@/components/sidebar';
+import { Navbar } from '@/components/layout/navbar';
+import { Sidebar, SidebarItem } from '@/components/layout/sidebar';
+import { CreditCard, LayoutDashboard, Settings } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 	return (
@@ -7,7 +8,24 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 			<Navbar />
 
 			<div className="border-t border-border flex ">
-				<Sidebar />
+				<Sidebar>
+					<SidebarItem
+						text="Dashboard"
+						link="/dashboard"
+						icon={<LayoutDashboard size={20} />}
+					/>
+					<SidebarItem
+						text="Account settings"
+						link="/dashboard/account/settings"
+						icon={<Settings size={20} />}
+					/>
+
+					<SidebarItem
+						text="Billing"
+						link="/dashboard/account/billing"
+						icon={<CreditCard size={20} />}
+					/>
+				</Sidebar>
 				<main className="items-center justify-center flex w-full bg-muted">{children}</main>
 			</div>
 		</div>

@@ -4,9 +4,9 @@ import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { CreditCard, FrameIcon, LogOut, MenuIcon, Notebook, Settings, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
-import { LogoutButton } from './auth/logout-button';
-import { UserButton } from './auth/user-button';
-import { Button } from './ui/button';
+import { LogoutButton } from '../auth/logout-button';
+import { UserButton } from '../auth/user-button';
+import { Button } from '../ui/button';
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -15,7 +15,7 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+} from '../ui/dropdown-menu';
 
 const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
