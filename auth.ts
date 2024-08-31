@@ -12,6 +12,7 @@ export const {
 	handlers: { GET, POST },
 	signIn,
 	signOut,
+	unstable_update: update,
 } = NextAuth({
 	pages: {
 		signIn: '/auth/login',
@@ -56,6 +57,7 @@ export const {
 		},
 		//https://authjs.dev/reference/core search for "callbacks"
 		session: async ({ token, session }) => {
+			console.log('session cheese', token);
 			if (token.sub && session.user) {
 				session.user.id = token.sub;
 			}
@@ -76,7 +78,7 @@ export const {
 
 			return session;
 		},
-		jwt: async ({ token }) => {
+		jwt: async ({ token, session }) => {
 			if (!token.sub) return token;
 
 			const existingUser = await getUserById(token.sub);
@@ -86,10 +88,11 @@ export const {
 			const existingAccount = await getAccountByUserId(existingUser.id);
 
 			token.isOAuth = !!existingAccount;
-			token.name = existingUser.name;
-			token.email = existingUser.email;
-			token.role = existingUser.role;
-			token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
+			token.name = session?.name ?? existingUser.name;
+			token.email = session?.email ?? existingUser.email;
+			token.role = session?.role ?? existingUser.role;
+			token.isTwoFactorEnabled =
+				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			return token;
 		},
 	},

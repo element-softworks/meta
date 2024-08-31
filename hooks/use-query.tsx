@@ -30,8 +30,8 @@ export function useQuery<T, R>({
 
 	useEffect(() => {
 		if (!data) return;
-		onCompleted?.(data);
 
+		onCompleted?.(data);
 		if (data?.success) onSuccess?.(data);
 		if (data?.error) onError?.(data);
 	}, [data]);

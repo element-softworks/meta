@@ -18,17 +18,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { ChangeEmailForm } from './change-email-form';
 import { FormInput } from './form-input';
 import { ResetPasswordForm } from './reset-password-form';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 type SettingsFormInputProps = z.infer<typeof SettingsSchema>;
 
-type SettingsResponse = {};
+type SettingsResponse = {
+	user: ExtendedUser;
+};
 
 interface SettingsFormProps {
 	user: ExtendedUser | undefined;
 }
 
 export function SettingsForm(props: SettingsFormProps) {
-	const { user } = props;
+	//We do this to guarantee the most recent user version will be available within NextAuth
+	const clientUser = useCurrentUser();
+	const { user: serverUser } = props;
+	const user = clientUser ?? serverUser;
+
 	const { update } = useSession();
 
 	const form = useForm<SettingsFormInputProps>({
@@ -42,8 +49,8 @@ export function SettingsForm(props: SettingsFormProps) {
 
 	const { query: settingsQuery, isLoading } = useQuery<SettingsFormInputProps, SettingsResponse>({
 		queryFn: async (values) => await updateUserSettings(values!),
-		onCompleted: (data) => {
-			update();
+		onCompleted: async (data) => {
+			const response = await update((prev: ExtendedUser) => ({ ...prev, ...data }));
 		},
 	});
 
@@ -79,7 +86,7 @@ export function SettingsForm(props: SettingsFormProps) {
 								label="Role"
 								render={({ field }) => (
 									<Select
-										disabled={isLoading}
+										disabled={isLoading || user?.role !== UserRole.ADMIN}
 										onValueChange={field.onChange}
 										defaultValue={field.value}
 									>
