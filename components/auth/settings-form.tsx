@@ -1,6 +1,6 @@
 'use client';
 
-import { settings } from '@/actions/settings';
+import { updateUserSettings } from '@/actions/update-user-settings';
 import { useQuery } from '@/hooks/use-query';
 import { ExtendedUser } from '@/next-auth';
 import { SettingsSchema } from '@/schemas';
@@ -15,7 +15,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { ChangeEmailForm } from './change-email-form';
 import { FormInput } from './form-input';
+import { ResetPasswordForm } from './reset-password-form';
 
 type SettingsFormInputProps = z.infer<typeof SettingsSchema>;
 
@@ -33,16 +35,13 @@ export function SettingsForm(props: SettingsFormProps) {
 		resolver: zodResolver(SettingsSchema),
 		defaultValues: {
 			name: user?.name ?? undefined,
-			email: user?.email ?? undefined,
-			password: undefined,
-			newPassword: undefined,
 			role: user?.role ?? UserRole.USER,
 			isTwoFactorEnabled: user?.isTwoFactorEnabled ?? undefined,
 		},
 	});
 
 	const { query: settingsQuery, isLoading } = useQuery<SettingsFormInputProps, SettingsResponse>({
-		queryFn: async (values) => await settings(values!),
+		queryFn: async (values) => await updateUserSettings(values!),
 		onCompleted: (data) => {
 			update();
 		},
@@ -60,18 +59,12 @@ export function SettingsForm(props: SettingsFormProps) {
 					<CardTitle>Settings</CardTitle>
 					<CardDescription>Update user settings</CardDescription>
 				</CardHeader>
-				<CardContent>
+				<CardContent className="space-y-4">
 					<Form {...form}>
-						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<form className="space-y-4">
 							<FormInput
 								name="name"
 								label="Name"
-								render={({ field }) => <Input {...field} disabled={isLoading} />}
-							/>
-							<FormInput
-								visible={!user?.isOAuth}
-								name="email"
-								label="Email"
 								render={({ field }) => <Input {...field} disabled={isLoading} />}
 							/>
 
@@ -100,36 +93,20 @@ export function SettingsForm(props: SettingsFormProps) {
 									</Select>
 								)}
 							/>
-
-							<FormInput
-								visible={!user?.isOAuth}
-								name="password"
-								label="Current password"
-								render={({ field }) => (
-									<Input {...field} disabled={isLoading} type="password" />
-								)}
-							/>
-
-							<FormInput
-								visible={!user?.isOAuth}
-								name="newPassword"
-								label="New password"
-								render={({ field }) => (
-									<Input {...field} disabled={isLoading} type="password" />
-								)}
-							/>
-
-							<div>
-								<Button
-									disabled={isLoading || !user}
-									className="w-full"
-									type="submit"
-								>
-									Save
-								</Button>
-							</div>
 						</form>
 					</Form>
+
+					<Button
+						disabled={isLoading || !user}
+						className="w-full"
+						onClick={form.handleSubmit(onSubmit)}
+					>
+						Save
+					</Button>
+
+					<ChangeEmailForm user={user} />
+
+					<ResetPasswordForm user={user} />
 				</CardContent>
 			</Card>
 		</div>

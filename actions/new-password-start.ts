@@ -8,7 +8,7 @@ import { generatePasswordResetToken } from '@/lib/tokens';
 import { ResetSchema } from '@/schemas';
 import * as z from 'zod';
 
-export const reset = async (values: z.infer<typeof ResetSchema>) => {
+export const newPasswordStart = async (values: z.infer<typeof ResetSchema>) => {
 	const validatedFields = ResetSchema.safeParse(values);
 
 	if (!validatedFields.success) {

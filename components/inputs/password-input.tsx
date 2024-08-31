@@ -7,10 +7,12 @@ import { useState } from 'react';
 interface PasswordInputProps {
 	isLoading: boolean;
 	name: string;
+	visible?: boolean;
 	label?: string;
 	placeholder?: string;
 }
 export function PasswordInput(props: PasswordInputProps) {
+	const { visible = true } = props;
 	const [showPassword, setShowPassword] = useState(false);
 
 	function passwordIcon() {
@@ -30,6 +32,8 @@ export function PasswordInput(props: PasswordInputProps) {
 			/>
 		);
 	}
+
+	if (!visible) return null;
 
 	return (
 		<FormInput

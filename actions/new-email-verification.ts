@@ -4,7 +4,7 @@ import { getUserByEmail } from '@/data/user';
 import { getVerificationTokenByToken } from '@/data/verification-token';
 import { db } from '@/lib/db';
 
-export const newVerification = async (token: string | null) => {
+export const newEmailVerification = async (token: string | null) => {
 	if (!token) {
 		return { error: 'Missing token' };
 	}

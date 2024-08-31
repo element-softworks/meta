@@ -1,6 +1,6 @@
 'use client';
 
-import { newVerification } from '@/actions/new-verification';
+import { newEmailVerification } from '@/actions/new-email-verification';
 import { useQuery } from '@/hooks/use-query';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
@@ -8,9 +8,8 @@ import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef } from 'react';
 import { FaExclamation } from 'react-icons/fa';
 import { BeatLoader } from 'react-spinners';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { Social } from './social';
 import { Button } from '../ui/button';
+import { Social } from './social';
 
 interface NewVerificationFormProps {}
 export function NewVerificationForm(props: NewVerificationFormProps) {
@@ -19,7 +18,7 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 	const hasFired = useRef(false);
 
 	const { query: newVerificationQuery, status } = useQuery({
-		queryFn: async () => await newVerification(token),
+		queryFn: async () => await newEmailVerification(token),
 	});
 
 	const onSubmit = useCallback(async () => {

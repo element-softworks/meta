@@ -1,3 +1,4 @@
+import { ChangeEmailForm } from '@/components/auth/change-email-form';
 import { LogoutButton } from '@/components/auth/logout-button';
 import { SettingsForm } from '@/components/auth/settings-form';
 import { UserButton } from '@/components/auth/user-button';

@@ -7,7 +7,7 @@ import * as z from 'zod';
 import bcrypt from 'bcryptjs';
 import { db } from '@/lib/db';
 
-export const newPassword = async (
+export const newPasswordFinish = async (
 	values: z.infer<typeof NewPasswordSchema>,
 	token?: string | null
 ) => {

@@ -1,18 +1,16 @@
 'use client';
 
-import { login } from '@/actions/login';
+import { newPasswordStart } from '@/actions/new-password-start';
 import { useQuery } from '@/hooks/use-query';
-import { LoginSchema, ResetSchema } from '@/schemas';
+import { ResetSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { FormInput } from './form-input';
-import { reset } from '@/actions/reset';
 import { Social } from './social';
 
 type ResetFormProps = z.infer<typeof ResetSchema>;
@@ -25,7 +23,7 @@ export function ResetForm() {
 		isLoading,
 		data,
 	} = useQuery<ResetFormProps, ResetResponse>({
-		queryFn: async (values) => await reset(values!),
+		queryFn: async (values) => await newPasswordStart(values!),
 		onCompleted: (data) => {
 			form.reset();
 		},
