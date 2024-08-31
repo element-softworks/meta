@@ -8,7 +8,7 @@ export default async function SettingsPage() {
 	const user = await currentUser();
 
 	return (
-		<main className="flex flex-col h-screen max-w-2xl gap-6">
+		<main className="flex flex-col max-w-2xl gap-6">
 			<div className="">
 				<p className="text-xl font-bold">Account settings</p>
 				<p className="text-muted-foreground text-sm">Edit your account settings below.</p>
