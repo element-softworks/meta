@@ -60,7 +60,7 @@ export function ChangeEmailForm(props: ChangeEmailFormProps) {
 								<Input {...field} disabled={isLoading} />
 								<Button
 									variant="secondary"
-									disabled={!form.formState.isDirty}
+									disabled={isLoading || !user || !form.formState.isDirty}
 									isLoading={isLoading || !user}
 									type="submit"
 								>

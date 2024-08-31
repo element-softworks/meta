@@ -25,7 +25,7 @@ export const VerifyEmailEmailTemplate = (props: VerifyEmailEmailTemplateProps) =
 		<Html>
 			<Head />
 			<Preview>{props.type === 'change' ? 'Change' : 'Verify'} your email address</Preview>
-			<Tailwind config={config}>
+			<Tailwind>
 				<Body className="">
 					<Container className="bg-neutral-100 border border-neutral-200 rounded-md">
 						<Section className="bg-neutral-200 ">

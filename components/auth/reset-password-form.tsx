@@ -53,6 +53,7 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 		const response = await ResetPasswordQuery(values);
 	}
 
+	if (user?.isOAuth) return null;
 	return (
 		<div className="relative">
 			<Form {...form}>
@@ -72,6 +73,7 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 					/>
 
 					<Button
+						isLoading={isLoading}
 						disabled={isLoading || !user || !form.formState.isDirty}
 						onClick={form.handleSubmit(onSubmit)}
 					>

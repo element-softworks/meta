@@ -24,7 +24,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 		<Html>
 			<Head />
 			<Preview>Reset your password</Preview>
-			<Tailwind config={config}>
+			<Tailwind>
 				<Body className="">
 					<Container className="bg-neutral-100 border border-neutral-200 rounded-md">
 						<Section className="bg-neutral-200 ">

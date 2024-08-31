@@ -6,7 +6,7 @@ import tailwindConfig from '../tailwind.config';
 export const useBreakpoint = (breakpoint: 'sm' | 'md' | 'lg' | 'xl' | '2xl') => {
 	const [isBreakpoint, setIsBreakpoint] = useState(false);
 
-	const fullConfig = resolveConfig(tailwindConfig);
+	const fullConfig = resolveConfig(tailwindConfig as any);
 	const breakPoint = fullConfig.theme.screens?.[breakpoint]?.split('px')[0];
 
 	useEffect(() => {

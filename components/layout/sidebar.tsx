@@ -48,7 +48,7 @@ export function SidebarGroup(props: SidebarGroupProps) {
 	if (!visible || isMobile) return null;
 	return (
 		<>
-			<Accordion type="single" defaultValue="item-1" collapsible>
+			<Accordion type="multiple" defaultValue={['item-1']}>
 				<AccordionItem value="item-1">
 					<AccordionTrigger className="text-xs text-muted-foreground font-semibold uppercase">
 						{props.text}

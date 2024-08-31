@@ -51,6 +51,11 @@ export function SettingsForm(props: SettingsFormProps) {
 		queryFn: async (values) => await updateUserSettings(values!),
 		onCompleted: async (data) => {
 			const response = await update((prev: ExtendedUser) => ({ ...prev, ...data }));
+			form.reset({
+				isTwoFactorEnabled: response?.user?.isTwoFactorEnabled ?? undefined,
+				role: response?.user?.role,
+				name: response?.user?.name ?? undefined,
+			});
 		},
 	});
 
@@ -99,6 +104,7 @@ export function SettingsForm(props: SettingsFormProps) {
 				</Form>
 
 				<Button
+					isLoading={isLoading}
 					disabled={isLoading || !user || !form.formState.isDirty}
 					onClick={form.handleSubmit(onSubmit)}
 				>

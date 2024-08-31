@@ -24,7 +24,7 @@ export const TokenEmailTemplate = (props: TokenEmailTemplateProps) => {
 		<Html>
 			<Head />
 			<Preview>Two Factor Authentication</Preview>
-			<Tailwind config={config}>
+			<Tailwind>
 				<Body className="">
 					<Container className="bg-neutral-100 border border-neutral-200 rounded-md">
 						<Section className="bg-neutral-200 ">

@@ -2,8 +2,8 @@
 
 import { ExtendedUser } from '@/next-auth';
 import { CreditCard, LogOut, Moon, Settings, Sun } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import Link from 'next/link';
-import { FaUser } from 'react-icons/fa';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Button } from '../ui/button';
 import {
@@ -16,7 +16,6 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { LogoutButton } from './logout-button';
-import { useTheme } from 'next-themes';
 
 interface UserButtonProps {
 	user: ExtendedUser | undefined;
@@ -25,16 +24,22 @@ export function UserButton(props: UserButtonProps) {
 	const { setTheme, theme } = useTheme();
 
 	const isLightMode = theme === 'light';
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
 				<Button asChild variant="outline">
 					<div>
 						<Avatar className="size-7">
-							<AvatarImage src={props.user?.image || ''} alt="props.User avatar" />
-							<AvatarFallback>
-								<FaUser />
-							</AvatarFallback>
+							{props.user?.image && (
+								<AvatarImage
+									width={35}
+									height={35}
+									src={props.user?.image}
+									alt="user avatar"
+								/>
+							)}
+							<AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
 						</Avatar>
 						<p className="font-normal ml-2">Account</p>
 					</div>

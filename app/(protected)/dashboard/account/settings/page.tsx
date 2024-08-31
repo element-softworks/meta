@@ -20,7 +20,7 @@ export default async function SettingsPage() {
 
 				<SettingsForm user={user} />
 			</div>
-			<Separator />
+			{!user?.isOAuth ? <Separator /> : null}
 
 			<ResetPasswordForm user={user} />
 		</main>
