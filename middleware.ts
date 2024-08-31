@@ -24,10 +24,10 @@ export default auth((req, res) => {
 	if (isApiAuthRoute) {
 		return NextResponse.next();
 	}
-
+	console.log(isAuthRoute, 'is logged in');
 	if (isAuthRoute) {
 		if (isLoggedIn) {
-			Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
+			return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
 		}
 
 		return NextResponse.next();

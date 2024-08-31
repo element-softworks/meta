@@ -42,8 +42,10 @@ export interface SidebarGroupProps {
 	visible?: boolean;
 }
 export function SidebarGroup(props: SidebarGroupProps) {
+	const isMobile = useBreakpoint('md');
+
 	const { visible = true } = props;
-	if (!visible) return null;
+	if (!visible || isMobile) return null;
 	return (
 		<>
 			<Accordion type="single" defaultValue="item-1" collapsible>
