@@ -1,8 +1,14 @@
-import authConfig from './auth.config';
+import { UserRole } from '@prisma/client';
 import NextAuth from 'next-auth';
-import { DEFAULT_LOGIN_REDIRECT, apiAuthPrefix, authRoutes, publicRoutes } from './routes';
 import { NextResponse } from 'next/server';
-import { redirect } from 'next/navigation';
+import authConfig from './auth.config';
+import {
+	DEFAULT_LOGIN_REDIRECT,
+	adminRoutes,
+	apiAuthPrefix,
+	authRoutes,
+	publicRoutes,
+} from './routes';
 
 const { auth } = NextAuth(authConfig);
 
@@ -13,6 +19,7 @@ export default auth((req, res) => {
 	const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 	const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 	const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+	const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
 
 	if (isApiAuthRoute) {
 		return NextResponse.next();
@@ -35,6 +42,11 @@ export default auth((req, res) => {
 		const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
 		return Response.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl));
+	}
+
+	//Admin protected routes
+	if (isAdminRoute && !(req.auth?.user?.role === UserRole.ADMIN)) {
+		return Response.redirect(new URL(`${DEFAULT_LOGIN_REDIRECT}`, nextUrl));
 	}
 
 	return NextResponse.next();

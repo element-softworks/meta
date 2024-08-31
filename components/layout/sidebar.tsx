@@ -1,10 +1,15 @@
 'use client';
 
+import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from '@/components/ui/accordion';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
-import { Button } from '../ui/button';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { ThemeSwitch } from './theme-switch';
+import { usePathname } from 'next/navigation';
+import { Button } from '../ui/button';
 
 export interface SidebarItemProps {
 	link: string;
@@ -19,8 +24,10 @@ export function SidebarItem(props: SidebarItemProps) {
 		<Link href={props.link}>
 			<Button
 				size="lg"
-				className="w-full justify-start px-4 flex items-center gap-2"
-				variant={isActive ? 'default' : 'ghost'}
+				className={`w-full justify-start px-4 flex items-center gap-2 ${
+					isActive && 'font-bold'
+				} `}
+				variant={isActive ? 'secondary' : 'ghost'}
 			>
 				{props.icon}
 				{props.text}
@@ -29,14 +36,38 @@ export function SidebarItem(props: SidebarItemProps) {
 	);
 }
 
+export interface SidebarGroupProps {
+	text: string;
+	children?: React.ReactNode;
+	visible?: boolean;
+}
+export function SidebarGroup(props: SidebarGroupProps) {
+	const { visible = true } = props;
+	if (!visible) return null;
+	return (
+		<>
+			<Accordion type="single" defaultValue="item-1" collapsible>
+				<AccordionItem value="item-1">
+					<AccordionTrigger className="text-xs text-muted-foreground font-semibold uppercase">
+						{props.text}
+					</AccordionTrigger>
+					<AccordionContent className="flex flex-col gap-2">
+						{props.children}
+					</AccordionContent>
+				</AccordionItem>
+			</Accordion>
+		</>
+	);
+}
+
 export function Sidebar({ children }: { children: React.ReactNode }) {
 	const isMobile = useBreakpoint('md');
 
 	return (
 		<aside
-			className={`${isMobile ? 'w-0' : 'w-[360px]'} border-border transition-all  ${
-				isMobile ? 'px-0 py-6' : 'p-6 border-r'
-			} `}
+			className={`${
+				isMobile ? 'w-0' : 'w-[360px]'
+			} min-h-full border-border transition-all  ${isMobile ? 'px-0 py-6' : 'p-6 border-r'}`}
 		>
 			<div className="flex flex-col gap-2 flex-1">{children}</div>
 		</aside>
