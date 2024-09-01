@@ -13,7 +13,7 @@ import { Input } from '../ui/input';
 import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
-import { useQuery } from '@/hooks/use-query';
+import { useMutation } from '@/hooks/use-mutation';
 import { LoaderCircle } from 'lucide-react';
 import { PasswordInput } from '../inputs/password-input';
 import Link from 'next/link';
@@ -30,7 +30,7 @@ export function RegisterForm() {
 		},
 	});
 
-	const { query: registerQuery, isLoading } = useQuery<RegisterFormProps, {}>({
+	const { query: registerQuery, isLoading } = useMutation<RegisterFormProps, {}>({
 		queryFn: async (values) => await register(values!),
 		onSuccess: () => {
 			form.reset();

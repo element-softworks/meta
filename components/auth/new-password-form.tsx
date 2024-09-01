@@ -1,7 +1,7 @@
 'use client';
 
 import { newPasswordFinish } from '@/actions/new-password-finish';
-import { useQuery } from '@/hooks/use-query';
+import { useMutation } from '@/hooks/use-mutation';
 import { NewPasswordSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -25,7 +25,7 @@ export function NewPasswordForm() {
 		query: newPasswordQuery,
 		isLoading,
 		data,
-	} = useQuery<NewPasswordProps, NewPasswordResponse>({
+	} = useMutation<NewPasswordProps, NewPasswordResponse>({
 		queryFn: async (values) => await newPasswordFinish(values!, token),
 		onCompleted: (data) => {
 			form.reset();

@@ -1,7 +1,7 @@
 'use client';
 
 import { emailChangeStart } from '@/actions/change-email-start';
-import { useQuery } from '@/hooks/use-query';
+import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
 import { ChangeEmailSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,7 +31,7 @@ export function ChangeEmailForm(props: ChangeEmailFormProps) {
 		},
 	});
 
-	const { query: changeEmailQuery, isLoading } = useQuery<
+	const { query: changeEmailQuery, isLoading } = useMutation<
 		ChangeEmailFormInputProps,
 		ChangeEmailResponse
 	>({

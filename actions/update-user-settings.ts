@@ -6,8 +6,19 @@ import { db } from '@/lib/db';
 import { SettingsSchema } from '@/schemas';
 import { UserRole } from '@prisma/client';
 import z from 'zod';
-export const updateUserSettings = async (values: z.infer<typeof SettingsSchema>) => {
+export const updateUserSettings = async (
+	values: z.infer<typeof SettingsSchema>,
+	userId?: string
+) => {
 	const user = await currentUser();
+	const isAdminMode = !!userId?.length;
+
+	//If we pass a userId, we are an admin changing another user's settings
+
+	//If we are editing another user and we arent an admin, throw an error
+	if (isAdminMode && user?.role !== UserRole.ADMIN) {
+		return { error: 'Unauthorized' };
+	}
 
 	if (!user) {
 		return { error: 'Unauthorized' };
@@ -25,7 +36,7 @@ export const updateUserSettings = async (values: z.infer<typeof SettingsSchema>)
 
 	//As an oauth user, we can't update email and password and have no two factor authentication on app
 	const updatedUser = await db.user.update({
-		where: { id: user.id },
+		where: { id: isAdminMode ? userId : user.id },
 		data: {
 			name: values.name,
 			role: values.role,

@@ -1,13 +1,9 @@
-import { SettingsForm } from '@/components/auth/settings-form';
-import { currentUser } from '@/lib/auth';
-import { Separator } from '@/components/ui/separator';
 import { ChangeEmailForm } from '@/components/auth/change-email-form';
 import { ResetPasswordForm } from '@/components/auth/reset-password-form';
-import { auth } from '@/auth';
+import { SettingsForm } from '@/components/auth/settings-form';
+import { Separator } from '@/components/ui/separator';
 
 export default async function SettingsPage() {
-	const user = await currentUser();
-
 	return (
 		<main className="flex flex-col max-w-2xl gap-6">
 			<div className="">
@@ -21,7 +17,6 @@ export default async function SettingsPage() {
 
 				<SettingsForm />
 			</div>
-			{!user?.isOAuth ? <Separator /> : null}
 
 			<ResetPasswordForm />
 		</main>

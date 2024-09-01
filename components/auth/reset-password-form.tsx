@@ -1,28 +1,28 @@
 'use client';
 
-import { emailChangeStart } from '@/actions/change-email-start';
-import { useQuery } from '@/hooks/use-query';
-import { ExtendedUser } from '@/next-auth';
+import { resetPasswordLoggedin } from '@/actions/reset-password-loggedin';
+import { Separator } from '@/components/ui/separator';
+import { useCurrentUser } from '@/hooks/use-current-user';
+import { useMutation } from '@/hooks/use-mutation';
 import { ResetPasswordSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
+import { PasswordInput } from '../inputs/password-input';
 import { Button } from '../ui/button';
 import { Form } from '../ui/form';
-import { Input } from '../ui/input';
-import { FormInput } from './form-input';
-import { resetPasswordLoggedin } from '@/actions/reset-password-loggedin';
-import { PasswordInput } from '../inputs/password-input';
-import { useCurrentUser } from '@/hooks/use-current-user';
 
 type ResetPasswordFormInputProps = z.infer<typeof ResetPasswordSchema>;
 
 type ResetPasswordResponse = {};
 
-interface ResetPasswordFormProps {}
+interface ResetPasswordFormProps {
+	disableSeparator?: boolean;
+}
 
 export function ResetPasswordForm(props: ResetPasswordFormProps) {
+	const { disableSeparator = false } = props;
 	const user = useCurrentUser();
 
 	const { update } = useSession();
@@ -35,7 +35,7 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 		},
 	});
 
-	const { query: ResetPasswordQuery, isLoading } = useQuery<
+	const { query: ResetPasswordQuery, isLoading } = useMutation<
 		ResetPasswordFormInputProps,
 		ResetPasswordResponse
 	>({
@@ -55,32 +55,36 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 
 	if (user?.isOAuth) return null;
 	return (
-		<div className="relative">
-			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-					<PasswordInput
-						isLoading={isLoading}
-						name="password"
-						label="Current password"
-						visible={!user?.isOAuth}
-					/>
+		<>
+			{!disableSeparator ? <Separator /> : null}
 
-					<PasswordInput
-						isLoading={isLoading}
-						name="newPassword"
-						label="Current password"
-						visible={!user?.isOAuth}
-					/>
+			<div className="relative">
+				<Form {...form}>
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+						<PasswordInput
+							isLoading={isLoading}
+							name="password"
+							label="Current password"
+							visible={!user?.isOAuth}
+						/>
 
-					<Button
-						isLoading={isLoading}
-						disabled={isLoading || !user || !form.formState.isDirty}
-						onClick={form.handleSubmit(onSubmit)}
-					>
-						Change password
-					</Button>
-				</form>
-			</Form>
-		</div>
+						<PasswordInput
+							isLoading={isLoading}
+							name="newPassword"
+							label="Current password"
+							visible={!user?.isOAuth}
+						/>
+
+						<Button
+							isLoading={isLoading}
+							disabled={isLoading || !user || !form.formState.isDirty}
+							onClick={form.handleSubmit(onSubmit)}
+						>
+							Change password
+						</Button>
+					</form>
+				</Form>
+			</div>
+		</>
 	);
 }

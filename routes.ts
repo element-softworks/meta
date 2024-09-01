@@ -5,8 +5,7 @@
  */
 
 export const publicRoutes = ['/', '/auth/new-verification'];
-
-export const adminRoutes = ['/', '/dashboard/admin/users'];
+export const adminRoute = '/dashboard/admin';
 
 /**
  * @description: Auth routes
@@ -31,4 +30,4 @@ export const apiAuthPrefix = '/api/auth';
  * @description: Default login redirect
  * @param {string} DEFAULT_LOGIN_REDIRECT - Default login redirect
  */
-export const DEFAULT_LOGIN_REDIRECT = '/dashboard';
+export const DEFAULT_LOGIN_REDIRECT = '/dashboard/account/settings';

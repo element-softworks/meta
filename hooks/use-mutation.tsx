@@ -11,13 +11,13 @@ import { useEffect, useState, useTransition } from 'react';
  */
 
 // Generic type T for input values and R for response type
-export function useQuery<T, R>({
+export function useMutation<T, R>({
 	queryFn,
 	onCompleted,
 	onSuccess,
 	onError,
 }: {
-	queryFn: Promise<any>;
+	queryFn: (values?: T) => Promise<any>;
 	onCompleted?: (data?: { success?: string; error?: string } & R) => void;
 	onSuccess?: (data?: { success?: string; error?: string } & R) => void;
 	onError?: (data?: { success?: string; error?: string } & R) => void;
@@ -64,11 +64,5 @@ export function useQuery<T, R>({
 		return;
 	};
 
-	useEffect(() => {
-		(async () => {
-			const response = await query();
-		})();
-	});
-
-	return { status: queryStatus, data, isLoading: isPending };
+	return { query, status: queryStatus, data, isLoading: isPending };
 }

@@ -4,12 +4,11 @@ import { NextResponse } from 'next/server';
 import authConfig from './auth.config';
 import {
 	DEFAULT_LOGIN_REDIRECT,
-	adminRoutes,
+	adminRoute,
 	apiAuthPrefix,
 	authRoutes,
 	publicRoutes,
 } from './routes';
-
 const { auth } = NextAuth(authConfig);
 
 export default auth((req, res) => {
@@ -19,7 +18,7 @@ export default auth((req, res) => {
 	const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 	const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 	const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-	const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
+	const isAdminRoute = nextUrl.pathname.startsWith(adminRoute);
 
 	if (isApiAuthRoute) {
 		return NextResponse.next();

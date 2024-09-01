@@ -1,9 +1,12 @@
 'use client';
 
 import {
+	Cell,
 	ColumnDef,
 	ColumnFiltersState,
 	PaginationState,
+	Row,
+	RowModel,
 	SortingState,
 	VisibilityState,
 	flexRender,
@@ -13,6 +16,7 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -48,6 +52,7 @@ interface DataTableProps<TData, TValue> {
 	maxHeight?: number;
 	stickyHeader?: boolean;
 	lastColumnSticky?: boolean;
+	isLoading?: boolean;
 }
 
 export function DataTable<TData, TValue>({
@@ -61,6 +66,7 @@ export function DataTable<TData, TValue>({
 	maxHeight,
 	stickyHeader = true,
 	lastColumnSticky = false,
+	isLoading = false,
 }: DataTableProps<TData, TValue>) {
 	const searchParams = useSearchParams();
 	const { mutateParam, mutateParams } = useParam();
@@ -150,6 +156,7 @@ export function DataTable<TData, TValue>({
 				<div className="flex items-center py-4 gap-2">
 					{!!search ? (
 						<Input
+							disabled={isLoading}
 							placeholder={` ${
 								typeof search === 'string' ? `Filter ${search}s...` : 'Search...'
 							}`}
@@ -172,7 +179,7 @@ export function DataTable<TData, TValue>({
 					{columnVisibilityEnabled ? (
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
-								<Button variant="outline" className="ml-auto">
+								<Button variant="outline" className="ml-auto" disabled={isLoading}>
 									Columns
 								</Button>
 							</DropdownMenuTrigger>
@@ -252,6 +259,7 @@ export function DataTable<TData, TValue>({
 											>
 												{header.isPlaceholder ? null : isSortable ? (
 													<Button
+														disabled={isLoading}
 														className="px-0"
 														variant="ghost"
 														onClick={() => {
@@ -280,39 +288,54 @@ export function DataTable<TData, TValue>({
 							))}
 						</TableHeader>
 						<TableBody className="">
-							{table.getRowModel().rows?.length ? (
-								table.getRowModel().rows.map((row) => {
+							{table.getRowModel().rows?.length || isLoading ? (
+								(isLoading
+									? Array.from({ length: 10 }).map((r, i) => ({ id: i }))
+									: table.getRowModel().rows
+								)?.map((rowData) => {
+									const row = rowData as Row<TData> | undefined;
 									return (
 										<TableRow
-											key={row.id}
-											data-state={row.getIsSelected() && 'selected'}
+											key={row?.id}
+											data-state={row?.getIsSelected?.() && 'selected'}
 										>
 											{rowSelectionEnabled ? (
 												<TableHead>
 													<Checkbox
-														checked={row.getIsSelected()}
+														checked={row?.getIsSelected()}
 														onCheckedChange={(value) => {
-															return row.toggleSelected(!!value);
+															return row?.toggleSelected(!!value);
 														}}
 														aria-label="Select row"
 													/>
 												</TableHead>
 											) : null}
-											{row.getVisibleCells().map((cell, index) => {
+											{(isLoading
+												? Array.from({
+														length: table.getAllColumns()?.length,
+												  }).map((r, i) => ({ id: i }))
+												: row?.getVisibleCells?.()
+											)?.map((cellData, index) => {
+												const cell = cellData as Cell<TData, unknown>;
 												const isLastColumn =
-													index === row.getVisibleCells().length - 1;
+													index ===
+													(row?.getVisibleCells?.()?.length ?? 0) - 1;
 												return (
 													<TableCell
-														key={cell.id}
+														key={cell?.id}
 														className={`${
 															lastColumnSticky &&
 															isLastColumn &&
 															'sticky right-0 bg-accent '
 														}`}
 													>
-														{flexRender(
-															cell.column.columnDef.cell,
-															cell.getContext()
+														{isLoading ? (
+															<Skeleton className="h-4 w-full" />
+														) : (
+															flexRender(
+																cell?.column?.columnDef?.cell,
+																cell?.getContext?.()
+															)
 														)}
 													</TableCell>
 												);

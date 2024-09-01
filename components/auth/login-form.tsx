@@ -1,7 +1,7 @@
 'use client';
 
 import { login } from '@/actions/login';
-import { useQuery } from '@/hooks/use-query';
+import { useMutation } from '@/hooks/use-mutation';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
@@ -43,7 +43,7 @@ export function LoginForm() {
 		router.replace('/auth/login');
 	}
 
-	const { query: loginQuery, isLoading } = useQuery<LoginFormProps, LoginResponse>({
+	const { query: loginQuery, isLoading } = useMutation<LoginFormProps, LoginResponse>({
 		queryFn: async (values) => await login(values!, showTwoFactor, callbackUrl),
 		onCompleted: (data) => {
 			//If the user entered the incorrect details after 2fa, send back to login details

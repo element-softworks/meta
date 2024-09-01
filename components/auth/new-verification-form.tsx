@@ -1,7 +1,7 @@
 'use client';
 
 import { newEmailVerification } from '@/actions/new-email-verification';
-import { useQuery } from '@/hooks/use-query';
+import { useMutation } from '@/hooks/use-mutation';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -17,7 +17,7 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 	const token = searchParams.get('token');
 	const hasFired = useRef(false);
 
-	const { query: newVerificationQuery, status } = useQuery({
+	const { query: newVerificationQuery, status } = useMutation({
 		queryFn: async () => await newEmailVerification(token),
 	});
 

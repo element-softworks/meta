@@ -13,7 +13,13 @@ export const getUserByEmail = async (email: string) => {
 export const getUserById = async (id: string) => {
 	try {
 		const user = await db.user.findUnique({ where: { id } });
-		return user;
+		const isOAuth = await db.account.findFirst({
+			where: {
+				userId: user?.id,
+			},
+		});
+
+		return { ...user!, isOAuth: !!isOAuth };
 	} catch (error) {
 		console.error(error);
 		return null;
