@@ -18,6 +18,7 @@ import {
 import { User } from '@prisma/client';
 import Image from 'next/image';
 import { Avatar } from '../ui/avatar';
+import { toast } from '../ui/use-toast';
 
 const columns: ColumnDef<User>[] = [
 	{
@@ -142,13 +143,21 @@ const columns: ColumnDef<User>[] = [
 					<DropdownMenuContent align="end">
 						<DropdownMenuLabel>Actions</DropdownMenuLabel>
 						<DropdownMenuItem
-							onClick={() => navigator.clipboard.writeText(user?.id ?? '')}
+							className="cursor-pointer"
+							onClick={() => {
+								navigator.clipboard.writeText(user?.id ?? '');
+								toast({
+									description: 'User ID copied to clipboard',
+								});
+							}}
 						>
 							Copy user ID
 						</DropdownMenuItem>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>View user</DropdownMenuItem>
-						<DropdownMenuItem>View user details</DropdownMenuItem>
+						<DropdownMenuItem className="cursor-pointer">View user</DropdownMenuItem>
+						<DropdownMenuItem className="cursor-pointer">
+							View user details
+						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			);
@@ -177,6 +186,7 @@ export function UsersTable(props: UsersTableProps) {
 	return (
 		<DataTable
 			rowSelectionEnabled={false}
+			stickyHeader
 			lastColumnSticky
 			maxHeight={500}
 			columns={columns}

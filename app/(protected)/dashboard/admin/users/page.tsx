@@ -1,5 +1,5 @@
 import { UsersTable } from '@/components/tables/users-table';
-import { getAllUsers } from '@/data/get-all-users';
+import { getAllUsers } from '@/actions/get-all-users';
 import { Separator } from '@/components/ui/separator';
 
 export default async function SettingsPage({ searchParams }: { searchParams: any }) {

@@ -1,6 +1,7 @@
 import { auth } from '@/auth';
 import { Navbar } from '@/components/layout/navbar';
 import { Sidebar, SidebarGroup, SidebarItem } from '@/components/layout/sidebar';
+import { Toaster } from '@/components/ui/toaster';
 import { UserRole } from '@prisma/client';
 import { CreditCard, LayoutDashboard, Settings } from 'lucide-react';
 import { SessionProvider } from 'next-auth/react';
@@ -9,6 +10,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 	const session = await auth();
 	return (
 		<SessionProvider session={session}>
+			<Toaster />
 			<div className="flex flex-col min-h-screen ">
 				<Navbar />
 

@@ -31,6 +31,7 @@ export const getAllUsers = async ({
 				OR: [
 					{ name: { contains: search, mode: 'insensitive' } },
 					{ email: { contains: search, mode: 'insensitive' } },
+					{ id: { equals: search } },
 				],
 			},
 		});
