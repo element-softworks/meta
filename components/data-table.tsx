@@ -35,10 +35,11 @@ import { Input } from './ui/input';
 import { useSearchParams } from 'next/navigation';
 import { useParam } from '@/hooks/use-param';
 import { Checkbox } from './ui/checkbox';
+import { ArrowDown, ArrowLeft, ArrowUp, ArrowUpDown } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
-	filterColumn?: string | { useParams: boolean };
+	search?: string | { useParams: boolean };
 	columnVisibilityEnabled?: boolean;
 	rowSelectionEnabled?: boolean;
 	data: TData[];
@@ -52,7 +53,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
 	columns,
 	data,
-	filterColumn,
+	search,
 	columnVisibilityEnabled = true,
 	rowSelectionEnabled = true,
 	id,
@@ -62,7 +63,7 @@ export function DataTable<TData, TValue>({
 	lastColumnSticky = false,
 }: DataTableProps<TData & { id: string }, TValue>) {
 	const searchParams = useSearchParams();
-	const { mutateParam } = useParam();
+	const { mutateParam, mutateParams } = useParam();
 
 	const pageNum = Number(searchParams.get(`${!!id ? `${id}-` : ''}pageNum`)) || 1;
 	const perPage = Number(searchParams.get(`${!!id ? `${id}-` : ''}perPage`)) || 100;
@@ -116,34 +117,48 @@ export function DataTable<TData, TValue>({
 	}, [table.getSelectedRowModel()]);
 
 	useEffect(() => {
-		mutateParam({
-			param: `${!!id ? `${id}-` : ''}search`,
-			value: searchValue,
+		mutateParams({
+			[`${!!id ? `${id}-` : ''}pageNum`]: '1',
+			[`${!!id ? `${id}-` : ''}search`]: searchValue,
 		});
 	}, [searchValue]);
+
+	const handleSort = (columnId: string, isDefaultDesc: boolean) => {
+		const param = `${!!id ? `${id}-` : ''}${columnId}-sort`;
+		let sortValue = 'asc';
+		if (searchParams.get(param) === 'asc') {
+			sortValue = 'desc';
+		} else if (searchParams.get(param) === 'desc') {
+			sortValue = 'neutral';
+		} else if (!searchParams.get(param)) {
+			sortValue = isDefaultDesc ? 'neutral' : 'desc';
+		} else {
+			sortValue = 'asc';
+		}
+
+		mutateParam({
+			param: `${!!id ? `${id}-` : ''}${columnId}-sort`,
+			value: sortValue,
+		});
+	};
 
 	return (
 		<Suspense fallback={<>Loading....</>}>
 			<div className="w-full">
-				<div className="flex items-center py-4">
-					{!!filterColumn ? (
+				<div className="flex items-center py-4 gap-2">
+					{!!search ? (
 						<Input
 							placeholder={` ${
-								typeof filterColumn === 'string'
-									? `Filter ${filterColumn}s...`
-									: 'Search...'
+								typeof search === 'string' ? `Filter ${search}s...` : 'Search...'
 							}`}
 							value={
-								typeof filterColumn === 'string'
-									? (table.getColumn(filterColumn)?.getFilterValue() as string) ??
-									  ''
+								typeof search === 'string'
+									? (table.getColumn(search)?.getFilterValue() as string) ?? ''
 									: searchValue
 							}
 							onChange={(event) => {
-								if (typeof filterColumn === 'string') {
-									table
-										.getColumn(filterColumn)
-										?.setFilterValue(event.target.value);
+								if (typeof search === 'string') {
+									table.getColumn(search)?.setFilterValue(event.target.value);
 								} else {
 									setSearchValue(event.target.value);
 								}
@@ -205,6 +220,25 @@ export function DataTable<TData, TValue>({
 										const isLastColumn =
 											index === headerGroup.headers.length - 1;
 
+										const isSortable = header.column.columnDef.enableSorting;
+
+										const sortParam = searchParams.get(
+											`${!!id ? `${id}-` : ''}${header.column.id}-sort`
+										);
+
+										const isDefaultDesc = header.column.columnDef.sortDescFirst;
+
+										const sortIcon =
+											sortParam === 'asc' ? (
+												<ArrowUp className="ml-2 h-4 w-4" />
+											) : sortParam === 'desc' ? (
+												<ArrowDown className="ml-2 h-4 w-4 " />
+											) : isDefaultDesc && !sortParam?.length ? (
+												<ArrowDown className="ml-2 h-4 w-4 " />
+											) : (
+												<ArrowLeft className="ml-2 h-4 w-4" />
+											);
+
 										return (
 											<TableHead
 												key={header.id}
@@ -214,12 +248,29 @@ export function DataTable<TData, TValue>({
 													'sticky right-0 bg-accent '
 												}`}
 											>
-												{header.isPlaceholder
-													? null
-													: flexRender(
+												{header.isPlaceholder ? null : isSortable ? (
+													<Button
+														className="px-0"
+														variant="ghost"
+														onClick={() => {
+															handleSort(
+																header.column.id,
+																isDefaultDesc ?? false
+															);
+														}}
+													>
+														{flexRender(
 															header.column.columnDef.header,
 															header.getContext()
-													  )}
+														)}
+														{sortIcon}
+													</Button>
+												) : (
+													flexRender(
+														header.column.columnDef.header,
+														header.getContext()
+													)
+												)}
 											</TableHead>
 										);
 									})}

@@ -30,5 +30,15 @@ export function useParam() {
 		router.push(pathname + '?' + createQueryString(param, value));
 	};
 
-	return { mutateParam };
+	const mutateParams = (params: { [key: string]: string }) => {
+		const newParams = new URLSearchParams(searchParams.toString());
+
+		for (const [key, value] of Object.entries(params)) {
+			newParams.set(key, value);
+		}
+
+		router.push(pathname + '?' + newParams.toString());
+	};
+
+	return { mutateParam, mutateParams };
 }

@@ -1,9 +1,8 @@
 'use client';
 
-import { Checkbox } from '@/components/ui/checkbox';
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import { MoreHorizontal } from 'lucide-react';
 import { DataTable } from '../data-table';
 
 import { Button } from '@/components/ui/button';
@@ -23,18 +22,8 @@ import { toast } from '../ui/use-toast';
 const columns: ColumnDef<User>[] = [
 	{
 		accessorKey: 'name',
-		header: ({ column }) => {
-			return (
-				<Button
-					className="px-0"
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					Name
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
-		},
+		header: 'Name',
+		enableSorting: true,
 		cell: ({ row }) => {
 			const user = row.original;
 			return (
@@ -51,78 +40,29 @@ const columns: ColumnDef<User>[] = [
 	},
 	{
 		accessorKey: 'email',
-		header: ({ column }) => {
-			return (
-				<Button
-					className="px-0"
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					Email
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
-		},
+		header: 'Email',
+		enableSorting: true,
 	},
 	{
 		accessorKey: 'emailVerified',
-		header: ({ column }) => {
-			return (
-				<Button
-					className="px-0"
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					Email verified
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
-		},
+		header: 'Email Verified',
+		enableSorting: true,
 	},
 	{
 		accessorKey: 'isTwoFactorEnabled',
-		header: ({ column }) => {
-			return (
-				<Button
-					className="px-0"
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					2FA
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
-		},
+		header: '2FA',
+		enableSorting: true,
 	},
 	{
 		accessorKey: 'role',
-		header: ({ column }) => {
-			return (
-				<Button
-					className="px-0"
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					Role
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
-		},
+		header: 'Role',
+		enableSorting: true,
 	},
 	{
 		accessorKey: 'createdAt',
-		header: ({ column }) => {
-			return (
-				<Button
-					className="px-0"
-					variant="ghost"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					Joined on
-					<ArrowUpDown className="ml-2 h-4 w-4" />
-				</Button>
-			);
-		},
+		header: 'Joined on',
+		enableSorting: true,
+		sortDescFirst: true,
 		cell: ({ row }) => {
 			const user = row.original;
 			return format(new Date(user.createdAt), 'MMM dd, yyyy');
@@ -191,7 +131,7 @@ export function UsersTable(props: UsersTableProps) {
 			maxHeight={500}
 			columns={columns}
 			data={rows}
-			filterColumn={{ useParams: true }}
+			search={{ useParams: true }}
 			totalPages={props.totalPages}
 			id="users"
 		/>

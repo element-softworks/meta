@@ -1,15 +1,7 @@
-import { UsersTable } from '@/components/tables/users-table';
-import { getAllUsers } from '@/actions/get-all-users';
+import UsersTableContainer from '@/components/tables/users-table-container';
 import { Separator } from '@/components/ui/separator';
 
 export default async function SettingsPage({ searchParams }: { searchParams: any }) {
-	const data = await getAllUsers({
-		pageNum: Number(searchParams?.['users-pageNum'] ?? 1),
-		perPage: Number(searchParams?.['users-perPage'] ?? 100),
-		search: searchParams?.['users-search'] ?? '',
-	});
-
-	console.log(data.totalPages, 'total pages');
 	return (
 		<main className="flex flex-col max-w-4xl gap-6">
 			<div className="">
@@ -19,7 +11,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: any
 
 			<Separator />
 
-			<UsersTable users={data.users ?? []} totalPages={data?.totalPages} />
+			<UsersTableContainer searchParams={searchParams} />
 		</main>
 	);
 }

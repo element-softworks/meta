@@ -44,7 +44,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 							/>
 						</SidebarGroup>
 					</Sidebar>
-					<main className="w-full p-6">{children}</main>
+					<main className="w-full p-6 overflow-hidden">{children}</main>
 				</div>
 			</div>
 		</SessionProvider>
