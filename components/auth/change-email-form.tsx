@@ -12,17 +12,16 @@ import { Button } from '../ui/button';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { FormInput } from './form-input';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 type ChangeEmailFormInputProps = z.infer<typeof ChangeEmailSchema>;
 
 type ChangeEmailResponse = {};
 
-interface ChangeEmailFormProps {
-	user: ExtendedUser | undefined;
-}
+interface ChangeEmailFormProps {}
 
 export function ChangeEmailForm(props: ChangeEmailFormProps) {
-	const { user } = props;
+	const user = useCurrentUser();
 	const { update } = useSession();
 
 	const form = useForm<ChangeEmailFormInputProps>({

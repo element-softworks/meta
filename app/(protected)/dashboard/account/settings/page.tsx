@@ -3,6 +3,7 @@ import { currentUser } from '@/lib/auth';
 import { Separator } from '@/components/ui/separator';
 import { ChangeEmailForm } from '@/components/auth/change-email-form';
 import { ResetPasswordForm } from '@/components/auth/reset-password-form';
+import { auth } from '@/auth';
 
 export default async function SettingsPage() {
 	const user = await currentUser();
@@ -16,13 +17,13 @@ export default async function SettingsPage() {
 
 			<Separator />
 			<div className="flex flex-col gap-2">
-				<ChangeEmailForm user={user} />
+				<ChangeEmailForm />
 
-				<SettingsForm user={user} />
+				<SettingsForm />
 			</div>
 			{!user?.isOAuth ? <Separator /> : null}
 
-			<ResetPasswordForm user={user} />
+			<ResetPasswordForm />
 		</main>
 	);
 }

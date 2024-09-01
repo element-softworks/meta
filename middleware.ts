@@ -24,13 +24,12 @@ export default auth((req, res) => {
 	if (isApiAuthRoute) {
 		return NextResponse.next();
 	}
-	console.log(isAuthRoute, 'is logged in');
 	if (isAuthRoute) {
 		if (isLoggedIn) {
 			return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
 		}
 
-		return NextResponse.next();
+		return;
 	}
 
 	if (!isLoggedIn && !isPublicRoute) {
@@ -49,7 +48,7 @@ export default auth((req, res) => {
 		return Response.redirect(new URL(`${DEFAULT_LOGIN_REDIRECT}`, nextUrl));
 	}
 
-	return NextResponse.next();
+	return;
 });
 
 // Optionally, don't invoke Middleware on some paths

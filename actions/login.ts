@@ -2,7 +2,7 @@
 
 import * as z from 'zod';
 import { LoginSchema } from '@/schemas';
-import { signIn } from '@/auth';
+import { signIn, update } from '@/auth';
 import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { AuthError } from 'next-auth';
 import { getUserByEmail } from '@/data/user';
@@ -92,7 +92,6 @@ export const login = async (
 		await signIn('credentials', {
 			email,
 			password,
-			redirect: true,
 			redirectTo: callbackUrl ?? DEFAULT_LOGIN_REDIRECT,
 		});
 		// return { success: 'Logged in successfully.' };

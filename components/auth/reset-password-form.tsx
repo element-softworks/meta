@@ -14,17 +14,17 @@ import { Input } from '../ui/input';
 import { FormInput } from './form-input';
 import { resetPasswordLoggedin } from '@/actions/reset-password-loggedin';
 import { PasswordInput } from '../inputs/password-input';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 type ResetPasswordFormInputProps = z.infer<typeof ResetPasswordSchema>;
 
 type ResetPasswordResponse = {};
 
-interface ResetPasswordFormProps {
-	user: ExtendedUser | undefined;
-}
+interface ResetPasswordFormProps {}
 
 export function ResetPasswordForm(props: ResetPasswordFormProps) {
-	const { user } = props;
+	const user = useCurrentUser();
+
 	const { update } = useSession();
 
 	const form = useForm<ResetPasswordFormInputProps>({

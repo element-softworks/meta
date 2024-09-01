@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import bcrypt from 'bcryptjs';
 import type { NextAuthConfig } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';

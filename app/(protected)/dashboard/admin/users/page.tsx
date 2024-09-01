@@ -3,7 +3,7 @@ import { getAllUsers } from '@/data/get-all-users';
 import { Separator } from '@/components/ui/separator';
 
 export default async function SettingsPage() {
-	const data = await getAllUsers();
+	const data = await getAllUsers({ pageNum: 1, perPage: 2 });
 	return (
 		<main className="flex flex-col max-w-4xl gap-6">
 			<div className="">

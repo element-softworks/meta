@@ -3,7 +3,7 @@ import { db } from '@/lib/db';
 import { UserRole } from '@prisma/client';
 import Error from 'next/error';
 
-export const getAllUsers = async () => {
+export const getAllUsers = async ({ pageNum, perPage }: { pageNum: number; perPage: number }) => {
 	try {
 		const currUser = await currentUser();
 
@@ -15,7 +15,11 @@ export const getAllUsers = async () => {
 			return { error: 'You must be an admin to view users.' };
 		}
 
-		const users = await db.user.findMany();
+		const users = await db.user.findMany({
+			skip: (pageNum - 1) * perPage,
+			take: perPage,
+			orderBy: { createdAt: 'desc' },
+		});
 
 		return { success: 'Users retrieved successfully.', users: users };
 	} catch (error: any) {

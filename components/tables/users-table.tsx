@@ -15,10 +15,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { ExtendedUser } from '@/next-auth';
 import { User } from '@prisma/client';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import Image from 'next/image';
+import { Avatar } from '../ui/avatar';
 
 const columns: ColumnDef<User>[] = [
 	{
@@ -59,8 +58,6 @@ const columns: ColumnDef<User>[] = [
 		},
 		cell: ({ row }) => {
 			const user = row.original;
-
-			console.log(user.image, 'image');
 			return (
 				<div className="flex items-center">
 					{!!user?.image ? (

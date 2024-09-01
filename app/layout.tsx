@@ -1,4 +1,4 @@
-import { auth } from '@/auth';
+import { auth, update } from '@/auth';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
@@ -19,9 +19,11 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const session = await auth();
+
+	console.log(session, 'session data cheese');
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<SessionProvider session={session}>
+		<SessionProvider session={session}>
+			<html lang="en" suppressHydrationWarning>
 				<body className={inter.className}>
 					<ThemeProvider
 						attribute="class"
@@ -33,7 +35,7 @@ export default async function RootLayout({
 					</ThemeProvider>
 					<Toaster />
 				</body>
-			</SessionProvider>
-		</html>
+			</html>
+		</SessionProvider>
 	);
 }
