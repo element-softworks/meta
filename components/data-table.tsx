@@ -206,7 +206,10 @@ export function DataTable<TData, TValue>({
 					) : null}
 				</div>
 				<div className={`rounded-md border overflow-scroll ${maxHeightClassName} `}>
-					<Table style={{ maxHeight: maxHeight ?? undefined }}>
+					<Table
+						maxHeight={maxHeight ?? undefined}
+						style={{ maxHeight: maxHeight ?? undefined }}
+					>
 						<TableHeader className={`${stickyHeader && 'sticky'} z-10 top-0 bg-card `}>
 							{table.getHeaderGroups().map((headerGroup) => (
 								<TableRow key={headerGroup.id}>
