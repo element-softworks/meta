@@ -17,7 +17,7 @@ export function useQuery<T, R>({
 	onSuccess,
 	onError,
 }: {
-	queryFn: Promise<any>;
+	queryFn: (values?: T) => Promise<R>;
 	onCompleted?: (data?: { success?: string; error?: string } & R) => void;
 	onSuccess?: (data?: { success?: string; error?: string } & R) => void;
 	onError?: (data?: { success?: string; error?: string } & R) => void;

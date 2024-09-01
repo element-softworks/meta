@@ -33,6 +33,5 @@ export default async function UsersTableContainer(props: UsersTableContainerProp
 	});
 
 	//Render the users table
-
 	return <UsersTable users={data.users ?? []} totalPages={data?.totalPages} isLoading={false} />;
 }
