@@ -42,7 +42,7 @@ interface DataTableProps<TData, TValue> {
 	search?: string | { useParams: boolean };
 	columnVisibilityEnabled?: boolean;
 	rowSelectionEnabled?: boolean;
-	data: TData[];
+	data: TData[] | undefined;
 	id?: string;
 	totalPages: number | undefined;
 	maxHeight?: number;
@@ -61,7 +61,7 @@ export function DataTable<TData, TValue>({
 	maxHeight,
 	stickyHeader = true,
 	lastColumnSticky = false,
-}: DataTableProps<TData & { id: string }, TValue>) {
+}: DataTableProps<TData, TValue>) {
 	const searchParams = useSearchParams();
 	const { mutateParam, mutateParams } = useParam();
 
@@ -82,7 +82,7 @@ export function DataTable<TData, TValue>({
 	const maxHeightClassName = `[&>div]:max-h-[${maxHeight}px]`;
 
 	const table = useReactTable({
-		data,
+		data: data ?? [],
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
@@ -108,7 +108,9 @@ export function DataTable<TData, TValue>({
 	useEffect(() => {
 		if (!rowSelectionEnabled) return;
 
-		const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original.id);
+		const selectedRows = table
+			.getSelectedRowModel()
+			.rows.map((row) => (row.original as TData & { id: string }).id);
 
 		mutateParam({
 			param: selectionParam,

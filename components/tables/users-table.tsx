@@ -19,7 +19,18 @@ import Image from 'next/image';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
 
-const columns: ColumnDef<User>[] = [
+type TableUser = {
+	id: string;
+	name: string;
+	email: string;
+	role: 'Admin' | 'User';
+	isTwoFactorEnabled: 'Enabled' | 'Disabled';
+	emailVerified: string;
+	createdAt: Date;
+	image: string;
+};
+
+const columns: ColumnDef<TableUser>[] = [
 	{
 		accessorKey: 'name',
 		header: 'Name',
@@ -111,16 +122,17 @@ interface UsersTableProps {
 }
 
 export function UsersTable(props: UsersTableProps) {
-	const rows: any = props.users?.map((user) => ({
-		...user,
+	const rows: TableUser[] | undefined = props.users?.map((user) => ({
 		id: user.id,
-		name: user.name,
+		name: user.name ?? 'User',
 		email: user.email,
 		role: user.role === 'ADMIN' ? 'Admin' : 'User',
 		isTwoFactorEnabled: user.isTwoFactorEnabled ? 'Enabled' : 'Disabled',
 		emailVerified: !!user.emailVerified
 			? format(new Date(user.emailVerified), 'MMM dd, yyyy')
 			: 'Not verified',
+		createdAt: user.createdAt,
+		image: user.image ?? '',
 	}));
 
 	return (

@@ -1,25 +1,22 @@
 'use client';
 
 import { updateUserSettings } from '@/actions/update-user-settings';
+import { useCurrentUser } from '@/hooks/use-current-user';
 import { useQuery } from '@/hooks/use-query';
 import { ExtendedUser } from '@/next-auth';
 import { SettingsSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserRole } from '@prisma/client';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { TwoFactorCheckInput } from '../inputs/two-factor-check-input';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { ChangeEmailForm } from './change-email-form';
 import { FormInput } from './form-input';
-import { ResetPasswordForm } from './reset-password-form';
-import { useCurrentUser } from '@/hooks/use-current-user';
-import { useRouter } from 'next/navigation';
 
 type SettingsFormInputProps = z.infer<typeof SettingsSchema>;
 
@@ -34,8 +31,6 @@ export function SettingsForm(props: SettingsFormProps) {
 	//We do this to guarantee the most recent user version will be available within NextAuth
 	const user = useCurrentUser();
 
-	if (!user) {
-	}
 	const { update } = useSession();
 
 	const form = useForm<SettingsFormInputProps>({
