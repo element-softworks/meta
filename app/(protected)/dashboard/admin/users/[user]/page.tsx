@@ -1,4 +1,3 @@
-import { ChangeEmailForm } from '@/components/auth/change-email-form';
 import { ResetPasswordForm } from '@/components/auth/reset-password-form';
 import { SettingsForm } from '@/components/auth/settings-form';
 import { Separator } from '@/components/ui/separator';
@@ -6,6 +5,8 @@ import { getUserById } from '@/data/user';
 
 export default async function AdminUserPage({ params }: { params: { user: string } }) {
 	const user = await getUserById(params.user);
+
+	console.log(user, 'users name');
 
 	return (
 		<main className="flex flex-col max-w-4xl gap-6">

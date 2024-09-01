@@ -17,6 +17,7 @@ import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { FormInput } from './form-input';
+import { revalidatePath } from 'next/cache';
 
 type SettingsFormInputProps = z.infer<typeof SettingsSchema>;
 
@@ -77,7 +78,7 @@ export function SettingsForm(props: SettingsFormProps) {
 		<div className="">
 			<div className="space-y-4">
 				<Form {...form}>
-					<form className="space-y-4">
+					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<FormInput
 							name="name"
 							label="Name"
@@ -109,16 +110,15 @@ export function SettingsForm(props: SettingsFormProps) {
 								</Select>
 							)}
 						/>
+						<Button
+							type="submit"
+							isLoading={isLoading}
+							disabled={isLoading || !formUser || !form.formState.isDirty}
+						>
+							Save details
+						</Button>
 					</form>
 				</Form>
-
-				<Button
-					isLoading={isLoading}
-					disabled={isLoading || !formUser || !form.formState.isDirty}
-					onClick={form.handleSubmit(onSubmit)}
-				>
-					Save details
-				</Button>
 			</div>
 		</div>
 	);

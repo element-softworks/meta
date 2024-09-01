@@ -19,6 +19,7 @@ import Image from 'next/image';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 type TableUser = {
 	id: string;

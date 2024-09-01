@@ -5,6 +5,7 @@ import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { SettingsSchema } from '@/schemas';
 import { UserRole } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 import z from 'zod';
 export const updateUserSettings = async (
 	values: z.infer<typeof SettingsSchema>,
@@ -48,6 +49,7 @@ export const updateUserSettings = async (
 	});
 
 	update({ user: updatedUser });
+	revalidatePath(`/dashboard/admin/users/${updatedUser.id}`);
 
 	return { success: 'Settings updated', user: updatedUser };
 };
