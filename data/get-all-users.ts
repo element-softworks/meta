@@ -21,7 +21,10 @@ export const getAllUsers = async ({ pageNum, perPage }: { pageNum: number; perPa
 			orderBy: { createdAt: 'desc' },
 		});
 
-		return { success: 'Users retrieved successfully.', users: users };
+		const totalUsers = await db.user.count();
+		const totalPages = Math.ceil(totalUsers / perPage);
+
+		return { success: 'Users retrieved successfully.', users: users, totalPages: totalPages };
 	} catch (error: any) {
 		return { error: error?.message ?? 'There was a problem retrieving users.' };
 	}

@@ -18,6 +18,7 @@ import {
 import { User } from '@prisma/client';
 import Image from 'next/image';
 import { Avatar } from '../ui/avatar';
+import { useSearchParams } from 'next/navigation';
 
 const columns: ColumnDef<User>[] = [
 	{
@@ -131,6 +132,25 @@ const columns: ColumnDef<User>[] = [
 		},
 	},
 	{
+		accessorKey: 'createdAt',
+		header: ({ column }) => {
+			return (
+				<Button
+					className="px-0"
+					variant="ghost"
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+				>
+					Joined on
+					<ArrowUpDown className="ml-2 h-4 w-4" />
+				</Button>
+			);
+		},
+		cell: ({ row }) => {
+			const user = row.original;
+			return format(new Date(user.createdAt), 'MMM dd, yyyy');
+		},
+	},
+	{
 		id: 'actions',
 		cell: ({ row }) => {
 			const user = row.original;
@@ -161,6 +181,7 @@ const columns: ColumnDef<User>[] = [
 
 interface UsersTableProps {
 	users: User[] | undefined;
+	totalPages: number | undefined;
 }
 
 export function UsersTable(props: UsersTableProps) {
@@ -176,5 +197,15 @@ export function UsersTable(props: UsersTableProps) {
 			: 'Not verified',
 	}));
 
-	return <DataTable columns={columns} data={rows} filterColumn="email" />;
+	return (
+		<DataTable
+			lastColumnSticky
+			maxHeight={500}
+			columns={columns}
+			data={rows}
+			filterColumn="email"
+			totalPages={props.totalPages}
+			id="users"
+		/>
+	);
 }
