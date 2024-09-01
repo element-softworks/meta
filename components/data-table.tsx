@@ -30,14 +30,15 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import { Suspense, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Input } from './ui/input';
 import { useSearchParams } from 'next/navigation';
 import { useParam } from '@/hooks/use-param';
+import { Checkbox } from './ui/checkbox';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
-	filterColumn?: string;
+	filterColumn?: string | { useParams: boolean };
 	columnVisibilityEnabled?: boolean;
 	rowSelectionEnabled?: boolean;
 	data: TData[];
@@ -59,7 +60,7 @@ export function DataTable<TData, TValue>({
 	maxHeight,
 	stickyHeader = true,
 	lastColumnSticky = false,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData & { id: string }, TValue>) {
 	const searchParams = useSearchParams();
 	const { mutateParam } = useParam();
 
@@ -70,6 +71,8 @@ export function DataTable<TData, TValue>({
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] = useState({});
+	const [searchValue, setSearchValue] = useState('');
+
 	const [pagination, setPagination] = useState<PaginationState>({
 		pageIndex: pageNum - 1,
 		pageSize: perPage,
@@ -99,19 +102,52 @@ export function DataTable<TData, TValue>({
 		},
 	});
 
+	const selectionParam = `${!!id ? `${id}-` : ''}selectedRows`;
+
+	useEffect(() => {
+		if (!rowSelectionEnabled) return;
+
+		const selectedRows = table.getSelectedRowModel().rows.map((row) => row.original.id);
+
+		mutateParam({
+			param: selectionParam,
+			value: selectedRows.join(','),
+		});
+	}, [table.getSelectedRowModel()]);
+
+	useEffect(() => {
+		mutateParam({
+			param: `${!!id ? `${id}-` : ''}search`,
+			value: searchValue,
+		});
+	}, [searchValue]);
+
 	return (
 		<Suspense fallback={<>Loading....</>}>
 			<div className="w-full">
 				<div className="flex items-center py-4">
-					{!!filterColumn?.length ? (
+					{!!filterColumn ? (
 						<Input
-							placeholder={`Filter ${filterColumn}s...`}
+							placeholder={` ${
+								typeof filterColumn === 'string'
+									? `Filter ${filterColumn}s...`
+									: 'Search...'
+							}`}
 							value={
-								(table.getColumn(filterColumn)?.getFilterValue() as string) ?? ''
+								typeof filterColumn === 'string'
+									? (table.getColumn(filterColumn)?.getFilterValue() as string) ??
+									  ''
+									: searchValue
 							}
-							onChange={(event) =>
-								table.getColumn(filterColumn)?.setFilterValue(event.target.value)
-							}
+							onChange={(event) => {
+								if (typeof filterColumn === 'string') {
+									table
+										.getColumn(filterColumn)
+										?.setFilterValue(event.target.value);
+								} else {
+									setSearchValue(event.target.value);
+								}
+							}}
 							className="max-w-sm"
 						/>
 					) : null}
@@ -150,6 +186,21 @@ export function DataTable<TData, TValue>({
 						<TableHeader className={`${stickyHeader && 'sticky'} z-10 top-0 bg-card `}>
 							{table.getHeaderGroups().map((headerGroup) => (
 								<TableRow key={headerGroup.id}>
+									{rowSelectionEnabled ? (
+										<TableHead>
+											<Checkbox
+												checked={
+													table.getIsAllPageRowsSelected() ||
+													(table.getIsSomePageRowsSelected() &&
+														'indeterminate')
+												}
+												onCheckedChange={(value) =>
+													table.toggleAllPageRowsSelected(!!value)
+												}
+												aria-label="Select all"
+											/>
+										</TableHead>
+									) : null}
 									{headerGroup.headers.map((header, index) => {
 										const isLastColumn =
 											index === headerGroup.headers.length - 1;
@@ -177,32 +228,45 @@ export function DataTable<TData, TValue>({
 						</TableHeader>
 						<TableBody className="">
 							{table.getRowModel().rows?.length ? (
-								table.getRowModel().rows.map((row) => (
-									<TableRow
-										key={row.id}
-										data-state={row.getIsSelected() && 'selected'}
-									>
-										{row.getVisibleCells().map((cell, index) => {
-											const isLastColumn =
-												index === row.getVisibleCells().length - 1;
-											return (
-												<TableCell
-													key={cell.id}
-													className={`${
-														lastColumnSticky &&
-														isLastColumn &&
-														'sticky right-0 bg-accent '
-													}`}
-												>
-													{flexRender(
-														cell.column.columnDef.cell,
-														cell.getContext()
-													)}
-												</TableCell>
-											);
-										})}
-									</TableRow>
-								))
+								table.getRowModel().rows.map((row) => {
+									return (
+										<TableRow
+											key={row.id}
+											data-state={row.getIsSelected() && 'selected'}
+										>
+											{rowSelectionEnabled ? (
+												<TableHead>
+													<Checkbox
+														checked={row.getIsSelected()}
+														onCheckedChange={(value) => {
+															return row.toggleSelected(!!value);
+														}}
+														aria-label="Select row"
+													/>
+												</TableHead>
+											) : null}
+											{row.getVisibleCells().map((cell, index) => {
+												const isLastColumn =
+													index === row.getVisibleCells().length - 1;
+												return (
+													<TableCell
+														key={cell.id}
+														className={`${
+															lastColumnSticky &&
+															isLastColumn &&
+															'sticky right-0 bg-accent '
+														}`}
+													>
+														{flexRender(
+															cell.column.columnDef.cell,
+															cell.getContext()
+														)}
+													</TableCell>
+												);
+											})}
+										</TableRow>
+									);
+								})
 							) : (
 								<TableRow>
 									<TableCell

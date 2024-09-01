@@ -3,7 +3,15 @@ import { db } from '@/lib/db';
 import { UserRole } from '@prisma/client';
 import Error from 'next/error';
 
-export const getAllUsers = async ({ pageNum, perPage }: { pageNum: number; perPage: number }) => {
+export const getAllUsers = async ({
+	pageNum,
+	perPage,
+	search,
+}: {
+	pageNum: number;
+	perPage: number;
+	search: string;
+}) => {
 	try {
 		const currUser = await currentUser();
 
@@ -19,6 +27,12 @@ export const getAllUsers = async ({ pageNum, perPage }: { pageNum: number; perPa
 			skip: (pageNum - 1) * perPage,
 			take: perPage,
 			orderBy: { createdAt: 'desc' },
+			where: {
+				OR: [
+					{ name: { contains: search, mode: 'insensitive' } },
+					{ email: { contains: search, mode: 'insensitive' } },
+				],
+			},
 		});
 
 		const totalUsers = await db.user.count();

@@ -6,6 +6,7 @@ export default async function SettingsPage({ searchParams }: { searchParams: any
 	const data = await getAllUsers({
 		pageNum: Number(searchParams?.['users-pageNum'] ?? 1),
 		perPage: Number(searchParams?.['users-perPage'] ?? 100),
+		search: searchParams?.['users-search'] ?? '',
 	});
 
 	console.log(data.totalPages, 'total pages');
