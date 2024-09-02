@@ -5,6 +5,7 @@ export type ExtendedUser = DefaultSession['user'] & {
 	role: UserRole;
 	isTwoFactorEnabled: boolean;
 	isOAuth: boolean;
+	isArchived: boolean;
 };
 
 declare module 'next-auth' {
@@ -23,5 +24,6 @@ declare module 'next-auth/jwt' {
 		role: UserRole;
 		isTwoFactorEnabled: boolean;
 		isOAuth: boolean;
+		isArchived: boolean;
 	}
 }

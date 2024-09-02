@@ -9,6 +9,7 @@ import { getTwoFactorConfirmationByUserId } from './data/two-factor-confirmation
 import { getUserByEmail, getUserById } from './data/user';
 import { db } from './lib/db';
 import { LoginSchema } from './schemas';
+import { signOut } from 'next-auth/react';
 
 export default {
 	pages: {
@@ -49,6 +50,7 @@ export default {
 
 	events: {
 		//https://authjs.dev/reference/core search for "events"
+
 		async linkAccount({ user }) {
 			await db.user.update({
 				where: { id: user.id },
@@ -61,10 +63,13 @@ export default {
 
 	callbacks: {
 		signIn: async ({ user, account }) => {
+			const existingUser = await getUserById(user?.id ?? '');
+
+			//Prevent login if user is archived
+			if (existingUser?.isArchived) return false;
+
 			//Allow OAuth without email verification
 			if (account?.provider !== 'credentials') return true;
-
-			const existingUser = await getUserById(user?.id ?? '');
 
 			//Prevent login if email is not verified
 			if (!existingUser?.emailVerified) return false;
@@ -87,6 +92,11 @@ export default {
 
 		//https://authjs.dev/reference/core search for "callbacks"
 		session: async ({ token, session }) => {
+			//Signout users that are archived
+			if (token?.isArchived) {
+				await signOut();
+			}
+
 			if (token.sub && session.user) {
 				session.user.id = token.sub;
 			}
@@ -103,6 +113,7 @@ export default {
 				session.user.name = token.name;
 				session.user.email = token.email || '';
 				session.user.isOAuth = token.isOAuth;
+				session.user.isArchived = token.isArchived;
 			}
 
 			return session;
@@ -121,6 +132,7 @@ export default {
 			token.name = session?.name ?? existingUser.name;
 			token.email = session?.email ?? existingUser.email;
 			token.role = session?.role ?? existingUser.role;
+			token.isArchived = session?.isArchived ?? existingUser.isArchived;
 			token.isTwoFactorEnabled =
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			return token;

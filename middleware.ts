@@ -9,9 +9,10 @@ import {
 	authRoutes,
 	publicRoutes,
 } from './routes';
+import { getSession } from 'next-auth/react';
 const { auth } = NextAuth(authConfig);
 
-export default auth((req, res) => {
+export default auth(async (req, res) => {
 	const { nextUrl } = req;
 	const isLoggedIn = !!req.auth;
 

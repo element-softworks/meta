@@ -55,10 +55,11 @@ export function NewPasswordForm() {
 					<PasswordInput isLoading={isLoading} name="password" label="New password" />
 
 					<div>
-						<Button size="sm" variant="link" asChild className="px-0">
-							<Link href="/auth/login">Back to login</Link>
-						</Button>
-
+						<Link href="/auth/login">
+							<Button size="sm" variant="link" asChild className="px-0">
+								Back to login
+							</Button>
+						</Link>
 						<Button className="w-full" type="submit" isLoading={isLoading}>
 							Reset password
 						</Button>

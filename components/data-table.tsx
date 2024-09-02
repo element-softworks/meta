@@ -1,12 +1,12 @@
 'use client';
 
+import { Skeleton } from '@/components/ui/skeleton';
 import {
 	Cell,
 	ColumnDef,
 	ColumnFiltersState,
 	PaginationState,
 	Row,
-	RowModel,
 	SortingState,
 	VisibilityState,
 	flexRender,
@@ -16,7 +16,6 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-import { Skeleton } from '@/components/ui/skeleton';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -34,12 +33,12 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
-import { Suspense, useEffect, useState } from 'react';
-import { Input } from './ui/input';
-import { useSearchParams } from 'next/navigation';
 import { useParam } from '@/hooks/use-param';
+import { ArrowDown, ArrowLeft, ArrowUp } from 'lucide-react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
 import { Checkbox } from './ui/checkbox';
-import { ArrowDown, ArrowLeft, ArrowUp, ArrowUpDown } from 'lucide-react';
+import { Input } from './ui/input';
 
 interface DataTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -206,10 +205,7 @@ export function DataTable<TData, TValue>({
 					) : null}
 				</div>
 				<div className={`rounded-md border overflow-scroll ${maxHeightClassName} `}>
-					<Table
-						maxHeight={maxHeight ?? undefined}
-						style={{ maxHeight: maxHeight ?? undefined }}
-					>
+					<Table maxHeight={maxHeight}>
 						<TableHeader className={`${stickyHeader && 'sticky'} z-10 top-0 bg-card `}>
 							{table.getHeaderGroups().map((headerGroup) => (
 								<TableRow key={headerGroup.id}>

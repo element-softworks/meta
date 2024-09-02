@@ -5,10 +5,10 @@ import { cn } from '@/lib/utils';
 const Table = React.forwardRef<
 	HTMLTableElement,
 	React.HTMLAttributes<HTMLTableElement> & { maxHeight?: number }
->(({ className, ...props }, ref) => (
+>(({ className, maxHeight, ...props }, ref) => (
 	<div
 		style={{
-			maxHeight: props.maxHeight || 'auto',
+			maxHeight: maxHeight ?? undefined,
 		}}
 		className="relative w-full overflow-auto"
 	>

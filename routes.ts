@@ -4,7 +4,7 @@
 
  */
 
-export const publicRoutes = ['/', '/auth/new-verification'];
+export const publicRoutes = ['/', '/auth/new-verification', '/auth/new-password'];
 export const adminRoute = '/dashboard/admin';
 
 /**
@@ -12,13 +12,7 @@ export const adminRoute = '/dashboard/admin';
  * @param {string[]} authRoutes - Array of auth routes
  */
 
-export const authRoutes = [
-	'/auth/login',
-	'/auth/register',
-	'/auth/error',
-	'/auth/reset',
-	'/auth/new-password',
-];
+export const authRoutes = ['/auth/login', '/auth/register', '/auth/error', '/auth/reset'];
 
 /**
  * @description: API routes

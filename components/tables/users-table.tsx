@@ -20,8 +20,9 @@ import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import { ArchiveUserForm } from '../auth/archive-user-form';
 
-type TableUser = {
+export type TableUser = {
 	id: string;
 	name: string;
 	email: string;
@@ -30,6 +31,7 @@ type TableUser = {
 	emailVerified: string;
 	createdAt: Date;
 	image: string;
+	isArchived?: boolean;
 };
 
 interface UsersTableProps {
@@ -115,14 +117,16 @@ export function UsersTable(props: UsersTableProps) {
 								Copy user ID
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<Link href={`/dashboard/admin/users/${user.id}`} prefetch={false}>
+							<Link href={`/dashboard/admin/users/${user.id}`}>
 								<DropdownMenuItem className="cursor-pointer">
 									View user
 								</DropdownMenuItem>
 							</Link>
-							<DropdownMenuItem className="cursor-pointer">
-								Archive user
-							</DropdownMenuItem>
+							<ArchiveUserForm user={user} disableButton>
+								<p className="cursor-pointer hover:bg-secondary relative flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+									{user.isArchived ? 'Restore' : 'Archive'} user
+								</p>
+							</ArchiveUserForm>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);
@@ -141,6 +145,7 @@ export function UsersTable(props: UsersTableProps) {
 			: 'Not verified',
 		createdAt: user.createdAt,
 		image: user.image ?? '',
+		isArchived: user.isArchived,
 	}));
 
 	return (

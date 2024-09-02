@@ -27,6 +27,7 @@ model User {
   role               UserRole        @default(USER)
   accounts           Account[]
   isTwoFactorEnabled Boolean         @default(false)
+  isArchived         Boolean         @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
 
   createdAt DateTime @default(now())

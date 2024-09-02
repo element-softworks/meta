@@ -2,6 +2,7 @@
 
 import { getAllUsers } from '@/actions/get-all-users';
 import { UsersTable } from './users-table';
+import { Suspense } from 'react';
 
 interface UsersTableContainerProps {
 	searchParams: {

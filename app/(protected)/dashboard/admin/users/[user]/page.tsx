@@ -1,4 +1,5 @@
-import { ResetPasswordForm } from '@/components/auth/reset-password-form';
+import { ArchiveUserForm } from '@/components/auth/archive-user-form';
+import { ResetPasswordAdminButton } from '@/components/auth/reset-password-admin-button';
 import { SettingsForm } from '@/components/auth/settings-form';
 import { Separator } from '@/components/ui/separator';
 import { getUserById } from '@/data/user';
@@ -6,10 +7,8 @@ import { getUserById } from '@/data/user';
 export default async function AdminUserPage({ params }: { params: { user: string } }) {
 	const user = await getUserById(params.user);
 
-	console.log(user, 'users name');
-
 	return (
-		<main className="flex flex-col max-w-4xl gap-6">
+		<main className="flex flex-col max-w-4xl gap-6 h-full">
 			<div className="">
 				<p className="text-xl font-bold">
 					{user?.name ?? 'Users'}
@@ -25,9 +24,16 @@ export default async function AdminUserPage({ params }: { params: { user: string
 			<div className="flex flex-col gap-2">
 				<SettingsForm adminMode={true} editingUser={user} />
 			</div>
-			{!user?.isOAuth ? <Separator /> : null}
+			{!user?.isOAuth ? (
+				<>
+					<Separator />
+					<ResetPasswordAdminButton user={user} />
+				</>
+			) : null}
 
-			<ResetPasswordForm />
+			<div className="mt-auto">
+				<ArchiveUserForm user={user} />
+			</div>
 		</main>
 	);
 }
