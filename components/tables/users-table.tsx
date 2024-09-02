@@ -150,6 +150,7 @@ export function UsersTable(props: UsersTableProps) {
 
 	return (
 		<DataTable
+			archivedFilterEnabled={true}
 			isLoading={isLoading}
 			rowSelectionEnabled={false}
 			stickyHeader

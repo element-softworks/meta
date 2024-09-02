@@ -41,6 +41,7 @@ import { Checkbox } from './ui/checkbox';
 import { Input } from './ui/input';
 
 interface DataTableProps<TData, TValue> {
+	archivedFilterEnabled?: boolean;
 	columns: ColumnDef<TData, TValue>[];
 	search?: string | { useParams: boolean };
 	columnVisibilityEnabled?: boolean;
@@ -66,6 +67,7 @@ export function DataTable<TData, TValue>({
 	stickyHeader = true,
 	lastColumnSticky = false,
 	isLoading = false,
+	archivedFilterEnabled = false,
 }: DataTableProps<TData, TValue>) {
 	const searchParams = useSearchParams();
 	const { mutateParam, mutateParams } = useParam();
@@ -149,6 +151,8 @@ export function DataTable<TData, TValue>({
 		});
 	};
 
+	const archivedQuery = searchParams.get(`${!!id ? `${id}-` : ''}archived`);
+
 	return (
 		<Suspense fallback={<>Loading....</>}>
 			<div className="w-full">
@@ -174,35 +178,51 @@ export function DataTable<TData, TValue>({
 							className="max-w-sm"
 						/>
 					) : null}
+					<div className="ml-auto flex gap-2">
+						{!!archivedFilterEnabled ? (
+							<Button
+								onClick={() => {
+									mutateParam({
+										param: `${!!id ? `${id}-` : ''}archived`,
+										value: archivedQuery === 'true' ? 'false' : 'true',
+									});
+								}}
+								className="ml-auto"
+								variant="ghost"
+							>
+								{archivedQuery === 'true' ? 'Show active' : 'Show archived'}
+							</Button>
+						) : null}
 
-					{columnVisibilityEnabled ? (
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button variant="outline" className="ml-auto" disabled={isLoading}>
-									Columns
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent align="end">
-								{table
-									.getAllColumns()
-									.filter((column) => column.getCanHide())
-									.map((column) => {
-										return (
-											<DropdownMenuCheckboxItem
-												key={column.id}
-												className="capitalize"
-												checked={column.getIsVisible()}
-												onCheckedChange={(value) =>
-													column.toggleVisibility(!!value)
-												}
-											>
-												{column.id}
-											</DropdownMenuCheckboxItem>
-										);
-									})}
-							</DropdownMenuContent>
-						</DropdownMenu>
-					) : null}
+						{columnVisibilityEnabled ? (
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button variant="outline" disabled={isLoading}>
+										Columns
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent align="end">
+									{table
+										.getAllColumns()
+										.filter((column) => column.getCanHide())
+										.map((column) => {
+											return (
+												<DropdownMenuCheckboxItem
+													key={column.id}
+													className="capitalize"
+													checked={column.getIsVisible()}
+													onCheckedChange={(value) =>
+														column.toggleVisibility(!!value)
+													}
+												>
+													{column.id}
+												</DropdownMenuCheckboxItem>
+											);
+										})}
+								</DropdownMenuContent>
+							</DropdownMenu>
+						) : null}
+					</div>
 				</div>
 				<div className={`rounded-md border overflow-scroll ${maxHeightClassName} `}>
 					<Table maxHeight={maxHeight}>

@@ -23,6 +23,7 @@ export default async function UsersTableContainer(props: UsersTableContainerProp
 		pageNum: Number(props.searchParams?.['users-pageNum'] ?? 1),
 		perPage: Number(props.searchParams?.['users-perPage'] ?? 100),
 		search: props.searchParams?.['users-search'] ?? '',
+		showArchived: (props.searchParams?.['users-archived'] as 'true' | 'false') ?? 'false',
 		filters: {
 			name: nameFilter,
 			email: emailFilter,

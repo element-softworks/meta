@@ -32,10 +32,12 @@ export const getAllUsers = async ({
 	perPage,
 	search,
 	filters,
+	showArchived,
 }: {
 	pageNum: number;
 	perPage: number;
 	search: string;
+	showArchived: 'true' | 'false';
 	filters: {
 		name: 'neutral' | 'desc' | 'asc';
 		email: 'asc' | 'desc' | 'neutral';
@@ -65,11 +67,14 @@ export const getAllUsers = async ({
 					return { [key]: value };
 				}),
 			where: {
-				OR: [
-					{ name: { contains: search, mode: 'insensitive' } },
-					{ email: { contains: search, mode: 'insensitive' } },
-					{ id: { equals: search } },
-				],
+				isArchived: showArchived === 'true',
+				AND: {
+					OR: [
+						{ name: { contains: search, mode: 'insensitive' } },
+						{ email: { contains: search, mode: 'insensitive' } },
+						{ id: { equals: search } },
+					],
+				},
 			},
 		});
 

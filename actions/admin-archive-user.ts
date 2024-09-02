@@ -1,12 +1,13 @@
 'use server';
 import { signOut } from '@/auth';
+import { TableUser } from '@/components/tables/users-table';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { ExtendedUser } from '@/next-auth';
 import { UserRole } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
-export const adminArchiveUser = async (archivingUser: ExtendedUser) => {
+export const adminArchiveUser = async (archivingUser: ExtendedUser | TableUser) => {
 	const adminUser = await currentUser();
 
 	if (!adminUser || !archivingUser) {
