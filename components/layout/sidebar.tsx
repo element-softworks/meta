@@ -15,13 +15,15 @@ export interface SidebarItemProps {
 	link: string;
 	text: string;
 	icon?: React.ReactNode;
+	prefetch?: boolean;
 }
 export function SidebarItem(props: SidebarItemProps) {
+	const { prefetch = true } = props;
 	const pathName = usePathname();
 
 	const isActive = pathName === props.link;
 	return (
-		<Link href={props.link}>
+		<Link href={props.link} prefetch={prefetch}>
 			<Button
 				size="lg"
 				className={`w-full justify-start px-4 flex items-center gap-2 ${

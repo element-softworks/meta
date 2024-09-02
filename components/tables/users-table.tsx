@@ -115,7 +115,7 @@ export function UsersTable(props: UsersTableProps) {
 								Copy user ID
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<Link href={`/dashboard/admin/users/${user.id}`}>
+							<Link href={`/dashboard/admin/users/${user.id}`} prefetch={false}>
 								<DropdownMenuItem className="cursor-pointer">
 									View user
 								</DropdownMenuItem>

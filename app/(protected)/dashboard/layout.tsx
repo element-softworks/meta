@@ -41,6 +41,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 								text="Users"
 								link="/dashboard/admin/users"
 								icon={<CreditCard size={20} />}
+								prefetch={false}
 							/>
 						</SidebarGroup>
 					</Sidebar>
