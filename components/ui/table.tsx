@@ -10,7 +10,7 @@ const Table = React.forwardRef<
 		style={{
 			maxHeight: maxHeight ?? undefined,
 		}}
-		className="relative w-full overflow-auto"
+		className="relative w-full overflow-auto "
 	>
 		<table ref={ref} className={cn('w-full caption-bottom text-sm', className)} {...props} />
 	</div>

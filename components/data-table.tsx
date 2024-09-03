@@ -246,7 +246,9 @@ export function DataTable<TData, TValue>({
 						) : null}
 					</div>
 				</div>
-				<div className={`rounded-md border overflow-scroll ${maxHeightClassName} `}>
+				<div
+					className={`rounded-md border overflow-hidden no-scrollbar ${maxHeightClassName} `}
+				>
 					<Table maxHeight={maxHeight}>
 						<TableHeader className={`${stickyHeader && 'sticky'} z-10 top-0 bg-card `}>
 							{table.getHeaderGroups().map((headerGroup) => (
