@@ -51,9 +51,9 @@ export function SidebarGroup(props: SidebarGroupProps) {
 	return (
 		<>
 			<Accordion
-				className={`${props.mobile ? 'md…hidden block' : 'hidden md:block'}`}
-				type="multiple"
-				defaultValue={['item-1']}
+				className={`${props.mobile ? 'md:hidden block' : 'hidden md:block'}`}
+				type="single"
+				defaultValue="item-1"
 			>
 				<AccordionItem value="item-1">
 					<AccordionTrigger className="text-xs text-muted-foreground font-semibold uppercase">
