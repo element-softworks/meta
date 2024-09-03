@@ -16,6 +16,7 @@ export interface SidebarItemProps {
 	text: string;
 	icon?: React.ReactNode;
 	prefetch?: boolean;
+	onClick?: () => void;
 }
 export function SidebarItem(props: SidebarItemProps) {
 	const { prefetch = true } = props;
@@ -23,7 +24,7 @@ export function SidebarItem(props: SidebarItemProps) {
 
 	const isActive = pathName === props.link;
 	return (
-		<Link href={props.link} prefetch={prefetch}>
+		<Link href={props.link} prefetch={prefetch} onClick={() => props?.onClick?.()}>
 			<Button
 				size="lg"
 				className={`w-full justify-start px-4 flex items-center gap-2 ${
@@ -42,15 +43,18 @@ export interface SidebarGroupProps {
 	text: string;
 	children?: React.ReactNode;
 	visible?: boolean;
+	mobile?: boolean;
 }
 export function SidebarGroup(props: SidebarGroupProps) {
-	const isMobile = useBreakpoint('md');
-
 	const { visible = true } = props;
-	if (!visible || isMobile) return null;
+	if (!visible) return null;
 	return (
 		<>
-			<Accordion type="multiple" defaultValue={['item-1']}>
+			<Accordion
+				className={`${props.mobile ? 'md…hidden block' : 'hidden md:block'}`}
+				type="multiple"
+				defaultValue={['item-1']}
+			>
 				<AccordionItem value="item-1">
 					<AccordionTrigger className="text-xs text-muted-foreground font-semibold uppercase">
 						{props.text}
@@ -65,13 +69,9 @@ export function SidebarGroup(props: SidebarGroupProps) {
 }
 
 export function Sidebar({ children }: { children: React.ReactNode }) {
-	const isMobile = useBreakpoint('md');
-
 	return (
 		<aside
-			className={`${
-				isMobile ? 'w-0' : 'w-[360px]'
-			} min-h-full border-border transition-all  ${isMobile ? 'px-0 py-6' : 'p-6 border-r'}`}
+			className={`w-0 md:w-[360px] min-h-full border-border transition-all px-0 py-6 md:p-6 md:border-r`}
 		>
 			<div className="flex flex-col gap-2 flex-1">{children}</div>
 		</aside>

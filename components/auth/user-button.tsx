@@ -50,13 +50,13 @@ export function UserButton(props: UserButtonProps) {
 				<DropdownMenuSeparator />
 
 				<DropdownMenuGroup>
-					<Link href="/dashboard/account/settings">
+					<Link href="/dashboard/settings">
 						<DropdownMenuItem className="cursor-pointer">
 							<Settings className="mr-2 h-4 w-4" />
 							Settings
 						</DropdownMenuItem>
 					</Link>
-					<Link href="/dashboard/account/billing">
+					<Link href="/dashboard/billing">
 						<DropdownMenuItem className="cursor-pointer">
 							<CreditCard className="mr-2 h-4 w-4" />
 							Billing

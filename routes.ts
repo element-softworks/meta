@@ -24,4 +24,4 @@ export const apiAuthPrefix = '/api/auth';
  * @description: Default login redirect
  * @param {string} DEFAULT_LOGIN_REDIRECT - Default login redirect
  */
-export const DEFAULT_LOGIN_REDIRECT = '/dashboard/account/settings';
+export const DEFAULT_LOGIN_REDIRECT = '/dashboard';

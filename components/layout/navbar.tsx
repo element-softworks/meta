@@ -1,6 +1,5 @@
 'use client';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { CreditCard, FrameIcon, LogOut, MenuIcon, Notebook, Settings, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -26,10 +25,9 @@ export function Navbar() {
 	const user = useCurrentUser();
 
 	const [navOpen, setNavOpen] = useState(false);
-	const isMobile = useBreakpoint('md');
 
 	return (
-		<nav className="py-6 px-8 flex flex-row justify-between items-center h-24">
+		<nav className="py-6 px-4 md:px-8 flex flex-row justify-between items-center h-24">
 			<Link href="/">
 				<div className="z-10 flex items-center text-lg font-light">
 					<FrameIcon className="mr-2" size={30} />
@@ -37,7 +35,7 @@ export function Navbar() {
 				</div>
 			</Link>
 
-			{isMobile ? (
+			<div className="block md:hidden">
 				<DropdownMenu onOpenChange={(open) => setNavOpen(open)}>
 					<DropdownMenuTrigger asChild className="cursor-pointer">
 						<Button onClick={() => setNavOpen((prev) => !prev)} variant="link">
@@ -67,7 +65,7 @@ export function Navbar() {
 						<DropdownMenuSeparator />
 
 						<DropdownMenuGroup>
-							<Link href="/dashboard/account/settings">
+							<Link href="/dashboard/settings">
 								<DropdownMenuItem className="cursor-pointer">
 									<Settings className="mr-2 h-4 w-4" />
 									Settings
@@ -83,26 +81,25 @@ export function Navbar() {
 						</LogoutButton>
 					</DropdownMenuContent>
 				</DropdownMenu>
-			) : (
-				<div className="md:flex items-center gap-10 hidden">
-					<div className="flex ">
-						{NAVBAR_ITEMS.map((item, index) => {
-							return (
-								<Button
-									size="lg"
-									key={index}
-									asChild
-									variant="link"
-									className="px-4 text-md font-medium"
-								>
-									<Link href={item.href}>{item.name}</Link>
-								</Button>
-							);
-						})}
-					</div>
-					<UserButton user={user} />
+			</div>
+			<div className="md:flex items-center gap-10 hidden">
+				<div className="flex ">
+					{NAVBAR_ITEMS.map((item, index) => {
+						return (
+							<Button
+								size="lg"
+								key={index}
+								asChild
+								variant="link"
+								className="px-4 text-md font-medium"
+							>
+								<Link href={item.href}>{item.name}</Link>
+							</Button>
+						);
+					})}
 				</div>
-			)}
+				<UserButton user={user} />
+			</div>
 		</nav>
 	);
 }

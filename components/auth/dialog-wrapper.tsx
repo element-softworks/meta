@@ -1,5 +1,4 @@
 'use client';
-import { ExtendedUser } from '@/next-auth';
 
 import {
 	Dialog,
@@ -8,15 +7,8 @@ import {
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
-	DialogTrigger,
 } from '@/components/ui/dialog';
 import { Button, ButtonProps } from '../ui/button';
-import { adminArchiveUser } from '@/actions/admin-archive-user';
-import { useMutation } from '@/hooks/use-mutation';
-import { useState } from 'react';
-import { TableUser } from '../tables/users-table';
-import { useCurrentUser } from '@/hooks/use-current-user';
-import { UserRole } from '@prisma/client';
 
 interface DialogWrapperProps {
 	children?: React.ReactNode;
