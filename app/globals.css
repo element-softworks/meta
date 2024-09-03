@@ -44,6 +44,10 @@ body,
 		--chart-3: 197 37% 24%;
 		--chart-4: 43 74% 66%;
 		--chart-5: 27 87% 67%;
+
+		/* The below are custom theme values, these will not be provided inside of online theme generators */
+		--successful: 152 69% 52%;
+		--successful-foreground: 60 9.1% 97.8%;
 	}
 
 	.dark {
@@ -71,5 +75,9 @@ body,
 		--chart-3: 30 80% 55%;
 		--chart-4: 280 65% 60%;
 		--chart-5: 340 75% 55%;
+
+		/* The below are custom theme values, these will not be provided inside of online theme generators */
+		--successful: 152 69% 52%;
+		--successful-foreground: 60 9.1% 97.8%;
 	}
 }

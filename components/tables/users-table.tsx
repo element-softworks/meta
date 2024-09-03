@@ -16,11 +16,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { User } from '@prisma/client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
-import Link from 'next/link';
-import { Suspense } from 'react';
-import { ArchiveUserForm } from '../auth/archive-user-form';
+import { DialogWrapper } from '../auth/dialog-wrapper';
+import { ArchiveUserDropdownMenuItem } from '../auth/archive-user-dropdown-menu-item';
 
 export type TableUser = {
 	id: string;
@@ -122,11 +122,7 @@ export function UsersTable(props: UsersTableProps) {
 									View user
 								</DropdownMenuItem>
 							</Link>
-							<ArchiveUserForm user={user} disableButton>
-								<p className="cursor-pointer hover:bg-secondary relative flex select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
-									{user.isArchived ? 'Restore' : 'Archive'} user
-								</p>
-							</ArchiveUserForm>
+							<ArchiveUserDropdownMenuItem user={user} />
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);

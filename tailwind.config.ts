@@ -36,6 +36,10 @@ export const config = {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))',
 				},
+				successful: {
+					DEFAULT: 'hsl(var(--successful))',
+					foreground: 'hsl(var(--successful-foreground))',
+				},
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))',

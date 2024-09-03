@@ -1,4 +1,4 @@
-import { ArchiveUserForm } from '@/components/auth/archive-user-form';
+import { ArchiveUserButton } from '@/components/auth/archive-user-button';
 import { ResetPasswordAdminButton } from '@/components/auth/reset-password-admin-button';
 import { SettingsForm } from '@/components/auth/settings-form';
 import { Separator } from '@/components/ui/separator';
@@ -8,7 +8,7 @@ export default async function AdminUserPage({ params }: { params: { user: string
 	const user = await getUserById(params.user);
 
 	return (
-		<main className="flex flex-col max-w-4xl gap-6 h-full">
+		<main className="flex flex-col max-w-2xl gap-6 h-full">
 			<div className="">
 				<p className="text-xl font-bold">
 					{user?.name ?? 'Users'}
@@ -32,7 +32,7 @@ export default async function AdminUserPage({ params }: { params: { user: string
 			) : null}
 
 			<div className="mt-auto">
-				<ArchiveUserForm user={user} />
+				<ArchiveUserButton user={user!} />
 			</div>
 		</main>
 	);

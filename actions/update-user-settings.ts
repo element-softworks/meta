@@ -12,9 +12,9 @@ export const updateUserSettings = async (
 	userId?: string
 ) => {
 	const user = await currentUser();
-	const isAdminMode = !!userId?.length;
 
-	//If we pass a userId, we are an admin changing another user's settings
+	//If we are editing another user, we are in admin mode
+	const isAdminMode = userId !== user?.id;
 
 	//If we are editing another user and we arent an admin, throw an error
 	if (isAdminMode && user?.role !== UserRole.ADMIN) {
