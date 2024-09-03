@@ -12,6 +12,7 @@ import { usePathname } from 'next/navigation';
 import React from 'react';
 import { Button } from '../ui/button';
 import { NavigationMobileDrawer } from './navigation-mobile-drawer';
+import Link from 'next/link';
 
 interface NavStripProps {
 	drawerItems: {
@@ -40,7 +41,7 @@ export function NavStrip(props: NavStripProps) {
 	const [navOpen, setNavOpen] = React.useState(false);
 
 	return (
-		<nav className="border-b border-border pb-4 md:pb-6 px-6 md:px-6 mb-4 -mx-6 flex items-center">
+		<nav className="border-b border-border py-4 md:py-6 px-6 md:px-6 mb-4 w-full flex items-center">
 			<NavigationMobileDrawer
 				open={navOpen}
 				onOpenChange={(state) => {
@@ -62,7 +63,7 @@ export function NavStrip(props: NavStripProps) {
 			<Breadcrumb>
 				<BreadcrumbList>
 					<BreadcrumbItem>
-						<BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
+						<Link href="/dashboard">Dashboard</Link>
 					</BreadcrumbItem>
 					{showCrumbEllipsis ? (
 						<>
@@ -83,7 +84,7 @@ export function NavStrip(props: NavStripProps) {
 									{isActive ? (
 										<p>{path}</p>
 									) : (
-										<BreadcrumbLink href={`/${pathUrl}`}>{path}</BreadcrumbLink>
+										<Link href={`/${pathUrl}`}>{path}</Link>
 									)}
 								</BreadcrumbItem>
 							</React.Fragment>

@@ -146,6 +146,7 @@ export function UsersTable(props: UsersTableProps) {
 
 	return (
 		<DataTable
+			perPageSelectEnabled={true}
 			archivedFilterEnabled={true}
 			isLoading={isLoading}
 			rowSelectionEnabled={false}

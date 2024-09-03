@@ -39,11 +39,22 @@ import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
 import { Checkbox } from './ui/checkbox';
 import { Input } from './ui/input';
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue,
+} from './ui/select';
+import { SelectSeparator } from '@radix-ui/react-select';
 
 interface DataTableProps<TData, TValue> {
 	archivedFilterEnabled?: boolean;
 	columns: ColumnDef<TData, TValue>[];
 	search?: string | { useParams: boolean };
+	perPageSelectEnabled?: boolean;
 	columnVisibilityEnabled?: boolean;
 	rowSelectionEnabled?: boolean;
 	data: TData[] | undefined;
@@ -53,6 +64,7 @@ interface DataTableProps<TData, TValue> {
 	stickyHeader?: boolean;
 	lastColumnSticky?: boolean;
 	isLoading?: boolean;
+	defaultPerPage?: '5' | '10' | '20' | '50' | '100';
 }
 
 export function DataTable<TData, TValue>({
@@ -68,22 +80,25 @@ export function DataTable<TData, TValue>({
 	lastColumnSticky = false,
 	isLoading = false,
 	archivedFilterEnabled = false,
+	perPageSelectEnabled = true,
+	defaultPerPage = '100',
 }: DataTableProps<TData, TValue>) {
 	const searchParams = useSearchParams();
 	const { mutateParam, mutateParams } = useParam();
 
 	const pageNum = Number(searchParams.get(`${!!id ? `${id}-` : ''}pageNum`)) || 1;
-	const perPage = Number(searchParams.get(`${!!id ? `${id}-` : ''}perPage`)) || 100;
+	const perPage = Number(searchParams.get(`${!!id ? `${id}-` : ''}perPage`)) || defaultPerPage;
 
 	const [sorting, setSorting] = useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] = useState({});
 	const [searchValue, setSearchValue] = useState('');
+	const [customPerPage, setCustomPerPage] = useState(String(perPage));
 
 	const [pagination, setPagination] = useState<PaginationState>({
 		pageIndex: pageNum - 1,
-		pageSize: perPage,
+		pageSize: Number(perPage),
 	});
 
 	const maxHeightClassName = `[&>div]:max-h-[${maxHeight}px]`;
@@ -131,6 +146,13 @@ export function DataTable<TData, TValue>({
 			[`${!!id ? `${id}-` : ''}search`]: searchValue,
 		});
 	}, [searchValue]);
+
+	useEffect(() => {
+		// mutateParam({
+		// 	param: `${!!id ? `${id}-` : ''}perPage`,
+		// 	value: customPerPage,
+		// });
+	}, [customPerPage]);
 
 	const handleSort = (columnId: string, isDefaultDesc: boolean) => {
 		const param = `${!!id ? `${id}-` : ''}${columnId}-sort`;
@@ -382,6 +404,43 @@ export function DataTable<TData, TValue>({
 							{table.getFilteredSelectedRowModel().rows.length} of{' '}
 							{table.getFilteredRowModel().rows.length} row(s) selected.
 						</div>
+					) : null}
+
+					{perPageSelectEnabled ? (
+						<Select
+							defaultValue={String(perPage)}
+							onValueChange={(value: string) => {
+								mutateParam({
+									param: `${!!id ? `${id}-` : ''}perPage`,
+									value,
+								});
+							}}
+						>
+							<p className="text-sm">Per page</p>
+							<SelectTrigger className="w-fit">
+								<SelectValue placeholder={`${perPage}`} />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectLabel>Results per page</SelectLabel>
+									<SelectItem className="cursor-pointer" value="5">
+										5
+									</SelectItem>
+									<SelectItem className="cursor-pointer" value="10">
+										10
+									</SelectItem>
+									<SelectItem className="cursor-pointer" value="20">
+										20
+									</SelectItem>
+									<SelectItem className="cursor-pointer" value="50">
+										50
+									</SelectItem>
+									<SelectItem className="cursor-pointer" value="100">
+										100
+									</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select>
 					) : null}
 
 					<Button

@@ -68,10 +68,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
 							</SidebarGroup>
 						))}
 					</Sidebar>
-					<main className="w-full p-4 md:p-6 overflow-hidden">
+					<div className="w-full overflow-hidden flex-1 flex flex-col">
 						<NavStrip drawerItems={SIDEBAR_ITEMS} />
-						{children}
-					</main>
+						<main className="w-full p-4 md:p-6 overflow-hidden flex-1">{children}</main>
+					</div>
 				</div>
 			</div>
 		</SessionProvider>
