@@ -63,7 +63,7 @@ export function ChangeEmailForm(props: ChangeEmailFormProps) {
 									isLoading={isLoading || !user}
 									type="submit"
 								>
-									Update email
+									Save email
 								</Button>
 							</div>
 						)}

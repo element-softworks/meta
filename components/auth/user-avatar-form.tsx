@@ -13,6 +13,7 @@ import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { FormInput } from './form-input';
 import { UploadUserAvatarSchema } from '@/schemas';
+import { DropzoneInput } from '../inputs/dropzone-input';
 
 type UploadUserAvatarFormInputProps = z.infer<typeof UploadUserAvatarSchema>;
 
@@ -43,6 +44,8 @@ export function UserAvatarForm(props: UserAvatarFormProps) {
 		queryFn: async (values) => await uploadUserAvatar(values!),
 		onCompleted: (data) => {
 			update();
+
+			form.reset();
 		},
 	});
 
@@ -61,20 +64,9 @@ export function UserAvatarForm(props: UserAvatarFormProps) {
 			<div className="space-y-4">
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-						<FormInput
+						<DropzoneInput
 							name="avatar"
-							label="Avatar"
-							render={({ field }) => (
-								<Input
-									name={field.name}
-									onBlur={field.onBlur}
-									onChange={(e) => {
-										field.onChange(e.target.files);
-									}}
-									disabled={false}
-									type="file"
-								/>
-							)}
+							defaultFiles={!!user?.image ? [user?.image] : undefined}
 						/>
 
 						<Button
@@ -82,7 +74,7 @@ export function UserAvatarForm(props: UserAvatarFormProps) {
 							isLoading={isLoading}
 							disabled={isLoading || !form.formState.isDirty}
 						>
-							Upload file
+							Save avatar
 						</Button>
 					</form>
 				</Form>
