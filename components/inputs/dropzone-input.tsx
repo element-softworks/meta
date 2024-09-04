@@ -11,6 +11,7 @@ interface DropzoneInputProps {
 	multiple?: boolean;
 	accept?: Accept | undefined;
 	defaultFiles?: string[];
+	isLoading?: boolean;
 }
 
 export function DropzoneInput(props: DropzoneInputProps) {
@@ -31,7 +32,6 @@ export function DropzoneInput(props: DropzoneInputProps) {
 		}
 	}, [watch(props.name), props.defaultFiles]);
 
-	console.log('files', files);
 	return (
 		<>
 			<Controller
@@ -74,7 +74,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 																className="w-[75px] h-[75px] object-cover rounded-full"
 																key={index}
 																src={objectUrl}
-																alt="avatar"
+																alt="Dropzone image"
 																width={75}
 																height={75}
 															/>
@@ -87,24 +87,26 @@ export function DropzoneInput(props: DropzoneInputProps) {
 											</p>
 										</div>
 									</section>
-									{(files?.length ?? 0) > 1
-										? files?.map?.((file, index) => {
-												const objectUrl =
-													typeof file === 'string'
-														? file
-														: URL.createObjectURL(file);
-												return (
-													<Image
-														className="w-[100px] h-[100px] object-cover"
-														key={index}
-														src={objectUrl}
-														alt="avatar"
-														width={100}
-														height={100}
-													/>
-												);
-										  })
-										: null}
+									<div className="flex gap-2 flex-wrap">
+										{(files?.length ?? 0) > 1
+											? files?.map?.((file, index) => {
+													const objectUrl =
+														typeof file === 'string'
+															? file
+															: URL.createObjectURL(file);
+													return (
+														<Image
+															className="w-[105px] h-[105px] object-cover rounded-md"
+															key={index}
+															src={objectUrl}
+															alt={`Dropzone image ${index}`}
+															width={100}
+															height={100}
+														/>
+													);
+											  })
+											: null}
+									</div>
 								</>
 							);
 						}}

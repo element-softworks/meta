@@ -4,16 +4,14 @@ import { uploadUserAvatar } from '@/actions/upload-user-avatar';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
+import { UploadUserAvatarSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { DropzoneInput } from '../inputs/dropzone-input';
 import { Button } from '../ui/button';
 import { Form } from '../ui/form';
-import { Input } from '../ui/input';
-import { FormInput } from './form-input';
-import { UploadUserAvatarSchema } from '@/schemas';
-import { DropzoneInput } from '../inputs/dropzone-input';
 
 type UploadUserAvatarFormInputProps = z.infer<typeof UploadUserAvatarSchema>;
 
