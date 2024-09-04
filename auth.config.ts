@@ -114,12 +114,14 @@ export default {
 				session.user.email = token.email || '';
 				session.user.isOAuth = token.isOAuth;
 				session.user.isArchived = token.isArchived;
+				session.user.image = token.image;
 			}
 
 			return session;
 		},
 
 		jwt: async ({ token, session }) => {
+			console.log(token, 'token');
 			if (!token.sub) return token;
 
 			const existingUser = await getUserById(token.sub);
@@ -135,6 +137,7 @@ export default {
 			token.isArchived = session?.isArchived ?? existingUser.isArchived;
 			token.isTwoFactorEnabled =
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
+			token.image = session?.image ?? existingUser.image;
 			return token;
 		},
 	},

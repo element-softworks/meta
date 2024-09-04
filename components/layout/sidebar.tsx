@@ -51,6 +51,7 @@ export function SidebarGroup(props: SidebarGroupProps) {
 	return (
 		<>
 			<Accordion
+				defaultChecked
 				className={`${props.mobile ? 'md:hidden block' : 'hidden md:block'}`}
 				type="single"
 				defaultValue="item-1"

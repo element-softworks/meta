@@ -1,6 +1,7 @@
 import { ChangeEmailForm } from '@/components/auth/change-email-form';
 import { ResetPasswordForm } from '@/components/auth/reset-password-form';
 import { SettingsForm } from '@/components/auth/settings-form';
+import { UserAvatarForm } from '@/components/auth/user-avatar-form';
 import { Separator } from '@/components/ui/separator';
 
 export default async function SettingsPage() {
@@ -17,6 +18,8 @@ export default async function SettingsPage() {
 
 				<SettingsForm />
 			</div>
+
+			<UserAvatarForm />
 
 			<ResetPasswordForm />
 		</main>

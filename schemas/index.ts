@@ -7,6 +7,12 @@ export const SettingsSchema = z.object({
 	role: z.enum([UserRole.ADMIN, UserRole.USER]),
 });
 
+export const UploadUserAvatarSchema = z.object({
+	avatar: z.unknown().transform((value) => {
+		return value as FileList;
+	}),
+});
+
 export const ChangeEmailSchema = z.object({
 	email: z.string().email(),
 });

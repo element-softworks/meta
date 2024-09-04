@@ -25,5 +25,6 @@ declare module 'next-auth/jwt' {
 		isTwoFactorEnabled: boolean;
 		isOAuth: boolean;
 		isArchived: boolean;
+		image: string;
 	}
 }
