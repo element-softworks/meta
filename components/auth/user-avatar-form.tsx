@@ -37,10 +37,13 @@ export function UserAvatarForm(props: UserAvatarFormProps) {
 	});
 
 	const { query: UploadUserAvatarQuery, isLoading } = useMutation<
-		UploadUserAvatarFormInputProps,
+		FormData,
 		UploadUserAvatarResponse
 	>({
 		queryFn: async (values) => await uploadUserAvatar(values!),
+		onCompleted: (data) => {
+			update();
+		},
 	});
 
 	async function onSubmit(values: UploadUserAvatarFormInputProps) {

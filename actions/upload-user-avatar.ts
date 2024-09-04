@@ -7,8 +7,10 @@ import { uploadFileToS3 } from './upload-file-to-s3';
 import { v4 as uuidv4 } from 'uuid';
 import { revalidatePath } from 'next/cache';
 import { update } from '@/auth';
+import { UploadUserAvatarSchema } from '@/schemas';
+import * as z from 'zod';
 
-export const uploadUserAvatar = async (file: any) => {
+export const uploadUserAvatar = async (formData: FormData) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
 
@@ -23,8 +25,11 @@ export const uploadUserAvatar = async (file: any) => {
 	}
 
 	try {
-		const avatar = file.get('avatar');
+		const avatar = formData.get('avatar') as File;
 
+		if (!avatar) {
+			return { error: 'There was a problem uploading the file, please try again later' };
+		}
 		if (!avatar.size) {
 			return { error: 'There was a problem uploading the file, please try again later' };
 		}
