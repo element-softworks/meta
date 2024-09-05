@@ -138,21 +138,21 @@ export function DataTable<TData, TValue>({
 			param: selectionParam,
 			value: selectedRows.join(','),
 		});
-	}, [table.getSelectedRowModel()]);
+	}, [
+		table.getSelectedRowModel(),
+		mutateParam,
+		rowSelection,
+		rowSelectionEnabled,
+		selectionParam,
+		table,
+	]);
 
 	useEffect(() => {
 		mutateParams({
 			[`${!!id ? `${id}-` : ''}pageNum`]: '1',
 			[`${!!id ? `${id}-` : ''}search`]: searchValue,
 		});
-	}, [searchValue]);
-
-	useEffect(() => {
-		// mutateParam({
-		// 	param: `${!!id ? `${id}-` : ''}perPage`,
-		// 	value: customPerPage,
-		// });
-	}, [customPerPage]);
+	}, [searchValue, mutateParam]);
 
 	const handleSort = (columnId: string, isDefaultDesc: boolean) => {
 		const param = `${!!id ? `${id}-` : ''}${columnId}-sort`;

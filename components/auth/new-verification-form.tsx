@@ -26,11 +26,11 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 		hasFired.current = true;
 
 		await newVerificationQuery();
-	}, [token]);
+	}, [newVerificationQuery]);
 
 	useEffect(() => {
 		onSubmit();
-	}, []);
+	}, [onSubmit]);
 
 	return (
 		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">

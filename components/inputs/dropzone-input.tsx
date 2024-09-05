@@ -82,7 +82,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 												  })
 												: null}
 											<p className="text-muted-foreground group-hover:text-primary transition">
-												Drag 'n' drop some files here, or click to select
+												Drag and drop some files here, or click to select
 												files
 											</p>
 										</div>
