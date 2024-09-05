@@ -17,6 +17,7 @@ import { useMutation } from '@/hooks/use-mutation';
 import { LoaderCircle } from 'lucide-react';
 import { PasswordInput } from '../inputs/password-input';
 import Link from 'next/link';
+import { useFormStatus } from 'react-dom';
 
 type RegisterFormProps = z.infer<typeof RegisterSchema>;
 

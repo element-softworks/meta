@@ -20,14 +20,12 @@ export const uploadUserAvatar = async (formData: FormData) => {
 		!process.env.AWS_REGION ||
 		!process.env.AWS_ACCESS_KEY_ID ||
 		!process.env.AWS_SECRET_ACCESS_KEY ||
-		!process.env.AWS_BUCKET_NAME
+		!process.env.AWS_BUCKET_NAME ||
+		s3Path.includes('undefined')
 	) {
 		return { error: 'AWS environment variables not set' };
 	}
 
-	if (s3Path.includes('undefined')) {
-		return { error: 'AWS environment variables not set' };
-	}
 	if (user.image && user.image.includes(s3Path)) {
 		//If the user already has an avatar, remove it from S3
 		const avatarKey = user.image.split('/').pop();
