@@ -20,11 +20,12 @@ interface NavigationMobileDrawerProps {
 }
 
 export function NavigationMobileDrawer(props: NavigationMobileDrawerProps) {
+	const { onOpenChange } = props;
 	const isMobile = useBreakpoint('md');
 	useEffect(() => {
 		if (isMobile) return;
-		props.onOpenChange(false);
-	}, [isMobile]);
+		onOpenChange(false);
+	}, [isMobile, onOpenChange]);
 
 	return (
 		<Drawer

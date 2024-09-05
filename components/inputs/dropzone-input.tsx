@@ -30,7 +30,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 		if (props.defaultFiles && !watch(props.name)) {
 			setFiles(props.defaultFiles);
 		}
-	}, [watch(props.name), props.defaultFiles]);
+	}, [watch(props.name), props.defaultFiles, props.name, watch]);
 
 	return (
 		<>
