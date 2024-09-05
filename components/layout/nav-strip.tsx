@@ -63,7 +63,11 @@ export function NavStrip(props: NavStripProps) {
 			<Breadcrumb>
 				<BreadcrumbList>
 					<BreadcrumbItem>
-						<Link href="/dashboard">Dashboard</Link>
+						{!breadcrumbs?.length ? (
+							<p className="font-bold">Dashboard</p>
+						) : (
+							<Link href="/dashboard">Dashboard</Link>
+						)}
 					</BreadcrumbItem>
 					{showCrumbEllipsis ? (
 						<>
