@@ -1,14 +1,12 @@
 'use server';
+import { update } from '@/auth';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { s3Path } from '@/lib/s3';
+import { revalidatePath } from 'next/cache';
+import { v4 as uuidv4 } from 'uuid';
 import { removeFileFromS3 } from './remove-file-from-s3';
 import { uploadFileToS3 } from './upload-file-to-s3';
-import { v4 as uuidv4 } from 'uuid';
-import { revalidatePath } from 'next/cache';
-import { update } from '@/auth';
-import { UploadUserAvatarSchema } from '@/schemas';
-import * as z from 'zod';
 
 export const uploadUserAvatar = async (formData: FormData) => {
 	const uuid = uuidv4();
@@ -18,8 +16,20 @@ export const uploadUserAvatar = async (formData: FormData) => {
 		return { error: 'User not found' };
 	}
 
-	//If the user already has an avatar, remove it from S3
+	if (
+		!process.env.AWS_REGION ||
+		!process.env.AWS_ACCESS_KEY_ID ||
+		!process.env.AWS_SECRET_ACCESS_KEY ||
+		!process.env.AWS_BUCKET_NAME
+	) {
+		return { error: 'AWS environment variables not set' };
+	}
+
+	if (s3Path.includes('undefined')) {
+		return { error: 'AWS environment variables not set' };
+	}
 	if (user.image && user.image.includes(s3Path)) {
+		//If the user already has an avatar, remove it from S3
 		const avatarKey = user.image.split('/').pop();
 		await removeFileFromS3(avatarKey ?? '');
 	}
