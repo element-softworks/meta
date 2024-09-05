@@ -1,10 +1,8 @@
 'use client';
-import React, { ChangeEventHandler, useCallback, useEffect } from 'react';
-import Dropzone, { Accept, useDropzone } from 'react-dropzone';
-import { Controller, useFormContext } from 'react-hook-form';
-import { FormInput } from '../auth/form-input';
-import { Input } from '../ui/input';
 import Image from 'next/image';
+import React, { useEffect } from 'react';
+import Dropzone, { Accept } from 'react-dropzone';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface DropzoneInputProps {
 	name: string;
@@ -16,11 +14,13 @@ interface DropzoneInputProps {
 
 export function DropzoneInput(props: DropzoneInputProps) {
 	const { multiple = false } = props;
-	const { setValue, trigger, control, formState, watch } = useFormContext();
+	const { control, formState, watch } = useFormContext();
 
 	const [files, setFiles] = React.useState<(File[] | string[]) | null>(
 		props.defaultFiles ?? null
 	);
+
+	const error = formState.errors[props.name];
 
 	useEffect(() => {
 		if (!watch(props.name)) {
@@ -54,7 +54,11 @@ export function DropzoneInput(props: DropzoneInputProps) {
 									<section className="">
 										<div
 											{...getRootProps()}
-											className="group border-2 flex-col gap-2 h-60 border-dashed flex items-center justify-center hover:border-primary transition cursor-pointer"
+											className={`group border-2 flex-col gap-2 h-60 border-dashed flex items-center justify-center transition cursor-pointer ${
+												!!error
+													? 'border-destructive'
+													: 'hover:border-primary hover:bg-primary-foreground'
+											}`}
 										>
 											<input
 												{...getInputProps({
@@ -81,9 +85,16 @@ export function DropzoneInput(props: DropzoneInputProps) {
 														);
 												  })
 												: null}
-											<p className="text-muted-foreground group-hover:text-primary transition">
-												Drag and drop some files here, or click to select
-												files
+											<p
+												className={`text-center px-2 ${
+													!!error
+														? 'text-destructive'
+														: `text-muted-foreground group-hover:text-primary`
+												} transition`}
+											>
+												{!!error
+													? (error as any).avatar.message
+													: 'Drag and drop some files here, or click to select files'}
 											</p>
 										</div>
 									</section>

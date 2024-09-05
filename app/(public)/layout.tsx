@@ -21,20 +21,14 @@ export default async function RootLayout({
 }>) {
 	return (
 		<SessionProvider>
-			<html lang="en" suppressHydrationWarning>
-				<body className={inter.className}>
-					<Toaster />
-					<div className="flex flex-col min-h-screen ">
-						<Navbar />
+			<Toaster />
+			<div className="flex flex-col min-h-screen ">
+				<Navbar />
 
-						<div className="border-t border-border flex flex-1">
-							<main className="w-full overflow-hidden flex-1 flex flex-col">
-								{children}
-							</main>
-						</div>
-					</div>
-				</body>
-			</html>
+				<div className="border-t border-border flex flex-1">
+					<main className="w-full overflow-hidden flex-1 flex flex-col">{children}</main>
+				</div>
+			</div>
 		</SessionProvider>
 	);
 }

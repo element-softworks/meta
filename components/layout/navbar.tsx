@@ -1,6 +1,17 @@
 'use client';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { CreditCard, FrameIcon, LogOut, MenuIcon, Notebook, Settings, XIcon } from 'lucide-react';
+import {
+	CreditCard,
+	FrameIcon,
+	LogOut,
+	MenuIcon,
+	Moon,
+	Notebook,
+	Settings,
+	ShieldCheck,
+	Sun,
+	XIcon,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { LogoutButton } from '../auth/logout-button';
@@ -15,6 +26,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
+import { useTheme } from 'next-themes';
 
 const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
@@ -25,7 +37,8 @@ export function Navbar() {
 	const user = useCurrentUser();
 
 	const [navOpen, setNavOpen] = useState(false);
-
+	const { setTheme, theme } = useTheme();
+	const isLightMode = theme === 'light';
 	return (
 		<nav className="py-6 px-4 md:px-8 flex flex-row justify-between items-center h-24">
 			<Link href="/">
@@ -36,6 +49,7 @@ export function Navbar() {
 			</Link>
 
 			<div className="block md:hidden">
+				{/* Mobile menu */}
 				<DropdownMenu onOpenChange={(open) => setNavOpen(open)}>
 					<DropdownMenuTrigger asChild className="cursor-pointer">
 						<Button onClick={() => setNavOpen((prev) => !prev)} variant="link">
@@ -71,8 +85,31 @@ export function Navbar() {
 									Settings
 								</DropdownMenuItem>
 							</Link>
+							<Link href="/dashboard/security">
+								<DropdownMenuItem className="cursor-pointer">
+									<ShieldCheck className="mr-2 h-4 w-4" />
+									Security
+								</DropdownMenuItem>
+							</Link>
+							<Link href="/dashboard/billing">
+								<DropdownMenuItem className="cursor-pointer">
+									<CreditCard className="mr-2 h-4 w-4" />
+									Billing
+								</DropdownMenuItem>
+							</Link>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
+						<DropdownMenuItem
+							className="cursor-pointer"
+							onClick={() => setTheme(isLightMode ? 'dark' : 'light')}
+						>
+							{isLightMode ? (
+								<Moon className="mr-2 h-4 w-4" />
+							) : (
+								<Sun className="mr-2 h-4 w-4" />
+							)}
+							{isLightMode ? 'Toggle dark mode' : 'Toggle light mode'}
+						</DropdownMenuItem>
 						<LogoutButton>
 							<DropdownMenuItem className="cursor-pointer">
 								<LogOut className="mr-2 h-4 w-4" />
@@ -98,6 +135,9 @@ export function Navbar() {
 						);
 					})}
 				</div>
+
+				{/* Desktop icon menu */}
+
 				<UserButton user={user} />
 			</div>
 		</nav>

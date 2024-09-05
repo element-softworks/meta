@@ -2,9 +2,11 @@ import { auth } from '@/auth';
 import { NavStrip } from '@/components/layout/nav-strip';
 import { Navbar } from '@/components/layout/navbar';
 import { Sidebar, SidebarGroup, SidebarItem } from '@/components/layout/sidebar';
+import { TeamsButton } from '@/components/layout/teams-button';
 import { Toaster } from '@/components/ui/toaster';
 import { UserRole } from '@prisma/client';
-import { CreditCard, LayoutDashboard, Settings } from 'lucide-react';
+import { Button } from '@react-email/components';
+import { CreditCard, LayoutDashboard, Settings, ShieldCheck, Users } from 'lucide-react';
 import { SessionProvider } from 'next-auth/react';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -29,9 +31,24 @@ export default async function DashboardLayout({ children }: { children: React.Re
 					icon: <Settings size={20} />,
 				},
 				{
+					text: 'Security settings',
+					link: '/dashboard/security',
+					icon: <ShieldCheck size={20} />,
+				},
+				{
 					text: 'Billing',
 					link: '/dashboard/billing',
 					icon: <CreditCard size={20} />,
+				},
+			],
+		},
+		{
+			name: 'Teams',
+			items: [
+				{
+					text: 'Team overview',
+					link: '/dashboard/teams',
+					icon: <Users size={20} />,
 				},
 			],
 		},

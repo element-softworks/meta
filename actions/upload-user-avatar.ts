@@ -25,29 +25,32 @@ export const uploadUserAvatar = async (formData: FormData) => {
 	) {
 		return { error: 'AWS environment variables not set' };
 	}
+	const avatar = formData.get('avatar') as File;
 
-	if (user.image && user.image.includes(s3Path)) {
-		//If the user already has an avatar, remove it from S3
-		const avatarKey = user.image.split('/').pop();
-		await removeFileFromS3(avatarKey ?? '');
+	if (!avatar) {
+		return { error: 'There was a problem uploading the file, please try again later' };
+	}
+	if (!avatar.size) {
+		return { error: 'There was a problem uploading the file, please try again later' };
+	}
+
+	if (avatar.size > 4000000) {
+		return { error: 'File size cannot exceed 4MB. Please compress or upload another file.' };
 	}
 
 	try {
-		const avatar = formData.get('avatar') as File;
-
-		if (!avatar) {
-			return { error: 'There was a problem uploading the file, please try again later' };
-		}
-		if (!avatar.size) {
-			return { error: 'There was a problem uploading the file, please try again later' };
-		}
-
 		const buffer = Buffer.from(await avatar.arrayBuffer());
 
 		await uploadFileToS3(buffer, `${uuid}-${avatar.name}`);
 
 		//Update the user's avatar
 		try {
+			if (user.image && user.image.includes(s3Path)) {
+				//If the user already has an avatar, remove it from S3
+				const avatarKey = user.image.split('/').pop();
+				await removeFileFromS3(avatarKey ?? '');
+			}
+
 			const updatedUser = await db.user.update({
 				where: { id: user.id },
 				data: {
@@ -64,7 +67,6 @@ export const uploadUserAvatar = async (formData: FormData) => {
 
 		return { success: 'Avatar uploaded successfully' };
 	} catch (e) {
-		console.log(e, 'e.message');
 		return { error: 'There was a problem uploading the file, please try again later' };
 	}
 };

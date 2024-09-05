@@ -33,10 +33,19 @@ export function NavigationMobileDrawer(props: NavigationMobileDrawerProps) {
 			open={props.open}
 			onOpenChange={(state) => props.onOpenChange(state)}
 		>
-			<DrawerContent className="w-[360px] max-w-[80%] h-full rounded-tl-none rounded-bl-none p-6">
+			<DrawerContent
+				disableDropper
+				className="w-[360px] max-w-[80%] h-full rounded-tl-none rounded-bl-none p-6"
+			>
 				{props.drawerItems?.map((group, index) => {
 					return (
-						<SidebarGroup mobile key={index} text={group.name} visible={group.visible}>
+						<SidebarGroup
+							hideOnMobile
+							mobile
+							key={index}
+							text={group.name}
+							visible={group.visible}
+						>
 							{group.items.map((item, index) => (
 								<SidebarItem
 									onClick={() => props.onOpenChange(false)}

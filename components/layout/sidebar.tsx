@@ -44,6 +44,7 @@ export interface SidebarGroupProps {
 	children?: React.ReactNode;
 	visible?: boolean;
 	mobile?: boolean;
+	hideOnMobile?: boolean;
 }
 export function SidebarGroup(props: SidebarGroupProps) {
 	const { visible = true } = props;
@@ -52,7 +53,9 @@ export function SidebarGroup(props: SidebarGroupProps) {
 		<>
 			<Accordion
 				defaultChecked
-				className={`${props.mobile ? 'md:hidden block' : 'hidden md:block'}`}
+				className={`${
+					props.mobile && !props.hideOnMobile ? 'md:hidden block' : 'hidden md:block'
+				}`}
 				type="single"
 				defaultValue="item-1"
 				collapsible

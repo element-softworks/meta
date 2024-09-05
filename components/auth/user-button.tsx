@@ -1,7 +1,7 @@
 'use client';
 
 import { ExtendedUser } from '@/next-auth';
-import { CreditCard, LogOut, Moon, Settings, Sun } from 'lucide-react';
+import { CreditCard, LogOut, Moon, Settings, ShieldCheck, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
@@ -22,9 +22,15 @@ interface UserButtonProps {
 }
 export function UserButton(props: UserButtonProps) {
 	const { setTheme, theme } = useTheme();
-
 	const isLightMode = theme === 'light';
 
+	if (!props.user) {
+		return (
+			<Link href="/auth/login">
+				<Button>Get started</Button>
+			</Link>
+		);
+	}
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
@@ -47,21 +53,30 @@ export function UserButton(props: UserButtonProps) {
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56 mr-2">
 				<DropdownMenuLabel>Account</DropdownMenuLabel>
+
 				<DropdownMenuSeparator />
 
 				<DropdownMenuGroup>
-					<Link href="/dashboard/settings">
-						<DropdownMenuItem className="cursor-pointer">
-							<Settings className="mr-2 h-4 w-4" />
-							Settings
-						</DropdownMenuItem>
-					</Link>
-					<Link href="/dashboard/billing">
-						<DropdownMenuItem className="cursor-pointer">
-							<CreditCard className="mr-2 h-4 w-4" />
-							Billing
-						</DropdownMenuItem>
-					</Link>
+					<DropdownMenuGroup>
+						<Link href="/dashboard/settings">
+							<DropdownMenuItem className="cursor-pointer">
+								<Settings className="mr-2 h-4 w-4" />
+								Settings
+							</DropdownMenuItem>
+						</Link>
+						<Link href="/dashboard/security">
+							<DropdownMenuItem className="cursor-pointer">
+								<ShieldCheck className="mr-2 h-4 w-4" />
+								Security
+							</DropdownMenuItem>
+						</Link>
+						<Link href="/dashboard/billing">
+							<DropdownMenuItem className="cursor-pointer">
+								<CreditCard className="mr-2 h-4 w-4" />
+								Billing
+							</DropdownMenuItem>
+						</Link>
+					</DropdownMenuGroup>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem

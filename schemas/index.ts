@@ -7,10 +7,51 @@ export const SettingsSchema = z.object({
 	role: z.enum([UserRole.ADMIN, UserRole.USER]),
 });
 
+export const TeamsSchema = z.object({
+	name: z.string().min(1, { message: 'Name is required' }),
+	image: z
+		.unknown()
+		.transform((value) => {
+			return value as FileList;
+		})
+		.refine(
+			(data) => {
+				const fileSize = data?.[0]?.size;
+
+				//1Mb = 1000000 bytes
+				if (fileSize > 4000000) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: "File size can't exceed 4MB",
+				path: ['image'],
+			}
+		),
+});
+
 export const UploadUserAvatarSchema = z.object({
-	avatar: z.unknown().transform((value) => {
-		return value as FileList;
-	}),
+	avatar: z
+		.unknown()
+		.transform((value) => {
+			return value as FileList;
+		})
+		.refine(
+			(data) => {
+				const fileSize = data?.[0]?.size;
+
+				//1Mb = 1000000 bytes
+				if (fileSize > 4000000) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: "File size can't exceed 4MB",
+				path: ['avatar'],
+			}
+		),
 });
 
 export const ChangeEmailSchema = z.object({
