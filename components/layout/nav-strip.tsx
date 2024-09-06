@@ -25,20 +25,20 @@ interface NavStripProps {
 		}[];
 	}[];
 }
-
 const EXCLUDED_PATHS = ['admin'];
 
 export function NavStrip(props: NavStripProps) {
 	const pathname = usePathname();
 
-	const breadcrumbs = pathname
-		.split('/')
-		.filter((path) => path !== '')
-		?.filter((path) => !EXCLUDED_PATHS.includes(path));
+	// Split the pathname and filter out empty segments
+	const allSegments = pathname.split('/').filter((path) => path !== '');
 
-	const firstCrumb = breadcrumbs[0];
-	const lastTwoBreadCrumbs = breadcrumbs.slice(breadcrumbs.length > 3 ? -2 : -3);
-	const showCrumbEllipsis = breadcrumbs.length > 3;
+	// Create breadcrumbs excluding certain paths for display purposes
+	const displayBreadcrumbs = allSegments.filter((path) => !EXCLUDED_PATHS.includes(path));
+
+	const firstCrumb = displayBreadcrumbs[0];
+	const lastTwoBreadCrumbs = displayBreadcrumbs.slice(displayBreadcrumbs.length > 3 ? -2 : -3);
+	const showCrumbEllipsis = displayBreadcrumbs.length > 3;
 
 	const [navOpen, setNavOpen] = React.useState(false);
 
@@ -65,16 +65,19 @@ export function NavStrip(props: NavStripProps) {
 				</Button>
 				<Breadcrumb>
 					<BreadcrumbList>
-						{breadcrumbs?.length > 3 ? (
+						{displayBreadcrumbs?.length > 3 ? (
 							<BreadcrumbItem>
 								<Link href={`/${firstCrumb}`}>{firstCrumb}</Link>
 							</BreadcrumbItem>
 						) : null}
 						{lastTwoBreadCrumbs.map((path, index) => {
 							const isActive = index === lastTwoBreadCrumbs.length - 1;
-							const crumbIndex =
-								breadcrumbs.length - lastTwoBreadCrumbs.length + index;
-							const pathUrl = breadcrumbs.slice(0, crumbIndex + 1).join('/');
+
+							// Construct the path URL including all original segments
+							const pathUrl = allSegments
+								.slice(0, allSegments.indexOf(path) + 1)
+								.join('/');
+
 							return (
 								<React.Fragment key={index}>
 									{index === 0 && showCrumbEllipsis ? (

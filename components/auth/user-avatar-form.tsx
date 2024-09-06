@@ -64,7 +64,7 @@ export function UserAvatarForm(props: UserAvatarFormProps) {
 					<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 						<DropzoneInput
 							name="avatar"
-							defaultFiles={!!user?.image ? [user?.image] : undefined}
+							defaultFiles={!!user?.image?.length ? [user?.image] : undefined}
 						/>
 
 						<Button

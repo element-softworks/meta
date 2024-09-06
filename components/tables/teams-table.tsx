@@ -14,12 +14,11 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Prisma, Team, TeamMember, User, UserRole } from '@prisma/client';
+import { Team, TeamMember, User, UserRole } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
-import { DialogWrapper } from '../auth/dialog-wrapper';
 import { AvatarGroup } from '../avatar-group';
 
 type TableTeam = {
@@ -84,7 +83,6 @@ export function TeamsTable(props: TeamsTableProps) {
 						avatars={team.members.map((member) => ({
 							src: member.user.image ?? '',
 							alt: member.user.name ?? '',
-							link: `/dashboard/teams/${team.id}/members/${member.userId}`,
 						}))}
 					/>
 				);
@@ -147,11 +145,6 @@ export function TeamsTable(props: TeamsTableProps) {
 			},
 		},
 	];
-
-	console.log(
-		props.teams?.map((t) => t.team.members),
-		'teams data'
-	);
 
 	const rows: TableTeam[] | undefined = props.teams?.map((teamMember) => ({
 		id: teamMember.teamId,

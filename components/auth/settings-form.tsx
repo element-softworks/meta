@@ -6,9 +6,8 @@ import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
 import { SettingsSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User, UserRole } from '@prisma/client';
+import { UserRole } from '@prisma/client';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { TwoFactorCheckInput } from '../inputs/two-factor-check-input';
@@ -17,7 +16,6 @@ import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { FormInput } from './form-input';
-import { revalidatePath } from 'next/cache';
 
 type SettingsFormInputProps = z.infer<typeof SettingsSchema>;
 

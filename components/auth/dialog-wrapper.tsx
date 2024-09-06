@@ -28,12 +28,12 @@ export function DialogWrapper(props: DialogWrapperProps) {
 		<Dialog open={props.open} onOpenChange={(state) => props.onOpenChange(state)}>
 			<div onClick={() => props.onOpenChange(true)}>{props.children}</div>
 
-			<DialogContent>
+			<DialogContent className="w-[500px] max-w-[90%]">
 				<DialogHeader>
 					<DialogTitle>{props.dialog.title}</DialogTitle>
 					<DialogDescription>{props.dialog.description}</DialogDescription>
 				</DialogHeader>
-				<DialogFooter>
+				<DialogFooter className="gap-2 md:gap-0">
 					<Button onClick={() => props.onOpenChange(false)} variant="secondary">
 						Cancel
 					</Button>

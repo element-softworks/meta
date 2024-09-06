@@ -45,7 +45,11 @@ export function DropzoneInput(props: DropzoneInputProps) {
 							onChange(acceptedFiles);
 						}}
 						accept={{
-							'image/*': [], // Accept all image types
+							'image/webp': [],
+							'image/png': [],
+							'image/jpeg': [],
+							'image/jpg': [],
+							'image/gif': [],
 						}}
 					>
 						{({ getRootProps, getInputProps, acceptedFiles }) => {

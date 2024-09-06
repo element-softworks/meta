@@ -3,20 +3,15 @@
 import Image from 'next/image';
 
 interface AvatarGroupProps {
-	avatars:
-		| {
-				src: string;
-				alt: string;
-				link?: string;
-		  }[]
-		| undefined;
+	avatars: {
+		src: string;
+		alt: string;
+	}[];
 	size?: number;
 	maxSize?: number;
 }
 export function AvatarGroup(props: AvatarGroupProps) {
 	const { size = 35, maxSize = 5 } = props;
-
-	if (!props.avatars?.length) return null;
 
 	const avatars = props.avatars.slice(0, maxSize);
 	const remaining = props.avatars.length - maxSize;
@@ -31,9 +26,11 @@ export function AvatarGroup(props: AvatarGroupProps) {
 						style={{
 							left: `${-(index * (size / 2))}px`,
 							zIndex: index,
+							height: `${size}px`,
+							width: `${size}px`,
 						}}
-						width={size}
-						height={size}
+						width={100}
+						height={100}
 						src={avatar.src}
 						alt={avatar.alt}
 					/>
