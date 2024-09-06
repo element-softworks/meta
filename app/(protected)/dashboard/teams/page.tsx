@@ -1,41 +1,28 @@
-import { getUsersTeams } from '@/actions/get-users-teams';
+import { TeamsTable } from '@/components/tables/teams-table';
+import TeamsTableContainer from '@/components/tables/teams-table-container';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { currentUser } from '@/lib/auth';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: any) {
 	const user = await currentUser();
-	const teamsResponse = await getUsersTeams(user?.id ?? '');
 	return (
-		<main className="flex flex-col max-w-2xl gap-6">
-			<div className="">
-				<p className="text-xl font-bold">Teams overview</p>
-				<p className="text-muted-foreground text-sm">Manage your teams below</p>
+		<main className="flex flex-col max-w-4xl gap-6">
+			<div className="flex gap-2 items-center">
+				<div className="flex-1">
+					<p className="text-xl font-bold">Teams overview</p>
+					<p className="text-muted-foreground text-sm">Manage your teams below</p>
+				</div>
+				<Link href="/dashboard/teams/create">
+					<Button className="w-fit">Create team</Button>
+				</Link>
 			</div>
-
-			<Link href="/dashboard/teams/create">
-				<Button className="w-fit">Create a new team</Button>
-			</Link>
-
-			{teamsResponse?.teams?.map?.((team) => {
-				console.log(team, 'team data');
-				return (
-					<div
-						key={team.teamId}
-						className="flex items-center justify-between p-4 bg-white rounded-md shadow-sm"
-					>
-						{team?.team?.image ? (
-							<img width={50} height={50} src={team.team.image} />
-						) : null}
-						<div>
-							<p className="text-lg font-bold">{team.team?.name}</p>
-						</div>
-						<Link href={`/dashboard/teams/${team.teamId}`}>
-							<Button>View</Button>
-						</Link>
-					</div>
-				);
-			})}
+			<Separator />
+			<Suspense fallback={<TeamsTable teams={[]} totalPages={1} isLoading={true} />}>
+				<TeamsTableContainer userId={user?.id ?? ''} searchParams={searchParams} />
+			</Suspense>
 		</main>
 	);
 }

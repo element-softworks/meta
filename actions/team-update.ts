@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { currentUser } from '@/lib/auth';
 import { uploadFileToS3 } from './upload-file-to-s3';
 import { revalidatePath } from 'next/cache';
-export const teamCreate = async (formData: FormData) => {
+export const teamUpdate = async (formData: FormData, teamId: string) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
 
@@ -47,29 +47,23 @@ export const teamCreate = async (formData: FormData) => {
 			const buffer = Buffer.from(await values.image.arrayBuffer());
 			await uploadFileToS3(buffer, `${uuid}-${values.image.name}`);
 		}
-		//Create the team
-		const newTeam = await db.team.create({
+
+		let image = !!values.image.size ? `${s3Path}/${uuid}-${values.image.name}` : undefined;
+		//Update the team
+		const updatedTeam = await db.team.update({
+			where: {
+				id: teamId,
+			},
 			data: {
 				name: values.name,
-				createdBy: user?.email ?? '',
 				image: !!values.image?.size ? `${s3Path}/${uuid}-${values.image.name}` : undefined,
 			},
 		});
 
-		//Create new team member
-		const newTeamMember = await db.teamMember.create({
-			data: {
-				role: UserRole.ADMIN,
-				teamId: newTeam.id,
-				userId: user?.id ?? '',
-			},
-		});
+		revalidatePath(`/dashboard/teams/${teamId}`);
 
-		revalidatePath(`/dashboard/teams`);
-
-		return { success: 'Team created successfully', team: newTeam };
+		return { success: 'Team updated successfully', team: updatedTeam };
 	} catch (e) {
-		console.log(e, 'e.message');
 		return { error: 'There was a problem uploading the file, please try again later' };
 	}
 };

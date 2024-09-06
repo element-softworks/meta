@@ -51,7 +51,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 			name: 'Teams',
 			items: [
 				{
-					text: 'Team overview',
+					text: 'Teams management',
 					link: '/dashboard/teams',
 					icon: <Users size={20} />,
 					visible: true,

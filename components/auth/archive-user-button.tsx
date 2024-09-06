@@ -30,7 +30,7 @@ export function ArchiveUserButton(props: ArchiveUserButtonProps) {
 	const currentUser = useCurrentUser();
 	if (currentUser?.role !== UserRole.ADMIN) return null;
 
-	const isArchived = props.user?.isArchived ?? false;
+	const isArchived = !!props.user?.isArchived ?? false;
 
 	const title = isArchived ? 'Restore' : 'Archive';
 	const description = isArchived

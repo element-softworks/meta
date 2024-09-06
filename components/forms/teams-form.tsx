@@ -14,23 +14,26 @@ import { Button } from '../ui/button';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { teamCreate } from '@/actions/team-create';
+import { teamUpdate } from '@/actions/team-update';
+import { useRouter } from 'next/navigation';
 
 type TeamsFormInputProps = z.infer<typeof TeamsSchema>;
 
-type SettingsResponse = {
+type TeamsResponse = {
 	team: Team;
 };
 
 interface TeamsFormProps {
-	adminMode?: boolean;
+	editMode?: boolean;
 	editingTeam?: Team | null;
 }
 
 export function TeamsForm(props: TeamsFormProps) {
 	const user = useCurrentUser();
 	const { update } = useSession();
+	const router = useRouter();
 
-	const defaultTeam = props.adminMode ? props.editingTeam : null;
+	const defaultTeam = props.editMode ? props.editingTeam : null;
 
 	const form = useForm<TeamsFormInputProps>({
 		resolver: zodResolver(TeamsSchema),
@@ -40,12 +43,24 @@ export function TeamsForm(props: TeamsFormProps) {
 		},
 	});
 
-	const { query: createTeamQuery, isLoading } = useMutation<FormData, SettingsResponse>({
+	const { query: createTeamQuery, isLoading: isCreating } = useMutation<FormData, TeamsResponse>({
 		queryFn: async (values) => await teamCreate(values!),
 		onCompleted: async (data) => {
 			const response = await update();
-
 			form.reset();
+		},
+		onSuccess: async (data) => {
+			await router.push(`/dashboard/teams/${data?.team?.id}`);
+		},
+	});
+
+	const { query: updateTeamQuery, isLoading: isUpdating } = useMutation<FormData, TeamsResponse>({
+		queryFn: async (values) => await teamUpdate(values!, defaultTeam?.id!),
+		onCompleted: async (data) => {
+			form.reset({
+				name: data?.team?.name ?? '',
+				image: undefined,
+			});
 		},
 	});
 
@@ -56,8 +71,9 @@ export function TeamsForm(props: TeamsFormProps) {
 		formData.append('name', values.name);
 
 		if (!values) return;
-		if (props.editingTeam) {
+		if (props.editMode) {
 			//update team
+			const response = await updateTeamQuery(formData);
 		} else {
 			//create team
 			const response = await createTeamQuery(formData);
@@ -75,7 +91,7 @@ export function TeamsForm(props: TeamsFormProps) {
 							render={({ field }) => (
 								<Input
 									{...field}
-									disabled={isLoading}
+									disabled={isCreating || isUpdating}
 									placeholder="John Doe's team"
 								/>
 							)}
@@ -83,15 +99,15 @@ export function TeamsForm(props: TeamsFormProps) {
 
 						<DropzoneInput
 							name="image"
-							// defaultFiles={!!user?.image ? [user?.image] : undefined}
+							defaultFiles={!!defaultTeam?.image ? [defaultTeam?.image] : undefined}
 						/>
 
 						<Button
 							type="submit"
-							isLoading={isLoading}
-							disabled={isLoading || !form.formState.isDirty}
+							isLoading={isCreating || isUpdating}
+							disabled={isCreating || isUpdating || !form.formState.isDirty}
 						>
-							Create team
+							{!!props.editingTeam ? 'Update team settings' : 'Create team'}
 						</Button>
 					</form>
 				</Form>

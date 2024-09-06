@@ -34,7 +34,7 @@ export const login = async (
 		return { error: 'Invalid credentials, check your email and password and try again.' };
 	}
 
-	if (existingUser.isArchived) {
+	if (!!existingUser.isArchived?.length) {
 		return {
 			error: 'This account has been archived. Please contact our support team if you think this is a mistake',
 		};
