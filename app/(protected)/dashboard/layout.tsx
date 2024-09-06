@@ -19,26 +19,31 @@ export default async function DashboardLayout({ children }: { children: React.Re
 					text: 'Dashboard',
 					link: '/dashboard',
 					icon: <LayoutDashboard size={20} />,
+					visible: true,
 				},
 			],
 		},
 		{
 			name: 'Account',
+
 			items: [
 				{
 					text: 'Account settings',
 					link: '/dashboard/settings',
 					icon: <Settings size={20} />,
+					visible: true,
 				},
 				{
 					text: 'Security settings',
 					link: '/dashboard/security',
 					icon: <ShieldCheck size={20} />,
+					visible: !session?.user?.isOAuth,
 				},
 				{
 					text: 'Billing',
 					link: '/dashboard/billing',
 					icon: <CreditCard size={20} />,
+					visible: true,
 				},
 			],
 		},
@@ -49,6 +54,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 					text: 'Team overview',
 					link: '/dashboard/teams',
 					icon: <Users size={20} />,
+					visible: true,
 				},
 			],
 		},
@@ -60,6 +66,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 					text: 'Users',
 					link: '/dashboard/admin/users',
 					icon: <CreditCard size={20} />,
+					visible: true,
 				},
 			],
 		},
@@ -72,18 +79,24 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
 				<div className="border-t border-border flex flex-1">
 					<Sidebar>
-						{SIDEBAR_ITEMS.map((group, index) => (
-							<SidebarGroup key={index} text={group.name} visible={group.visible}>
-								{group.items.map((item, index) => (
-									<SidebarItem
-										key={index}
-										text={item.text}
-										link={item.link}
-										icon={item.icon}
-									/>
-								))}
-							</SidebarGroup>
-						))}
+						{SIDEBAR_ITEMS.map((group, index) => {
+							if (group.visible === false) return null;
+							return (
+								<SidebarGroup key={index} text={group.name} visible={group.visible}>
+									{group.items.map((item, index) => {
+										if (!item.visible) return null;
+										return (
+											<SidebarItem
+												key={index}
+												text={item.text}
+												link={item.link}
+												icon={item.icon}
+											/>
+										);
+									})}
+								</SidebarGroup>
+							);
+						})}
 					</Sidebar>
 					<div className="w-full overflow-hidden flex-1 flex flex-col">
 						<NavStrip drawerItems={SIDEBAR_ITEMS} />

@@ -64,12 +64,15 @@ export function UserButton(props: UserButtonProps) {
 								Settings
 							</DropdownMenuItem>
 						</Link>
-						<Link href="/dashboard/security">
-							<DropdownMenuItem className="cursor-pointer">
-								<ShieldCheck className="mr-2 h-4 w-4" />
-								Security
-							</DropdownMenuItem>
-						</Link>
+						{!props.user?.isOAuth ? (
+							<Link href="/dashboard/security">
+								<DropdownMenuItem className="cursor-pointer">
+									<ShieldCheck className="mr-2 h-4 w-4" />
+									Security
+								</DropdownMenuItem>
+							</Link>
+						) : null}
+
 						<Link href="/dashboard/billing">
 							<DropdownMenuItem className="cursor-pointer">
 								<CreditCard className="mr-2 h-4 w-4" />
