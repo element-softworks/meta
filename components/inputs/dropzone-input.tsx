@@ -93,7 +93,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 												} transition`}
 											>
 												{!!error
-													? (error as any).avatar.message
+													? (error as any)?.[props.name]?.message
 													: 'Drag and drop some files here, or click to select files'}
 											</p>
 										</div>

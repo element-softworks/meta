@@ -59,6 +59,7 @@ model Account {
 model TeamMember {
   teamId String
   userId String
+  role   UserRole @default(USER)
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 

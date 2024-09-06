@@ -39,13 +39,7 @@ export function NavigationMobileDrawer(props: NavigationMobileDrawerProps) {
 			>
 				{props.drawerItems?.map((group, index) => {
 					return (
-						<SidebarGroup
-							hideOnMobile
-							mobile
-							key={index}
-							text={group.name}
-							visible={group.visible}
-						>
+						<SidebarGroup mobile key={index} text={group.name} visible={group.visible}>
 							{group.items.map((item, index) => (
 								<SidebarItem
 									onClick={() => props.onOpenChange(false)}

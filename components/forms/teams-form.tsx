@@ -44,12 +44,14 @@ export function TeamsForm(props: TeamsFormProps) {
 		queryFn: async (values) => await teamCreate(values!),
 		onCompleted: async (data) => {
 			const response = await update();
+
+			form.reset();
 		},
 	});
 
 	async function onSubmit(values: TeamsFormInputProps) {
 		const formData = new FormData();
-		const fileInput = values.image[0]; // Assuming avatar is being returned as a FileList
+		const fileInput = values?.image?.[0]; // Assuming avatar is being returned as a FileList
 		formData.append('image', fileInput);
 		formData.append('name', values.name);
 
@@ -58,7 +60,6 @@ export function TeamsForm(props: TeamsFormProps) {
 			//update team
 		} else {
 			//create team
-
 			const response = await createTeamQuery(formData);
 		}
 	}
