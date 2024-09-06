@@ -22,24 +22,25 @@ import { toast } from '../ui/use-toast';
 import { DialogWrapper } from '../auth/dialog-wrapper';
 import { AvatarGroup } from '../avatar-group';
 
+type TableTeam = {
+	id: string;
+	name: string;
+	createdAt: Date;
+	createdBy: string;
+	image: string;
+	isArchived: boolean;
+	updatedAt: Date;
+	members: (TeamMember & { user: User })[];
+};
+
 interface TeamsTableProps {
 	teams: {
 		teamId: string;
 		userId: string;
 		role: UserRole;
-		team: Prisma.TeamGetPayload<{
-			include: {
-				members: {
-					select: {
-						teamId: true;
-						team: true;
-						userId: true;
-						role: true;
-						user: true;
-					};
-				};
-			};
-		}>;
+		team: Team & {
+			members: any;
+		};
 		user: User;
 	}[];
 	totalPages: number | undefined;
@@ -48,7 +49,7 @@ interface TeamsTableProps {
 
 export function TeamsTable(props: TeamsTableProps) {
 	const { isLoading = false } = props;
-	const columns: ColumnDef<TeamsTableProps['teams'][0]['team'] | undefined>[] = [
+	const columns: ColumnDef<TableTeam>[] = [
 		{
 			accessorKey: 'name',
 			header: 'Name',
@@ -62,7 +63,7 @@ export function TeamsTable(props: TeamsTableProps) {
 								<Image width={35} height={35} src={team?.image} alt="team avatar" />
 							</Avatar>
 						) : null}
-						<div className="ml-2">{team?.name}</div>
+						<div className="ml-2">{team.name}</div>
 					</div>
 				);
 			},
@@ -80,7 +81,7 @@ export function TeamsTable(props: TeamsTableProps) {
 				return (
 					<AvatarGroup
 						maxSize={4}
-						avatars={team?.members?.map?.((member) => ({
+						avatars={team.members.map((member) => ({
 							src: member.user.image ?? '',
 							alt: member.user.name ?? '',
 							link: `/dashboard/teams/${team.id}/members/${member.userId}`,
@@ -95,7 +96,7 @@ export function TeamsTable(props: TeamsTableProps) {
 			enableSorting: true,
 			cell: ({ row }) => {
 				const team = row.original;
-				return format(new Date(team?.createdAt ?? new Date()), 'MMM d, yyyy');
+				return format(new Date(team.createdAt), 'MMM d, yyyy');
 			},
 		},
 		{
@@ -104,7 +105,7 @@ export function TeamsTable(props: TeamsTableProps) {
 			enableSorting: true,
 			cell: ({ row }) => {
 				const team = row.original;
-				return format(new Date(team?.updatedAt ?? new Date()), 'MMM d, yyyy');
+				return format(new Date(team.updatedAt), 'MMM d, yyyy');
 			},
 		},
 
@@ -134,7 +135,7 @@ export function TeamsTable(props: TeamsTableProps) {
 								Copy team ID
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<Link href={`/dashboard/teams/${team?.id}`}>
+							<Link href={`/dashboard/teams/${team.id}`}>
 								<DropdownMenuItem className="cursor-pointer">
 									View team
 								</DropdownMenuItem>
@@ -147,18 +148,21 @@ export function TeamsTable(props: TeamsTableProps) {
 		},
 	];
 
-	const rows: TeamsTableProps['teams'][0]['team'][] | undefined[] | undefined = props.teams?.map(
-		(teamMember) => ({
-			id: teamMember.teamId,
-			name: teamMember.team.name,
-			createdAt: teamMember.team.createdAt,
-			createdBy: teamMember.team.createdBy,
-			image: teamMember.team.image ?? '',
-			isArchived: teamMember.team.isArchived,
-			updatedAt: teamMember.team.updatedAt,
-			members: teamMember.team.members,
-		})
+	console.log(
+		props.teams?.map((t) => t.team.members),
+		'teams data'
 	);
+
+	const rows: TableTeam[] | undefined = props.teams?.map((teamMember) => ({
+		id: teamMember.teamId,
+		name: teamMember.team.name,
+		createdAt: teamMember.team.createdAt,
+		createdBy: teamMember.team.createdBy,
+		image: teamMember.team.image ?? '',
+		isArchived: teamMember.team.isArchived,
+		updatedAt: teamMember.team.updatedAt,
+		members: teamMember.team.members,
+	}));
 
 	return (
 		<DataTable
