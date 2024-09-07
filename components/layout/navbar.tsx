@@ -44,7 +44,7 @@ export function Navbar() {
 			<Link href="/">
 				<div className="z-10 flex items-center text-lg font-light">
 					<FrameIcon className="mr-2" size={30} />
-					NextJS SaaS Boilerplate
+					<p className="hidden md:block">NextJS SaaS Boilerplate</p>
 				</div>
 			</Link>
 

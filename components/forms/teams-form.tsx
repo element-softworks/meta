@@ -35,6 +35,7 @@ export function TeamsForm(props: TeamsFormProps) {
 
 	const defaultTeam = props.editMode ? props.editingTeam : null;
 
+	console.log(defaultTeam, 'default team');
 	const form = useForm<TeamsFormInputProps>({
 		resolver: zodResolver(TeamsSchema),
 		defaultValues: {

@@ -33,6 +33,7 @@ export const getUsersTeams = async (req: GetUserTeamProps) => {
 			AND: {
 				OR: [
 					{ team: { name: { contains: req.search, mode: 'insensitive' } } },
+					{ team: { createdBy: { contains: req.search, mode: 'insensitive' } } },
 					{ team: { id: { equals: req.search } } },
 				],
 			},

@@ -13,6 +13,12 @@ export const teamCreate = async (formData: FormData) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
 
+	if (!user) {
+		return { error: 'You must be logged in to create a team' };
+	}
+
+	console.log(user, 'user data');
+
 	const image = formData.get('image') as File;
 	const name = formData.get('name') as string;
 
@@ -41,35 +47,34 @@ export const teamCreate = async (formData: FormData) => {
 		return { error: 'File size cannot exceed 4MB. Please compress or upload another file.' };
 	}
 
-	try {
-		if (!!values.image.size) {
-			//Upload the image to S3 if its provided
-			const buffer = Buffer.from(await values.image.arrayBuffer());
-			await uploadFileToS3(buffer, `${uuid}-${values.image.name}`);
-		}
-		//Create the team
-		const newTeam = await db.team.create({
-			data: {
-				name: values.name,
-				createdBy: user?.email ?? '',
-				image: !!values.image?.size ? `${s3Path}/${uuid}-${values.image.name}` : undefined,
-			},
-		});
-
-		//Create new team member
-		const newTeamMember = await db.teamMember.create({
-			data: {
-				role: UserRole.ADMIN,
-				teamId: newTeam.id,
-				userId: user?.id ?? '',
-			},
-		});
-
-		revalidatePath(`/dashboard/teams`);
-
-		return { success: 'Team created successfully', team: newTeam };
-	} catch (e) {
-		console.log(e, 'e.message');
-		return { error: 'There was a problem uploading the file, please try again later' };
+	if (!!values.image.size) {
+		//Upload the image to S3 if its provided
+		const buffer = Buffer.from(await values.image.arrayBuffer());
+		await uploadFileToS3(buffer, `${uuid}-${values.image.name}`);
 	}
+	//Create the team
+	const newTeam = await db.team.create({
+		data: {
+			name: values.name,
+			createdBy: user?.email ?? '',
+			image: !!values.image?.size ? `${s3Path}/${uuid}-${values.image.name}` : undefined,
+		},
+	});
+
+	if (!newTeam) {
+		return { error: 'There was a problem creating the team, please try again later' };
+	}
+
+	//Create new team member
+	const newTeamMember = await db.teamMember.create({
+		data: {
+			role: UserRole.ADMIN,
+			teamId: newTeam.id,
+			userId: user?.id ?? '',
+		},
+	});
+
+	revalidatePath(`/dashboard/teams`);
+
+	return { success: 'Team created successfully', team: newTeam };
 };

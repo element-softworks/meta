@@ -51,6 +51,8 @@ import {
 import { SelectSeparator } from '@radix-ui/react-select';
 
 interface DataTableProps<TData, TValue> {
+	title?: string;
+	description?: string;
 	archivedFilterEnabled?: boolean;
 	columns: ColumnDef<TData, TValue>[];
 	search?: string | { useParams: boolean };
@@ -68,6 +70,8 @@ interface DataTableProps<TData, TValue> {
 }
 
 export function DataTable<TData, TValue>({
+	title,
+	description,
 	columns,
 	data,
 	search,
@@ -178,7 +182,11 @@ export function DataTable<TData, TValue>({
 	return (
 		<Suspense fallback={<>Loading....</>}>
 			<div className="w-full">
-				<div className="flex items-center py-4 gap-2">
+				<div className="pt-4">
+					<p className="text-md font-semibold">{title}</p>
+					<p className="text-xs text-muted-foreground">{description}</p>
+				</div>
+				<div className="flex items-center pb-4 pt-2 gap-2">
 					{!!search ? (
 						<Input
 							disabled={isLoading}

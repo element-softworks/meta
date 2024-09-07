@@ -1,10 +1,10 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
 import { MoreHorizontal } from 'lucide-react';
 import { DataTable } from '../data-table';
 
+import { TeamWithMembers } from '@/actions/get-team-with-members';
 import { Button } from '@/components/ui/button';
 import {
 	DropdownMenu,
@@ -14,50 +14,52 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User } from '@prisma/client';
+import { TeamMember, User } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
-import { DialogWrapper } from '../auth/dialog-wrapper';
-import { ArchiveUserDropdownMenuItem } from '../auth/archive-user-dropdown-menu-item';
+import { format } from 'date-fns';
 
-export type TableUser = {
+export type TableTeamsMember = {
 	id: string;
 	name: string;
-	email: string;
-	role: 'Admin' | 'User';
-	isTwoFactorEnabled: 'Enabled' | 'Disabled';
-	emailVerified: string;
-
 	createdAt: Date;
+	createdBy: string;
 	image: string;
-	isArchived?: boolean;
+	isArchived: boolean;
+	updatedAt: Date;
+	members: (TeamMember & { user: User })[];
 };
 
-interface UsersTableProps {
-	users: User[] | undefined;
+interface TeamsMemberTableProps {
+	teamMembers?: TeamWithMembers['members'] | undefined;
 	totalPages: number | undefined;
 	isLoading: boolean;
 }
 
-export function UsersTable(props: UsersTableProps) {
+export function TeamsMemberTable(props: TeamsMemberTableProps) {
 	const { isLoading = false } = props;
-	const columns: ColumnDef<TableUser>[] = [
+	const columns: ColumnDef<TeamWithMembers['members'][0] | undefined>[] = [
 		{
 			accessorKey: 'name',
 			header: 'Name',
 			enableSorting: true,
 			cell: ({ row }) => {
-				const user = row.original;
+				const member = row.original;
 				return (
 					<div className="flex items-center">
-						{!!user?.image ? (
+						{!!member?.user?.image ? (
 							<Avatar className="size-7">
-								<Image width={35} height={35} src={user?.image} alt="user avatar" />
+								<Image
+									width={35}
+									height={35}
+									src={member?.user?.image}
+									alt="team avatar"
+								/>
 							</Avatar>
 						) : null}
-						<div className="ml-2">{user.name}</div>
+						<div className="ml-2">{member?.user?.name}</div>
 					</div>
 				);
 			},
@@ -66,40 +68,37 @@ export function UsersTable(props: UsersTableProps) {
 			accessorKey: 'email',
 			header: 'Email',
 			enableSorting: true,
-		},
-		{
-			accessorKey: 'emailVerified',
-			header: 'Email Verified',
-			enableSorting: true,
-		},
-		{
-			accessorKey: 'isTwoFactorEnabled',
-			header: '2FA',
-			enableSorting: true,
 			cell: ({ row }) => {
-				const user = row.original;
-				return user.isTwoFactorEnabled;
+				const member = row.original;
+				return member?.user?.email;
 			},
 		},
 		{
 			accessorKey: 'role',
-			header: 'Role',
+			header: 'Team role',
 			enableSorting: true,
-		},
-		{
-			accessorKey: 'createdAt',
-			header: 'Joined on',
-			enableSorting: true,
-			sortDescFirst: true,
 			cell: ({ row }) => {
-				const user = row.original;
-				return format(new Date(user.createdAt), 'MMM dd, yyyy');
+				const member = row.original;
+
+				const role = member?.role?.toLocaleLowerCase();
+				const uppercaseRole = role && role?.charAt?.(0)?.toUpperCase?.() + role?.slice?.(1);
+				return uppercaseRole;
 			},
 		},
 		{
+			accessorKey: 'createdAt',
+			header: 'Joined at',
+			enableSorting: true,
+			cell: ({ row }) => {
+				const member = row.original;
+				return format(new Date(member?.createdAt ?? Date.now()), 'MMM d, yyyy');
+			},
+		},
+
+		{
 			id: 'actions',
 			cell: ({ row }) => {
-				const user = row.original;
+				const member = row.original;
 				return (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
@@ -113,21 +112,17 @@ export function UsersTable(props: UsersTableProps) {
 							<DropdownMenuItem
 								className="cursor-pointer"
 								onClick={() => {
-									navigator.clipboard.writeText(user?.id ?? '');
+									navigator.clipboard.writeText(member?.userId ?? '');
 									toast({
 										description: 'User ID copied to clipboard',
 									});
 								}}
 							>
-								Copy user ID
+								Copy members ID
 							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<Link href={`/dashboard/admin/users/${user.id}`}>
-								<DropdownMenuItem className="cursor-pointer">
-									View user
-								</DropdownMenuItem>
-							</Link>
-							<ArchiveUserDropdownMenuItem user={user} />
+							{/* <DropdownMenuSeparator /> */}
+
+							{/* <ArchiveTeamDropdownMenuItem team={team} /> */}
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);
@@ -135,22 +130,19 @@ export function UsersTable(props: UsersTableProps) {
 		},
 	];
 
-	const rows: TableUser[] | undefined = props.users?.map((user) => ({
-		id: user.id,
-		name: user.name ?? 'User',
-		email: user.email,
-		role: user.role === 'ADMIN' ? 'Admin' : 'User',
-		isTwoFactorEnabled: user.isTwoFactorEnabled ? 'Enabled' : 'Disabled',
-		emailVerified: !!user.emailVerified
-			? format(new Date(user.emailVerified), 'MMM dd, yyyy')
-			: 'Not verified',
-		createdAt: user.createdAt,
-		image: user.image ?? '',
-		isArchived: user.isArchived,
+	const rows: TeamWithMembers['members'] | undefined = props.teamMembers?.map((teamMember) => ({
+		role: teamMember.role,
+		teamId: teamMember.teamId,
+		userId: teamMember.userId,
+		user: teamMember.user,
+		createdAt: teamMember.createdAt,
+		updatedAt: teamMember.updatedAt,
 	}));
 
 	return (
 		<DataTable
+			title="Team Members"
+			description="View and manage your team members"
 			perPageSelectEnabled={true}
 			archivedFilterEnabled={true}
 			isLoading={isLoading}
@@ -162,7 +154,7 @@ export function UsersTable(props: UsersTableProps) {
 			data={rows}
 			search={{ useParams: true }}
 			totalPages={props.totalPages}
-			id="users"
+			id="team-members"
 		/>
 	);
 }

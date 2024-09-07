@@ -63,6 +63,8 @@ model TeamMember {
   role   UserRole @default(USER)
   team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([teamId, userId])
 }

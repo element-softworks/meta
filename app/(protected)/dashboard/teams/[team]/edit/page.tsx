@@ -1,6 +1,6 @@
-import { getTeamById } from '@/actions/get-team';
 import { TeamsForm } from '@/components/forms/teams-form';
 import { Separator } from '@/components/ui/separator';
+import { getTeamById } from '@/lib/team';
 
 export default async function DashboardPage({ params }: { params: { team: string } }) {
 	const teamResponse = await getTeamById(params.team);
