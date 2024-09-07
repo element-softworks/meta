@@ -8,6 +8,12 @@ interface TeamsTableContainerProps {
 	userId: string;
 }
 export default async function TeamsTableContainer(props: TeamsTableContainerProps) {
+	// Get the filters from the search params
+	const nameFilter = props.searchParams?.['teams-name-sort'];
+	const createdBy = props.searchParams?.['teams-createdBy-sort'];
+	const createdAt = props.searchParams?.['teams-createdAt-sort'];
+	const updatedAt = props.searchParams?.['teams-updatedAt-sort'];
+
 	// Get the users data and pass filters inside
 	const data = await getUsersTeams({
 		pageNum: Number(props.searchParams?.['teams-pageNum'] ?? 1),
@@ -15,6 +21,12 @@ export default async function TeamsTableContainer(props: TeamsTableContainerProp
 		search: props.searchParams?.['teams-search'] ?? '',
 		showArchived: (props.searchParams?.['teams-archived'] as 'true' | 'false') ?? 'false',
 		userId: props.userId,
+		filters: {
+			name: nameFilter,
+			createdBy: createdBy,
+			createdAt: createdAt,
+			updatedAt: updatedAt,
+		},
 	});
 
 	//Render the users table
