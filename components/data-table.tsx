@@ -152,7 +152,7 @@ export function DataTable<TData, TValue>({
 			[`${!!id ? `${id}-` : ''}pageNum`]: '1',
 			[`${!!id ? `${id}-` : ''}search`]: searchValue,
 		});
-	}, [searchValue, mutateParam]);
+	}, [searchValue]);
 
 	const handleSort = (columnId: string, isDefaultDesc: boolean) => {
 		const param = `${!!id ? `${id}-` : ''}${columnId}-sort`;

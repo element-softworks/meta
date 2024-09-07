@@ -74,7 +74,7 @@ model Team {
   updatedAt DateTime @updatedAt
   isArchived         Boolean         @default(false)
   image              String?
-  members   TeamMember[]
+  members   TeamMember[] 
 }
 
 model VerificationToken {

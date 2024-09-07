@@ -20,8 +20,9 @@ import Link from 'next/link';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
 import { AvatarGroup } from '../avatar-group';
+import { ArchiveTeamDropdownMenuItem } from '../menu-items/archive-team-dropdown-menu-item';
 
-type TableTeam = {
+export type TableTeam = {
 	id: string;
 	name: string;
 	createdAt: Date;
@@ -138,7 +139,7 @@ export function TeamsTable(props: TeamsTableProps) {
 									View team
 								</DropdownMenuItem>
 							</Link>
-							{/* <ArchiveTeamDropdownMenuItem team={team} /> */}
+							<ArchiveTeamDropdownMenuItem team={team} />
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);
