@@ -15,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Plus } from 'lucide-react';
+import { getCookie, setCookie } from '@/data/cookies';
 
 interface TeamSelectMenuProps {
 	user: ExtendedUser | undefined;
@@ -28,8 +29,13 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 	//set the current team to either the first team or the team stored in cookies
 
 	const [selectedTeam, setSelectedTeam] = useState(
-		props.user?.teams ? props.user?.teams[0] : null
+		props.user?.teams
+			? props.user?.teams?.find((team) => team.id === props.user?.currentTeam) ??
+					props.user?.teams[0]
+			: null
 	);
+
+	console.log(props.user, 'user');
 
 	if (!props.user) return null;
 
@@ -51,6 +57,9 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 				if (team) {
 					setSelectedTeam(team);
 				}
+
+				//Set the cookie for the default team
+				setCookie({ name: 'default-team', value: team.id });
 
 				router.push('/dashboard');
 			}}
