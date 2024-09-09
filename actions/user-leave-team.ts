@@ -22,6 +22,10 @@ export const userLeaveTeam = async (teamId: string) => {
 		return { error: 'User not found in team' };
 	}
 
+	if (teamMember.role === 'OWNER') {
+		return { error: 'Owner cannot leave team' };
+	}
+
 	// Remove the team member
 	const leavingTeam = await db.teamMember.delete({
 		where: {

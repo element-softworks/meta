@@ -65,6 +65,31 @@ export const findTeamById = async (teamId: string) => {
 	return team;
 };
 
+export const getTeamById = async (teamId: string) => {
+	if (!teamId?.length) {
+		return { error: 'Team ID not provided' };
+	}
+
+	const team = await db.team.findUnique({
+		where: {
+			id: teamId,
+		},
+		include: {
+			members: {
+				include: {
+					user: true,
+				},
+			},
+		},
+	});
+
+	if (!team) {
+		return { error: 'Team not found' };
+	}
+
+	return { success: 'Teams retrieved successfully.', team: team };
+};
+
 export const getTeamMemberByIds = async ({
 	teamId,
 	userId,
@@ -80,6 +105,25 @@ export const getTeamMemberByIds = async ({
 	});
 
 	return teamMember;
+};
+
+export const getUsersTeams = async (userId: string) => {
+	try {
+		const teams = await db.team.findMany({
+			where: {
+				members: {
+					some: {
+						userId,
+					},
+				},
+			},
+		});
+
+		return teams;
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
 };
 
 export const addUserToTeam = async (teamId: string, userId: string, role: TeamRole) => {

@@ -4,9 +4,9 @@ import { TeamsMemberTable } from '@/components/tables/team-members-table';
 import TeamMembersTableContainer from '@/components/tables/team-members-table-container';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { getIsUserInTeam } from '@/data/team';
+import { getIsUserInTeam, getTeamById } from '@/data/team';
 import { currentUser } from '@/lib/auth';
-import { getTeamById, isTeamAuth } from '@/lib/team';
+import { isTeamAuth, isTeamOwner } from '@/lib/team';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -24,6 +24,7 @@ export default async function DashboardPage({
 	const isUserInTeam = await getIsUserInTeam(params.team, user?.id ?? '');
 
 	const isTeamAdmin = isTeamAuth(teamResponse?.team?.members ?? [], user?.id ?? '');
+	const isOwner = isTeamOwner(teamResponse?.team?.members ?? [], user?.id ?? '');
 
 	if (!isUserInTeam) {
 		return redirect('/dashboard/teams');
@@ -48,9 +49,11 @@ export default async function DashboardPage({
 				<TeamMembersTableContainer teamId={params.team} searchParams={searchParams} />
 			</Suspense>
 
-			<div className="mt-auto">
-				<UserLeaveTeamDialog teamId={teamResponse?.team?.id ?? ''} />
-			</div>
+			{isOwner ? null : (
+				<div className="mt-auto">
+					<UserLeaveTeamDialog teamId={teamResponse?.team?.id ?? ''} />
+				</div>
+			)}
 		</main>
 	);
 }

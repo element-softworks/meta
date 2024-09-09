@@ -14,13 +14,13 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Team, TeamMember, User, UserRole } from '@prisma/client';
+import { Team, TeamMember, TeamRole, User } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Avatar } from '../ui/avatar';
-import { toast } from '../ui/use-toast';
 import { AvatarGroup } from '../avatar-group';
 import { ArchiveTeamDropdownMenuItem } from '../menu-items/archive-team-dropdown-menu-item';
+import { Avatar } from '../ui/avatar';
+import { toast } from '../ui/use-toast';
 
 export type TableTeam = {
 	id: string;
@@ -37,7 +37,7 @@ interface TeamsTableProps {
 	teams: {
 		teamId: string;
 		userId: string;
-		role: UserRole;
+		role: TeamRole;
 		team: Team & {
 			members: any;
 		};

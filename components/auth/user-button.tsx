@@ -31,6 +31,7 @@ export function UserButton(props: UserButtonProps) {
 			</Link>
 		);
 	}
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">

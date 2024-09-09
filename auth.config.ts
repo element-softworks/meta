@@ -11,6 +11,7 @@ import { getUserByEmail, getUserById } from './data/user';
 import { db } from './lib/db';
 import { LoginSchema } from './schemas';
 import { signOut } from 'next-auth/react';
+import { getUsersTeams } from './data/team';
 
 export default {
 	pages: {
@@ -108,6 +109,10 @@ export default {
 				session.user.role = token.role;
 			}
 
+			if (token.teams && session.user) {
+				session.user.teams = token.teams;
+			}
+
 			if (session.user) {
 				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
 			}
@@ -127,6 +132,7 @@ export default {
 			if (!token.sub) return token;
 
 			const existingUser = await getUserById(token.sub);
+			const teams = await getUsersTeams(token.sub);
 
 			if (!existingUser) return token;
 
@@ -140,6 +146,7 @@ export default {
 			token.isTwoFactorEnabled =
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			token.image = session?.image ?? existingUser.image;
+			token.teams = teams ?? [];
 			return token;
 		},
 	},

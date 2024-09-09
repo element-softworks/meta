@@ -1,11 +1,11 @@
-import crypto from 'crypto';
-import { getVerificationTokenByEmail } from '@/data/verification-token';
-import { v4 as uuidv4 } from 'uuid';
-import { db } from './db';
+import { getConciergeTokenByEmail } from '@/data/concierge-token';
 import { getPasswordResetTokenByEmail } from '@/data/password-reset-token';
 import { getTwoFactorTokenByEmail } from '@/data/two-factor-token';
-import { getConciergeTokenByEmail } from '@/data/concierge-token';
-import { UserRole } from '@prisma/client';
+import { getVerificationTokenByEmail } from '@/data/verification-token';
+import { TeamRole } from '@prisma/client';
+import crypto from 'crypto';
+import { v4 as uuidv4 } from 'uuid';
+import { db } from './db';
 
 export const generateTwoFactorToken = async (email: string) => {
 	crypto.randomInt(100_000, 1_000_000).toString();
@@ -64,7 +64,7 @@ export const generateConciergeToken = async ({
 	email: string;
 	name: string;
 	teamId: string;
-	role: UserRole;
+	role: TeamRole;
 }) => {
 	const token = uuidv4();
 	const expiresAt = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000); // 1 week

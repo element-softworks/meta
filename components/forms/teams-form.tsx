@@ -47,7 +47,7 @@ export function TeamsForm(props: TeamsFormProps) {
 	const { query: createTeamQuery, isLoading: isCreating } = useMutation<FormData, TeamsResponse>({
 		queryFn: async (values) => await teamCreate(values!),
 		onCompleted: async (data) => {
-			const response = await update();
+			update();
 			form.reset();
 		},
 		onSuccess: async (data) => {
@@ -58,6 +58,7 @@ export function TeamsForm(props: TeamsFormProps) {
 	const { query: updateTeamQuery, isLoading: isUpdating } = useMutation<FormData, TeamsResponse>({
 		queryFn: async (values) => await teamUpdate(values!, defaultTeam?.id!),
 		onCompleted: async (data) => {
+			update();
 			form.reset({
 				name: data?.team?.name ?? '',
 				image: undefined,

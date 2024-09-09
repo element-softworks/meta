@@ -11,6 +11,7 @@ import { DialogWrapper } from '../auth/dialog-wrapper';
 import { TableTeam } from '../tables/teams-table';
 import { ButtonProps } from '../ui/button';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
+import { useSession } from 'next-auth/react';
 
 interface ArchiveTeamDropdownMenuItemProps {
 	team: (Team & { members: (TeamMember & { user: User })[] }) | null | TableTeam;
@@ -19,6 +20,7 @@ interface ArchiveTeamDropdownMenuItemProps {
 export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemProps) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
+	const { update } = useSession();
 	const currentUser = useCurrentUser();
 
 	const { query: ArchiveTeamQuery, isLoading } = useMutation<
@@ -26,7 +28,10 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 		{}
 	>({
 		queryFn: async (team) => await adminArchiveTeam(team!),
-		onCompleted: () => setDialogOpen(false),
+		onCompleted: () => {
+			update();
+			setDialogOpen(false);
+		},
 	});
 
 	const handleArchiveTeam = () => {
@@ -42,9 +47,9 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 	const title = isArchived ? 'Restore' : 'Archive';
 	const description = isArchived
 		? `Restoring ${props.team?.name ?? 'this team'}
-		will grant them access to the system. This action can only be undone by a site administrator`
+		will make it visible in the system again`
 		: `Archiving ${props.team?.name ?? 'this team'}
-		will remove them from the system and revoke their access. This action can only be undone by a site administrator`;
+		will hide it from the system. This action can only be undone by a team administrator`;
 	const buttonProps: ButtonProps = isArchived
 		? { variant: 'successful' }
 		: { variant: 'destructive' };
