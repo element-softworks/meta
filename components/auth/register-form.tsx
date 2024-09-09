@@ -1,38 +1,39 @@
 'use client';
 
 import { register } from '@/actions/register';
+import { useMutation } from '@/hooks/use-mutation';
 import { RegisterSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useTransition } from 'react';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { PasswordInput } from '../inputs/password-input';
 import { Button } from '../ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
-import { toast } from '../ui/use-toast';
 import { FormInput } from './form-input';
 import { Social } from './social';
-import { useMutation } from '@/hooks/use-mutation';
-import { LoaderCircle } from 'lucide-react';
-import { PasswordInput } from '../inputs/password-input';
-import Link from 'next/link';
-import { useFormStatus } from 'react-dom';
+import { useSearchParams } from 'next/navigation';
+import { ConciergeToken } from '@prisma/client';
 
-type RegisterFormProps = z.infer<typeof RegisterSchema>;
+type RegisterFormFormProps = z.infer<typeof RegisterSchema>;
 
-export function RegisterForm() {
-	const form = useForm<RegisterFormProps>({
+interface RegisterFormProps {
+	token?: ConciergeToken | null;
+}
+
+export function RegisterForm(props: RegisterFormProps) {
+	const form = useForm<RegisterFormFormProps>({
 		resolver: zodResolver(RegisterSchema),
 		defaultValues: {
-			email: '',
+			email: props.token?.email ?? '',
 			password: '',
-			name: '',
+			name: props.token?.name ?? '',
 		},
 	});
 
-	const { query: registerQuery, isLoading } = useMutation<RegisterFormProps, {}>({
-		queryFn: async (values) => await register(values!),
+	const { query: registerQuery, isLoading } = useMutation<RegisterFormFormProps, {}>({
+		queryFn: async (values) => await register(values!, props?.token),
 		onSuccess: () => {
 			form.reset();
 		},
@@ -78,18 +79,23 @@ export function RegisterForm() {
 					</Button>
 				</form>
 			</Form>
-			<div className="relative mt-2">
-				<div className="absolute inset-0 flex items-center">
-					<span className="w-full border-t"></span>
+			{!!props.token ? null : (
+				<div className="relative mt-2">
+					<div className="absolute inset-0 flex items-center">
+						<span className="w-full border-t"></span>
+					</div>
+					<div className="relative flex justify-center text-xs uppercase">
+						<span className="bg-background px-2 text-muted-foreground">
+							Or continue with
+						</span>
+					</div>
 				</div>
-				<div className="relative flex justify-center text-xs uppercase">
-					<span className="bg-background px-2 text-muted-foreground">
-						Or continue with
-					</span>
-				</div>
-			</div>
-			<Social className="mt-2" />
+			)}
 
+			{/* We disable social login if the user is invited to the platform as there is no way to
+			securely pass data to OAuth providers without exposing vulnerabilities to the platform.
+			This is a security measure to prevent unauthorized access teams across platform. */}
+			<Social className="mt-2" disabled={!!props.token} />
 			<p className="px-8 text-center text-sm text-muted-foreground">
 				Already have an account?{' '}
 				<Button asChild variant="link" className="px-0 text-muted-foreground">

@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import bcrypt from 'bcryptjs';
 import type { NextAuthConfig } from 'next-auth';
@@ -27,6 +28,7 @@ export default {
 			clientId: process.env.GITHUB_CLIENT_ID,
 			clientSecret: process.env.GITHUB_CLIENT_SECRET,
 		}),
+
 		Credentials({
 			async authorize(credentials) {
 				const validatedFields = LoginSchema.safeParse(credentials);
@@ -63,6 +65,7 @@ export default {
 
 	callbacks: {
 		signIn: async ({ user, account }) => {
+			console.log(account, 'account, user');
 			const existingUser = await getUserById(user?.id ?? '');
 
 			//Prevent login if user is archived
@@ -121,7 +124,6 @@ export default {
 		},
 
 		jwt: async ({ token, session }) => {
-			console.log(token, 'token');
 			if (!token.sub) return token;
 
 			const existingUser = await getUserById(token.sub);

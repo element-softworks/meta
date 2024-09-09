@@ -8,6 +8,7 @@ import { useSearchParams } from 'next/navigation';
 
 interface SocialProps {
 	className?: string;
+	disabled?: boolean;
 }
 export function Social(props: SocialProps) {
 	const searchParams = useSearchParams();
@@ -18,6 +19,8 @@ export function Social(props: SocialProps) {
 			callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
 		});
 	};
+
+	if (props.disabled) return null;
 
 	return (
 		<div className={`${props.className} flex flex-col w-full gap-y-2 items-center`}>

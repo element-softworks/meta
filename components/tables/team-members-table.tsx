@@ -15,11 +15,11 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { TeamMember, User } from '@prisma/client';
+import { format } from 'date-fns';
 import Image from 'next/image';
-import Link from 'next/link';
+import { RemoveUserFromTeamDropdownMenuItem } from '../menu-items/remove-user-from-team-dropdown-menu-item';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
-import { format } from 'date-fns';
 
 export type TableTeamsMember = {
 	id: string;
@@ -120,9 +120,14 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 							>
 								Copy members ID
 							</DropdownMenuItem>
-							{/* <DropdownMenuSeparator /> */}
 
-							{/* <ArchiveTeamDropdownMenuItem team={team} /> */}
+							<DropdownMenuSeparator />
+
+							<RemoveUserFromTeamDropdownMenuItem
+								teamMembers={props.teamMembers ?? []}
+								teamId={member?.teamId ?? ''}
+								userId={member?.userId ?? ''}
+							/>
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);

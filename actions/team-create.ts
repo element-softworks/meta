@@ -17,8 +17,6 @@ export const teamCreate = async (formData: FormData) => {
 		return { error: 'You must be logged in to create a team' };
 	}
 
-	console.log(user, 'user data');
-
 	const image = formData.get('image') as File;
 	const name = formData.get('name') as string;
 

@@ -49,21 +49,22 @@ export function ArchiveUserDropdownMenuItem(props: ArchiveUserDropdownMenuItemPr
 			onOpenChange={(state) => setDialogOpen(state)}
 			open={dialogOpen}
 			onSubmit={() => handleArchiveUser()}
+			button={
+				<DropdownMenuItem
+					onClick={(e) => {
+						e.preventDefault();
+						setDialogOpen(true);
+					}}
+					className="cursor-pointer"
+				>
+					{isArchived ? 'Restore' : 'Archive'} User
+				</DropdownMenuItem>
+			}
 			dialog={{
 				title,
 				description,
 				buttonProps,
 			}}
-		>
-			<DropdownMenuItem
-				onClick={(e) => {
-					e.preventDefault();
-					setDialogOpen(true);
-				}}
-				className="cursor-pointer"
-			>
-				{isArchived ? 'Restore' : 'Archive'} User
-			</DropdownMenuItem>
-		</DialogWrapper>
+		/>
 	);
 }

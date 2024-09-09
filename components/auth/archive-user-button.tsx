@@ -58,24 +58,25 @@ export function ArchiveUserButton(props: ArchiveUserButtonProps) {
 				onOpenChange={(state) => setDialogOpen(state)}
 				open={dialogOpen}
 				onSubmit={() => handleArchiveUser()}
+				button={
+					<Button
+						onClick={() => {
+							setDialogOpen(true);
+						}}
+						disabled={isLoading}
+						isLoading={isLoading}
+						className="w-fit"
+						variant={isArchived ? 'successful' : 'destructive'}
+					>
+						{isArchived ? 'Restore' : 'Archive'} User
+					</Button>
+				}
 				dialog={{
 					title,
 					description,
 					buttonProps,
 				}}
-			>
-				<Button
-					onClick={() => {
-						setDialogOpen(true);
-					}}
-					disabled={isLoading}
-					isLoading={isLoading}
-					className="w-fit"
-					variant={isArchived ? 'successful' : 'destructive'}
-				>
-					{isArchived ? 'Restore' : 'Archive'} User
-				</Button>
-			</DialogWrapper>
+			/>
 		</div>
 	);
 }

@@ -26,6 +26,29 @@ export const teamUpdate = async (formData: FormData, teamId: string) => {
 		return { error: 'There was a problem registering, please try again later' };
 	}
 
+	const team = await db.team.findUnique({
+		where: {
+			id: teamId,
+		},
+		include: {
+			members: {
+				include: {
+					user: true,
+				},
+			},
+		},
+	});
+
+	if (!team) {
+		return { error: 'Team not found' };
+	}
+
+	const currentTeamUser = team.members.find((member) => member.user.email === user?.email);
+
+	if (currentTeamUser?.role !== UserRole.ADMIN) {
+		return { error: 'You must be an admin to update the team' };
+	}
+
 	//Upload image
 	if (
 		!process.env.AWS_REGION ||
