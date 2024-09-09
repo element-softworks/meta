@@ -3,7 +3,8 @@
 import { adminArchiveTeam } from '@/actions/admin-archive-team';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
-import { Team, TeamMember, UserRole } from '@prisma/client';
+import { isTeamAuth } from '@/lib/team';
+import { Team, TeamMember } from '@prisma/client';
 import { User } from 'next-auth';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
@@ -34,11 +35,7 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 	};
 
 	//If you are a team admin, or a site admin, you can archive/restore a team
-	const isTeamAdmin = props.team?.members?.some(
-		(member) =>
-			(member.userId === currentUser?.id && member.role === UserRole.ADMIN) ||
-			currentUser?.role === UserRole.ADMIN
-	);
+	const isTeamAdmin = isTeamAuth(props.team?.members ?? [], currentUser?.id ?? '');
 
 	const isArchived = !!props.team?.isArchived ?? false;
 

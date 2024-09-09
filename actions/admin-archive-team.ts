@@ -2,7 +2,8 @@
 import { TableTeam } from '@/components/tables/teams-table';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { Team, TeamMember, UserRole } from '@prisma/client';
+import { isTeamAuth } from '@/lib/team';
+import { Team, TeamMember, TeamRole, UserRole } from '@prisma/client';
 import { User } from 'next-auth';
 import { revalidatePath } from 'next/cache';
 
@@ -12,11 +13,7 @@ export const adminArchiveTeam = async (
 	const editingUser = await currentUser();
 
 	//If you are a team admin, or a site admin, you can archive/restore a team
-	const isTeamAdmin = archivingTeam?.members?.some(
-		(member) =>
-			(member.userId === editingUser?.id && member.role === UserRole.ADMIN) ||
-			editingUser?.role === UserRole.ADMIN
-	);
+	const isTeamAdmin = isTeamAuth(archivingTeam?.members ?? [], editingUser?.id ?? '');
 
 	if (!isTeamAdmin) {
 		return { error: 'Unauthorized' };

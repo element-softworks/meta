@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { UserRole } from '@prisma/client';
+import { TeamRole } from '@prisma/client';
 
 export const getIsUserTeamAdmin = async (teamId: string, userId: string) => {
 	const team = await db.team.findUnique({
@@ -21,11 +21,11 @@ export const getIsUserTeamAdmin = async (teamId: string, userId: string) => {
 
 	const currentTeamUser = team.members.find((member) => member.user.id === userId);
 
-	if (currentTeamUser?.role !== UserRole.ADMIN) {
-		return false;
+	if (currentTeamUser?.role === TeamRole.ADMIN || currentTeamUser?.role === TeamRole.OWNER) {
+		return true;
 	}
 
-	return true;
+	return false;
 };
 
 export const getIsUserInTeam = async (teamId: string, userId: string) => {
@@ -82,7 +82,7 @@ export const getTeamMemberByIds = async ({
 	return teamMember;
 };
 
-export const addUserToTeam = async (teamId: string, userId: string, role: UserRole) => {
+export const addUserToTeam = async (teamId: string, userId: string, role: TeamRole) => {
 	const team = await db.team.findUnique({
 		where: {
 			id: teamId,

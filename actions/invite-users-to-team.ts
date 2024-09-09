@@ -3,10 +3,9 @@ import { addUserToTeam, getIsUserTeamAdmin } from '@/data/team';
 import { getUserByEmail } from '@/data/user';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { sendConciergeEmail, sendNotificationEmail, sendPasswordResetEmail } from '@/lib/mail';
+import { sendConciergeEmail, sendNotificationEmail } from '@/lib/mail';
 import { generateConciergeToken } from '@/lib/tokens';
 import { InviteTeamUserSchema } from '@/schemas';
-import { UserRole } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
 

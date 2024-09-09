@@ -1,3 +1,4 @@
+import { TeamMember, TeamRole } from '@prisma/client';
 import { db } from './db';
 
 export const getTeamById = async (teamId: string) => {
@@ -23,4 +24,14 @@ export const getTeamById = async (teamId: string) => {
 	}
 
 	return { success: 'Teams retrieved successfully.', team: team };
+};
+
+export const isTeamAuth = (members: TeamMember[], userId: string) => {
+	const currentTeamUser = members.find((member) => member.userId === userId);
+
+	if (!currentTeamUser) {
+		return false;
+	}
+
+	return currentTeamUser.role === TeamRole.ADMIN || currentTeamUser.role === TeamRole.OWNER;
 };

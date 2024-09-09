@@ -1,20 +1,12 @@
 'use client';
 
+import { $Enums, TeamRole } from '@prisma/client';
 import { useFieldArray, useFormContext } from 'react-hook-form';
-import { Button } from '../ui/button';
-import { Input } from '../ui/input';
-import { FormInput } from '../auth/form-input';
-import {
-	FormControl,
-	FormDescription,
-	FormField,
-	FormItem,
-	FormLabel,
-	FormMessage,
-} from '../ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { $Enums, UserRole } from '@prisma/client';
 import { InviteTeamUsersFormInputProps } from '../forms/invite-user-to-team-form';
+import { Button } from '../ui/button';
+import { FormControl, FormField, FormItem } from '../ui/form';
+import { Input } from '../ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 
 interface InviteUsersInputProps {
 	name: string;
@@ -80,13 +72,13 @@ export function InviteUsersInput(props: InviteUsersInputProps) {
 								<FormControl className="w-40">
 									<FormItem>
 										<Select
-											onValueChange={(value: $Enums.UserRole) => {
+											onValueChange={(value: $Enums.TeamRole) => {
 												setValue(
 													`${props.name as 'users'}.${index}.role`,
 													value
 												);
 											}}
-											defaultValue={UserRole.USER}
+											defaultValue={TeamRole.USER}
 											disabled={isLoading}
 										>
 											<SelectTrigger
@@ -95,10 +87,10 @@ export function InviteUsersInput(props: InviteUsersInputProps) {
 												<SelectValue placeholder="Select a role" />
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value={UserRole.ADMIN}>
+												<SelectItem value={TeamRole.ADMIN}>
 													Admin
 												</SelectItem>
-												<SelectItem value={UserRole.USER}>User</SelectItem>
+												<SelectItem value={TeamRole.USER}>User</SelectItem>
 											</SelectContent>
 										</Select>
 									</FormItem>
@@ -115,7 +107,7 @@ export function InviteUsersInput(props: InviteUsersInputProps) {
 				variant="secondary"
 				type="button"
 				onClick={() => {
-					insert(fields.length, { email: '', role: UserRole.USER });
+					insert(fields.length, { email: '', role: TeamRole.USER });
 				}}
 			>
 				Add another user

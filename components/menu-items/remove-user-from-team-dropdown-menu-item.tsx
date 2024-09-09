@@ -1,15 +1,15 @@
 'use client';
 
+import { removeUserFromTeam } from '@/actions/remove-user-from-team';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
-import { Team, TeamMember, UserRole } from '@prisma/client';
+import { isTeamAuth } from '@/lib/team';
+import { Team, TeamMember } from '@prisma/client';
 import { User } from 'next-auth';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
 import { TableTeam } from '../tables/teams-table';
-import { ButtonProps } from '../ui/button';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
-import { removeUserFromTeam } from '@/actions/remove-user-from-team';
 
 interface RemoveUserFromTeamDropdownMenuItemProps {
 	teamId: string;
@@ -36,11 +36,7 @@ export function RemoveUserFromTeamDropdownMenuItem(props: RemoveUserFromTeamDrop
 	};
 
 	//If you are a team admin, or a site admin, you can archive/restore a team
-	const isTeamAdmin = props.teamMembers?.some(
-		(member) =>
-			(member.userId === currentUser?.id && member.role === UserRole.ADMIN) ||
-			currentUser?.role === UserRole.ADMIN
-	);
+	const isTeamAdmin = isTeamAuth(props.teamMembers ?? [], currentUser?.id ?? '');
 
 	if (!isTeamAdmin) return null;
 

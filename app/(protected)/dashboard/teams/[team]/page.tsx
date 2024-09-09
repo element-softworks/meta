@@ -6,8 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { getIsUserInTeam } from '@/data/team';
 import { currentUser } from '@/lib/auth';
-import { getTeamById } from '@/lib/team';
-import { UserRole } from '@prisma/client';
+import { getTeamById, isTeamAuth } from '@/lib/team';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -24,9 +23,7 @@ export default async function DashboardPage({
 	const user = await currentUser();
 	const isUserInTeam = await getIsUserInTeam(params.team, user?.id ?? '');
 
-	const isTeamAdmin =
-		teamResponse.team?.members?.find((member) => member.userId === user?.id)?.role ===
-		UserRole.ADMIN;
+	const isTeamAdmin = isTeamAuth(teamResponse?.team?.members ?? [], user?.id ?? '');
 
 	if (!isUserInTeam) {
 		return redirect('/dashboard/teams');
