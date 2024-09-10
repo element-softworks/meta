@@ -1,14 +1,13 @@
 'use server';
 
+import { getIsUserTeamAdmin } from '@/data/team';
+import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { s3Path } from '@/lib/s3';
 import { TeamsSchema } from '@/schemas';
-import { UserRole } from '@prisma/client';
-import * as z from 'zod';
-import { v4 as uuidv4 } from 'uuid';
-import { currentUser } from '@/lib/auth';
-import { uploadFileToS3 } from './upload-file-to-s3';
 import { revalidatePath } from 'next/cache';
+import { v4 as uuidv4 } from 'uuid';
+import { uploadFileToS3 } from './upload-file-to-s3';
 export const teamUpdate = async (formData: FormData, teamId: string) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
@@ -24,6 +23,30 @@ export const teamUpdate = async (formData: FormData, teamId: string) => {
 
 	if (!validatedFields.success) {
 		return { error: 'There was a problem registering, please try again later' };
+	}
+
+	const team = await db.team.findUnique({
+		where: {
+			id: teamId,
+		},
+		include: {
+			members: {
+				include: {
+					user: true,
+				},
+			},
+		},
+	});
+
+	if (!team) {
+		return { error: 'Team not found' };
+	}
+
+	const currentTeamUser = team.members.find((member) => member.user.email === user?.email);
+
+	const isTeamAdmin = await getIsUserTeamAdmin(teamId, currentTeamUser?.userId ?? '');
+	if (!isTeamAdmin) {
+		return { error: 'You must be an admin to update the team' };
 	}
 
 	//Upload image

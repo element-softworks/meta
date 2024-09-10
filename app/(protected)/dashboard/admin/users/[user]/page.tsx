@@ -32,7 +32,7 @@ export default async function AdminUserPage({ params }: { params: { user: string
 			) : null}
 
 			<div className="mt-auto">
-				<ArchiveUserButton user={user!} />
+				<ArchiveUserButton user={user} />
 			</div>
 		</main>
 	);

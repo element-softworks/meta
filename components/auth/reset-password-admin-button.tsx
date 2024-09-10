@@ -5,7 +5,7 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
 import { ResetPasswordSchema } from '@/schemas';
-import { UserRole } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import z from 'zod';
 import { Button } from '../ui/button';
 
@@ -15,7 +15,7 @@ type ResetPasswordAdminResponse = {};
 
 interface ResetPasswordAdminButtonProps {
 	disableSeparator?: boolean;
-	user: ExtendedUser | null;
+	user?: User | null;
 }
 
 export function ResetPasswordAdminButton(props: ResetPasswordAdminButtonProps) {
@@ -24,11 +24,11 @@ export function ResetPasswordAdminButton(props: ResetPasswordAdminButtonProps) {
 		ExtendedUser,
 		ResetPasswordAdminResponse
 	>({
-		queryFn: async (user) => await adminSendPasswordReset(user!),
+		queryFn: async (user) => await adminSendPasswordReset(props.user?.id!),
 	});
 
 	async function onSubmit() {
-		const response = await ResetPasswordAdminQuery(props.user!);
+		const response = await ResetPasswordAdminQuery();
 	}
 
 	if (!(currentUser?.role === UserRole.ADMIN)) return null;

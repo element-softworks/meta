@@ -6,10 +6,11 @@ import { sendPasswordResetEmail } from '@/lib/mail';
 import { generatePasswordResetToken } from '@/lib/tokens';
 import { ExtendedUser } from '@/next-auth';
 import { UserRole } from '@prisma/client';
+import { User } from 'next-auth';
 
-export const adminSendPasswordReset = async (editingUser: ExtendedUser) => {
+export const adminSendPasswordReset = async (editingUserId: string) => {
 	const adminUser = await currentUser();
-	const resetUser = await getUserById(editingUser.id ?? '');
+	const resetUser = await getUserById(editingUserId ?? '');
 
 	if (!adminUser || !resetUser) {
 		return { error: 'User not found' };

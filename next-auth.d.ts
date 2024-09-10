@@ -1,4 +1,4 @@
-import { UserRole } from '@prisma/client';
+import { Team, UserRole } from '@prisma/client';
 import { DefaultSession } from 'next-auth';
 
 export type ExtendedUser = DefaultSession['user'] & {
@@ -6,6 +6,8 @@ export type ExtendedUser = DefaultSession['user'] & {
 	isTwoFactorEnabled: boolean;
 	isOAuth: boolean;
 	isArchived: boolean;
+	teams: Team[] | undefined;
+	currentTeam?: string | undefined;
 };
 
 declare module 'next-auth' {
@@ -26,5 +28,7 @@ declare module 'next-auth/jwt' {
 		isOAuth: boolean;
 		isArchived: boolean;
 		image: string;
+		teams: Team[] | undefined;
+		currentTeam?: string | undefined;
 	}
 }

@@ -1,14 +1,13 @@
 'use server';
 
+import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { s3Path } from '@/lib/s3';
 import { TeamsSchema } from '@/schemas';
-import { UserRole } from '@prisma/client';
-import * as z from 'zod';
-import { v4 as uuidv4 } from 'uuid';
-import { currentUser } from '@/lib/auth';
-import { uploadFileToS3 } from './upload-file-to-s3';
+import { TeamRole } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
+import { v4 as uuidv4 } from 'uuid';
+import { uploadFileToS3 } from './upload-file-to-s3';
 export const teamCreate = async (formData: FormData) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
@@ -16,8 +15,6 @@ export const teamCreate = async (formData: FormData) => {
 	if (!user) {
 		return { error: 'You must be logged in to create a team' };
 	}
-
-	console.log(user, 'user data');
 
 	const image = formData.get('image') as File;
 	const name = formData.get('name') as string;
@@ -68,7 +65,7 @@ export const teamCreate = async (formData: FormData) => {
 	//Create new team member
 	const newTeamMember = await db.teamMember.create({
 		data: {
-			role: UserRole.ADMIN,
+			role: TeamRole.OWNER,
 			teamId: newTeam.id,
 			userId: user?.id ?? '',
 		},

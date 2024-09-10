@@ -6,7 +6,7 @@ import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
 import { SettingsSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { UserRole } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -25,7 +25,7 @@ type SettingsResponse = {
 
 interface SettingsFormProps {
 	adminMode?: boolean;
-	editingUser?: ExtendedUser | null;
+	editingUser?: (User & { isOAuth: boolean }) | null;
 }
 
 export function SettingsForm(props: SettingsFormProps) {
