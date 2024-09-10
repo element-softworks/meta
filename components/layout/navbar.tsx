@@ -27,20 +27,24 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { useTheme } from 'next-themes';
+import { Team } from '@prisma/client';
+import { TeamSelectMenu } from '../auth/team-select-menu';
 
 const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
 	{ name: 'Docs', href: '/docs', icon: <Notebook className="mr-2 h-4 w-4" /> },
 ];
 
-export function Navbar() {
+interface NavbarProps {}
+
+export function Navbar(props: NavbarProps) {
 	const user = useCurrentUser();
 
 	const [navOpen, setNavOpen] = useState(false);
 	const { setTheme, theme } = useTheme();
 	const isLightMode = theme === 'light';
 	return (
-		<nav className="py-6 px-4 md:px-8 flex flex-row justify-between items-center h-24">
+		<nav className="py-6 px-4 md:px-6 flex flex-row justify-between items-center h-24">
 			<Link href="/">
 				<div className="z-10 flex items-center text-lg font-light">
 					<FrameIcon className="mr-2" size={30} />
@@ -136,9 +140,9 @@ export function Navbar() {
 					})}
 				</div>
 
-				{/* Desktop icon menu */}
-
-				<UserButton user={user} />
+				<div className="flex">
+					<UserButton user={user} />
+				</div>
 			</div>
 		</nav>
 	);

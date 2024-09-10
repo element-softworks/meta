@@ -4,10 +4,10 @@ import { TableUser } from '@/components/tables/users-table';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { ExtendedUser } from '@/next-auth';
-import { UserRole } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 
-export const adminArchiveUser = async (archivingUser: ExtendedUser | TableUser) => {
+export const adminArchiveUser = async (archivingUser?: User | TableUser) => {
 	const adminUser = await currentUser();
 
 	if (!adminUser || !archivingUser) {

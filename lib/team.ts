@@ -1,26 +1,22 @@
+import { TeamMember, TeamRole } from '@prisma/client';
 import { db } from './db';
 
-export const getTeamById = async (teamId: string) => {
-	if (!teamId?.length) {
-		return { error: 'Team ID not provided' };
+export const isTeamAuth = (members: TeamMember[], userId: string) => {
+	const currentTeamUser = members.find((member) => member.userId === userId);
+
+	if (!currentTeamUser) {
+		return false;
 	}
 
-	const team = await db.team.findUnique({
-		where: {
-			id: teamId,
-		},
-		include: {
-			members: {
-				include: {
-					user: true,
-				},
-			},
-		},
-	});
+	return currentTeamUser.role === TeamRole.ADMIN || currentTeamUser.role === TeamRole.OWNER;
+};
 
-	if (!team) {
-		return { error: 'Team not found' };
+export const isTeamOwner = (members: TeamMember[], userId: string) => {
+	const currentTeamUser = members.find((member) => member.userId === userId);
+
+	if (!currentTeamUser) {
+		return false;
 	}
 
-	return { success: 'Teams retrieved successfully.', team: team };
+	return currentTeamUser.role === TeamRole.OWNER;
 };

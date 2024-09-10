@@ -1,4 +1,4 @@
-import { UserRole } from '@prisma/client';
+import { TeamRole, UserRole } from '@prisma/client';
 import * as z from 'zod';
 
 export const SettingsSchema = z.object({
@@ -29,6 +29,16 @@ export const TeamsSchema = z.object({
 				path: ['image'],
 			}
 		),
+});
+
+export const InviteTeamUserSchema = z.object({
+	users: z.array(
+		z.object({
+			email: z.string().email(),
+			role: z.enum([TeamRole.ADMIN, TeamRole.USER, TeamRole.OWNER]),
+			name: z.string().optional(),
+		})
+	),
 });
 
 export const UploadUserAvatarSchema = z.object({

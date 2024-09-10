@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import bcrypt from 'bcryptjs';
 import type { NextAuthConfig } from 'next-auth';
@@ -10,6 +11,8 @@ import { getUserByEmail, getUserById } from './data/user';
 import { db } from './lib/db';
 import { LoginSchema } from './schemas';
 import { signOut } from 'next-auth/react';
+import { getUsersTeams } from './data/team';
+import { getCookie } from './data/cookies';
 
 export default {
 	pages: {
@@ -27,6 +30,7 @@ export default {
 			clientId: process.env.GITHUB_CLIENT_ID,
 			clientSecret: process.env.GITHUB_CLIENT_SECRET,
 		}),
+
 		Credentials({
 			async authorize(credentials) {
 				const validatedFields = LoginSchema.safeParse(credentials);
@@ -63,6 +67,7 @@ export default {
 
 	callbacks: {
 		signIn: async ({ user, account }) => {
+			console.log(account, 'account, user');
 			const existingUser = await getUserById(user?.id ?? '');
 
 			//Prevent login if user is archived
@@ -105,8 +110,16 @@ export default {
 				session.user.role = token.role;
 			}
 
+			if (token.teams && session.user) {
+				session.user.teams = token.teams;
+			}
+
 			if (session.user) {
 				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
+			}
+
+			if (token.currentTeam && session.user) {
+				session.user.currentTeam = token.currentTeam;
 			}
 
 			if (session.user) {
@@ -121,10 +134,11 @@ export default {
 		},
 
 		jwt: async ({ token, session }) => {
-			console.log(token, 'token');
 			if (!token.sub) return token;
 
+			const teamCookie = await getCookie('default-team');
 			const existingUser = await getUserById(token.sub);
+			const teams = await getUsersTeams(token.sub);
 
 			if (!existingUser) return token;
 
@@ -138,6 +152,8 @@ export default {
 			token.isTwoFactorEnabled =
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			token.image = session?.image ?? existingUser.image;
+			token.teams = teams ?? [];
+			token.currentTeam = teamCookie?.value ?? '';
 			return token;
 		},
 	},

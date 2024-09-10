@@ -3,19 +3,20 @@ import {
 	Breadcrumb,
 	BreadcrumbEllipsis,
 	BreadcrumbItem,
-	BreadcrumbLink,
 	BreadcrumbList,
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { MenuIcon, XIcon } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
+import { TeamSelectMenu } from '../auth/team-select-menu';
 import { Button } from '../ui/button';
 import { NavigationMobileDrawer } from './navigation-mobile-drawer';
-import Link from 'next/link';
-import { TeamsButton } from './teams-button';
+import { ExtendedUser } from '@/next-auth';
 
 interface NavStripProps {
+	user: ExtendedUser | undefined;
 	drawerItems: {
 		name: string;
 		items: {
@@ -63,7 +64,7 @@ export function NavStrip(props: NavStripProps) {
 						<MenuIcon className="md:hidden" size={30} />
 					)}
 				</Button>
-				<Breadcrumb>
+				<Breadcrumb className="flex-1">
 					<BreadcrumbList>
 						{displayBreadcrumbs?.length > 3 ? (
 							<BreadcrumbItem>
@@ -104,6 +105,7 @@ export function NavStrip(props: NavStripProps) {
 						})}
 					</BreadcrumbList>
 				</Breadcrumb>
+				<TeamSelectMenu user={props.user} />
 			</div>
 		</nav>
 	);
