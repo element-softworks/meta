@@ -26,6 +26,7 @@ type TeamsResponse = {
 interface TeamsFormProps {
 	editMode?: boolean;
 	editingTeam?: Team | null;
+	onSubmit?: () => void;
 }
 
 export function TeamsForm(props: TeamsFormProps) {
@@ -48,6 +49,7 @@ export function TeamsForm(props: TeamsFormProps) {
 		onCompleted: async (data) => {
 			await update();
 			form.reset();
+			props.onSubmit?.();
 		},
 		onSuccess: async (data) => {
 			await update();
@@ -100,6 +102,7 @@ export function TeamsForm(props: TeamsFormProps) {
 						/>
 
 						<DropzoneInput
+							label="Team avatar"
 							name="image"
 							defaultFiles={!!defaultTeam?.image ? [defaultTeam?.image] : undefined}
 						/>
