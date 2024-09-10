@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
 import { TableTeam } from '../tables/teams-table';
 import { Button } from '../ui/button';
+import { useSession } from 'next-auth/react';
 
 interface UserLeaveTeamDialogProps {
 	teamId: string;
@@ -17,6 +18,7 @@ interface UserLeaveTeamDialogProps {
 export function UserLeaveTeamDialog(props: UserLeaveTeamDialogProps) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
+	const { update } = useSession();
 	const currentUser = useCurrentUser();
 
 	const { query: UserLeaveTeamQuery, isLoading } = useMutation<
@@ -24,7 +26,10 @@ export function UserLeaveTeamDialog(props: UserLeaveTeamDialogProps) {
 		{}
 	>({
 		queryFn: async () => await userLeaveTeam(props.teamId ?? ''),
-		onCompleted: () => setDialogOpen(false),
+		onCompleted: () => {
+			update();
+			setDialogOpen(false);
+		},
 	});
 
 	const handleUserLeaveTeam = () => {

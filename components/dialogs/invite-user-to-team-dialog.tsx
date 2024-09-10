@@ -27,7 +27,7 @@ export function InviteUserToTeamDialog(props: InviteUserToTeamDialogProps) {
 				description: 'Invite users to your team here',
 			}}
 		>
-			<InviteUserToTeamForm teamId={props.teamId} />
+			<InviteUserToTeamForm teamId={props.teamId} onFinish={() => setDialogOpen(false)} />
 		</DialogWrapper>
 	);
 }

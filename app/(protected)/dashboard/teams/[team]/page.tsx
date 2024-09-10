@@ -26,7 +26,7 @@ export default async function DashboardPage({
 	const isTeamAdmin = isTeamAuth(teamResponse?.team?.members ?? [], user?.id ?? '');
 	const isOwner = isTeamOwner(teamResponse?.team?.members ?? [], user?.id ?? '');
 
-	if (!isUserInTeam) {
+	if (!isUserInTeam || (teamResponse?.team?.isArchived && !isTeamAdmin)) {
 		return redirect('/dashboard/teams');
 	}
 

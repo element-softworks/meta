@@ -12,7 +12,7 @@ import { db } from './lib/db';
 import { LoginSchema } from './schemas';
 import { signOut } from 'next-auth/react';
 import { getUsersTeams } from './data/team';
-import { getCookie } from './data/cookies';
+import { getCookie, setCookie } from './data/cookies';
 
 export default {
 	pages: {
@@ -136,7 +136,7 @@ export default {
 		jwt: async ({ token, session }) => {
 			if (!token.sub) return token;
 
-			const teamCookie = await getCookie('default-team');
+			const teamCookie = await getCookie(`${token.email}-current-team`);
 			const existingUser = await getUserById(token.sub);
 			const teams = await getUsersTeams(token.sub);
 

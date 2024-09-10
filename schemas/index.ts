@@ -41,6 +41,12 @@ export const InviteTeamUserSchema = z.object({
 	),
 });
 
+export const InviteTeamUserSingleSchema = z.object({
+	email: z.string().email(),
+	role: z.enum([TeamRole.ADMIN, TeamRole.USER, TeamRole.OWNER]),
+	name: z.string().optional(),
+});
+
 export const UploadUserAvatarSchema = z.object({
 	avatar: z
 		.unknown()

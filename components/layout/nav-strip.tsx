@@ -99,7 +99,7 @@ export function NavStrip(props: NavStripProps) {
 						})}
 					</BreadcrumbList>
 				</Breadcrumb>
-				<TeamSelectMenu user={props.user} />
+				<TeamSelectMenu />
 			</div>
 		</nav>
 	);

@@ -23,9 +23,12 @@ export function useSidebarItems() {
 					icon: <CreditCard size={20} />,
 					visible: true,
 				},
+
 				{
-					text: 'Team',
-					link: `/dashboard/teams/${user?.currentTeam}`,
+					text: !!user?.currentTeam ? 'Team' : 'Teams',
+					link: !!user?.currentTeam
+						? `/dashboard/teams/${user?.currentTeam}`
+						: '/dashboard/teams',
 					icon: <Users size={20} />,
 					visible: true,
 				},

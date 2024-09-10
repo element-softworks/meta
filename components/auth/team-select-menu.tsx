@@ -18,9 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useSession } from 'next-auth/react';
 import { useCurrentUser } from '@/hooks/use-current-user';
 
-interface TeamSelectMenuProps {
-	user: ExtendedUser | undefined;
-}
+interface TeamSelectMenuProps {}
 export function TeamSelectMenu(props: TeamSelectMenuProps) {
 	const currentUser = useCurrentUser();
 	const { setTheme, theme } = useTheme();
@@ -29,17 +27,18 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 	const router = useRouter();
 	const isLightMode = theme === 'light';
 
+	const updateTeam = currentUser?.teams
+		? currentUser?.teams?.find((team) => team.id === currentUser?.currentTeam) ??
+		  currentUser?.teams[0]
+		: null;
+
 	//set the current team to either the first team or the team stored in cookies
+	const [selectedTeam, setSelectedTeam] = useState(updateTeam);
+	useEffect(() => {
+		setSelectedTeam(updateTeam);
+	}, [currentUser]);
 
-	const [selectedTeam, setSelectedTeam] = useState(
-		props.user?.teams
-			? props.user?.teams?.find(
-					(team) => team.id === currentUser?.currentTeam ?? props.user?.currentTeam
-			  ) ?? props.user?.teams[0]
-			: null
-	);
-
-	if (!props.user) return null;
+	if (!currentUser) return null;
 
 	return (
 		<Select
@@ -55,13 +54,16 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 					return;
 				}
 
-				const team = props.user?.teams?.find((team) => team.id === value);
+				const team = currentUser?.teams?.find((team) => team.id === value);
 				if (team) {
 					setSelectedTeam(team);
 				}
 
 				//Set the cookie for the default team
-				await setCookie({ name: 'default-team', value: team?.id ?? '' });
+				await setCookie({
+					name: `${currentUser?.email}-current-team`,
+					value: team?.id ?? '',
+				});
 				update();
 
 				router.push('/dashboard');
@@ -82,11 +84,13 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 				<SelectValue />
 			</SelectTrigger>
 			<SelectContent>
-				{props.user?.teams?.map?.((team) => (
-					<SelectItem className="cursor-pointer" key={team.id} value={team.id}>
-						{team.name}
-					</SelectItem>
-				))}
+				{currentUser?.teams
+					?.filter((team) => !team?.isArchived)
+					?.map?.((team) => (
+						<SelectItem className="cursor-pointer" key={team.id} value={team.id}>
+							{team.name}
+						</SelectItem>
+					))}
 				<SelectSeparator />
 				<SelectItem value="manage-teams" className="cursor-pointer" key="manage-teams">
 					Manage teams
