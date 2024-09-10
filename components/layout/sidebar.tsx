@@ -24,7 +24,12 @@ export function SidebarItem(props: SidebarItemProps) {
 
 	const isActive = pathName === props.link;
 	return (
-		<Link href={props.link} prefetch={prefetch} onClick={() => props?.onClick?.()}>
+		<Link
+			href={props.link}
+			prefetch={prefetch}
+			onClick={() => props?.onClick?.()}
+			className="h-9"
+		>
 			<Button
 				size="lg"
 				className={`w-full justify-start px-4 flex items-center gap-2 ${
@@ -64,7 +69,7 @@ export function SidebarGroup(props: SidebarGroupProps) {
 					<AccordionTrigger className="text-xs text-muted-foreground font-semibold uppercase">
 						{props.text}
 					</AccordionTrigger>
-					<AccordionContent className="flex flex-col gap-2">
+					<AccordionContent className="flex flex-col gap-1">
 						{props.children}
 					</AccordionContent>
 				</AccordionItem>
@@ -76,7 +81,7 @@ export function SidebarGroup(props: SidebarGroupProps) {
 export function Sidebar({ children }: { children: React.ReactNode }) {
 	return (
 		<aside
-			className={`w-0 md:w-[360px] min-h-full border-border transition-all px-0 py-6 md:p-6 md:border-r`}
+			className={`w-0 md:w-[270px] min-h-full border-border transition-all px-0 py-6 md:p-6 md:border-r`}
 		>
 			<div className="flex flex-col gap-2 flex-1">{children}</div>
 		</aside>

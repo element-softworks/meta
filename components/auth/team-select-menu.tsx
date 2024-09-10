@@ -8,20 +8,21 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { setCookie } from '@/data/cookies';
 import { ExtendedUser } from '@/next-auth';
-import { useTheme } from 'next-themes';
-import { useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { Plus } from 'lucide-react';
-import { getCookie, setCookie } from '@/data/cookies';
+import { useTheme } from 'next-themes';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { useSession } from 'next-auth/react';
 
 interface TeamSelectMenuProps {
 	user: ExtendedUser | undefined;
 }
 export function TeamSelectMenu(props: TeamSelectMenuProps) {
 	const { setTheme, theme } = useTheme();
+	const { update } = useSession();
 
 	const router = useRouter();
 	const isLightMode = theme === 'light';
@@ -40,7 +41,7 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 	return (
 		<Select
 			value={selectedTeam?.id}
-			onValueChange={(value) => {
+			onValueChange={async (value) => {
 				if (value === 'manage-teams') {
 					router.push('/dashboard/teams');
 					return;
@@ -58,11 +59,15 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 
 				//Set the cookie for the default team
 				setCookie({ name: 'default-team', value: team?.id ?? '' });
+				update({
+					...props.user,
+					currentTeam: team?.id,
+				});
 
 				router.push('/dashboard');
 			}}
 		>
-			<SelectTrigger className="w-[180px]">
+			<SelectTrigger className="w-[53px] md:w-[180px]">
 				<Avatar className="size-7">
 					{selectedTeam?.image && (
 						<AvatarImage

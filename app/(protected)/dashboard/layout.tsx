@@ -26,20 +26,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
 					icon: <CreditCard size={20} />,
 					visible: true,
 				},
-			],
-		},
-
-		{
-			name: 'Teams',
-			items: [
 				{
-					text: 'Teams management',
-					link: '/dashboard/teams',
+					text: 'Team',
+					link: `/dashboard/teams/${session?.user?.currentTeam}`,
 					icon: <Users size={20} />,
 					visible: true,
 				},
 			],
 		},
+
 		{
 			name: 'Admin',
 			visible: session?.user?.role === UserRole.ADMIN,
