@@ -7,7 +7,7 @@ export type ExtendedUser = DefaultSession['user'] & {
 	isOAuth: boolean;
 	isArchived: boolean;
 	teams: Team[] | undefined;
-	currentTeam: string | undefined;
+	currentTeam?: string | undefined;
 };
 
 declare module 'next-auth' {
@@ -29,6 +29,6 @@ declare module 'next-auth/jwt' {
 		isArchived: boolean;
 		image: string;
 		teams: Team[] | undefined;
-		currentTeam: string | undefined;
+		currentTeam?: string | undefined;
 	}
 }

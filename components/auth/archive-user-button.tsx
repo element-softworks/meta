@@ -4,27 +4,27 @@ import { ExtendedUser } from '@/next-auth';
 import { adminArchiveUser } from '@/actions/admin-archive-user';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
-import { UserRole } from '@prisma/client';
+import { User, UserRole } from '@prisma/client';
 import { useState } from 'react';
 import { TableUser } from '../tables/users-table';
 import { Button, ButtonProps } from '../ui/button';
 import { DialogWrapper } from './dialog-wrapper';
 
 interface ArchiveUserButtonProps {
-	user: ExtendedUser | null | TableUser;
+	user: User | null | TableUser;
 }
 
 export function ArchiveUserButton(props: ArchiveUserButtonProps) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const { query: archiveUserQuery, isLoading } = useMutation<ExtendedUser | TableUser, {}>({
-		queryFn: async (user) => await adminArchiveUser(user!),
+		queryFn: async (user) => await adminArchiveUser(props?.user!),
 		onCompleted: () => setDialogOpen(false),
 	});
 
 	const handleArchiveUser = () => {
 		if (!props.user) return;
-		archiveUserQuery(props.user);
+		archiveUserQuery();
 	};
 
 	const currentUser = useCurrentUser();

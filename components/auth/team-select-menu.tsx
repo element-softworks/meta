@@ -35,8 +35,6 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 			: null
 	);
 
-	console.log(props.user, 'user');
-
 	if (!props.user) return null;
 
 	return (
@@ -59,7 +57,7 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 				}
 
 				//Set the cookie for the default team
-				setCookie({ name: 'default-team', value: team.id });
+				setCookie({ name: 'default-team', value: team?.id ?? '' });
 
 				router.push('/dashboard');
 			}}
