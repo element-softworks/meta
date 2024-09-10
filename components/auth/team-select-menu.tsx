@@ -10,16 +10,19 @@ import {
 } from '@/components/ui/select';
 import { setCookie } from '@/data/cookies';
 import { ExtendedUser } from '@/next-auth';
-import { Plus } from 'lucide-react';
+import { ChartNoAxesGanttIcon, Plus } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useSession } from 'next-auth/react';
 import { useCurrentUser } from '@/hooks/use-current-user';
+import { Button } from '../ui/button';
+import Link from 'next/link';
 
 interface TeamSelectMenuProps {}
 export function TeamSelectMenu(props: TeamSelectMenuProps) {
+	const [selectOpen, setSelectOpen] = useState(false);
 	const currentUser = useCurrentUser();
 	const { setTheme, theme } = useTheme();
 	const { update } = useSession();
@@ -42,18 +45,10 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 
 	return (
 		<Select
+			open={selectOpen}
+			onOpenChange={(state) => setSelectOpen(state)}
 			value={selectedTeam?.id}
 			onValueChange={async (value) => {
-				if (value === 'manage-teams') {
-					router.push('/dashboard/teams');
-					return;
-				}
-
-				if (value === 'create-team') {
-					router.push('/dashboard/teams/create');
-					return;
-				}
-
 				const team = currentUser?.teams?.find((team) => team.id === value);
 				if (team) {
 					setSelectedTeam(team);
@@ -70,18 +65,21 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 			}}
 		>
 			<SelectTrigger className="w-[53px] md:w-[180px]">
-				<Avatar className="size-7">
-					{selectedTeam?.image && (
-						<AvatarImage
-							width={35}
-							height={35}
-							src={selectedTeam?.image ?? ''}
-							alt="user avatar"
-						/>
-					)}
-					<AvatarFallback>{selectedTeam?.name?.slice(0, 2)}</AvatarFallback>
-				</Avatar>
-				<SelectValue />
+				{!!currentUser?.teams?.length ? (
+					<Avatar className="size-7">
+						{selectedTeam?.image && (
+							<AvatarImage
+								width={35}
+								height={35}
+								src={selectedTeam?.image ?? ''}
+								alt="user avatar"
+							/>
+						)}
+						<AvatarFallback>{selectedTeam?.name?.slice(0, 2)}</AvatarFallback>
+					</Avatar>
+				) : null}
+
+				<SelectValue placeholder="Select a team" />
 			</SelectTrigger>
 			<SelectContent>
 				{currentUser?.teams
@@ -92,14 +90,26 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 						</SelectItem>
 					))}
 				<SelectSeparator />
-				<SelectItem value="manage-teams" className="cursor-pointer" key="manage-teams">
-					Manage teams
-				</SelectItem>
-				<SelectItem value="create-team" className="cursor-pointer" key="create-team">
-					<div className="flex items-center gap-1">
-						<Plus size={15} /> Create a team
-					</div>
-				</SelectItem>
+				<Link href="/dashboard/teams" onClick={() => setSelectOpen(false)}>
+					<Button
+						variant="ghost"
+						value="manage-teams"
+						className="cursor-pointer w-full font-normal text-sm justify-start"
+						key="manage-teams"
+					>
+						<ChartNoAxesGanttIcon size={18} /> Manage teams
+					</Button>
+				</Link>
+				<Link href="/dashboard/teams/create" onClick={() => setSelectOpen(false)}>
+					<Button
+						variant="ghost"
+						value="manage-teams"
+						className="cursor-pointer w-full font-normal text-sm justify-start"
+						key="manage-teams"
+					>
+						<Plus size={18} /> Create a team
+					</Button>
+				</Link>
 			</SelectContent>
 		</Select>
 	);

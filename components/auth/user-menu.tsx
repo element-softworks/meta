@@ -1,7 +1,15 @@
 'use client';
 
 import { ExtendedUser } from '@/next-auth';
-import { CreditCard, LogOut, Moon, Settings, ShieldCheck, Sun } from 'lucide-react';
+import {
+	CreditCard,
+	LayoutDashboard,
+	LogOut,
+	Moon,
+	Settings,
+	ShieldCheck,
+	Sun,
+} from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
@@ -17,10 +25,10 @@ import {
 } from '../ui/dropdown-menu';
 import { LogoutButton } from './logout-button';
 
-interface UserButtonProps {
+interface UserMenuProps {
 	user: ExtendedUser | undefined;
 }
-export function UserButton(props: UserButtonProps) {
+export function UserMenu(props: UserMenuProps) {
 	const { setTheme, theme } = useTheme();
 	const isLightMode = theme === 'light';
 
@@ -53,9 +61,20 @@ export function UserButton(props: UserButtonProps) {
 				</Button>
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="w-56 mr-2">
-				<DropdownMenuLabel>Account</DropdownMenuLabel>
+				{!props.user ? null : (
+					<>
+						<DropdownMenuLabel>General</DropdownMenuLabel>
 
-				<DropdownMenuSeparator />
+						<Link href="/dashboard">
+							<DropdownMenuItem className="cursor-pointer">
+								<LayoutDashboard className="mr-2 h-4 w-4" />
+								<span>Dashboard</span>
+							</DropdownMenuItem>
+						</Link>
+						<DropdownMenuSeparator />
+					</>
+				)}
+				<DropdownMenuLabel>Account</DropdownMenuLabel>
 
 				<DropdownMenuGroup>
 					<DropdownMenuGroup>
