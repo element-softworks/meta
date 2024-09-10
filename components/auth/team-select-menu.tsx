@@ -16,11 +16,13 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useSession } from 'next-auth/react';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 interface TeamSelectMenuProps {
 	user: ExtendedUser | undefined;
 }
 export function TeamSelectMenu(props: TeamSelectMenuProps) {
+	const currentUser = useCurrentUser();
 	const { setTheme, theme } = useTheme();
 	const { update } = useSession();
 
@@ -31,8 +33,9 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 
 	const [selectedTeam, setSelectedTeam] = useState(
 		props.user?.teams
-			? props.user?.teams?.find((team) => team.id === props.user?.currentTeam) ??
-					props.user?.teams[0]
+			? props.user?.teams?.find(
+					(team) => team.id === currentUser?.currentTeam ?? props.user?.currentTeam
+			  ) ?? props.user?.teams[0]
 			: null
 	);
 
@@ -58,11 +61,8 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 				}
 
 				//Set the cookie for the default team
-				setCookie({ name: 'default-team', value: team?.id ?? '' });
-				update({
-					...props.user,
-					currentTeam: team?.id,
-				});
+				await setCookie({ name: 'default-team', value: team?.id ?? '' });
+				update();
 
 				router.push('/dashboard');
 			}}

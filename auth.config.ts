@@ -153,7 +153,7 @@ export default {
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			token.image = session?.image ?? existingUser.image;
 			token.teams = teams ?? [];
-			token.currentTeam = teamCookie?.value ?? '';
+			token.currentTeam = teamCookie?.value ?? teams?.[0]?.id ?? '';
 			return token;
 		},
 	},
