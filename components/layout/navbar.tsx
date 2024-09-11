@@ -1,33 +1,12 @@
 'use client';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import {
-	CreditCard,
-	FrameIcon,
-	LogOut,
-	MenuIcon,
-	Moon,
-	Notebook,
-	Settings,
-	ShieldCheck,
-	Sun,
-	XIcon,
-} from 'lucide-react';
+import { CreditCard, FrameIcon, Notebook } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useState } from 'react';
-import { LogoutButton } from '../auth/logout-button';
 import { UserMenu } from '../auth/user-menu';
-import { Button } from '../ui/button';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuGroup,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '../ui/dropdown-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
+import { Button } from '../ui/button';
 
 export const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
