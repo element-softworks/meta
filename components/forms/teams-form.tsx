@@ -26,6 +26,7 @@ type TeamsResponse = {
 interface TeamsFormProps {
 	editMode?: boolean;
 	editingTeam?: Team | null;
+	onSubmit?: () => void;
 }
 
 export function TeamsForm(props: TeamsFormProps) {
@@ -35,7 +36,6 @@ export function TeamsForm(props: TeamsFormProps) {
 
 	const defaultTeam = props.editMode ? props.editingTeam : null;
 
-	console.log(defaultTeam, 'default team');
 	const form = useForm<TeamsFormInputProps>({
 		resolver: zodResolver(TeamsSchema),
 		defaultValues: {
@@ -47,10 +47,12 @@ export function TeamsForm(props: TeamsFormProps) {
 	const { query: createTeamQuery, isLoading: isCreating } = useMutation<FormData, TeamsResponse>({
 		queryFn: async (values) => await teamCreate(values!),
 		onCompleted: async (data) => {
-			update();
+			await update();
 			form.reset();
+			props.onSubmit?.();
 		},
 		onSuccess: async (data) => {
+			await update();
 			await router.push(`/dashboard/teams/${data?.team?.id}`);
 		},
 	});
@@ -100,6 +102,7 @@ export function TeamsForm(props: TeamsFormProps) {
 						/>
 
 						<DropzoneInput
+							label="Team avatar"
 							name="image"
 							defaultFiles={!!defaultTeam?.image ? [defaultTeam?.image] : undefined}
 						/>

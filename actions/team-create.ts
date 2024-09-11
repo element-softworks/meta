@@ -8,6 +8,7 @@ import { TeamRole } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
 import { uploadFileToS3 } from './upload-file-to-s3';
+import { setCookie } from '@/data/cookies';
 export const teamCreate = async (formData: FormData) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
@@ -69,6 +70,12 @@ export const teamCreate = async (formData: FormData) => {
 			teamId: newTeam.id,
 			userId: user?.id ?? '',
 		},
+	});
+
+	//Set the current team cookie to the new team
+	setCookie({
+		name: `${user?.email}-current-team`,
+		value: newTeam.id,
 	});
 
 	revalidatePath(`/dashboard/teams`);

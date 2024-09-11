@@ -12,10 +12,11 @@ import {
 	Sun,
 	XIcon,
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useState } from 'react';
 import { LogoutButton } from '../auth/logout-button';
-import { UserButton } from '../auth/user-button';
+import { UserMenu } from '../auth/user-menu';
 import { Button } from '../ui/button';
 import {
 	DropdownMenu,
@@ -26,11 +27,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { useTheme } from 'next-themes';
-import { Team } from '@prisma/client';
-import { TeamSelectMenu } from '../auth/team-select-menu';
+import { UserMobileMenu } from '../auth/user-mobile-menu';
 
-const NAVBAR_ITEMS = [
+export const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
 	{ name: 'Docs', href: '/docs', icon: <Notebook className="mr-2 h-4 w-4" /> },
 ];
@@ -52,77 +51,11 @@ export function Navbar(props: NavbarProps) {
 				</div>
 			</Link>
 
-			<div className="block md:hidden">
-				{/* Mobile menu */}
-				<DropdownMenu onOpenChange={(open) => setNavOpen(open)}>
-					<DropdownMenuTrigger asChild className="cursor-pointer">
-						<Button onClick={() => setNavOpen((prev) => !prev)} variant="link">
-							{navOpen ? (
-								<XIcon className="md:hidden" size={30} />
-							) : (
-								<MenuIcon className="md:hidden" size={30} />
-							)}
-						</Button>
-					</DropdownMenuTrigger>
-					<DropdownMenuContent className={`w-80 mr-2`}>
-						<DropdownMenuLabel>General</DropdownMenuLabel>
-						<DropdownMenuGroup>
-							{NAVBAR_ITEMS.map((item, index) => {
-								return (
-									<Link key={index} href={item.href}>
-										<DropdownMenuItem className="cursor-pointer">
-											{item.icon}
-											{item.name}
-										</DropdownMenuItem>
-									</Link>
-								);
-							})}
-						</DropdownMenuGroup>
-						<DropdownMenuSeparator />
-						<DropdownMenuLabel>Account</DropdownMenuLabel>
-						<DropdownMenuSeparator />
-
-						<DropdownMenuGroup>
-							<Link href="/dashboard/settings">
-								<DropdownMenuItem className="cursor-pointer">
-									<Settings className="mr-2 h-4 w-4" />
-									Settings
-								</DropdownMenuItem>
-							</Link>
-							<Link href="/dashboard/security">
-								<DropdownMenuItem className="cursor-pointer">
-									<ShieldCheck className="mr-2 h-4 w-4" />
-									Security
-								</DropdownMenuItem>
-							</Link>
-							<Link href="/dashboard/billing">
-								<DropdownMenuItem className="cursor-pointer">
-									<CreditCard className="mr-2 h-4 w-4" />
-									Billing
-								</DropdownMenuItem>
-							</Link>
-						</DropdownMenuGroup>
-						<DropdownMenuSeparator />
-						<DropdownMenuItem
-							className="cursor-pointer"
-							onClick={() => setTheme(isLightMode ? 'dark' : 'light')}
-						>
-							{isLightMode ? (
-								<Moon className="mr-2 h-4 w-4" />
-							) : (
-								<Sun className="mr-2 h-4 w-4" />
-							)}
-							{isLightMode ? 'Toggle dark mode' : 'Toggle light mode'}
-						</DropdownMenuItem>
-						<LogoutButton>
-							<DropdownMenuItem className="cursor-pointer">
-								<LogOut className="mr-2 h-4 w-4" />
-								<span>Log out</span>
-							</DropdownMenuItem>
-						</LogoutButton>
-					</DropdownMenuContent>
-				</DropdownMenu>
-			</div>
+			<UserMobileMenu
+				user={user}
+				navOpen={navOpen}
+				onNavOpenChange={(state: boolean) => setNavOpen(state)}
+			/>
 			<div className="md:flex items-center gap-10 hidden">
 				<div className="flex ">
 					{NAVBAR_ITEMS.map((item, index) => {
@@ -141,7 +74,7 @@ export function Navbar(props: NavbarProps) {
 				</div>
 
 				<div className="flex">
-					<UserButton user={user} />
+					<UserMenu user={user} />
 				</div>
 			</div>
 		</nav>

@@ -111,6 +111,7 @@ export const getUsersTeams = async (userId: string) => {
 	try {
 		const teams = await db.team.findMany({
 			where: {
+				isArchived: false,
 				members: {
 					some: {
 						userId,

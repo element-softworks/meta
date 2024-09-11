@@ -18,7 +18,7 @@ interface DialogWrapperProps {
 	confirmButton?: React.ReactNode;
 	disableActions?: boolean;
 	isLoading?: boolean;
-	button: React.ReactNode;
+	button?: React.ReactNode;
 	size?: 'sm' | 'md' | 'lg';
 	dialog: {
 		title: string;

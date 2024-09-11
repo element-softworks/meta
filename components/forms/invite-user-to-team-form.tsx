@@ -18,6 +18,7 @@ import { inviteUsersToTeam } from '@/actions/invite-users-to-team';
 
 interface InviteUserToTeamFormProps {
 	teamId: string;
+	onFinish?: () => void;
 }
 
 export type InviteTeamUsersFormInputProps = z.infer<typeof InviteTeamUserSchema>;
@@ -31,13 +32,7 @@ export function InviteUserToTeamForm(props: InviteUserToTeamFormProps) {
 	const form = useForm<InviteTeamUsersFormInputProps>({
 		resolver: zodResolver(InviteTeamUserSchema),
 		defaultValues: {
-			users: [
-				{
-					email: '',
-					role: 'USER',
-					name: '',
-				},
-			],
+			users: [],
 		},
 	});
 
@@ -56,6 +51,7 @@ export function InviteUserToTeamForm(props: InviteUserToTeamFormProps) {
 					},
 				],
 			});
+			props.onFinish?.();
 		},
 	});
 
@@ -64,6 +60,8 @@ export function InviteUserToTeamForm(props: InviteUserToTeamFormProps) {
 
 		const response = await InviteUsersQuery(values);
 	}
+
+	console.log(form.watch(), 'form watch');
 
 	return (
 		<div className="">

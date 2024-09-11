@@ -28,6 +28,10 @@ export const removeUserFromTeam = async (teamId: string, userId: string) => {
 		return { error: 'User not found in team' };
 	}
 
+	if (teamMember.role === 'OWNER') {
+		return { error: 'Cannot remove the owner of the team' };
+	}
+
 	// Remove the team member
 	await db.teamMember.delete({
 		where: {

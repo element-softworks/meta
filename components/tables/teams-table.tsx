@@ -58,7 +58,7 @@ export function TeamsTable(props: TeamsTableProps) {
 				const team = row.original;
 				return (
 					<div className="flex items-center">
-						{!!team?.image ? (
+						{!!team?.image?.length ? (
 							<Avatar className="size-7">
 								<Image width={35} height={35} src={team?.image} alt="team avatar" />
 							</Avatar>

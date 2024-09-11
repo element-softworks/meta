@@ -14,21 +14,15 @@ import { TeamSelectMenu } from '../auth/team-select-menu';
 import { Button } from '../ui/button';
 import { NavigationMobileDrawer } from './navigation-mobile-drawer';
 import { ExtendedUser } from '@/next-auth';
+import { useSidebarItems } from '@/hooks/use-sidebar-items';
 
 interface NavStripProps {
 	user: ExtendedUser | undefined;
-	drawerItems: {
-		name: string;
-		items: {
-			text: string;
-			link: string;
-			icon: React.ReactNode;
-		}[];
-	}[];
 }
 const EXCLUDED_PATHS = ['admin'];
 
 export function NavStrip(props: NavStripProps) {
+	const drawerItems = useSidebarItems();
 	const pathname = usePathname();
 
 	// Split the pathname and filter out empty segments
@@ -51,7 +45,7 @@ export function NavStrip(props: NavStripProps) {
 					onOpenChange={(state) => {
 						setNavOpen(state);
 					}}
-					drawerItems={props.drawerItems}
+					drawerItems={drawerItems}
 				/>
 				<Button
 					className="p-0 mr-4 block md:hidden"
@@ -105,7 +99,7 @@ export function NavStrip(props: NavStripProps) {
 						})}
 					</BreadcrumbList>
 				</Breadcrumb>
-				<TeamSelectMenu user={props.user} />
+				<TeamSelectMenu />
 			</div>
 		</nav>
 	);
