@@ -16,16 +16,18 @@ export function useQuery<T, R>({
 	onCompleted,
 	onSuccess,
 	onError,
+	enabled = true,
 }: {
-	queryFn: (values?: T) => Promise<R>;
+	queryFn: (values?: T) => Promise<any>;
 	onCompleted?: (data?: { success?: string; error?: string } & R) => void;
 	onSuccess?: (data?: { success?: string; error?: string } & R) => void;
 	onError?: (data?: { success?: string; error?: string } & R) => void;
+	enabled?: boolean;
 }) {
 	type QueryResponse = { success?: string; error?: string } & R;
 
-	const [queryStatus, setQueryStatus] = useState<'error' | 'success'>();
-	const [data, setData] = useState<QueryResponse>();
+	const [queryStatus, setQueryStatus] = useState<'error' | 'success' | 'idle'>('idle');
+	const [data, setData] = useState<QueryResponse | null>(null);
 	const [isPending, startTransition] = useTransition();
 
 	useEffect(() => {
@@ -36,39 +38,45 @@ export function useQuery<T, R>({
 		if (data?.error) onError?.(data);
 	}, [data]);
 
-	const query = async (values?: T | undefined) => {
+	useEffect(() => {
+		if (!enabled) return;
+		(async () => {
+			await query();
+		})();
+	}, [enabled]);
+
+	const query = async (values?: T) => {
 		let response: QueryResponse;
 
 		await startTransition(async () => {
-			// Execute the queryFn within the transition
-			const responseData = await queryFn(values).then((res) => {
-				response = res as QueryResponse;
-				setData(response);
+			try {
+				// Execute the queryFn within the transition
+				const responseData = await queryFn(values).then((res) => {
+					response = res as QueryResponse;
+					setData(response);
 
-				if (response?.success) setQueryStatus('success');
-				else setQueryStatus('error');
+					if (response?.success) setQueryStatus('success');
+					else setQueryStatus('error');
 
-				if (!!response?.error || !!response?.success) {
-					toast({
-						description: response?.error ?? response?.success ?? 'An error occurred.',
-						variant: response?.error ? 'destructive' : 'default',
-					});
-				}
+					if (!!response?.error || !!response?.success) {
+						toast({
+							description:
+								response?.error ?? response?.success ?? 'An error occurred.',
+							variant: response?.error ? 'destructive' : 'default',
+						});
+					}
 
-				return response;
-			});
-
-			return;
+					return response;
+				});
+			} catch (error) {
+				setQueryStatus('error');
+				toast({
+					description: 'An unexpected error occurred.',
+					variant: 'destructive',
+				});
+			}
 		});
-
-		return;
 	};
 
-	useEffect(() => {
-		(async () => {
-			const response = await query();
-		})();
-	});
-
-	return { status: queryStatus, data, isLoading: isPending };
+	return { status: queryStatus, data, isLoading: queryStatus === 'idle' || isPending };
 }

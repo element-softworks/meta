@@ -84,9 +84,16 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 								</div>
 							</div>
 						</div>
-						<Link href={`/dashboard/teams/${team?.team?.id}`}>
-							<Button className="w-full mt-4">View team</Button>
-						</Link>
+						<div className="flex gap-4 w-full">
+							<Link href={`/dashboard/teams/${team?.team?.id}`} className="flex-1">
+								<Button variant="secondary" className="w-full mt-4">
+									Select team
+								</Button>
+							</Link>
+							<Link href={`/dashboard/teams/${team?.team?.id}`} className="flex-1">
+								<Button className="w-full mt-4">View team</Button>
+							</Link>
+						</div>
 					</CardWrapper>
 				);
 			})}
