@@ -1,14 +1,19 @@
 'use server';
 
 import { getUsersTeams } from '@/actions/get-users-teams';
-import { CardWrapper } from './card-wrapper';
-import { Badge } from './ui/badge';
-import { getCurrentTeamMember, isTeamAuth } from '@/lib/team';
-import { AvatarGroup } from './avatar-group';
-import { Button } from './ui/button';
-import Link from 'next/link';
+import { setCookie } from '@/data/cookies';
+import { currentUser } from '@/lib/auth';
+import { getCurrentTeamMember } from '@/lib/team';
 import { TeamRole } from '@prisma/client';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
+import { AvatarGroup } from './avatar-group';
+import { CardWrapper } from './card-wrapper';
+import { Avatar, AvatarImage } from './ui/avatar';
+import { Badge } from './ui/badge';
+import { Button } from './ui/button';
+import { update } from '../auth';
+import { SelectTeamButton } from './buttons/select-team-button';
 
 interface TeamsCardsContainerProps {
 	searchParams: any;
@@ -16,6 +21,7 @@ interface TeamsCardsContainerProps {
 }
 export default async function TeamsCardsContainer(props: TeamsCardsContainerProps) {
 	// Get the filters from the search params
+	const user = await currentUser();
 	const nameFilter = props.searchParams?.['teams-name-sort'];
 	const createdBy = props.searchParams?.['teams-createdBy-sort'];
 	const createdAt = props.searchParams?.['teams-createdAt-sort'];
@@ -84,12 +90,8 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 								</div>
 							</div>
 						</div>
-						<div className="flex gap-4 w-full">
-							<Link href={`/dashboard/teams/${team?.team?.id}`} className="flex-1">
-								<Button variant="secondary" className="w-full mt-4">
-									Select team
-								</Button>
-							</Link>
+						<div className="flex gap-4 w-full ">
+							<SelectTeamButton teamId={team?.team?.id} />
 							<Link href={`/dashboard/teams/${team?.team?.id}`} className="flex-1">
 								<Button className="w-full mt-4">View team</Button>
 							</Link>

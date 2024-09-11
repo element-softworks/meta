@@ -79,8 +79,12 @@ export function UserMenu(props: UserMenuProps) {
 							</DropdownMenuItem>
 						</Link>
 						<Link href="/dashboard/notifications">
-							<DropdownMenuItem className="cursor-pointer">
+							<DropdownMenuItem className="cursor-pointer relative">
 								<Bell className="mr-2 h-4 w-4" />
+								<NotificationsIcon
+									className="top-0 left-4 absolute"
+									userId={props.user.id ?? ''}
+								/>
 								<span>Notifications</span>
 							</DropdownMenuItem>
 						</Link>
