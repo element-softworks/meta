@@ -1,10 +1,8 @@
-import { TeamsTable } from '@/components/tables/teams-table';
-import TeamsTableContainer from '@/components/tables/teams-table-container';
+import TeamsCardsContainer from '@/components/teams-cards-container';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { currentUser } from '@/lib/auth';
 import Link from 'next/link';
-import { Suspense } from 'react';
 
 export default async function DashboardPage({ searchParams }: any) {
 	const user = await currentUser();
@@ -20,9 +18,8 @@ export default async function DashboardPage({ searchParams }: any) {
 				</Link>
 			</div>
 			<Separator />
-			<Suspense fallback={<TeamsTable teams={[]} totalPages={1} isLoading={true} />}>
-				<TeamsTableContainer userId={user?.id ?? ''} searchParams={searchParams} />
-			</Suspense>
+
+			<TeamsCardsContainer userId={user?.id ?? ''} searchParams={searchParams} />
 		</main>
 	);
 }

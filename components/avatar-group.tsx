@@ -16,9 +16,12 @@ export function AvatarGroup(props: AvatarGroupProps) {
 	const avatars = props.avatars.slice(0, maxSize);
 	const remaining = props.avatars.length - maxSize;
 
+	if (avatars.length === 0) return null;
+
 	return (
 		<div className="flex relative">
 			{avatars.map((avatar, index) => {
+				if (!avatar.src) return null;
 				return (
 					<Image
 						key={index}
