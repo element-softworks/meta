@@ -10,7 +10,6 @@ import { SessionProvider } from 'next-auth/react';
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 	const session = await auth();
 	const hasCreateCookie = await getCookie(`${session?.user.email}-create-team-dialog`);
-
 	return (
 		<SessionProvider session={session}>
 			<Toaster />

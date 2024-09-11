@@ -2,6 +2,7 @@
 
 import { ExtendedUser } from '@/next-auth';
 import {
+	Bell,
 	CreditCard,
 	LayoutDashboard,
 	LogIn,
@@ -29,6 +30,7 @@ import {
 import { LogoutButton } from './logout-button';
 import { NAVBAR_ITEMS } from '../layout/navbar';
 import { LoginButton } from './login-button';
+import { NotificationsIcon } from '../notifications-icon';
 
 interface UserMobileMenuProps {
 	user: ExtendedUser | undefined;
@@ -95,12 +97,24 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 						})}
 
 						{!props.user ? null : (
-							<Link href="/dashboard">
-								<DropdownMenuItem className="cursor-pointer">
-									<LayoutDashboard className="mr-2 h-4 w-4" />
-									<span>Dashboard</span>
-								</DropdownMenuItem>
-							</Link>
+							<>
+								<Link href="/dashboard">
+									<DropdownMenuItem className="cursor-pointer">
+										<LayoutDashboard className="mr-2 h-4 w-4" />
+										<span>Dashboard</span>
+									</DropdownMenuItem>
+								</Link>
+								<Link href="/dashboard/notifications">
+									<DropdownMenuItem className="cursor-pointer relative">
+										<Bell className="mr-2 h-4 w-4" />
+										<NotificationsIcon
+											className="top-0 left-4 absolute"
+											userId={props.user.id ?? ''}
+										/>
+										<span>Notifications</span>
+									</DropdownMenuItem>
+								</Link>
+							</>
 						)}
 					</DropdownMenuGroup>
 

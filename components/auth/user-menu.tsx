@@ -2,6 +2,7 @@
 
 import { ExtendedUser } from '@/next-auth';
 import {
+	Bell,
 	CreditCard,
 	LayoutDashboard,
 	LogOut,
@@ -24,6 +25,7 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { LogoutButton } from './logout-button';
+import { NotificationsIcon } from '../notifications-icon';
 
 interface UserMenuProps {
 	user: ExtendedUser | undefined;
@@ -44,8 +46,8 @@ export function UserMenu(props: UserMenuProps) {
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
 				<Button asChild variant="outline">
-					<div>
-						<Avatar className="size-7">
+					<div className="relative">
+						<Avatar className="size-7 relative">
 							{props.user?.image && (
 								<AvatarImage
 									width={35}
@@ -56,6 +58,11 @@ export function UserMenu(props: UserMenuProps) {
 							)}
 							<AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
 						</Avatar>
+						<NotificationsIcon
+							className="top-0 left-9 absolute"
+							userId={props.user.id ?? ''}
+						/>
+
 						<p className="font-normal ml-2">Account</p>
 					</div>
 				</Button>
@@ -69,6 +76,16 @@ export function UserMenu(props: UserMenuProps) {
 							<DropdownMenuItem className="cursor-pointer">
 								<LayoutDashboard className="mr-2 h-4 w-4" />
 								<span>Dashboard</span>
+							</DropdownMenuItem>
+						</Link>
+						<Link href="/dashboard/notifications">
+							<DropdownMenuItem className="cursor-pointer relative">
+								<Bell className="mr-2 h-4 w-4" />
+								<NotificationsIcon
+									className="top-0 left-4 absolute"
+									userId={props.user.id ?? ''}
+								/>
+								<span>Notifications</span>
 							</DropdownMenuItem>
 						</Link>
 						<DropdownMenuSeparator />

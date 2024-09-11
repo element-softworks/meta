@@ -1,10 +1,8 @@
-import { auth, update } from '@/auth';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';
 import '../globals.css';
-import { ThemeProvider } from '@/components/theme-provider';
 import { Navbar } from '@/components/layout/navbar';
 
 const inter = Inter({ subsets: ['latin'] });
