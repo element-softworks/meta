@@ -1,5 +1,6 @@
 import { InviteUserToTeamDialog } from '@/components/dialogs/invite-user-to-team-dialog';
 import { UserLeaveTeamDialog } from '@/components/dialogs/user-leave-team-dialog';
+import { CenteredLoader } from '@/components/layout/centered-loader';
 import { TeamsMemberTable } from '@/components/tables/team-members-table';
 import TeamMembersTableContainer from '@/components/tables/team-members-table-container';
 import { Button } from '@/components/ui/button';

@@ -62,10 +62,7 @@ export function InviteUsersInput(props: InviteUsersInputProps) {
 		<div className="flex flex-col gap-2">
 			<div className="">
 				<Form {...form}>
-					<form
-						onSubmit={form.handleSubmit(onSubmit)}
-						className="flex gap-2 w-full flex-wrap"
-					>
+					<div className="flex gap-2 w-full flex-wrap">
 						<div className="flex-1 ">
 							<FormInput
 								name="email"
@@ -129,7 +126,7 @@ export function InviteUsersInput(props: InviteUsersInputProps) {
 						>
 							Add
 						</Button>
-					</form>
+					</div>
 				</Form>
 			</div>
 

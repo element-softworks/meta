@@ -1,10 +1,12 @@
 import { ArchiveTeamDialog } from '@/components/dialogs/archive-team-dialog';
 import { TeamsForm } from '@/components/forms/teams-form';
+import { CenteredLoader } from '@/components/layout/centered-loader';
 import { Separator } from '@/components/ui/separator';
 import { getIsUserInTeam, getTeamById } from '@/data/team';
 import { currentUser } from '@/lib/auth';
 import { isTeamAuth } from '@/lib/team';
 import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default async function DashboardPage({ params }: { params: { team: string } }) {
 	const teamResponse = await getTeamById(params.team);
