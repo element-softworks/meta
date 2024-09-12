@@ -38,7 +38,7 @@ export function NavStrip(props: NavStripProps) {
 	const [navOpen, setNavOpen] = React.useState(false);
 
 	return (
-		<nav className="border-b border-border py-4 md:py-6 px-4 md:px-6 w-full">
+		<nav className="border-b border-border py-2 px-4 md:px-6 w-full">
 			<div className="flex items-center">
 				<NavigationMobileDrawer
 					open={navOpen}

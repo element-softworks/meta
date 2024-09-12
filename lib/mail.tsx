@@ -66,10 +66,10 @@ export const sendVerificationEmail = async (verificationToken: VerificationToken
 	}
 };
 
-export const sendNotificationEmail = async (email: string, message: string) => {
+export const sendNotificationEmail = async (email: string, message: string, title: string) => {
 	try {
 		const { data, error } = await resend.emails.send({
-			from: `${process.env.RESEND_FROM_EMAIL}`,
+			from: `${title} <${process.env.RESEND_FROM_EMAIL}>`,
 			to: email,
 			subject: 'Notification',
 			react: NotificationEmailTemplate({

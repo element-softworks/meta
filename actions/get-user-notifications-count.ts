@@ -7,7 +7,7 @@ export const getUserNotificationsCount = async (userId: string) => {
 		const notifications = await db.userNotification.count({
 			where: {
 				userId,
-				read: false,
+				readAt: null,
 			},
 		});
 		return { count: notifications };

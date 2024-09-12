@@ -128,6 +128,7 @@ export default {
 				session.user.isOAuth = token.isOAuth;
 				session.user.isArchived = token.isArchived;
 				session.user.image = token.image;
+				session.user.notificationsEnabled = token.notificationsEnabled;
 			}
 
 			return session;
@@ -154,6 +155,8 @@ export default {
 			token.image = session?.image ?? existingUser.image;
 			token.teams = teams ?? [];
 			token.currentTeam = teamCookie?.value ?? teams?.[0]?.id ?? '';
+			token.notificationsEnabled =
+				session?.notificationsEnabled ?? existingUser.notificationsEnabled;
 			return token;
 		},
 	},

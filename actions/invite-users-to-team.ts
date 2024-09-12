@@ -4,6 +4,7 @@ import { getUserByEmail } from '@/data/user';
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { sendConciergeEmail, sendNotificationEmail } from '@/lib/mail';
+import { createNotification } from '@/lib/notifications';
 import { generateConciergeToken } from '@/lib/tokens';
 import { InviteTeamUserSchema } from '@/schemas';
 import { revalidatePath } from 'next/cache';
@@ -27,10 +28,15 @@ export const inviteUsersToTeam = async (
 		where: {
 			id: teamId,
 		},
+
 		include: {
 			members: {
 				include: {
-					user: true,
+					user: {
+						select: {
+							email: true,
+						},
+					},
 				},
 			},
 		},
@@ -92,20 +98,13 @@ export const inviteUsersToTeam = async (
 				const existingUser = await getUserByEmail(user.email);
 
 				//add the existing user to the team
+
 				await addUserToTeam(teamId, existingUser?.id ?? '', user.role);
 
-				await sendNotificationEmail(
-					user.email,
-					`You have added been to a new team: ${team?.name}`
-				);
-
-				const notification = await db.userNotification.create({
-					data: {
-						dangerouslySetInnerHTML: '',
-						userId: existingUser?.id ?? '',
-						message: `You have added been to a new team: ${team?.name}`,
-						read: false,
-					},
+				const notification = await createNotification({
+					userId: existingUser?.id ?? '',
+					message: `You have added been to the team "${team?.name}"`,
+					title: 'New team invite!',
 				});
 			})
 		);
