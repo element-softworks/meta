@@ -2,6 +2,7 @@
 import { currentUser } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { UserRole } from '@prisma/client';
+import { revalidatePath } from 'next/cache';
 import Error from 'next/error';
 
 /**

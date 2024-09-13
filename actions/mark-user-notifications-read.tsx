@@ -1,28 +1,30 @@
 'use server';
 
 import { db } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
 
 export const markUserNotificationsRead = async ({
 	notificationIds,
 }: {
 	notificationIds: string[];
 }) => {
-	const updatedNotifications = await Promise.all(
-		notificationIds.map((notification) =>
-			db.userNotification.update({
-				where: {
-					id: notification,
+	try {
+		await db.userNotification.updateMany({
+			where: {
+				id: {
+					in: notificationIds,
 				},
-				data: {
-					readAt: new Date(),
-				},
-				select: {
-					id: true,
-					title: true,
-				},
-			})
-		)
-	);
+			},
+			data: {
+				readAt: new Date(),
+			},
+		});
 
-	return updatedNotifications;
+		revalidatePath('/dashboard/notifications');
+	} catch (error) {
+		console.error(error);
+		return { error: 'An error occurred while marking notifications as read' };
+	}
+
+	return { success: 'Notifications marked as read' };
 };

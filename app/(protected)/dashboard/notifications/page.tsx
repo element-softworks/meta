@@ -14,7 +14,7 @@ export default async function DashboardPage({ searchParams }: any) {
 			</div>
 			<Separator />
 
-			<NotificationsContainer />
+			<NotificationsContainer searchParams={searchParams} />
 		</main>
 	);
 }

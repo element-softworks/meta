@@ -26,8 +26,16 @@ export function useParam() {
 		[searchParams]
 	);
 
-	const mutateParam = ({ param, value }: { param: string; value: string }) => {
-		router.push(pathname + '?' + createQueryString(param, value));
+	const mutateParam = ({
+		param,
+		value,
+		scroll = true,
+	}: {
+		param: string;
+		value: string;
+		scroll?: boolean;
+	}) => {
+		router.push(pathname + '?' + createQueryString(param, value), { scroll });
 	};
 
 	const mutateParams = (params: { [key: string]: string }) => {

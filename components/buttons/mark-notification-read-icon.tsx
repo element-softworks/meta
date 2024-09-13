@@ -4,6 +4,7 @@ import { markUserNotificationsRead } from '@/actions/mark-user-notifications-rea
 import { useMutation } from '@/hooks/use-mutation';
 import { Button } from '../ui/button';
 import { Check } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 interface MarkNotificationReadIconProps {
 	notificationId: string;
@@ -15,6 +16,8 @@ type MarkNotificationReadIconRequest = {
 };
 
 export const MarkNotificationReadIcon = (props: MarkNotificationReadIconProps) => {
+	const { update } = useSession();
+
 	const { visible = true } = props;
 	const { query: markNotificationQuery, isLoading } = useMutation<
 		MarkNotificationReadIconRequest,
@@ -28,6 +31,7 @@ export const MarkNotificationReadIcon = (props: MarkNotificationReadIconProps) =
 		if (!props.notificationId) return;
 
 		await markNotificationQuery();
+		update();
 	};
 
 	return (

@@ -4,6 +4,7 @@ import { markUserNotificationsRead } from '@/actions/mark-user-notifications-rea
 import { useMutation } from '@/hooks/use-mutation';
 import { Button } from '../ui/button';
 import { Check } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 
 interface MarkNotificationsReadButtonProps {
 	notificationIds: string[];
@@ -14,6 +15,7 @@ type MarkNotificationsReadButtonRequest = {
 };
 
 export const MarkNotificationsReadButton = (props: MarkNotificationsReadButtonProps) => {
+	const { update } = useSession();
 	const { query: markNotificationQuery, isLoading } = useMutation<
 		MarkNotificationsReadButtonRequest,
 		{}
@@ -26,6 +28,7 @@ export const MarkNotificationsReadButton = (props: MarkNotificationsReadButtonPr
 		if (!props.notificationIds.length) return;
 
 		await markNotificationQuery();
+		update();
 	};
 
 	return (
