@@ -21,6 +21,11 @@ export const adminArchiveUser = async (archivingUser?: User | TableUser) => {
 	// Archive the user
 	const archivedUser = await db.user.update({
 		where: { id: archivingUser.id },
+		select: {
+			id: true,
+			isArchived: true,
+			name: true,
+		},
 		data: {
 			isArchived: archivingUser.isArchived ? false : true,
 		},

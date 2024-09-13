@@ -104,7 +104,7 @@ export const inviteUsersToTeam = async (
 				const notification = await createNotification({
 					userId: existingUser?.id ?? '',
 					message: `You have added been to the team "${team?.name}"`,
-					title: 'New team invite!',
+					title: 'Added to team',
 				});
 			})
 		);

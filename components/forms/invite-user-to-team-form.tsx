@@ -61,8 +61,6 @@ export function InviteUserToTeamForm(props: InviteUserToTeamFormProps) {
 		const response = await InviteUsersQuery(values);
 	}
 
-	console.log(form.watch(), 'form watch');
-
 	return (
 		<div className="">
 			<div className="space-y-4">

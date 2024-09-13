@@ -44,7 +44,9 @@ export function DialogWrapper(props: DialogWrapperProps) {
 	}
 	return (
 		<Dialog open={props.open} onOpenChange={(state) => props.onOpenChange(state)}>
-			<div onClick={() => props.onOpenChange(true)}>{props.button}</div>
+			<div className="w-fit" onClick={() => props.onOpenChange(true)}>
+				{props.button}
+			</div>
 
 			<DialogContent className={`${width} max-w-[90%]`}>
 				<DialogHeader>

@@ -22,6 +22,11 @@ export const adminArchiveTeam = async (
 	// Archive the user
 	const archivedTeam = await db.team.update({
 		where: { id: archivingTeam?.id },
+		select: {
+			id: true,
+			isArchived: true,
+			name: true,
+		},
 		data: {
 			isArchived: archivingTeam?.isArchived ? false : true,
 		},
