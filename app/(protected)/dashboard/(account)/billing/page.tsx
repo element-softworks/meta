@@ -1,17 +1,12 @@
-'use client';
-import { CheckoutForm } from '@/components/forms/checkout-form';
-import convertToSubCurrency from '@/lib/convertToSubCurrency';
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import Checkout from '@/components/checkout';
 import { Separator } from '@/components/ui/separator';
-
-if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
-	throw new Error('Stripe publishable key not found');
-}
-
-const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY}`);
+import { getTeamById } from '@/data/team';
+import { currentUser } from '@/lib/auth';
 
 export default async function SettingsPage() {
+	const user = await currentUser();
+	const team = await getTeamById(user?.currentTeam ?? '');
+
 	return (
 		<main className="flex flex-col max-w-3xl gap-6">
 			<div className="flex gap-2 items-center">
@@ -23,16 +18,8 @@ export default async function SettingsPage() {
 				</div>
 			</div>
 			<Separator />
-			<Elements
-				stripe={stripePromise}
-				options={{
-					mode: 'payment',
-					currency: 'gbp',
-					amount: convertToSubCurrency(49.99),
-				}}
-			>
-				<CheckoutForm amount={49.99} />
-			</Elements>
+
+			<Checkout stripeCustomerId={team?.team?.stripeCustomerId ?? ''} />
 		</main>
 	);
 }

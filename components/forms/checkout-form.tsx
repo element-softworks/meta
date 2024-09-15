@@ -2,26 +2,35 @@
 import { createPaymentIntent } from '@/actions/create-payment-intent';
 import { useMutation } from '@/hooks/use-mutation';
 import convertToSubCurrency from '@/lib/convertToSubCurrency';
-import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import { CardElement, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { CenteredLoader } from '../layout/centered-loader';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 interface CheckoutFormProps {
 	amount: number;
+	type: 'subscription' | 'payment';
 }
 
 interface PaymentIntentFormRequest {
 	amount: number;
 }
+interface SubscriptionFormRequest {
+	paymentMethod: string;
+}
 
 export function CheckoutForm(props: CheckoutFormProps) {
+	const user = useCurrentUser();
 	const {
 		query: paymentIntentQuery,
 		isLoading,
 		data,
 	} = useMutation<PaymentIntentFormRequest, { clientSecret: string }>({
-		queryFn: async () => await createPaymentIntent(convertToSubCurrency(props.amount)),
+		queryFn: async () =>
+			await createPaymentIntent({
+				amount: convertToSubCurrency(props.amount),
+			}),
 	});
 
 	const stripe = useStripe();
@@ -32,7 +41,9 @@ export function CheckoutForm(props: CheckoutFormProps) {
 
 	useEffect(() => {
 		(async () => {
-			const response = await paymentIntentQuery();
+			if (props.type === 'payment') {
+				const response = await paymentIntentQuery();
+			}
 		})();
 	}, [props.amount]);
 
@@ -52,6 +63,8 @@ export function CheckoutForm(props: CheckoutFormProps) {
 			return;
 		}
 
+		if (!data?.clientSecret) return;
+
 		const confirmationLink = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/success?amount=${props.amount}`;
 
 		const { error } = await stripe.confirmPayment({
@@ -63,11 +76,9 @@ export function CheckoutForm(props: CheckoutFormProps) {
 		});
 
 		if (error) {
-			setError(error.message ?? 'An error occurred');
+			setError('An error occurred');
 			setLoading(false);
 			return;
-		} else {
-			//update user's subscription
 		}
 
 		setLoading(false);

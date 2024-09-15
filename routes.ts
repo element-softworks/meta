@@ -4,7 +4,12 @@
 
  */
 
-export const publicRoutes = ['/', '/auth/new-verification', '/auth/new-password'];
+export const publicRoutes = [
+	'/',
+	'/auth/new-verification',
+	'/auth/new-password',
+	'/api/webhooks/stripe',
+];
 export const adminRoute = '/dashboard/admin';
 
 /**

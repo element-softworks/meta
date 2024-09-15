@@ -1,0 +1,26 @@
+{
+	"basic": {
+		"type": "subscription",
+		"stripePricingId": "price_1PzFu7LGm4K65Sy9rxN4h1Co",
+		"name": "Basic",
+		"price": 9.99,
+		"users": 1,
+		"features": ["1 user", "Basic support"]
+	},
+	"pro": {
+		"type": "subscription",
+		"stripePricingId": "price_1PzFuoLGm4K65Sy9HVFqJYAR",
+		"name": "Pro",
+		"price": 24.99,
+		"users": 5,
+		"features": ["5 users", "Priority support"]
+	},
+	"enterprise": {
+		"type": "subscription",
+		"stripePricingId": "price_1PzFv7LGm4K65Sy9tzfJaVBB",
+		"name": "Enterprise",
+		"price": 49.99,
+		"users": 1000,
+		"features": ["Unlimited users", "24/7 support"]
+	}
+}
