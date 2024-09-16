@@ -1,10 +1,8 @@
-import { metadata } from './../../../(public)/layout';
 import { getTeamById } from '@/data/team';
-import { getUserByEmail, getUserById } from '@/data/user';
+import { getUserByEmail } from '@/data/user';
 import { db } from '@/lib/db';
 import { createNotification } from '@/lib/notifications';
 import { revalidatePath } from 'next/cache';
-import Error from 'next/error';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -12,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest, res: Response) {
 	if (!process.env.STRIPE_SECRET_KEY) {
 		NextResponse.json({ error: 'Stripe secret key not found' }, { status: 500 });
 	}
@@ -35,9 +33,6 @@ export async function POST(req: NextRequest) {
 		event: Stripe.Event,
 		type: 'created' | 'updated' | 'deleted'
 	) => {
-		console.log('Stripe event running:', event.type);
-		console.log('Stripe event data:', event.data.object);
-
 		const subscription = event.data.object as Stripe.Subscription;
 
 		const customer = await getCustomer(subscription.customer as string);
@@ -124,10 +119,6 @@ export async function POST(req: NextRequest) {
 					title: 'Subscription deleted',
 				});
 			}
-
-			console.log(team.team?.id, 'teamId');
-
-			revalidatePath(`/dashboard/teams/${team?.team?.id}/billing`);
 		} catch (error) {
 			console.error('Error handling subscription event', error);
 			return NextResponse.json(
@@ -208,10 +199,6 @@ export async function POST(req: NextRequest) {
 		const subscription = event.data.object as Stripe.Subscription;
 		const customer = await getCustomer(subscription.customer as string);
 		const team = await getTeamById(customer?.metadata?.teamId ?? '');
-
-		revalidatePath(`/dashboard/teams/${team.team?.id}/billing`);
-
-		console.log(subscription, 'subscription', customer, 'customer');
 	};
 
 	switch (event.type) {
@@ -226,19 +213,15 @@ export async function POST(req: NextRequest) {
 		//Subscription logic
 		case 'customer.subscription.created':
 			await handleSubscriptionEvent(event, 'created');
-			NextResponse.json({ received: true });
 			break;
 		case 'customer.subscription.updated':
 			await handleSubscriptionEvent(event, 'updated');
-			NextResponse.json({ received: true });
 			break;
 		case 'customer.subscription.deleted':
 			await handleSubscriptionEvent(event, 'deleted');
-			NextResponse.json({ received: true });
 			break;
 		case 'invoice.payment_succeeded':
 			await handleInvoiceEvent(event, 'succeeded');
-			NextResponse.json({ received: true });
 			break;
 		case 'invoice.payment_failed':
 			await handleInvoiceEvent(event, 'failed');

@@ -7,25 +7,16 @@ import { db } from '@/lib/db';
 import { isTeamOwner } from '@/lib/team';
 import { Suspense } from 'react';
 
-export default async function SettingsPage() {
+export default async function BillingPage() {
 	const user = await currentUser();
 	const team = await getTeamById(user?.currentTeam ?? '');
 	const isOwner = await isTeamOwner(team?.team?.members ?? [], user?.id ?? '');
 
-	const subscription = await db.customer.findFirst({
-		where: {
-			stripeCustomerId: team?.team?.stripeCustomerId ?? '',
-		},
-	});
-
 	const teamHasPlan =
 		!!team?.team?.subscriptions?.length && team?.team?.subscriptions?.[0]?.status === 'active';
-	const currentSubscription = team?.team?.subscriptions?.[0];
-
-	console.log(subscription, 'cancelAtPeriodEnd');
 
 	return (
-		<main className="flex flex-col max-w-5xl gap-6">
+		<main className="flex flex-col max-w-5xl gap-6 h-full">
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
 					<p className="text-xl font-bold">Billing settings</p>
@@ -46,7 +37,7 @@ export default async function SettingsPage() {
 				) : null}
 
 				{teamHasPlan ? (
-					<div className="flex flex-col gap-4">
+					<div className="flex flex-col gap-4 h-full">
 						<p className="text-lg font-bold">Current plan</p>
 						<div className="flex flex-col gap-2">
 							<p className="text-lg font-bold">
@@ -56,12 +47,13 @@ export default async function SettingsPage() {
 								{team?.team?.subscriptions[0]?.planId}
 							</p>
 						</div>
-						<CancelSubscriptionButton
-							customer={subscription}
-							userId={user?.id ?? ''}
-							teamId={team.team?.id ?? ''}
-						/>
-						<Separator />
+						<div className="mt-auto">
+							<CancelSubscriptionButton
+								customer={team?.team?.subscriptions[0]}
+								userId={user?.id ?? ''}
+								teamId={user?.currentTeam ?? ''}
+							/>
+						</div>
 					</div>
 				) : (
 					isOwner && (

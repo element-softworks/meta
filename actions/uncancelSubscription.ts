@@ -34,7 +34,7 @@ export const uncancelSubscription = async (customerId: string, teamId: string, u
 				});
 			})
 		);
-
+		revalidatePath(`/dashboard/teams/${teamId}/billing`);
 		return { success: 'Subscription reinstated' };
 	} catch (error: any) {
 		console.error('An error occurred cancelling your subscription:' + error);

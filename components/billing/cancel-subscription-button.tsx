@@ -6,24 +6,30 @@ import { useMutation } from '@/hooks/use-mutation';
 import { Customer } from '@prisma/client';
 import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
+import { revalidatePath } from 'next/cache';
+import { useRouter } from 'next/navigation';
 
 interface CancelSubscriptionButtonProps {
 	teamId: string;
 	userId: string;
-	customer: Customer | null;
+	customer: Customer | undefined;
 }
 
 export default function CancelSubscriptionButton(props: CancelSubscriptionButtonProps) {
-	const { update } = useSession();
-	const { query: cancelSubscriptionQuery, isLoading } = useMutation<{}, {}>({
+	const router = useRouter();
+	const {
+		query: cancelSubscriptionQuery,
+		isLoading,
+		data: cancelData,
+	} = useMutation<{}, {}>({
 		queryFn: async (values) =>
 			await cancelSubscription(
 				props.customer?.stripeCustomerId ?? '',
 				props.teamId,
 				props.userId
 			),
-		onCompleted: () => {
-			update();
+		onSuccess: () => {
+			router.push(`/dashboard/teams/${props.teamId}`);
 		},
 	});
 
@@ -38,8 +44,8 @@ export default function CancelSubscriptionButton(props: CancelSubscriptionButton
 				props.teamId,
 				props.userId
 			),
-		onCompleted: () => {
-			update();
+		onSuccess: () => {
+			router.push(`/dashboard/teams/${props.teamId}`);
 		},
 	});
 

@@ -91,7 +91,10 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 							</div>
 						</div>
 						<div className="flex gap-4 w-full ">
-							<SelectTeamButton teamId={team?.team?.id} />
+							<SelectTeamButton
+								teamId={team?.team?.id}
+								disabled={team?.team?.id === user?.currentTeam}
+							/>
 							<Link href={`/dashboard/teams/${team?.team?.id}`} className="flex-1">
 								<Button className="w-full mt-4">View team</Button>
 							</Link>
