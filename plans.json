@@ -21,6 +21,6 @@
 		"name": "Enterprise",
 		"price": 49.99,
 		"users": 1000,
-		"features": ["Unlimited users", "24/7 support"]
+		"features": ["Unlimited users", "24/7 support", "Unlimited storage"]
 	}
 }

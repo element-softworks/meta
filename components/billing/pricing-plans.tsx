@@ -11,6 +11,8 @@ import {
 	CardTitle,
 } from '@/components/ui/card';
 import { CheckCircle, CheckCircle2 } from 'lucide-react';
+import plans from '@/plans.json';
+import { CenteredLoader } from '../layout/centered-loader';
 
 interface PricingPlansProps {
 	stripeCustomerId: string;
@@ -58,15 +60,24 @@ export default function PricingPlans(props: PricingPlansProps) {
 
 	useStripePricing({ enabled: !!price, price, stripeCustomerId: props.stripeCustomerId });
 
+	const basic = plans.basic;
+	const pro = plans.pro;
+	const enterprise = plans.enterprise;
+
+	const calcPrice = (price: number, yearly: boolean) => {
+		const formattedPrice = yearly ? price * 12 : price;
+
+		return `£${formattedPrice.toFixed(2)}`;
+	};
+
 	return (
 		<div className="text-start lg:text-center">
 			<p className="text-xl md:text-3xl font-bold">Boilerplate pricing plans</p>
 			<p className="text-muted-foreground">Select a plan to upgrade your account</p>
 
-			<div className="flex gap-0 justify-start lg:justify-center mt-4">
+			<div className="flex gap-2 justify-start lg:justify-center mt-4">
 				<Button
 					onClick={() => setIsYearly(true)}
-					className="rounded-tr-none rounded-br-none"
 					variant={isYearly ? 'default' : 'secondary'}
 				>
 					Yearly
@@ -74,19 +85,18 @@ export default function PricingPlans(props: PricingPlansProps) {
 				<Button
 					variant={!isYearly ? 'default' : 'secondary'}
 					onClick={() => setIsYearly(false)}
-					className="rounded-tl-none rounded-bl-none"
 				>
 					Monthly
 				</Button>
 			</div>
 
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-10">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6 lg:mt-10">
 				<PricingCard
 					type={isYearly ? 'year' : 'month'}
-					planName="Basic"
-					price={isYearly ? '£119.88' : '£9.99'}
+					planName={basic.name}
+					price={calcPrice(basic.price, isYearly)}
 					description="Essential features you need to get started"
-					features={['Feature 1', 'Feature 2', 'Feature 3']}
+					features={basic.features}
 					Button={
 						<Button
 							className="w-full"
@@ -101,10 +111,10 @@ export default function PricingPlans(props: PricingPlansProps) {
 				<PricingCard
 					className="lg:scale-105 shadow-md border-primary"
 					type={isYearly ? 'year' : 'month'}
-					planName="Pro"
-					price={isYearly ? '£299.88' : '£24.99'}
+					planName={pro.name}
+					price={calcPrice(pro.price, isYearly)}
 					description="Perfect for owners of small & medium businesses"
-					features={['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4']}
+					features={pro.features}
 					Button={
 						<Button
 							className="w-full"
@@ -119,10 +129,10 @@ export default function PricingPlans(props: PricingPlansProps) {
 
 				<PricingCard
 					type={isYearly ? 'year' : 'month'}
-					planName="Enterprise"
-					price={isYearly ? '£599.88' : '£49.99'}
+					planName={enterprise.name}
+					price={calcPrice(enterprise.price, isYearly)}
 					description="Dedicated support and infrastructure to fit your needs"
-					features={['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5']}
+					features={enterprise.features}
 					Button={
 						<Button
 							className="w-full"

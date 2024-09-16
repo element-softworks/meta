@@ -13,7 +13,9 @@ export const NAVBAR_ITEMS = [
 	{ name: 'Docs', href: '/docs', icon: <Notebook className="mr-2 h-4 w-4" /> },
 ];
 
-interface NavbarProps {}
+interface NavbarProps {
+	count: number;
+}
 
 export function Navbar(props: NavbarProps) {
 	const user = useCurrentUser();
@@ -53,7 +55,7 @@ export function Navbar(props: NavbarProps) {
 				</div>
 
 				<div className="flex">
-					<UserMenu user={user} />
+					<UserMenu user={user} count={props.count} />
 				</div>
 			</div>
 		</nav>

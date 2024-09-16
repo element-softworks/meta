@@ -8,26 +8,36 @@ import { format } from 'date-fns';
 import { useSession } from 'next-auth/react';
 
 interface CancelSubscriptionButtonProps {
-	customerId: string;
 	teamId: string;
 	userId: string;
-	customer: Customer | undefined;
+	customer: Customer | null;
 }
 
 export default function CancelSubscriptionButton(props: CancelSubscriptionButtonProps) {
 	const { update } = useSession();
 	const { query: cancelSubscriptionQuery, isLoading } = useMutation<{}, {}>({
 		queryFn: async (values) =>
-			await cancelSubscription(props.customerId, props.teamId, props.userId),
+			await cancelSubscription(
+				props.customer?.stripeCustomerId ?? '',
+				props.teamId,
+				props.userId
+			),
 		onCompleted: () => {
 			update();
 		},
 	});
 
-	const { query: unCancelSubscriptionQuery, isLoading: isLoadingUncancel } = useMutation<{}, {}>({
+	const {
+		query: unCancelSubscriptionQuery,
+		isLoading: isLoadingUncancel,
+		data,
+	} = useMutation<{}, {}>({
 		queryFn: async (values) =>
-			await uncancelSubscription(props.customerId, props.teamId, props.userId),
-
+			await uncancelSubscription(
+				props.customer?.stripeCustomerId ?? '',
+				props.teamId,
+				props.userId
+			),
 		onCompleted: () => {
 			update();
 		},

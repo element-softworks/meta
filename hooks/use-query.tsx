@@ -39,11 +39,11 @@ export function useQuery<T, R>({
 	}, [data]);
 
 	useEffect(() => {
-		if (!enabled || !data) return;
+		if (!enabled || data) return;
 		(async () => {
 			await query();
 		})();
-	}, [enabled, data]);
+	}, [enabled]);
 
 	const query = async (values?: T) => {
 		let response: QueryResponse;

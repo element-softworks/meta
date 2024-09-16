@@ -125,7 +125,9 @@ export async function POST(req: NextRequest) {
 				});
 			}
 
-			revalidatePath(`/dashboard/teams/${team.team?.id}/billing`);
+			console.log(team.team?.id, 'teamId');
+
+			revalidatePath(`/dashboard/teams/${team?.team?.id}/billing`);
 		} catch (error) {
 			console.error('Error handling subscription event', error);
 			return NextResponse.json(
@@ -191,6 +193,8 @@ export async function POST(req: NextRequest) {
 				message: `Your invoice for ${team.team?.name} has been ${status}`,
 				title: `Invoice ${status}`,
 			});
+
+			revalidatePath(`/dashboard/teams/${team.team?.id}/billing`);
 		} catch (error) {
 			console.error('Error handling subscription event', error);
 			return NextResponse.json(
@@ -203,6 +207,9 @@ export async function POST(req: NextRequest) {
 	const handleCheckoutSessionCompletedEvent = async (event: Stripe.Event) => {
 		const subscription = event.data.object as Stripe.Subscription;
 		const customer = await getCustomer(subscription.customer as string);
+		const team = await getTeamById(customer?.metadata?.teamId ?? '');
+
+		revalidatePath(`/dashboard/teams/${team.team?.id}/billing`);
 
 		console.log(subscription, 'subscription', customer, 'customer');
 	};

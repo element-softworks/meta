@@ -1,3 +1,4 @@
+import { getUserNotificationsCount } from '@/actions/get-user-notifications-count';
 import { auth } from '@/auth';
 import { CreateTeamDialog } from '@/components/dialogs/create-team-dialog';
 import { DashboardSidebar } from '@/components/layout/dashboard-sidebar';
@@ -10,11 +11,12 @@ import { SessionProvider } from 'next-auth/react';
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 	const session = await auth();
 	const hasCreateCookie = await getCookie(`${session?.user.email}-create-team-dialog`);
+	const count = await getUserNotificationsCount(session?.user?.id ?? '');
 	return (
 		<SessionProvider session={session}>
 			<Toaster />
 			<div className="flex flex-col min-h-screen ">
-				<Navbar />
+				<Navbar count={count?.count ?? 0} />
 				<div className="border-t border-border flex flex-1">
 					<DashboardSidebar />
 					<CreateTeamDialog hasCreateCookie={!!hasCreateCookie} />
