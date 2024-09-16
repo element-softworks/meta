@@ -80,6 +80,7 @@ export const getTeamById = async (teamId: string) => {
 					user: true,
 				},
 			},
+			subscriptions: true,
 		},
 	});
 

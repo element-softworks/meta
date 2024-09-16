@@ -3,6 +3,7 @@ import { getTeamById } from '@/data/team';
 import { getUserByEmail, getUserById } from '@/data/user';
 import { db } from '@/lib/db';
 import { createNotification } from '@/lib/notifications';
+import { revalidatePath } from 'next/cache';
 import Error from 'next/error';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
@@ -34,18 +35,21 @@ export async function POST(req: NextRequest) {
 		event: Stripe.Event,
 		type: 'created' | 'updated' | 'deleted'
 	) => {
+		console.log('Stripe event running:', event.type);
+		console.log('Stripe event data:', event.data.object);
+
 		const subscription = event.data.object as Stripe.Subscription;
 
 		const customer = await getCustomer(subscription.customer as string);
 		const user = await getUserByEmail(customer.email ?? '');
 		const team = await getTeamById(customer?.metadata?.teamId ?? '');
 
-		console.log(subscription, customer, 'subscription');
-
 		if (!user) {
 			console.error('User not found');
 			return NextResponse.json({ error: 'User not found' }, { status: 404 });
 		}
+
+		const endDate = new Date(subscription?.current_period_end * 1000); //Convert unix timestamp to JS date
 
 		const subscriptionData = {
 			teamId: team.team?.id ?? '',
@@ -55,13 +59,13 @@ export async function POST(req: NextRequest) {
 			planId: subscription?.items?.data[0]?.price?.id,
 			email: user?.email ?? '',
 			status: subscription.status,
+			cancelAtPeriodEnd: subscription?.cancel_at_period_end ?? false,
+			endDate: endDate,
 		};
-		console.log(subscriptionData, type, 'subscriptionData');
 
 		try {
 			if (type === 'created') {
 				// Create subscription
-
 				await db.customer
 					.create({
 						data: { ...subscriptionData },
@@ -86,8 +90,6 @@ export async function POST(req: NextRequest) {
 				});
 			} else if (type === 'updated') {
 				// Update subscription
-
-				console.log('updating subscription', subscriptionData);
 				await db.customer
 					.update({
 						where: {
@@ -112,16 +114,18 @@ export async function POST(req: NextRequest) {
 					},
 					data: {
 						status: 'cancelled',
-						email: subscriptionData.email,
+						email: customer.email ?? '',
 					},
 				});
 
 				await createNotification({
-					userId: subscription.metadata.userId,
+					userId: customer.metadata.userId,
 					message: `Your subscription to ${team.team?.name} has been deleted`,
 					title: 'Subscription deleted',
 				});
 			}
+
+			revalidatePath('/dashboard/billing');
 		} catch (error) {
 			console.error('Error handling subscription event', error);
 			return NextResponse.json(
@@ -132,13 +136,14 @@ export async function POST(req: NextRequest) {
 	};
 
 	const handleInvoiceEvent = async (event: Stripe.Event, status: 'succeeded' | 'failed') => {
+		if (status === 'failed') {
+			return NextResponse.json({ error: 'Failed to create invoice' });
+		}
 		const invoice = event.data.object as Stripe.Invoice;
 
 		const customer = await getCustomer(invoice.customer as string);
 		const user = await getUserByEmail(customer.email ?? '');
 		const team = await getTeamById(customer?.metadata?.teamId ?? '');
-
-		console.log(invoice, customer, 'invoice');
 
 		const foundCustomer = await db.customer.findFirst({
 			where: {
@@ -155,20 +160,16 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: 'Team not found' }, { status: 404 });
 		}
 
-		console.log(
-			{
-				invoiceId: invoice.id ?? '',
-				teamId: team.team?.id ?? '',
-				amountPaid: invoice.amount_paid ?? '',
-				amountDue: invoice.amount_due ?? '',
-				currency: invoice.currency ?? '',
-				email: user?.email ?? '',
-				status: status ?? 'failed',
-				stripeSubscriptionId: invoice.subscription?.toString() ?? '',
-				customerId: foundCustomer?.id ?? '',
-			},
-			'invoiceData creating'
-		);
+		await db.customer
+			.update({
+				where: {
+					stripeCustomerId: customer.id,
+				},
+				data: { status: 'active' },
+			})
+			.catch((error) => {
+				console.error('Error updating subscription', error);
+			});
 
 		try {
 			await db.customerInvoice.create({
@@ -197,6 +198,13 @@ export async function POST(req: NextRequest) {
 				{ status: 500 }
 			);
 		}
+	};
+
+	const handleCheckoutSessionCompletedEvent = async (event: Stripe.Event) => {
+		const subscription = event.data.object as Stripe.Subscription;
+		const customer = await getCustomer(subscription.customer as string);
+
+		console.log(subscription, 'subscription', customer, 'customer');
 	};
 
 	switch (event.type) {
@@ -229,6 +237,7 @@ export async function POST(req: NextRequest) {
 			await handleInvoiceEvent(event, 'failed');
 			break;
 		case 'checkout.session.completed':
+			await handleCheckoutSessionCompletedEvent(event);
 			console.log('Checkout session completed');
 			break;
 

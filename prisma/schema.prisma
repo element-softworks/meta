@@ -113,9 +113,11 @@ model Customer {
   stripeCustomerId     String        @unique
   stripeSubscriptionId String
   startDate            DateTime      @default(now())
+  endDate              DateTime
   planId               String
   email                String
   status               String
+  cancelAtPeriodEnd    Boolean
 }
 
 model CustomerInvoice {

@@ -30,22 +30,21 @@ export const createCheckoutSession = async ({
 		try {
 			let customer = null;
 
+			//If we have a stripeCustomerId, retrieve the customer, otherwise create a new customer
 			if (stripeCustomerId) {
 				customer = await stripe.customers.retrieve(stripeCustomerId);
-			}
+			} else {
+				console.log(customer, 'customer');
 
-			console.log(customer, 'customer');
-
-			const newCustomer = await stripe.customers.create({
-				email: email,
-				metadata: {
-					userId: userId,
-					teamId: teamId,
+				const newCustomer = await stripe.customers.create({
 					email: email,
-				},
-			});
+					metadata: {
+						userId: userId,
+						teamId: teamId,
+						email: email,
+					},
+				});
 
-			if (!customer) {
 				customer = newCustomer;
 			}
 
