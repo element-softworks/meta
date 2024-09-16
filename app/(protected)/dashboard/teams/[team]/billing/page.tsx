@@ -1,21 +1,22 @@
 import CancelSubscriptionButton from '@/components/billing/cancel-subscription-button';
-import Checkout from '@/components/billing/checkout';
+import PricingPlans from '@/components/billing/pricing-plans';
 import { Separator } from '@/components/ui/separator';
 import { getTeamById } from '@/data/team';
 import { currentUser } from '@/lib/auth';
+import { isTeamOwner } from '@/lib/team';
 
 export default async function SettingsPage() {
 	const user = await currentUser();
 	const team = await getTeamById(user?.currentTeam ?? '');
 
+	const isOwner = await isTeamOwner(team?.team?.members ?? [], user?.id ?? '');
+
 	const teamHasPlan =
 		!!team?.team?.subscriptions?.length && team?.team?.subscriptions?.[0]?.status === 'active';
 	const currentSubscription = team?.team?.subscriptions?.[0];
 
-	console.log(currentSubscription?.cancelAtPeriodEnd, 'currentSubscription?.cancelAtPeriodEnd');
-
 	return (
-		<main className="flex flex-col max-w-3xl gap-6">
+		<main className="flex flex-col max-w-5xl gap-6">
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
 					<p className="text-xl font-bold">Billing settings</p>
@@ -25,6 +26,14 @@ export default async function SettingsPage() {
 				</div>
 			</div>
 			<Separator />
+
+			{!isOwner && !teamHasPlan ? (
+				!user?.currentTeam ? (
+					<p>You must create a team to setup billing</p>
+				) : (
+					<p>You must be the team owner to setup billing</p>
+				)
+			) : null}
 
 			{teamHasPlan ? (
 				<div className="flex flex-col gap-4">
@@ -44,7 +53,7 @@ export default async function SettingsPage() {
 					<Separator />
 				</div>
 			) : (
-				<Checkout stripeCustomerId={team?.team?.stripeCustomerId ?? ''} />
+				isOwner && <PricingPlans stripeCustomerId={team?.team?.stripeCustomerId ?? ''} />
 			)}
 		</main>
 	);

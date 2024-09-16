@@ -19,7 +19,7 @@ export function useSidebarItems() {
 				},
 				{
 					text: 'Billing',
-					link: '/dashboard/billing',
+					link: `/dashboard/teams/${user?.currentTeam}/billing`,
 					icon: <CreditCard size={20} />,
 					visible: true,
 				},

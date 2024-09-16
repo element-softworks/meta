@@ -42,6 +42,7 @@ export function UserMenu(props: UserMenuProps) {
 		);
 	}
 
+	console.log('UserMenuProps', props);
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
@@ -110,7 +111,7 @@ export function UserMenu(props: UserMenuProps) {
 							</Link>
 						) : null}
 
-						<Link href="/dashboard/billing">
+						<Link href={`/dashboard/teams/${props.user.currentTeam}/billing`}>
 							<DropdownMenuItem className="cursor-pointer">
 								<CreditCard className="mr-2 h-4 w-4" />
 								Billing

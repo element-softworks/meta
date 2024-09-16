@@ -59,7 +59,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 						Security
 					</DropdownMenuItem>
 				</Link>
-				<Link href="/dashboard/billing">
+				<Link href={`/dashboard/teams/${props.user?.currentTeam}/billing`}>
 					<DropdownMenuItem className="cursor-pointer">
 						<CreditCard className="mr-2 h-4 w-4" />
 						Billing

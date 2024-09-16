@@ -1,5 +1,8 @@
 'use server';
 
+import { getTeamById } from '@/data/team';
+import { getUserById } from '@/data/user';
+import { isTeamOwner } from '@/lib/team';
 import Stripe from 'stripe';
 
 if (!process.env.STRIPE_SECRET_KEY) {
@@ -26,7 +29,30 @@ export const createCheckoutSession = async ({
 	if (subscription) {
 		//Handle subscription session
 
-		console.log(stripeCustomerId, 'stripeCustomerId');
+		const team = await getTeamById(teamId);
+
+		if (!team) {
+			return {
+				error: 'Team not found',
+			};
+		}
+
+		const user = await getUserById(userId);
+
+		if (!user) {
+			return {
+				error: 'User not found',
+			};
+		}
+
+		const isOwner = await isTeamOwner(team.team?.members ?? [], userId);
+
+		if (!isOwner) {
+			return {
+				error: 'You must be the team owner to manage billing',
+			};
+		}
+
 		try {
 			let customer = null;
 
@@ -34,8 +60,6 @@ export const createCheckoutSession = async ({
 			if (stripeCustomerId) {
 				customer = await stripe.customers.retrieve(stripeCustomerId);
 			} else {
-				console.log(customer, 'customer');
-
 				const newCustomer = await stripe.customers.create({
 					email: email,
 					metadata: {
@@ -59,8 +83,8 @@ export const createCheckoutSession = async ({
 						quantity: 1,
 					},
 				],
-				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/success`,
-				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing`,
+				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing/success`,
+				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing`,
 				allow_promotion_codes: true,
 				metadata: {
 					userId: userId,
@@ -98,8 +122,8 @@ export const createCheckoutSession = async ({
 					},
 				],
 				customer_email: email,
-				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing/success`,
-				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/billing`,
+				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing/success`,
+				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing`,
 				allow_promotion_codes: true,
 			});
 

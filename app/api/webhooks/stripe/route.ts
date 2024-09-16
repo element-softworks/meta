@@ -125,7 +125,7 @@ export async function POST(req: NextRequest) {
 				});
 			}
 
-			revalidatePath('/dashboard/billing');
+			revalidatePath(`/dashboard/teams/${team.team?.id}/billing`);
 		} catch (error) {
 			console.error('Error handling subscription event', error);
 			return NextResponse.json(
