@@ -7,9 +7,9 @@ import { isTeamOwner } from '@/lib/team';
 import plans from '@/plans.json';
 import { Suspense } from 'react';
 
-export default async function BillingPage() {
+export default async function BillingPage({ params }: { params: { team: string } }) {
 	const user = await currentUser();
-	const team = await getTeamById(user?.currentTeam ?? '');
+	const team = await getTeamById(params.team ?? '');
 	const isOwner = await isTeamOwner(team?.team?.members ?? [], user?.id ?? '');
 
 	const teamHasPlan =

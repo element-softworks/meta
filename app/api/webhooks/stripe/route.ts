@@ -47,7 +47,7 @@ export async function POST(req: NextRequest, res: Response) {
 		if (!!subscription.pending_update) {
 			console.log('Subscription pending update' + subscription.pending_update);
 
-			return;
+			return NextResponse.json({ error: 'Subscription pending update' });
 		}
 
 		const endDate = new Date(subscription?.current_period_end * 1000); //Convert unix timestamp to JS date
@@ -129,10 +129,6 @@ export async function POST(req: NextRequest, res: Response) {
 	};
 
 	const handleInvoiceEvent = async (event: Stripe.Event, status: 'succeeded' | 'failed') => {
-		console.log('Invoice event' + status);
-		if (status === 'failed') {
-			return NextResponse.json({ error: 'Failed to create invoice' });
-		}
 		const invoice = event.data.object as Stripe.Invoice;
 
 		const customer = await getCustomer(invoice.customer as string);
@@ -159,7 +155,7 @@ export async function POST(req: NextRequest, res: Response) {
 				where: {
 					stripeCustomerId: customer.id,
 				},
-				data: { status: 'active' },
+				data: { status: status === 'failed' ? 'unpaid' : 'active' },
 			})
 			.catch((error) => {
 				console.error('Error updating subscription', error);
@@ -172,6 +168,9 @@ export async function POST(req: NextRequest, res: Response) {
 					teamId: team.team?.id ?? '',
 					amountPaid: invoice.amount_paid ?? '',
 					amountDue: invoice.amount_due ?? '',
+					total: invoice.total ?? '',
+					invoicePdf: invoice.invoice_pdf ?? '',
+					amountRemaining: invoice.amount_remaining ?? '',
 					currency: invoice.currency ?? '',
 					email: user?.email ?? '',
 					status: status ?? 'failed',
@@ -185,8 +184,6 @@ export async function POST(req: NextRequest, res: Response) {
 				message: `Your invoice for ${team.team?.name} has been ${status}`,
 				title: `Invoice ${status}`,
 			});
-
-			revalidatePath(`/dashboard/teams/${team.team?.id}/billing`);
 		} catch (error) {
 			console.error('Error handling subscription event', error);
 			return NextResponse.json(
