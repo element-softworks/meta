@@ -42,6 +42,8 @@ model User {
   teams                 TeamMember[]
   notifications         UserNotification[]
   notificationsEnabled  Boolean                @default(true)
+
+  @@index([email, name])
 }
 
 model UserNotification {
@@ -55,6 +57,8 @@ model UserNotification {
   updatedAt               DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Account {
@@ -76,6 +80,8 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([provider, providerAccountId])
+
+  @@index([userId])
 }
 
 model TeamMember {
@@ -88,6 +94,7 @@ model TeamMember {
   updatedAt DateTime @updatedAt
 
   @@id([teamId, userId])
+  @@index([userId, teamId])
 }
 
 model Team {
@@ -102,6 +109,8 @@ model Team {
   subscriptions     Customer[]
   stripeCustomerId String?
   stripePaymentId  String?
+
+  @@index([stripeCustomerId, stripePaymentId])
 }
 
 model Customer {
@@ -118,6 +127,8 @@ model Customer {
   email                String
   status               String
   cancelAtPeriodEnd    Boolean
+
+  @@index([teamId, userId])
 }
 
 model CustomerInvoice {
@@ -132,6 +143,8 @@ model CustomerInvoice {
   status               String
   teamId               String
   email                String
+
+  @@index([customerId])
 }
 
 model VerificationToken {
@@ -142,6 +155,8 @@ model VerificationToken {
   expiresAt DateTime
 
   @@unique([email, token])
+
+  @@index([newEmail, token])
 }
 
 model ConciergeToken {
@@ -154,6 +169,8 @@ model ConciergeToken {
   role      TeamRole
 
   @@unique([email, token])
+
+  @@index([teamId, email])
 }
 
 model PasswordResetToken {
@@ -163,6 +180,8 @@ model PasswordResetToken {
   expiresAt DateTime
 
   @@unique([email, token])
+
+  @@index([email, token])
 }
 
 model TwoFactorToken {

@@ -14,7 +14,7 @@ export const NAVBAR_ITEMS = [
 ];
 
 interface NavbarProps {
-	count: number;
+	count?: number;
 }
 
 export function Navbar(props: NavbarProps) {
@@ -36,6 +36,7 @@ export function Navbar(props: NavbarProps) {
 				user={user}
 				navOpen={navOpen}
 				onNavOpenChange={(state: boolean) => setNavOpen(state)}
+				count={props.count}
 			/>
 			<div className="md:flex items-center gap-10 hidden">
 				<div className="flex ">

@@ -1,16 +1,11 @@
 'use client';
 
-import { getUserNotificationsCount } from '@/actions/get-user-notifications-count';
-import { useQuery } from '@/hooks/use-query';
-
 interface NotificationsIconProps {
 	className?: string;
-	count: number;
+	count?: number;
 }
 
 export function NotificationsIcon(props: NotificationsIconProps) {
-	// Mock query function that simulates an API call
-
 	return (
 		<div
 			className={`transition-all bg-destructive rounded-full flex items-center justify-center text-destructive-foreground font-extrabold text-[0.6rem] size-5  ${

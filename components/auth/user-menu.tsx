@@ -29,7 +29,7 @@ import { NotificationsIcon } from '../notifications-icon';
 
 interface UserMenuProps {
 	user: ExtendedUser | undefined;
-	count: number;
+	count?: number;
 }
 export function UserMenu(props: UserMenuProps) {
 	const { setTheme, theme } = useTheme();
@@ -43,7 +43,6 @@ export function UserMenu(props: UserMenuProps) {
 		);
 	}
 
-	console.log('UserMenuProps', props);
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
