@@ -16,7 +16,7 @@ export default async function BillingPage({
 				<div className="flex-1">
 					<p className="text-xl font-bold">Team invoices</p>
 					<p className="text-muted-foreground text-sm max-w-xl">
-						Manage and view your team's invoices here.
+						Manage and view your team{"'"}s invoices here.
 					</p>
 				</div>
 			</div>
