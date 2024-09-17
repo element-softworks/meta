@@ -7,6 +7,7 @@
 		"users": 1,
 		"features": ["1 user", "Basic support"]
 	},
+
 	"pro": {
 		"type": "subscription",
 		"stripePricingId": "price_1PzFuoLGm4K65Sy9HVFqJYAR",

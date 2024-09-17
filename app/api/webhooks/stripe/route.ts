@@ -44,6 +44,12 @@ export async function POST(req: NextRequest, res: Response) {
 			return NextResponse.json({ error: 'User not found' }, { status: 404 });
 		}
 
+		if (!!subscription.pending_update) {
+			console.log('Subscription pending update' + subscription.pending_update);
+
+			return;
+		}
+
 		const endDate = new Date(subscription?.current_period_end * 1000); //Convert unix timestamp to JS date
 
 		const subscriptionData = {
@@ -95,12 +101,6 @@ export async function POST(req: NextRequest, res: Response) {
 					.catch((error) => {
 						console.error('Error updating subscription', error);
 					});
-
-				await createNotification({
-					userId: customer.metadata.userId,
-					message: `Your subscription to ${team.team?.name} has been updated`,
-					title: 'Subscription updated',
-				});
 			} else if (type === 'deleted') {
 				// Delete subscription
 				await db.customer.update({
@@ -129,6 +129,7 @@ export async function POST(req: NextRequest, res: Response) {
 	};
 
 	const handleInvoiceEvent = async (event: Stripe.Event, status: 'succeeded' | 'failed') => {
+		console.log('Invoice event' + status);
 		if (status === 'failed') {
 			return NextResponse.json({ error: 'Failed to create invoice' });
 		}
@@ -230,7 +231,6 @@ export async function POST(req: NextRequest, res: Response) {
 			await handleCheckoutSessionCompletedEvent(event);
 			console.log('Checkout session completed');
 			break;
-
 		default:
 			console.log(`Unhandled event type ${event.type}`);
 			break;

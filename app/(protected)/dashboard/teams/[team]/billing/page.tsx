@@ -3,8 +3,8 @@ import PricingPlans from '@/components/billing/pricing-plans';
 import { Separator } from '@/components/ui/separator';
 import { getTeamById } from '@/data/team';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
 import { isTeamOwner } from '@/lib/team';
+import plans from '@/plans.json';
 import { Suspense } from 'react';
 
 export default async function BillingPage() {
@@ -15,13 +15,19 @@ export default async function BillingPage() {
 	const teamHasPlan =
 		!!team?.team?.subscriptions?.length && team?.team?.subscriptions?.[0]?.status === 'active';
 
+	const currentTeamPlan = Object.entries(plans).find(
+		(plan) => plan?.[1]?.stripePricingId === team?.team?.subscriptions?.[0]?.planId
+	)?.[1];
+
 	return (
 		<main className="flex flex-col max-w-5xl gap-6 h-full">
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
 					<p className="text-xl font-bold">Billing settings</p>
-					<p className="text-muted-foreground text-sm">
-						Upgrade, manage and pay for your plan here
+					<p className="text-muted-foreground text-sm max-w-xl">
+						Upgrade, manage and pay for your plan here. Subscription upgrades /
+						downgrades are charged in full for the new plan and prorated for the old
+						plan.
 					</p>
 				</div>
 			</div>
@@ -36,17 +42,15 @@ export default async function BillingPage() {
 					)
 				) : null}
 
+				{isOwner && (
+					<PricingPlans
+						stripeCustomerId={team?.team?.stripeCustomerId ?? ''}
+						currentPlanId={currentTeamPlan?.stripePricingId}
+					/>
+				)}
+
 				{teamHasPlan ? (
 					<div className="flex flex-col gap-4 h-full">
-						<p className="text-lg font-bold">Current plan</p>
-						<div className="flex flex-col gap-2">
-							<p className="text-lg font-bold">
-								{team?.team?.subscriptions[0]?.planId}
-							</p>
-							<p className="text-muted-foreground">
-								{team?.team?.subscriptions[0]?.planId}
-							</p>
-						</div>
 						<div className="mt-auto">
 							<CancelSubscriptionButton
 								customer={team?.team?.subscriptions[0]}
@@ -55,11 +59,7 @@ export default async function BillingPage() {
 							/>
 						</div>
 					</div>
-				) : (
-					isOwner && (
-						<PricingPlans stripeCustomerId={team?.team?.stripeCustomerId ?? ''} />
-					)
-				)}
+				) : null}
 			</Suspense>
 		</main>
 	);

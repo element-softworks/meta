@@ -1,7 +1,5 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { useStripePricing } from '@/hooks/use-stripe-pricing';
-import { useState } from 'react';
 import {
 	Card,
 	CardContent,
@@ -10,11 +8,13 @@ import {
 	CardHeader,
 	CardTitle,
 } from '@/components/ui/card';
-import { CheckCircle, CheckCircle2 } from 'lucide-react';
+import { useStripePricing } from '@/hooks/use-stripe-pricing';
 import plans from '@/plans.json';
-import { CenteredLoader } from '../layout/centered-loader';
+import { CheckCircle2 } from 'lucide-react';
+import { useState } from 'react';
 
 interface PricingPlansProps {
+	currentPlanId: string | undefined;
 	stripeCustomerId: string;
 }
 
@@ -27,7 +27,7 @@ interface PricingCardProps {
 	Button: React.ReactNode;
 	className?: string;
 }
-function PricingCard(props: PricingCardProps) {
+export function PricingCard(props: PricingCardProps) {
 	return (
 		<Card className={`w-full flex flex-col ${props.className}`}>
 			<CardHeader>
@@ -99,12 +99,15 @@ export default function PricingPlans(props: PricingPlansProps) {
 					features={basic.features}
 					Button={
 						<Button
+							disabled={props.currentPlanId === basic.stripePricingId}
 							className="w-full"
 							onClick={() => {
 								setPrice('basic');
 							}}
 						>
-							Get started with Basic
+							{props.currentPlanId === basic.stripePricingId
+								? 'Current plan'
+								: 'Get started with Basic'}
 						</Button>
 					}
 				/>
@@ -117,12 +120,15 @@ export default function PricingPlans(props: PricingPlansProps) {
 					features={pro.features}
 					Button={
 						<Button
+							disabled={props.currentPlanId === pro.stripePricingId}
 							className="w-full"
 							onClick={() => {
 								setPrice('pro');
 							}}
 						>
-							Get started with pro
+							{props.currentPlanId === pro.stripePricingId
+								? 'Current plan'
+								: 'Get started with Pro'}
 						</Button>
 					}
 				/>
@@ -135,12 +141,15 @@ export default function PricingPlans(props: PricingPlansProps) {
 					features={enterprise.features}
 					Button={
 						<Button
+							disabled={props.currentPlanId === enterprise.stripePricingId}
 							className="w-full"
 							onClick={() => {
 								setPrice('enterprise');
 							}}
 						>
-							Get started with enterprise
+							{props.currentPlanId === enterprise.stripePricingId
+								? 'Current plan'
+								: 'Get started with enterprise'}
 						</Button>
 					}
 				/>

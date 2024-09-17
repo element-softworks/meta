@@ -2,6 +2,7 @@
 
 import { getTeamById } from '@/data/team';
 import { getUserById } from '@/data/user';
+import { db } from '@/lib/db';
 import { isTeamOwner } from '@/lib/team';
 import Stripe from 'stripe';
 
@@ -56,9 +57,18 @@ export const createCheckoutSession = async ({
 		try {
 			let customer = null;
 
-			//If we have a stripeCustomerId, retrieve the customer, otherwise create a new customer
-			if (stripeCustomerId) {
-				customer = await stripe.customers.retrieve(stripeCustomerId);
+			//If we have a stripeCustomerId, we are to retrieve the customer
+			if (!!stripeCustomerId?.length) {
+				try {
+					await handleUpgradeSubscription(stripeCustomerId, priceId);
+					return { success: 'Subscription updated', updated: true };
+				} catch (err) {
+					console.error(`Error updating subscription: ${err}`);
+
+					return {
+						error: 'An error occurred while updating the subscription',
+					};
+				}
 			} else {
 				const newCustomer = await stripe.customers.create({
 					email: email,
@@ -68,7 +78,6 @@ export const createCheckoutSession = async ({
 						email: email,
 					},
 				});
-
 				customer = newCustomer;
 			}
 
@@ -106,6 +115,8 @@ export const createCheckoutSession = async ({
 		}
 	} else {
 		//Handle payment session
+		//TODO: CREATE ONE TIME PAYMENTS HERE
+
 		try {
 			const session = await stripe.checkout.sessions.create({
 				mode: 'payment',
@@ -138,5 +149,65 @@ export const createCheckoutSession = async ({
 				error: 'An error occurred while creating the session',
 			};
 		}
+	}
+};
+
+const handleUpgradeSubscription = async (stripeCustomerId: string, priceId: string) => {
+	//If we have a stripeCustomerId, we are trying to upgrade / downgrade the subscription
+
+	if (stripeCustomerId) {
+		const customer = await db.customer.findFirst({
+			where: {
+				stripeCustomerId,
+			},
+		});
+
+		if (!customer) {
+			return {
+				error: 'Customer not found',
+			};
+		}
+
+		const subscriptionItems = await stripe.subscriptionItems.list({
+			subscription: customer?.stripeSubscriptionId ?? '',
+		});
+
+		if (!subscriptionItems?.data[0]?.id) {
+			return {
+				error: 'Subscription not found',
+			};
+		}
+
+		const subscription = await stripe.subscriptions.update(
+			customer?.stripeSubscriptionId ?? '',
+			{
+				proration_behavior: 'always_invoice',
+				items: [
+					{
+						id: subscriptionItems?.data[0].id,
+						price: priceId,
+					},
+				],
+			}
+		);
+
+		if (!subscription) {
+			return {
+				error: 'Failed to update subscription',
+			};
+		}
+
+		await db.customer.update({
+			where: {
+				stripeCustomerId,
+			},
+			data: {
+				stripeSubscriptionId: subscription.id,
+			},
+		});
+
+		return {
+			success: 'Subscription updated',
+		};
 	}
 };

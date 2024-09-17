@@ -38,21 +38,26 @@ export function useStripePricing(props: UseStripePricingProps) {
 					stripeCustomerId: props.stripeCustomerId ?? '',
 				});
 
+				if (data.updated) {
+					return toast({
+						description: 'Your subscription has been updated',
+					});
+				}
+
 				if (data.error) {
 					toast({
 						description: data.error,
 						variant: 'destructive',
 					});
 					return;
+				} else {
+					const stripe = await stripePromise;
+					const result = await stripe?.redirectToCheckout({
+						sessionId: data.sessionId ?? '',
+					});
+
+					return result;
 				}
-
-				const stripe = await stripePromise;
-
-				const result = await stripe?.redirectToCheckout({
-					sessionId: data.sessionId ?? '',
-				});
-
-				return result;
 			} catch (error) {
 				toast({
 					description: 'An error occurred while loading pricing',
