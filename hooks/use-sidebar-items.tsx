@@ -1,7 +1,7 @@
 'use client';
 
 import { UserRole } from '@prisma/client';
-import { CreditCard, LayoutDashboard, Users } from 'lucide-react';
+import { Banknote, CreditCard, LayoutDashboard, Users } from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
 
 export function useSidebarItems() {
@@ -17,10 +17,21 @@ export function useSidebarItems() {
 					icon: <LayoutDashboard size={20} />,
 					visible: true,
 				},
+			],
+		},
+		{
+			name: 'Team',
+			items: [
 				{
 					text: 'Billing',
 					link: `/dashboard/teams/${user?.currentTeam}/billing`,
 					icon: <CreditCard size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Invoices',
+					link: `/dashboard/teams/${user?.currentTeam}/invoices`,
+					icon: <Banknote size={20} />,
 					visible: true,
 				},
 

@@ -133,12 +133,16 @@ model Customer {
 
 model CustomerInvoice {
   id                   String   @id @default(cuid())
-  invoiceId            String
+  invoiceId            String?
   customerId           String
   customer             Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  stripeSubscriptionId String   
+  stripeSubscriptionId String 
   amountPaid           Float
   amountDue            Float
+  total                Float
+  createdAt            DateTime @default(now())
+  amountRemaining      Float
+  invoicePdf           String?
   currency             String
   status               String
   teamId               String

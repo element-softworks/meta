@@ -1,0 +1,127 @@
+'use client';
+
+import { ColumnDef } from '@tanstack/react-table';
+import { format } from 'date-fns';
+import { MoreHorizontal } from 'lucide-react';
+import { DataTable } from '../data-table';
+
+import { Button } from '@/components/ui/button';
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { CustomerInvoice } from '@prisma/client';
+import Link from 'next/link';
+import { toast } from '../ui/use-toast';
+import { Badge } from '../ui/badge';
+
+export type InvoicesTable = CustomerInvoice;
+
+interface InvoicesTableProps {
+	invoices: CustomerInvoice[];
+	totalPages: number | undefined;
+	isLoading: boolean;
+}
+
+export function InvoicesTable(props: InvoicesTableProps) {
+	const { isLoading = false } = props;
+	const columns: ColumnDef<InvoicesTable>[] = [
+		{
+			accessorKey: 'id',
+			header: 'Order number',
+		},
+		{
+			accessorKey: 'createdAt',
+			header: 'Date',
+			enableSorting: true,
+
+			cell: ({ row }) => {
+				const invoice = row.original;
+				return format(new Date(invoice.createdAt), 'MMM d, yyyy h:mm a');
+			},
+		},
+		{
+			accessorKey: 'status',
+			header: 'Status',
+			cell: ({ row }) => {
+				const invoice = row.original;
+				const badgeColor = invoice.status === 'succeeded' ? 'successful' : 'destructive';
+				return <Badge variant={badgeColor}>{invoice.status}</Badge>;
+			},
+		},
+		{
+			accessorKey: 'total',
+			header: 'Total amount',
+			cell: ({ row }) => {
+				const invoice = row.original;
+				return `£${invoice.total / 100}`;
+			},
+		},
+
+		{
+			id: 'actions',
+			cell: ({ row }) => {
+				const invoice = row.original;
+				return (
+					<DropdownMenu>
+						<DropdownMenuTrigger asChild>
+							<Button variant="ghost" className="h-8 w-8 p-0">
+								<span className="sr-only">Open menu</span>
+								<MoreHorizontal className="h-4 w-4" />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuContent align="end">
+							<DropdownMenuLabel>Actions</DropdownMenuLabel>
+							{!!invoice?.invoicePdf ? (
+								<a href={`${invoice?.invoicePdf}`}>
+									<DropdownMenuItem className="cursor-pointer">
+										Download
+									</DropdownMenuItem>
+								</a>
+							) : null}
+
+							<DropdownMenuItem
+								className="cursor-pointer"
+								onClick={() => {
+									navigator.clipboard.writeText(invoice?.id ?? '');
+									toast({
+										description: 'Invoice ID copied to clipboard',
+									});
+								}}
+							>
+								Copy invoice ID
+							</DropdownMenuItem>
+							{/* <DropdownMenuSeparator /> */}
+							{/* <Link href={`/dashboard/invoices/${team.id}`}>
+								<DropdownMenuItem className="cursor-pointer">
+									View invoice
+								</DropdownMenuItem>
+							</Link> */}
+						</DropdownMenuContent>
+					</DropdownMenu>
+				);
+			},
+		},
+	];
+
+	const rows: InvoicesTable[] | undefined = props.invoices;
+
+	return (
+		<DataTable
+			perPageSelectEnabled={true}
+			isLoading={isLoading}
+			stickyHeader
+			lastColumnSticky
+			maxHeight={500}
+			columns={columns}
+			data={rows}
+			search={{ useParams: true }}
+			totalPages={props.totalPages}
+			id="invoices"
+		/>
+	);
+}
