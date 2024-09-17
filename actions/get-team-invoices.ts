@@ -25,7 +25,22 @@ export const getTeamInvoices = async (props: GetTeamInvoicesProps) => {
 		orderBy: {
 			createdAt: props.filters.createdAt === 'asc' ? 'asc' : 'desc',
 		},
+		skip: (props.pageNum - 1) * props.perPage,
+		take: props.perPage,
 	});
 
-	return invoices;
+	const totalInvoices = await db.customerInvoice.count({
+		where: {
+			teamId: props.teamId,
+			AND: {
+				OR: [
+					{ id: { contains: props.search, mode: 'insensitive' } },
+					{ status: { contains: props.search, mode: 'insensitive' } },
+				],
+			},
+		},
+	});
+	const totalPages = Math.ceil(totalInvoices / props.perPage);
+
+	return { invoices: invoices, totalPages: totalPages };
 };

@@ -12,7 +12,7 @@ export default async function InvoicesTableContainer(props: InvoicesTableContain
 
 	const createdAt = props.searchParams?.['invoices-createdAt-sort'] ?? 'desc';
 
-	const invoices = await getTeamInvoices({
+	const invoiceResponse = await getTeamInvoices({
 		teamId: props.teamId,
 		pageNum: Number(props.searchParams?.['invoices-pageNum'] ?? 1),
 		perPage: Number(props.searchParams?.['invoices-perPage'] ?? 100),
@@ -23,5 +23,11 @@ export default async function InvoicesTableContainer(props: InvoicesTableContain
 	});
 
 	//Render the users table
-	return <InvoicesTable invoices={invoices ?? []} totalPages={1} isLoading={false} />;
+	return (
+		<InvoicesTable
+			invoices={invoiceResponse.invoices ?? []}
+			totalPages={invoiceResponse?.totalPages ?? 1}
+			isLoading={false}
+		/>
+	);
 }

@@ -58,7 +58,11 @@ export default function PricingPlans(props: PricingPlansProps) {
 
 	const [isYearly, setIsYearly] = useState(false);
 
-	useStripePricing({ enabled: !!price, price, stripeCustomerId: props.stripeCustomerId });
+	const { isLoading } = useStripePricing({
+		enabled: !!price,
+		price,
+		stripeCustomerId: props.stripeCustomerId,
+	});
 
 	const basic = plans.basic;
 	const pro = plans.pro;
@@ -99,7 +103,11 @@ export default function PricingPlans(props: PricingPlansProps) {
 					features={basic.features}
 					Button={
 						<Button
-							disabled={props.currentPlanId === basic.stripePricingId}
+							isLoading={price === 'basic' && isLoading}
+							disabled={
+								props.currentPlanId === basic.stripePricingId ||
+								(price === 'basic' && isLoading)
+							}
 							className="w-full"
 							onClick={() => {
 								setPrice('basic');
@@ -120,7 +128,11 @@ export default function PricingPlans(props: PricingPlansProps) {
 					features={pro.features}
 					Button={
 						<Button
-							disabled={props.currentPlanId === pro.stripePricingId}
+							isLoading={price === 'pro' && isLoading}
+							disabled={
+								props.currentPlanId === pro.stripePricingId ||
+								(price === 'pro' && isLoading)
+							}
 							className="w-full"
 							onClick={() => {
 								setPrice('pro');
@@ -141,7 +153,11 @@ export default function PricingPlans(props: PricingPlansProps) {
 					features={enterprise.features}
 					Button={
 						<Button
-							disabled={props.currentPlanId === enterprise.stripePricingId}
+							isLoading={price === 'enterprise' && isLoading}
+							disabled={
+								props.currentPlanId === enterprise.stripePricingId ||
+								(price === 'enterprise' && isLoading)
+							}
 							className="w-full"
 							onClick={() => {
 								setPrice('enterprise');

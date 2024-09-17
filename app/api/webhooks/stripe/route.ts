@@ -188,8 +188,6 @@ export async function POST(req: NextRequest, res: Response) {
 				message: `Your invoice for ${team.team?.name} has been ${status}`,
 				title: `Invoice ${status}`,
 			});
-
-			revalidatePath(`/dashboard/teams/${team.team?.id}/billing`);
 		} catch (error) {
 			console.error('Error handling subscription event', error);
 			return NextResponse.json(

@@ -420,9 +420,9 @@ export function DataTable<TData, TValue>({
 						<Select
 							defaultValue={String(perPage)}
 							onValueChange={(value: string) => {
-								mutateParam({
-									param: `${!!id ? `${id}-` : ''}perPage`,
-									value,
+								mutateParams({
+									[`${!!id ? `${id}-` : ''}pageNum`]: '1',
+									[`${!!id ? `${id}-` : ''}perPage`]: value,
 								});
 							}}
 						>
