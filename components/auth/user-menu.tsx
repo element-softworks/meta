@@ -29,6 +29,7 @@ import { NotificationsIcon } from '../notifications-icon';
 
 interface UserMenuProps {
 	user: ExtendedUser | undefined;
+	count?: number;
 }
 export function UserMenu(props: UserMenuProps) {
 	const { setTheme, theme } = useTheme();
@@ -58,10 +59,7 @@ export function UserMenu(props: UserMenuProps) {
 							)}
 							<AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
 						</Avatar>
-						<NotificationsIcon
-							className="top-0 left-9 absolute"
-							userId={props.user.id ?? ''}
-						/>
+						<NotificationsIcon className="top-0 left-9 absolute" count={props.count} />
 
 						<p className="font-normal ml-2">Account</p>
 					</div>
@@ -83,7 +81,7 @@ export function UserMenu(props: UserMenuProps) {
 								<Bell className="mr-2 h-4 w-4" />
 								<NotificationsIcon
 									className="top-0 left-4 absolute"
-									userId={props.user.id ?? ''}
+									count={props.count}
 								/>
 								<span>Notifications</span>
 							</DropdownMenuItem>
@@ -110,7 +108,7 @@ export function UserMenu(props: UserMenuProps) {
 							</Link>
 						) : null}
 
-						<Link href="/dashboard/billing">
+						<Link href={`/dashboard/teams/${props.user.currentTeam}/billing`}>
 							<DropdownMenuItem className="cursor-pointer">
 								<CreditCard className="mr-2 h-4 w-4" />
 								Billing

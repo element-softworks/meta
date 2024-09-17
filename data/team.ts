@@ -9,7 +9,11 @@ export const getIsUserTeamAdmin = async (teamId: string, userId: string) => {
 		include: {
 			members: {
 				include: {
-					user: true,
+					user: {
+						select: {
+							id: true,
+						},
+					},
 				},
 			},
 		},
@@ -36,7 +40,11 @@ export const getIsUserInTeam = async (teamId: string, userId: string) => {
 		include: {
 			members: {
 				include: {
-					user: true,
+					user: {
+						select: {
+							id: true,
+						},
+					},
 				},
 			},
 		},
@@ -80,6 +88,7 @@ export const getTeamById = async (teamId: string) => {
 					user: true,
 				},
 			},
+			subscriptions: true,
 		},
 	});
 

@@ -36,6 +36,7 @@ interface UserMobileMenuProps {
 	user: ExtendedUser | undefined;
 	navOpen: boolean;
 	onNavOpenChange: (state: boolean) => void;
+	count?: number;
 }
 export function UserMobileMenu(props: UserMobileMenuProps) {
 	const { setTheme, theme } = useTheme();
@@ -59,7 +60,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 						Security
 					</DropdownMenuItem>
 				</Link>
-				<Link href="/dashboard/billing">
+				<Link href={`/dashboard/teams/${props.user?.currentTeam}/billing`}>
 					<DropdownMenuItem className="cursor-pointer">
 						<CreditCard className="mr-2 h-4 w-4" />
 						Billing
@@ -109,7 +110,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 										<Bell className="mr-2 h-4 w-4" />
 										<NotificationsIcon
 											className="top-0 left-4 absolute"
-											userId={props.user.id ?? ''}
+											count={props.count}
 										/>
 										<span>Notifications</span>
 									</DropdownMenuItem>

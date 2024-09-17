@@ -99,7 +99,7 @@ export function NavStrip(props: NavStripProps) {
 						})}
 					</BreadcrumbList>
 				</Breadcrumb>
-				<TeamSelectMenu />
+				<TeamSelectMenu enableBadge />
 			</div>
 		</nav>
 	);

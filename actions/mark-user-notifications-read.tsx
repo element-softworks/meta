@@ -5,16 +5,20 @@ import { revalidatePath } from 'next/cache';
 
 export const markUserNotificationsRead = async ({
 	notificationIds,
+	all,
 }: {
-	notificationIds: string[];
+	notificationIds?: string[];
+	all?: boolean;
 }) => {
 	try {
 		await db.userNotification.updateMany({
-			where: {
-				id: {
-					in: notificationIds,
-				},
-			},
+			where: all
+				? {}
+				: {
+						id: {
+							in: notificationIds,
+						},
+				  },
 			data: {
 				readAt: new Date(),
 			},

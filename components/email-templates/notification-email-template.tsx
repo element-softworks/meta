@@ -39,7 +39,7 @@ export const NotificationEmailTemplate = (props: NotificationEmailTemplateProps)
 						</Section>
 						<Section className="p-6 ">
 							<Text className="text-black text-2xl font-bold">
-								Notification received
+								1 new notification
 							</Text>
 							<Text className="text-black">{props.message}</Text>
 
@@ -47,7 +47,7 @@ export const NotificationEmailTemplate = (props: NotificationEmailTemplateProps)
 								className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
 								href={home}
 							>
-								View notification
+								Go to platform
 							</Button>
 
 							<Text className="text-black">

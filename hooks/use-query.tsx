@@ -39,7 +39,7 @@ export function useQuery<T, R>({
 	}, [data]);
 
 	useEffect(() => {
-		if (!enabled) return;
+		if (!enabled || data) return;
 		(async () => {
 			await query();
 		})();

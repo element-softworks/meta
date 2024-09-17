@@ -20,8 +20,7 @@ export const MarkNotificationsReadButton = (props: MarkNotificationsReadButtonPr
 		MarkNotificationsReadButtonRequest,
 		{}
 	>({
-		queryFn: async (values) =>
-			await markUserNotificationsRead({ notificationIds: props.notificationIds }),
+		queryFn: async (values) => await markUserNotificationsRead({ all: true }),
 	});
 
 	const handleMarkNotificationsRead = async () => {
