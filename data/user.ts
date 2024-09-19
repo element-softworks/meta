@@ -1,9 +1,13 @@
-import { db } from '@/lib/db';
+import { db } from '@/db/drizzle/db';
+import { account, user } from '@/db/drizzle/schema';
+import { eq } from 'drizzle-orm';
 
 export const getUserByEmail = async (email: string) => {
 	try {
-		const user = await db.user.findUnique({ where: { email } });
-		return user;
+		const userResponse = await db.query.user.findFirst({
+			where: eq(user.email, email),
+		});
+		return userResponse;
 	} catch (error) {
 		console.error(error);
 		return null;
@@ -12,14 +16,14 @@ export const getUserByEmail = async (email: string) => {
 
 export const getUserById = async (id: string) => {
 	try {
-		const user = await db.user.findUnique({ where: { id } });
-		const isOAuth = await db.account.findFirst({
-			where: {
-				userId: user?.id,
-			},
+		const userResponse = await db.query.user.findFirst({
+			where: eq(user.id, id),
+		});
+		const isOAuth = await db.query.account.findFirst({
+			where: eq(account.userId, id),
 		});
 
-		return { ...user!, isOAuth: !!isOAuth };
+		return { ...userResponse!, isOAuth: !!isOAuth };
 	} catch (error) {
 		console.error(error);
 		return null;

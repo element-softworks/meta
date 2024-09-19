@@ -1,5 +1,7 @@
-import { db } from '@/lib/db';
+import { db } from '@/db/drizzle/db';
+import { team, teamMember } from '@/db/drizzle/schema';
 import { TeamRole } from '@prisma/client';
+import { eq } from 'drizzle-orm';
 
 export const getIsUserTeamAdmin = async (teamId: string, userId: string) => {
 	const team = await db.team.findUnique({
@@ -137,24 +139,22 @@ export const getUsersTeams = async (userId: string) => {
 };
 
 export const addUserToTeam = async (teamId: string, userId: string, role: TeamRole) => {
-	const team = await db.team.findUnique({
-		where: {
-			id: teamId,
-		},
-	});
+	const teamResponse = await db.query.team.findFirst({ where: eq(team.id, teamId) });
 
-	if (!team) {
+	if (!teamResponse) {
 		return { error: 'Team not found' };
 	}
 
 	//Create new team member for new user
-	const newTeamMember = await db.teamMember.create({
-		data: {
-			userId: userId,
-			teamId: teamId,
-			role: role,
-		},
-	});
+	const newTeamMember = await db
+		.insert(teamMember)
+		.values({
+			userId,
+			teamId,
+			role,
+			updatedAt: new Date(),
+		})
+		.returning();
 
 	if (!newTeamMember) {
 		return { error: 'There was a problem registering, please try again later' };

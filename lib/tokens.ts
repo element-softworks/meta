@@ -2,10 +2,17 @@ import { getConciergeTokenByEmail } from '@/data/concierge-token';
 import { getPasswordResetTokenByEmail } from '@/data/password-reset-token';
 import { getTwoFactorTokenByEmail } from '@/data/two-factor-token';
 import { getVerificationTokenByEmail } from '@/data/verification-token';
+import { db } from '@/db/drizzle/db';
+import {
+	conciergeToken,
+	passwordResetToken,
+	twoFactorToken,
+	verificationToken,
+} from '@/db/drizzle/schema';
 import { TeamRole } from '@prisma/client';
 import crypto from 'crypto';
+import { eq } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
-import { db } from './db';
 
 export const generateTwoFactorToken = async (email: string) => {
 	crypto.randomInt(100_000, 1_000_000).toString();
@@ -15,18 +22,19 @@ export const generateTwoFactorToken = async (email: string) => {
 
 	// If a token already exists, delete it
 	if (existingToken) {
-		await db.twoFactorToken.delete({ where: { id: existingToken.id } });
+		await db.delete(twoFactorToken).where(eq(twoFactorToken.id, existingToken.id));
 	}
 
-	const twoFactorToken = await db.twoFactorToken.create({
-		data: {
+	const [twoFactorTokenResponse] = await db
+		.insert(twoFactorToken)
+		.values({
 			token: crypto.randomInt(100_000, 1_000_000).toString(),
 			email,
 			expiresAt,
-		},
-	});
+		})
+		.returning();
 
-	return twoFactorToken;
+	return twoFactorTokenResponse;
 };
 
 //Generate email verification token for credentials authentication method
@@ -39,19 +47,20 @@ export const generateVerificationToken = async (currentEmail: string, newEmail?:
 
 	// If a token already exists, delete it
 	if (existingToken) {
-		await db.verificationToken.delete({ where: { id: existingToken.id } });
+		await db.delete(verificationToken).where(eq(verificationToken.id, existingToken.id));
 	}
 
-	const verificationToken = await db.verificationToken.create({
-		data: {
+	const [verificationTokenResponse] = await db
+		.insert(verificationToken)
+		.values({
 			token,
 			email: currentEmail,
 			newEmail: newEmail ?? null,
 			expiresAt,
-		},
-	});
+		})
+		.returning();
 
-	return verificationToken;
+	return verificationTokenResponse;
 };
 
 //Generate email verification token for credentials authentication method
@@ -74,21 +83,23 @@ export const generateConciergeToken = async ({
 
 	// If a token already exists, delete it
 	if (existingToken) {
-		await db.conciergeToken.delete({ where: { id: existingToken.id } });
+		await db.delete(conciergeToken).where(eq(conciergeToken.id, existingToken.id));
+		// await db.conciergeToken.delete({ where: { id: existingToken.id } });
 	}
 
-	const conciergeToken = await db.conciergeToken.create({
-		data: {
+	const [conciergeTokenResponse] = await db
+		.insert(conciergeToken)
+		.values({
 			token,
-			email: email,
+			email,
 			expiresAt,
 			teamId,
 			name,
 			role,
-		},
-	});
+		})
+		.returning();
 
-	return conciergeToken;
+	return conciergeTokenResponse;
 };
 
 export const generatePasswordResetToken = async (email: string) => {
@@ -99,16 +110,18 @@ export const generatePasswordResetToken = async (email: string) => {
 
 	// If a token already exists, delete it
 	if (existingToken) {
-		await db.passwordResetToken.delete({ where: { id: existingToken.id } });
+		await db.delete(passwordResetToken).where(eq(passwordResetToken.id, existingToken.id));
+		// await db.passwordResetToken.delete({ where: { id: existingToken.id } });
 	}
 
-	const passwordResetToken = await db.passwordResetToken.create({
-		data: {
+	const [passwordResetTokenResponse] = await db
+		.insert(passwordResetToken)
+		.values({
 			token,
 			email,
 			expiresAt,
-		},
-	});
+		})
+		.returning();
 
-	return passwordResetToken;
+	return passwordResetTokenResponse;
 };
