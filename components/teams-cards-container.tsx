@@ -1,32 +1,22 @@
 'use server';
 
 import { getUsersTeams } from '@/actions/get-users-teams';
-import { setCookie } from '@/data/cookies';
 import { currentUser } from '@/lib/auth';
 import { getCurrentTeamMember } from '@/lib/team';
 import { TeamRole } from '@prisma/client';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { AvatarGroup } from './avatar-group';
+import { SelectTeamButton } from './buttons/select-team-button';
 import { CardWrapper } from './card-wrapper';
 import { Avatar, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { update } from '../auth';
-import { SelectTeamButton } from './buttons/select-team-button';
 
 interface TeamsCardsContainerProps {
 	searchParams: any;
 	userId: string;
 }
 export default async function TeamsCardsContainer(props: TeamsCardsContainerProps) {
-	// Get the filters from the search params
-	const user = await currentUser();
-	const nameFilter = props.searchParams?.['teams-name-sort'];
-	const createdBy = props.searchParams?.['teams-createdBy-sort'];
-	const createdAt = props.searchParams?.['teams-createdAt-sort'];
-	const updatedAt = props.searchParams?.['teams-updatedAt-sort'];
-
 	// Get the users data and pass filters inside
 	const data = await getUsersTeams({
 		pageNum: Number(props.searchParams?.['teams-pageNum'] ?? 1),
@@ -34,27 +24,14 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 		search: props.searchParams?.['teams-search'] ?? '',
 		showArchived: (props.searchParams?.['teams-archived'] as 'true' | 'false') ?? 'false',
 		userId: props.userId,
-		filters: {
-			name: nameFilter,
-			createdBy: createdBy,
-			createdAt: createdAt,
-			updatedAt: updatedAt,
-		},
 	});
+
+	console.log(data, ' cheeeee');
 
 	//Render the users table
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 			{data?.teams?.map((team, index) => {
-				const currentTeamMember = getCurrentTeamMember(
-					team?.team?.members ?? [],
-					props.userId
-				);
-
-				const teamOwner = team?.team?.members?.find(
-					(member) => member.role === TeamRole.OWNER
-				);
-
 				const teamMembersLength = team?.team?.members?.length;
 				return (
 					<CardWrapper

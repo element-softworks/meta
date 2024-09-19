@@ -295,7 +295,6 @@ export const userNotification = pgTable(
 		userId: text('userId').notNull(),
 		title: text('title').notNull(),
 		message: text('message').notNull(),
-		dangerouslySetInnerHtml: text('dangerouslySetInnerHTML').notNull(),
 		readAt: timestamp('readAt', { precision: 3, mode: 'date' }),
 		createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
 			.default(sql`CURRENT_TIMESTAMP`)

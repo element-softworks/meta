@@ -1,13 +1,16 @@
 'use server';
 
-import { getIsUserTeamAdmin } from '@/data/team';
+import { getIsUserTeamAdmin, getTeamById } from '@/data/team';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
 import { s3Path } from '@/lib/s3';
 import { TeamsSchema } from '@/schemas';
 import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
 import { uploadFileToS3 } from './upload-file-to-s3';
+import { db } from '@/db/drizzle/db';
+import { TeamRole } from '@prisma/client';
+import { eq } from 'drizzle-orm';
+import { team } from '@/db/drizzle/schema';
 export const teamUpdate = async (formData: FormData, teamId: string) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
@@ -25,27 +28,13 @@ export const teamUpdate = async (formData: FormData, teamId: string) => {
 		return { error: 'There was a problem registering, please try again later' };
 	}
 
-	const team = await db.team.findUnique({
-		where: {
-			id: teamId,
-		},
-		include: {
-			members: {
-				include: {
-					user: true,
-				},
-			},
-		},
-	});
+	const teamResponse = await getTeamById(teamId);
 
-	if (!team) {
+	if (!teamResponse) {
 		return { error: 'Team not found' };
 	}
 
-	const currentTeamUser = team.members.find((member) => member.user.email === user?.email);
-
-	const isTeamAdmin = await getIsUserTeamAdmin(teamId, currentTeamUser?.userId ?? '');
-	if (!isTeamAdmin) {
+	if (teamResponse.data?.currentMember?.role === TeamRole.USER) {
 		return { error: 'You must be an admin to update the team' };
 	}
 
@@ -73,15 +62,16 @@ export const teamUpdate = async (formData: FormData, teamId: string) => {
 
 		let image = !!values.image.size ? `${s3Path}/${uuid}-${values.image.name}` : undefined;
 		//Update the team
-		const updatedTeam = await db.team.update({
-			where: {
-				id: teamId,
-			},
-			data: {
+		const [updatedTeam] = await db
+			.update(team)
+			.set({
 				name: values.name,
 				image: !!values.image?.size ? `${s3Path}/${uuid}-${values.image.name}` : undefined,
-			},
-		});
+			})
+			.where(eq(team.id, teamId))
+			.returning();
+
+		console.log(updatedTeam, ' updated team');
 
 		revalidatePath(`/dashboard/teams/${teamId}`);
 

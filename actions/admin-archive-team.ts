@@ -1,36 +1,28 @@
 'use server';
 import { TableTeam } from '@/components/tables/teams-table';
+import { isTeamAuthServer, isTeamOwnerServer } from '@/data/team';
+import { db } from '@/db/drizzle/db';
+import { team } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { isTeamAuth } from '@/lib/team';
-import { Team, TeamMember, TeamRole, UserRole } from '@prisma/client';
-import { User } from 'next-auth';
+import { Team } from '@prisma/client';
+import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
-export const adminArchiveTeam = async (
-	archivingTeam: (Team & { members: (TeamMember & { user: User })[] }) | null | TableTeam
-) => {
+export const adminArchiveTeam = async (archivingTeam: Team | TableTeam) => {
 	const editingUser = await currentUser();
 
 	//If you are a team admin, or a site admin, you can archive/restore a team
-	const isTeamAdmin = isTeamAuth(archivingTeam?.members ?? [], editingUser?.id ?? '');
-
-	if (!isTeamAdmin) {
-		return { error: 'Unauthorized' };
+	if (!isTeamOwnerServer(archivingTeam?.id, editingUser?.id ?? '')) {
+		return { error: 'Unauthorized. Only the team owner can archive the team' };
 	}
 
 	// Archive the user
-	const archivedTeam = await db.team.update({
-		where: { id: archivingTeam?.id },
-		select: {
-			id: true,
-			isArchived: true,
-			name: true,
-		},
-		data: {
+	const archivedTeam = await db
+		.update(team)
+		.set({
 			isArchived: archivingTeam?.isArchived ? false : true,
-		},
-	});
+		})
+		.where(eq(team.id, archivingTeam?.id));
 
 	if (!archivedTeam) {
 		return { error: `Failed to ${archivingTeam?.isArchived ? 'restore' : 'archive'} team` };

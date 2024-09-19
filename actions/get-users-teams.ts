@@ -1,5 +1,6 @@
-import { db } from '@/lib/db';
-import { act } from 'react';
+import { db } from '@/db/drizzle/db';
+import { team, teamMember, user } from '@/db/drizzle/schema';
+import { and, or, eq, ilike, asc, desc, count } from 'drizzle-orm';
 
 interface GetUserTeamProps {
 	userId: string;
@@ -7,79 +8,48 @@ interface GetUserTeamProps {
 	perPage: number;
 	search: string;
 	showArchived: 'true' | 'false';
-	filters: {
-		name: 'neutral' | 'desc' | 'asc';
-		createdBy: 'asc' | 'desc' | 'neutral';
-		createdAt: 'asc' | 'desc' | 'neutral';
-		updatedAt: 'asc' | 'desc' | 'neutral';
-	};
 }
 
 export const getUsersTeams = async (req: GetUserTeamProps) => {
-	// Filter out 'neutral' and undefined values from the filters
+	// Query for the user's teams (with pagination)
+	const usersTeams = await db
+		.select()
+		.from(team)
+		.leftJoin(teamMember, eq(team.id, teamMember.teamId))
+		.where(
+			and(
+				eq(team.isArchived, req.showArchived === 'true'),
+				eq(teamMember.userId, req.userId),
+				or(ilike(team.name, `%${req.search}%`), eq(team.id, req.search))
+			)
+		)
+		.orderBy(asc(team.createdAt))
+		.offset((req.pageNum - 1) * req.perPage)
+		.limit(req.perPage);
 
-	const filters = Object.entries(req.filters)
-		?.filter?.(([_, value]) => value !== 'neutral' && !!value)
-		?.map(([key, value]) => {
-			return { team: { [key]: value } };
-		});
+	// Query for the total team count (without pagination)
+	const totalTeamsResult = await db
+		.select({ count: count() })
+		.from(team)
+		.leftJoin(teamMember, eq(team.id, teamMember.teamId))
+		.where(
+			and(
+				eq(team.isArchived, req.showArchived === 'true'),
+				eq(teamMember.userId, req.userId),
+				or(ilike(team.name, `%${req.search}%`), eq(team.id, req.search))
+			)
+		);
 
-	const usersTeams = await db.teamMember.findMany({
-		where: {
-			team: {
-				isArchived: req.showArchived === 'true',
-			},
-			userId: req.userId,
-			AND: {
-				OR: [
-					{ team: { name: { contains: req.search, mode: 'insensitive' } } },
-					{ team: { createdBy: { contains: req.search, mode: 'insensitive' } } },
-					{ team: { id: { equals: req.search } } },
-				],
-			},
-		},
+	// Extract total count from the result
+	const totalTeams = totalTeamsResult[0]?.count || 0;
 
-		skip: (req.pageNum - 1) * req.perPage,
-		take: req.perPage,
-		orderBy: filters,
-
-		include: {
-			team: {
-				include: {
-					members: {
-						include: {
-							user: true,
-						},
-					},
-				},
-			},
-			user: true,
-		},
-	});
-
-	// Get the total count of documents with specific filters but without pagination and search filters
-	const totalTeams = await db.team.count({
-		where: {
-			isArchived: req.showArchived === 'true',
-			members: {
-				some: {
-					userId: req.userId,
-				},
-			},
-			AND: {
-				OR: [
-					{ name: { contains: req.search, mode: 'insensitive' } },
-					{ id: { equals: req.search } },
-				],
-			},
-		},
-	});
-
-	if (!usersTeams) {
-		return { teams: [] };
-	}
-
+	// Calculate total pages
 	const totalPages = Math.ceil(totalTeams / req.perPage);
 
-	return { success: 'Users retrieved successfully.', teams: usersTeams, totalPages: totalPages };
+	return {
+		success: 'Users retrieved successfully.',
+		teams: usersTeams,
+		totalPages: totalPages,
+		totalTeams: totalTeams, // Total count of teams
+	};
 };

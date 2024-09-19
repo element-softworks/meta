@@ -13,7 +13,8 @@ import { TableTeam } from '../tables/teams-table';
 import { Button, ButtonProps } from '../ui/button';
 
 interface ArchiveTeamDialogProps {
-	team: (Team & { members: (TeamMember & { user: User })[] }) | null | undefined;
+	team: Team | undefined;
+	isTeamAdmin: boolean;
 }
 
 export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
@@ -23,7 +24,7 @@ export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
 	const currentUser = useCurrentUser();
 
 	const { query: ArchiveTeamQuery, isLoading } = useMutation<
-		(Team & { members: (TeamMember & { user: User })[] }) | null | TableTeam,
+		(Team | undefined) | null | TableTeam,
 		{}
 	>({
 		queryFn: async (team) => await adminArchiveTeam(team!),
@@ -37,9 +38,7 @@ export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
 		if (!props.team) return;
 		ArchiveTeamQuery(props.team);
 	};
-
 	//If you are a team admin, or a site admin, you can archive/restore a team
-	const isTeamAdmin = isTeamAuth(props.team?.members ?? [], currentUser?.id ?? '');
 
 	const isArchived = !!props.team?.isArchived ?? false;
 
@@ -53,7 +52,7 @@ export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
 		? { variant: 'successful' }
 		: { variant: 'destructive' };
 
-	if (!isTeamAdmin) return null;
+	if (!props.isTeamAdmin) return null;
 
 	return (
 		<DialogWrapper

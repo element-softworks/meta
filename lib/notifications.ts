@@ -1,5 +1,7 @@
+import { db } from '@/db/drizzle/db';
 import { sendNotificationEmail } from './mail';
-import { db } from './db';
+import { eq } from 'drizzle-orm';
+import { user, userNotification } from '@/db/drizzle/schema';
 
 export const createNotification = async ({
 	userId,
@@ -13,34 +15,28 @@ export const createNotification = async ({
 	title?: string;
 }) => {
 	try {
-		const user = await db.user.findUnique({
-			where: {
-				id: userId,
-			},
-			select: {
-				id: true,
-				email: true,
-				name: true,
-				notificationsEnabled: true,
-			},
+		const userResponse = await db.query.user.findFirst({
+			where: eq(user.id, userId),
 		});
 
-		if (!user) return null;
+		if (!userResponse) return null;
 
-		if (user?.notificationsEnabled) {
-			await sendNotificationEmail(user.email, message, title ?? 'New notification');
+		if (userResponse?.notificationsEnabled) {
+			await sendNotificationEmail(userResponse.email, message, title ?? 'New notification');
 		}
 
-		const notification = await db.userNotification.create({
-			data: {
-				dangerouslySetInnerHTML: innerHTML ?? '',
+		const [newNotification] = await db
+			.insert(userNotification)
+			.values({
 				userId: userId ?? '',
 				title: title ?? 'New notification',
 				message: message,
 				readAt: null,
-			},
-		});
-		return notification;
+				updatedAt: new Date(),
+			})
+			.returning();
+
+		return newNotification;
 	} catch (error) {
 		console.error(error);
 		return null;

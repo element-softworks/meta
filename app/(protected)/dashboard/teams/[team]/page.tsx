@@ -1,13 +1,10 @@
 import { InviteUserToTeamDialog } from '@/components/dialogs/invite-user-to-team-dialog';
 import { UserLeaveTeamDialog } from '@/components/dialogs/user-leave-team-dialog';
-import { CenteredLoader } from '@/components/layout/centered-loader';
 import { TeamsMemberTable } from '@/components/tables/team-members-table';
 import TeamMembersTableContainer from '@/components/tables/team-members-table-container';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { getIsUserInTeam, getTeamById } from '@/data/team';
-import { currentUser } from '@/lib/auth';
-import { isTeamAuth, isTeamOwner } from '@/lib/team';
+import { getTeamById } from '@/data/team';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -21,13 +18,15 @@ export default async function DashboardPage({
 }) {
 	const teamResponse = await getTeamById(params.team);
 
-	const user = await currentUser();
-	const isUserInTeam = await getIsUserInTeam(params.team, user?.id ?? '');
+	const isTeamAdmin =
+		teamResponse?.data?.currentMember?.role === 'ADMIN' ||
+		teamResponse?.data?.currentMember?.role === 'OWNER';
+	const isOwner = teamResponse?.data?.currentMember?.role === 'OWNER';
 
-	const isTeamAdmin = isTeamAuth(teamResponse?.team?.members ?? [], user?.id ?? '');
-	const isOwner = isTeamOwner(teamResponse?.team?.members ?? [], user?.id ?? '');
-
-	if (!isUserInTeam || (teamResponse?.team?.isArchived && !isTeamAdmin)) {
+	if (
+		!teamResponse?.data?.currentMember ||
+		(teamResponse?.data?.team?.isArchived && !isTeamAdmin)
+	) {
 		return redirect('/dashboard/teams');
 	}
 
@@ -35,7 +34,7 @@ export default async function DashboardPage({
 		<main className="flex flex-col max-w-4xl gap-6 h-full">
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
-					<p className="text-xl font-bold">{teamResponse?.team?.name}</p>
+					<p className="text-xl font-bold">{teamResponse?.data?.team.name}</p>
 					<p className="text-muted-foreground text-sm">View team details below</p>
 				</div>
 				{isTeamAdmin ? (
@@ -45,14 +44,17 @@ export default async function DashboardPage({
 				) : null}
 			</div>
 			<Separator />
-			<InviteUserToTeamDialog visible={isTeamAdmin} teamId={teamResponse?.team?.id ?? ''} />
+			<InviteUserToTeamDialog
+				visible={isTeamAdmin}
+				teamId={teamResponse?.data?.team.id ?? ''}
+			/>
 			<Suspense fallback={<TeamsMemberTable totalPages={1} isLoading={true} />}>
 				<TeamMembersTableContainer teamId={params.team} searchParams={searchParams} />
 			</Suspense>
 
 			{isOwner ? null : (
 				<div className="mt-auto">
-					<UserLeaveTeamDialog teamId={teamResponse?.team?.id ?? ''} />
+					<UserLeaveTeamDialog teamId={teamResponse?.data?.team.id ?? ''} />
 				</div>
 			)}
 		</main>

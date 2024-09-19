@@ -23,6 +23,7 @@ import { twoFactorConfirmation, user } from './db/drizzle/schema';
 import { getTwoFactorConfirmationByUserId } from './data/two-factor-confirmation';
 import { getCookie } from './data/cookies';
 import { getAccountByUserId } from './data/account';
+import { getUsersTeams } from './data/team';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	adapter: DrizzleAdapter(db),
@@ -145,7 +146,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 			const teamCookie = await getCookie(`${token.email}-current-team`);
 			const existingUser = await getUserById(token.sub);
-			// const teams = await getUsersTeams(token.sub);
+			const teams = await getUsersTeams(token.sub);
 
 			if (!existingUser) return token;
 
@@ -159,8 +160,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			token.isTwoFactorEnabled =
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			token.image = session?.image ?? existingUser.image;
-			// token.teams = teams ?? [];
-			// token.currentTeam = teamCookie?.value ?? teams?.[0]?.id ?? '';
+			token.teams = teams ?? [];
+			token.currentTeam = teamCookie?.value ?? teams?.[0]?.id ?? '';
 			token.notificationsEnabled =
 				session?.notificationsEnabled ?? existingUser.notificationsEnabled;
 			return token;
