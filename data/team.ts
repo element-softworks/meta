@@ -41,7 +41,7 @@ export const findTeamById = async (teamId: string) => {
 		where: eq(team.id, teamId),
 	});
 
-	return findTeamById;
+	return teamResponse;
 };
 
 export const getTeamById = async (teamId: string) => {

@@ -36,6 +36,7 @@ export const inviteUsersToTeam = async (
 				teamMembers.map((member) => member.userId)
 			)
 		);
+
 	const platformUsers = await db.select().from(user);
 
 	if (!teamResponse.data?.team) {
@@ -101,6 +102,15 @@ export const inviteUsersToTeam = async (
 	}
 
 	revalidatePath(`/teams/${teamId}`);
+
+	console.log(
+		'usersAlreadyInTeam',
+		usersAlreadyInTeam,
+		'nonExistingUsersToInvite',
+		nonExistingUsersToInvite,
+		'usersNotInTeam',
+		usersNotInTeam
+	);
 
 	return {
 		success: 'Users invited to team',

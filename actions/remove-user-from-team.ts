@@ -1,8 +1,11 @@
 'use server';
 
 import { findTeamById, getIsUserTeamAdmin, getTeamMemberByIds } from '@/data/team';
+import { db } from '@/db/drizzle/db';
+import { teamMember } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { TeamRole } from '@prisma/client';
+import { and, eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export const removeUserFromTeam = async (teamId: string, userId: string) => {
@@ -22,27 +25,20 @@ export const removeUserFromTeam = async (teamId: string, userId: string) => {
 	}
 
 	// Find the team member
-	const teamMember = await getTeamMemberByIds({ teamId, userId });
+	const teamMemberResponse = await getTeamMemberByIds({ teamId, userId });
 
-	if (!teamMember) {
+	if (!teamMemberResponse) {
 		return { error: 'User not found in team' };
 	}
 
-	if (teamMember.role === 'OWNER') {
+	if (teamMemberResponse.role === TeamRole.OWNER) {
 		return { error: 'Cannot remove the owner of the team' };
 	}
 
 	// Remove the team member
-	await db.teamMember.delete({
-		where: {
-			teamId: teamId,
-			userId: userId,
-			teamId_userId: {
-				teamId: teamId,
-				userId: userId,
-			},
-		},
-	});
+	await db
+		.delete(teamMember)
+		.where(and(eq(teamMember.teamId, teamId), eq(teamMember.userId, userId)));
 
 	revalidatePath(`/teams/${teamId}`);
 

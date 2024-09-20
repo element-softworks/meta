@@ -128,6 +128,7 @@ export default {
 				session.user.isOAuth = token.isOAuth;
 				session.user.isArchived = token.isArchived;
 				session.user.image = token.image;
+				session.user.teams = token.teams;
 				session.user.notificationsEnabled = token.notificationsEnabled;
 			}
 

@@ -18,8 +18,8 @@ import Google from 'next-auth/providers/google';
 import { getUserByEmail, getUserById } from './data/user';
 import { db } from './db/drizzle/db';
 import { LoginSchema } from './schemas';
-import { eq } from 'drizzle-orm';
-import { twoFactorConfirmation, user } from './db/drizzle/schema';
+import { and, eq, exists } from 'drizzle-orm';
+import { team, teamMember, twoFactorConfirmation, user } from './db/drizzle/schema';
 import { getTwoFactorConfirmationByUserId } from './data/two-factor-confirmation';
 import { getCookie } from './data/cookies';
 import { getAccountByUserId } from './data/account';
@@ -146,11 +146,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 			const teamCookie = await getCookie(`${token.email}-current-team`);
 			const existingUser = await getUserById(token.sub);
-			const teams = await getUsersTeams(token.sub);
+			const [teamResponse] = await db
+				.select()
+				.from(team)
+				.where(
+					and(
+						eq(team.isArchived, false),
+						exists(
+							db
+								.select()
+								.from(teamMember)
+								.where(
+									and(
+										eq(teamMember.teamId, team.id),
+										eq(teamMember.userId, token.sub)
+									)
+								)
+						)
+					)
+				)
+				.limit(1);
 
 			if (!existingUser) return token;
 
 			const existingAccount = await getAccountByUserId(existingUser.id);
+			const currentUserTeams = await getUsersTeams(token.sub);
 
 			token.isOAuth = !!existingAccount;
 			token.name = session?.name ?? existingUser.name;
@@ -160,8 +180,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			token.isTwoFactorEnabled =
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			token.image = session?.image ?? existingUser.image;
-			token.teams = teams ?? [];
-			token.currentTeam = teamCookie?.value ?? teams?.[0]?.id ?? '';
+			token.teams = currentUserTeams ?? [];
+			token.currentTeam = teamCookie?.value ?? teamResponse?.id ?? '';
 			token.notificationsEnabled =
 				session?.notificationsEnabled ?? existingUser.notificationsEnabled;
 			return token;

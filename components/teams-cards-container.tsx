@@ -2,7 +2,6 @@
 
 import { getUsersTeams } from '@/actions/get-users-teams';
 import { currentUser } from '@/lib/auth';
-import { getCurrentTeamMember } from '@/lib/team';
 import { TeamRole } from '@prisma/client';
 import Link from 'next/link';
 import { AvatarGroup } from './avatar-group';
@@ -17,6 +16,7 @@ interface TeamsCardsContainerProps {
 	userId: string;
 }
 export default async function TeamsCardsContainer(props: TeamsCardsContainerProps) {
+	const user = await currentUser();
 	// Get the users data and pass filters inside
 	const data = await getUsersTeams({
 		pageNum: Number(props.searchParams?.['teams-pageNum'] ?? 1),
@@ -26,30 +26,35 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 		userId: props.userId,
 	});
 
-	console.log(data, ' cheeeee');
-
 	//Render the users table
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-			{data?.teams?.map((team, index) => {
-				const teamMembersLength = team?.team?.members?.length;
+			{data?.data?.map((teamData, index) => {
+				const currentUserRole = teamData?.team.members?.find?.(
+					(member) => member.details?.id === user?.id
+				);
+
+				const teamOwner = teamData?.team?.members?.find?.(
+					(member) => member.role === TeamRole.OWNER
+				);
+				const teamMembersLength = teamData?.team?.members?.length;
 				return (
 					<CardWrapper
 						key={index}
-						title={team?.team?.name}
+						title={teamData?.team?.name}
 						description={`This team contains ${teamMembersLength} member${
 							teamMembersLength === 1 ? '' : 's'
 						}`}
 					>
-						<Badge className="absolute top-6 right-6">{currentTeamMember?.role}</Badge>
+						<Badge className="absolute top-6 right-6">{currentUserRole?.role}</Badge>
 						<div className="flex gap-6 md:gap-4 flex-wrap justify-between">
 							<div>
 								<p className="text-sm font-semibold ">Members</p>
 								<AvatarGroup
 									avatars={
-										team?.team?.members?.map?.((member) => ({
-											alt: member.user?.name ?? '',
-											src: member.user?.image ?? '',
+										teamData?.team?.members?.map?.((member) => ({
+											alt: member.details?.name ?? '',
+											src: member.details?.image ?? '',
 										})) ?? []
 									}
 								/>
@@ -57,22 +62,25 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 							<div>
 								<p className="text-sm font-semibold">Team owner</p>
 								<div className="flex gap-2 items-center">
-									{!!teamOwner?.user?.image ? (
+									{!!teamOwner?.details?.image ? (
 										<Avatar className="size-[32px]">
-											<AvatarImage src={teamOwner?.user?.image ?? ''} />
+											<AvatarImage src={teamOwner?.details?.image ?? ''} />
 										</Avatar>
 									) : null}
 
-									<p className="text-sm ">{teamOwner?.user?.name}</p>
+									<p className="text-sm ">{teamOwner?.details?.name}</p>
 								</div>
 							</div>
 						</div>
 						<div className="flex gap-4 w-full ">
 							<SelectTeamButton
-								teamId={team?.team?.id}
-								disabled={team?.team?.id === user?.currentTeam}
+								teamId={teamData?.team?.id}
+								disabled={teamData?.team?.id === user?.currentTeam}
 							/>
-							<Link href={`/dashboard/teams/${team?.team?.id}`} className="flex-1">
+							<Link
+								href={`/dashboard/teams/${teamData?.team?.id}`}
+								className="flex-1"
+							>
 								<Button className="w-full mt-4">View team</Button>
 							</Link>
 						</div>
