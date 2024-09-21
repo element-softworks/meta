@@ -8,6 +8,13 @@
       "when": 1726762766185,
       "tag": "0000_uneven_stellaris",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1726918287688,
+      "tag": "0001_lucky_abomination",
+      "breakpoints": true
     }
   ]
 }
