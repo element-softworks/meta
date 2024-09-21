@@ -3,8 +3,8 @@ import { signOut } from '@/auth';
 import { TableUser } from '@/components/tables/users-table';
 import { db } from '@/db/drizzle/db';
 import { user } from '@/db/drizzle/schema';
+import { User, userRole } from '@/db/drizzle/schema/user';
 import { currentUser } from '@/lib/auth';
-import { User, UserRole } from '@prisma/client';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
@@ -15,7 +15,7 @@ export const adminArchiveUser = async (archivingUser?: User | TableUser) => {
 		return { error: 'User not found' };
 	}
 
-	if (adminUser.role !== UserRole.ADMIN) {
+	if (adminUser.role !== 'ADMIN') {
 		return { error: 'Unauthorized' };
 	}
 

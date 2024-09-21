@@ -1,15 +1,16 @@
 'use client';
 
+import { TeamMemberResponse } from '@/actions/get-team-with-members';
 import { removeUserFromTeam } from '@/actions/remove-user-from-team';
+import { Team } from '@/db/drizzle/schema/team';
+import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { isTeamAuth } from '@/lib/team';
-import { Team, TeamMember } from '@prisma/client';
 import { User } from 'next-auth';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
-import { TeamMemberResponse } from '@/actions/get-team-with-members';
 
 interface RemoveUserFromTeamDropdownMenuItemProps {
 	teamId: string;

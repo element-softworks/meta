@@ -14,7 +14,7 @@ import { Input } from '../ui/input';
 import { FormInput } from './form-input';
 import { Social } from './social';
 import { useSearchParams } from 'next/navigation';
-import { ConciergeToken } from '@prisma/client';
+import { ConciergeToken } from '@/db/drizzle/schema/conciergeToken';
 
 type RegisterFormFormProps = z.infer<typeof RegisterSchema>;
 

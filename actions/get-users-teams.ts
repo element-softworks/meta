@@ -1,6 +1,7 @@
 import { db } from '@/db/drizzle/db';
 import { team, user } from '@/db/drizzle/schema';
-import { Team, User } from '@prisma/client';
+import { Team } from '@/db/drizzle/schema/team';
+import { User } from '@/db/drizzle/schema/user';
 import { and, eq, inArray } from 'drizzle-orm';
 import { teamMember } from './../db/drizzle/schema';
 

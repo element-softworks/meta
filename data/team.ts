@@ -1,6 +1,5 @@
 import { db } from '@/db/drizzle/db';
 import { customer, team, user } from '@/db/drizzle/schema';
-import { TeamRole } from '@prisma/client';
 import { and, eq, exists, or } from 'drizzle-orm';
 import { teamMember } from './../db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
@@ -14,11 +13,9 @@ export const getIsUserTeamAdmin = async (teamId: string, userId: string) => {
 			and(
 				eq(teamMember.userId, userId),
 				eq(teamMember.teamId, teamId),
-				or(eq(teamMember.role, TeamRole.ADMIN), eq(teamMember.role, TeamRole.OWNER))
+				or(eq(teamMember.role, 'ADMIN'), eq(teamMember.role, 'OWNER'))
 			)
 		);
-
-	console.log(teamResponse, 'team response');
 
 	if (!teamResponse) {
 		return false;
@@ -110,8 +107,8 @@ export const isTeamAuthServer = async (teamId: string, userId: string) => {
 				eq(teamMember.userId, userId), // Check if the user matches
 				eq(teamMember.teamId, teamId), // Check if the team matches
 				or(
-					eq(teamMember.role, TeamRole.ADMIN), // Role is either ADMIN
-					eq(teamMember.role, TeamRole.OWNER) // or OWNER
+					eq(teamMember.role, 'ADMIN'), // Role is either ADMIN
+					eq(teamMember.role, 'OWNER') // or OWNER
 				)
 			)
 		)
@@ -129,7 +126,7 @@ export const isTeamOwnerServer = async (teamId: string, userId: string) => {
 			and(
 				eq(teamMember.userId, userId), // Check if the user matches
 				eq(teamMember.teamId, teamId), // Check if the team matches
-				eq(teamMember.role, TeamRole.OWNER) // Role is OWNER
+				eq(teamMember.role, 'OWNER') // Role is OWNER
 			)
 		)
 		.limit(1); // Equivalent to findFirst
@@ -163,7 +160,11 @@ export const getUsersTeams = async (userId: string) => {
 	}
 };
 
-export const addUserToTeam = async (teamId: string, userId: string, role: TeamRole) => {
+export const addUserToTeam = async (
+	teamId: string,
+	userId: string,
+	role: 'ADMIN' | 'OWNER' | 'USER'
+) => {
 	const teamResponse = await db.query.team.findFirst({ where: eq(team.id, teamId) });
 
 	if (!teamResponse) {

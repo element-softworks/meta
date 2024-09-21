@@ -2,8 +2,8 @@
 import { isTeamOwnerServer } from '@/data/team';
 import { db } from '@/db/drizzle/db';
 import { team } from '@/db/drizzle/schema';
+import { Team } from '@/db/drizzle/schema/team';
 import { currentUser } from '@/lib/auth';
-import { Team } from '@prisma/client';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 

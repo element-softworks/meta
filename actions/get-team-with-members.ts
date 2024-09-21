@@ -2,7 +2,7 @@
 
 import { db } from '@/db/drizzle/db';
 import { team, teamMember, user } from '@/db/drizzle/schema';
-import { User } from '@prisma/client';
+import { User } from '@/db/drizzle/schema/user';
 import { and, asc, desc, eq, or, sql } from 'drizzle-orm';
 
 interface GetTeamWithMembersProps {

@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { InferSelectModel, sql } from 'drizzle-orm';
 import { index, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { teamRole } from './team';
 
@@ -35,3 +35,5 @@ export const conciergeToken = pgTable(
 		};
 	}
 );
+
+export type ConciergeToken = InferSelectModel<typeof conciergeToken>;

@@ -44,7 +44,7 @@
 // 	}
 
 // 	//Admin protected routes
-// 	if (isAdminRoute && !(req.auth?.user?.role === UserRole.ADMIN)) {
+// 	if (isAdminRoute && !(req.auth?.user?.role === "ADMIN")) {
 // 		return Response.redirect(new URL(`${DEFAULT_LOGIN_REDIRECT}`, nextUrl));
 // 	}
 

@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm';
+import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import { doublePrecision, foreignKey, index, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { customer } from './customer';
 export const customerInvoice = pgTable(
@@ -47,3 +47,5 @@ export const customerInvoiceRelations = relations(customerInvoice, ({ one }) => 
 		references: [customer.id],
 	}),
 }));
+
+export type CustomerInvoice = InferSelectModel<typeof customerInvoice>;

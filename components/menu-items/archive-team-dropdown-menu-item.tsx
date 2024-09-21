@@ -1,20 +1,20 @@
 'use client';
 
 import { adminArchiveTeam } from '@/actions/admin-archive-team';
+import { Team } from '@/db/drizzle/schema/team';
+import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { isTeamAuth } from '@/lib/team';
-import { Team, TeamMember } from '@prisma/client';
 import { User } from 'next-auth';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
-import { TableTeam } from '../tables/teams-table';
 import { ButtonProps } from '../ui/button';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
-import { useSession } from 'next-auth/react';
 
 interface ArchiveTeamDropdownMenuItemProps {
-	team: (Team & { members: (TeamMember & { user: User })[] }) | null | TableTeam;
+	team: (Team & { members: (TeamMember & { user: User })[] }) | null;
 }
 
 export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemProps) {
@@ -24,7 +24,7 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 	const currentUser = useCurrentUser();
 
 	const { query: ArchiveTeamQuery, isLoading } = useMutation<
-		(Team & { members: (TeamMember & { user: User })[] }) | null | TableTeam,
+		(Team & { members: (TeamMember & { user: User })[] }) | null,
 		{}
 	>({
 		queryFn: async (team) => await adminArchiveTeam(team!),

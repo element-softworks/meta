@@ -9,11 +9,9 @@ import {
 	twoFactorToken,
 	verificationToken,
 } from '@/db/drizzle/schema';
-import { TeamRole } from '@prisma/client';
 import crypto from 'crypto';
 import { eq } from 'drizzle-orm';
 import { v4 as uuidv4 } from 'uuid';
-
 export const generateTwoFactorToken = async (email: string) => {
 	crypto.randomInt(100_000, 1_000_000).toString();
 	const expiresAt = new Date(new Date().getTime() + 5 * 60 * 1000); // 5 minutes
@@ -73,7 +71,7 @@ export const generateConciergeToken = async ({
 	email: string;
 	name: string;
 	teamId: string;
-	role: TeamRole;
+	role: 'ADMIN' | 'USER' | 'OWNER';
 }) => {
 	const token = uuidv4();
 	const expiresAt = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000); // 1 week

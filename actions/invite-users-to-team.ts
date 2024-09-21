@@ -1,14 +1,12 @@
 'use server';
-import { addUserToTeam, getIsUserTeamAdmin, getTeamById } from '@/data/team';
+import { addUserToTeam, getTeamById } from '@/data/team';
 import { getUserByEmail } from '@/data/user';
 import { db } from '@/db/drizzle/db';
 import { teamMember, user } from '@/db/drizzle/schema';
-import { currentUser } from '@/lib/auth';
-import { sendConciergeEmail, sendNotificationEmail } from '@/lib/mail';
+import { sendConciergeEmail } from '@/lib/mail';
 import { createNotification } from '@/lib/notifications';
 import { generateConciergeToken } from '@/lib/tokens';
 import { InviteTeamUserSchema } from '@/schemas';
-import { TeamRole } from '@prisma/client';
 import { eq, inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
@@ -43,7 +41,7 @@ export const inviteUsersToTeam = async (
 		return { error: 'Team not found' };
 	}
 
-	if (teamResponse.data?.currentMember?.role === TeamRole.USER) {
+	if (teamResponse.data?.currentMember?.role === 'USER') {
 		return { error: 'You must be an admin to invite users to the team' };
 	}
 

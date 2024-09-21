@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { InferSelectModel, sql } from 'drizzle-orm';
 import { index, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 
 export const verificationToken = pgTable(
@@ -32,3 +32,5 @@ export const verificationToken = pgTable(
 		};
 	}
 );
+
+export type VerificationToken = InferSelectModel<typeof verificationToken>;

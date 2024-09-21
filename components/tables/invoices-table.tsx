@@ -11,13 +11,11 @@ import {
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuLabel,
-	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { CustomerInvoice } from '@prisma/client';
-import Link from 'next/link';
-import { toast } from '../ui/use-toast';
+import { CustomerInvoice } from '@/db/drizzle/schema/customerInvoice';
 import { Badge } from '../ui/badge';
+import { toast } from '../ui/use-toast';
 
 export type InvoicesTable = CustomerInvoice;
 

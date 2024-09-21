@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm';
+import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import { foreignKey, index, pgTable, primaryKey, text, timestamp } from 'drizzle-orm/pg-core';
 import { user } from './user';
 import { team, teamRole } from './team';
@@ -52,3 +52,5 @@ export const teamMemberRelations = relations(teamMember, ({ one }) => ({
 		references: [user.id],
 	}),
 }));
+
+export type TeamMember = InferSelectModel<typeof teamMember>;

@@ -3,14 +3,11 @@
 import { adminArchiveTeam } from '@/actions/admin-archive-team';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
-import { isTeamAuth } from '@/lib/team';
-import { Team, TeamMember } from '@prisma/client';
-import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
-import { TableTeam } from '../tables/teams-table';
 import { Button, ButtonProps } from '../ui/button';
+import { Team } from '@/db/drizzle/schema/team';
 
 interface ArchiveTeamDialogProps {
 	team: Team | undefined;
@@ -23,10 +20,7 @@ export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
 	const { update } = useSession();
 	const currentUser = useCurrentUser();
 
-	const { query: ArchiveTeamQuery, isLoading } = useMutation<
-		(Team | undefined) | null | TableTeam,
-		{}
-	>({
+	const { query: ArchiveTeamQuery, isLoading } = useMutation<(Team | undefined) | null, {}>({
 		queryFn: async (team) => await adminArchiveTeam(team!),
 		onCompleted: () => {
 			update();

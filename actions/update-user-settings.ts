@@ -4,7 +4,6 @@ import { db } from '@/db/drizzle/db';
 import { user } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import { SettingsSchema } from '@/schemas';
-import { UserRole } from '@prisma/client';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import z from 'zod';
@@ -18,7 +17,7 @@ export const updateUserSettings = async (
 	const isAdminMode = userId !== userResponse?.id;
 
 	//If we are editing another user and we arent an admin, throw an error
-	if (isAdminMode && userResponse?.role !== UserRole.ADMIN) {
+	if (isAdminMode && userResponse?.role !== 'ADMIN') {
 		return { error: 'Unauthorized' };
 	}
 
@@ -32,7 +31,7 @@ export const updateUserSettings = async (
 		return { error: 'Unauthorized' };
 	}
 
-	if (userResponse.role !== UserRole.ADMIN) {
+	if (userResponse.role !== 'ADMIN') {
 		values.role = dbUser.role;
 	}
 

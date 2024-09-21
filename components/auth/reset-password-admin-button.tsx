@@ -5,9 +5,9 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
 import { ResetPasswordSchema } from '@/schemas';
-import { User, UserRole } from '@prisma/client';
 import z from 'zod';
 import { Button } from '../ui/button';
+import { User } from '@/db/drizzle/schema/user';
 
 type ResetPasswordAdminButtonInputProps = z.infer<typeof ResetPasswordSchema>;
 
@@ -31,7 +31,7 @@ export function ResetPasswordAdminButton(props: ResetPasswordAdminButtonProps) {
 		const response = await ResetPasswordAdminQuery();
 	}
 
-	if (!(currentUser?.role === UserRole.ADMIN)) return null;
+	if (!(currentUser?.role === 'ADMIN')) return null;
 	return (
 		<div className="flex gap-2 flex-col">
 			<div>

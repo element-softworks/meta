@@ -14,8 +14,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { TeamMember, User } from '@prisma/client';
+import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { format } from 'date-fns';
+import { User } from 'next-auth';
 import Image from 'next/image';
 import { RemoveUserFromTeamDropdownMenuItem } from '../menu-items/remove-user-from-team-dropdown-menu-item';
 import { Avatar } from '../ui/avatar';

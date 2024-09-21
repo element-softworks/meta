@@ -2,7 +2,6 @@
 import { db } from '@/db/drizzle/db';
 import { user } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { UserRole } from '@prisma/client';
 import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
 /**
@@ -50,7 +49,7 @@ export const getAllUsers = async ({
 			return { error: 'You must be logged in to view users.' };
 		}
 
-		if (currUser && currUser.role !== UserRole.ADMIN) {
+		if (currUser && currUser.role !== 'ADMIN') {
 			return { error: 'You must be an admin to view users.' };
 		}
 

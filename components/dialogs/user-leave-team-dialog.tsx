@@ -3,12 +3,13 @@
 import { userLeaveTeam } from '@/actions/user-leave-team';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
-import { Team, TeamMember } from '@prisma/client';
 import { User } from 'next-auth';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
 import { Button } from '../ui/button';
 import { useSession } from 'next-auth/react';
+import { Team } from '@/db/drizzle/schema/team';
+import { TeamMember } from '@/db/drizzle/schema/teamMember';
 
 interface UserLeaveTeamDialogProps {
 	teamId: string;

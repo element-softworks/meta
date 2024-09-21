@@ -4,7 +4,6 @@ import { Separator } from '@/components/ui/separator';
 import { getTeamById, getTeamCustomerByTeamId } from '@/data/team';
 import { currentUser } from '@/lib/auth';
 import plans from '@/plans.json';
-import { TeamRole } from '@prisma/client';
 import { Suspense } from 'react';
 
 export default async function BillingPage({ params }: { params: { team: string } }) {
@@ -19,7 +18,7 @@ export default async function BillingPage({ params }: { params: { team: string }
 		(plan) => plan?.[1]?.stripePricingId === customer?.planId
 	)?.[1];
 
-	const isOwner = team?.data?.currentMember?.role === TeamRole.OWNER;
+	const isOwner = team?.data?.currentMember?.role === 'OWNER';
 
 	return (
 		<main className="flex flex-col max-w-5xl gap-6 h-full">

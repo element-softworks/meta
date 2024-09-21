@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm';
+import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import { boolean, index, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { customer } from './customer';
 import { teamMember } from './teamMember';
@@ -39,3 +39,5 @@ export const teamRelations = relations(team, ({ many }) => ({
 	customers: many(customer),
 	teamMembers: many(teamMember),
 }));
+
+export type Team = InferSelectModel<typeof team>;

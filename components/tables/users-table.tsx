@@ -14,13 +14,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArchiveUserDropdownMenuItem } from '../auth/archive-user-dropdown-menu-item';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
-import { DialogWrapper } from '../auth/dialog-wrapper';
-import { ArchiveUserDropdownMenuItem } from '../auth/archive-user-dropdown-menu-item';
+import { User } from '@/db/drizzle/schema/user';
 
 export type TableUser = {
 	id: string;

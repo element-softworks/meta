@@ -4,7 +4,6 @@ import { findTeamById, getIsUserTeamAdmin, getTeamMemberByIds } from '@/data/tea
 import { db } from '@/db/drizzle/db';
 import { teamMember } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { TeamRole } from '@prisma/client';
 import { and, eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
@@ -32,7 +31,7 @@ export const removeUserFromTeam = async (teamId: string, userId: string) => {
 		return { error: 'User not found in team' };
 	}
 
-	if (teamMemberResponse.role === TeamRole.OWNER) {
+	if (teamMemberResponse.role === 'OWNER') {
 		return { error: 'Cannot remove the owner of the team' };
 	}
 

@@ -2,7 +2,7 @@
 
 import { db } from '@/db/drizzle/db';
 import { userNotification } from '@/db/drizzle/schema';
-import { UserNotification } from '@prisma/client';
+import { UserNotification } from '@/db/drizzle/schema/userNotification';
 import { and, count, desc, eq, isNull } from 'drizzle-orm';
 
 export const getUserNotifications = async (userId: string, perPage: number, pageNum: number) => {

@@ -1,15 +1,14 @@
 'use server';
 
-import { currentUser } from '@/lib/auth';
-import { s3Path } from '@/lib/s3';
-import { TeamsSchema } from '@/schemas';
-import { TeamRole } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
-import { v4 as uuidv4 } from 'uuid';
-import { uploadFileToS3 } from './upload-file-to-s3';
 import { setCookie } from '@/data/cookies';
 import { db } from '@/db/drizzle/db';
 import { team, teamMember } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
+import { s3Path } from '@/lib/s3';
+import { TeamsSchema } from '@/schemas';
+import { revalidatePath } from 'next/cache';
+import { v4 as uuidv4 } from 'uuid';
+import { uploadFileToS3 } from './upload-file-to-s3';
 export const teamCreate = async (formData: FormData) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
@@ -68,7 +67,7 @@ export const teamCreate = async (formData: FormData) => {
 
 	//Create new team member
 	await db.insert(teamMember).values({
-		role: TeamRole.OWNER,
+		role: 'OWNER',
 		teamId: newTeam.id,
 		userId: user?.id ?? '',
 		updatedAt: new Date(),

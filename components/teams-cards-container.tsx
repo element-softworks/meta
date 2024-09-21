@@ -2,7 +2,6 @@
 
 import { getUsersTeams } from '@/actions/get-users-teams';
 import { currentUser } from '@/lib/auth';
-import { TeamRole } from '@prisma/client';
 import Link from 'next/link';
 import { AvatarGroup } from './avatar-group';
 import { SelectTeamButton } from './buttons/select-team-button';
@@ -35,7 +34,7 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 				);
 
 				const teamOwner = teamData?.team?.members?.find?.(
-					(member) => member.role === TeamRole.OWNER
+					(member) => member.role === 'OWNER'
 				);
 				const teamMembersLength = teamData?.team?.members?.length;
 				return (

@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { InferSelectModel, sql } from 'drizzle-orm';
 import { pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 
 export const twoFactorToken = pgTable(
@@ -26,3 +26,5 @@ export const twoFactorToken = pgTable(
 		};
 	}
 );
+
+export type TwoFactorToken = InferSelectModel<typeof twoFactorToken>;

@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm';
+import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import { boolean, index, pgEnum, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { userNotification } from './userNotification';
 import { twoFactorConfirmation } from './twoFactorConfirmation';
@@ -45,3 +45,5 @@ export const userRelations = relations(user, ({ many }) => ({
 	teamMembers: many(teamMember),
 	accounts: many(account),
 }));
+
+export type User = InferSelectModel<typeof user>;

@@ -1,6 +1,5 @@
 'use client';
 
-import { UserRole } from '@prisma/client';
 import { Banknote, CreditCard, LayoutDashboard, Users } from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
 
@@ -47,7 +46,7 @@ export function useSidebarItems() {
 		},
 		{
 			name: 'Admin',
-			visible: user?.role === UserRole.ADMIN,
+			visible: user?.role === 'ADMIN',
 			items: [
 				{
 					text: 'Users',

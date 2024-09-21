@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm';
+import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import {
 	boolean,
 	foreignKey,
@@ -61,3 +61,5 @@ export const customerRelations = relations(customer, ({ one, many }) => ({
 	}),
 	customerInvoices: many(customerInvoice),
 }));
+
+export type Customer = InferSelectModel<typeof customer>;

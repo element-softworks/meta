@@ -1,4 +1,4 @@
-import { relations, sql } from 'drizzle-orm';
+import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import { foreignKey, index, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { user } from './user';
 
@@ -41,3 +41,5 @@ export const userNotificationRelations = relations(userNotification, ({ one }) =
 		references: [user.id],
 	}),
 }));
+
+export type UserNotification = InferSelectModel<typeof userNotification>;
