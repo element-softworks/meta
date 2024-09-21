@@ -11,11 +11,6 @@ interface UsersTableContainerProps {
 }
 export default async function UsersTableContainer(props: UsersTableContainerProps) {
 	// Get the filters from the search params
-	const nameFilter = props.searchParams?.['users-name-sort'];
-	const emailFilter = props.searchParams?.['users-email-sort'];
-	const emailVerifiedFilter = props.searchParams?.['users-emailVerified-sort'];
-	const isTwoFactorEnabledFilter = props.searchParams?.['users-isTwoFactorEnabled-sort'];
-	const roleFilter = props.searchParams?.['users-role-sort'];
 	const createdAtFilter = props.searchParams?.['users-createdAt-sort'] ?? 'desc';
 
 	// Get the users data and pass filters inside
@@ -25,11 +20,6 @@ export default async function UsersTableContainer(props: UsersTableContainerProp
 		search: props.searchParams?.['users-search'] ?? '',
 		showArchived: (props.searchParams?.['users-archived'] as 'true' | 'false') ?? 'false',
 		filters: {
-			name: nameFilter,
-			email: emailFilter,
-			emailVerified: emailVerifiedFilter,
-			isTwoFactorEnabled: isTwoFactorEnabledFilter,
-			role: roleFilter,
 			createdAt: createdAtFilter,
 		},
 	});

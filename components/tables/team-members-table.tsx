@@ -86,6 +86,7 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 		{
 			accessorKey: 'createdAt',
 			header: 'Joined at',
+			sortDescFirst: true,
 			enableSorting: true,
 			cell: ({ row }) => {
 				const member = row.original;
@@ -136,7 +137,7 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 	const rows: TeamMemberResponse[0]['member'][] | undefined = props.teamMembers?.map?.(
 		(teamMember) => ({
 			role: teamMember.member.role,
-			teamId: teamMember.member.role,
+			teamId: teamMember.member.teamId,
 			userId: teamMember.member.userId,
 			user: teamMember.member.user,
 			createdAt: teamMember.member.createdAt,

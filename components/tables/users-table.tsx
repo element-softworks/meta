@@ -47,7 +47,6 @@ export function UsersTable(props: UsersTableProps) {
 		{
 			accessorKey: 'name',
 			header: 'Name',
-			enableSorting: true,
 			cell: ({ row }) => {
 				const user = row.original;
 				return (
@@ -65,17 +64,14 @@ export function UsersTable(props: UsersTableProps) {
 		{
 			accessorKey: 'email',
 			header: 'Email',
-			enableSorting: true,
 		},
 		{
 			accessorKey: 'emailVerified',
 			header: 'Email Verified',
-			enableSorting: true,
 		},
 		{
 			accessorKey: 'isTwoFactorEnabled',
 			header: '2FA',
-			enableSorting: true,
 			cell: ({ row }) => {
 				const user = row.original;
 				return user.isTwoFactorEnabled;
@@ -84,7 +80,6 @@ export function UsersTable(props: UsersTableProps) {
 		{
 			accessorKey: 'role',
 			header: 'Role',
-			enableSorting: true,
 		},
 		{
 			accessorKey: 'createdAt',

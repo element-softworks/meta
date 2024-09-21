@@ -1,6 +1,6 @@
 'use server';
 
-import { getIsUserTeamAdmin, getTeamById } from '@/data/team';
+import { getTeamById } from '@/data/team';
 import { currentUser } from '@/lib/auth';
 import { s3Path } from '@/lib/s3';
 import { TeamsSchema } from '@/schemas';

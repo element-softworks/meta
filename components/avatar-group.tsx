@@ -24,6 +24,7 @@ export function AvatarGroup(props: AvatarGroupProps) {
 			{avatars.map((avatar, index) => {
 				return (
 					<Avatar
+						key={index}
 						className="size-7 relative"
 						style={{
 							left: `${-(index * (size / 2))}px`,

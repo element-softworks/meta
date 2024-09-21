@@ -4,9 +4,7 @@ import { getUserById } from '@/data/user';
 import { currentUser } from '@/lib/auth';
 import { sendPasswordResetEmail } from '@/lib/mail';
 import { generatePasswordResetToken } from '@/lib/tokens';
-import { ExtendedUser } from '@/next-auth';
 import { UserRole } from '@prisma/client';
-import { User } from 'next-auth';
 
 export const adminSendPasswordReset = async (editingUserId: string) => {
 	const adminUser = await currentUser();

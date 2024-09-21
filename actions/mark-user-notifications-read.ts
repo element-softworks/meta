@@ -1,6 +1,7 @@
 'use server';
-
-import { db } from '@/lib/db';
+import { userNotification } from './../db/drizzle/schema';
+import { db } from '@/db/drizzle/db';
+import { inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export const markUserNotificationsRead = async ({
@@ -11,18 +12,16 @@ export const markUserNotificationsRead = async ({
 	all?: boolean;
 }) => {
 	try {
-		await db.userNotification.updateMany({
-			where: all
-				? {}
-				: {
-						id: {
-							in: notificationIds,
-						},
-				  },
-			data: {
+		await db
+			.update(userNotification)
+			.set({
 				readAt: new Date(),
-			},
-		});
+			})
+			.where(
+				all
+					? undefined
+					: inArray(userNotification.id, notificationIds?.map((id) => id) ?? [])
+			);
 
 		revalidatePath('/dashboard/notifications');
 	} catch (error) {

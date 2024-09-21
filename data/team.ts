@@ -6,6 +6,7 @@ import { teamMember } from './../db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 
 export const getIsUserTeamAdmin = async (teamId: string, userId: string) => {
+	console.log(teamId, userId, 'teamId, userId');
 	const [teamResponse] = await db
 		.select()
 		.from(teamMember)
@@ -16,6 +17,8 @@ export const getIsUserTeamAdmin = async (teamId: string, userId: string) => {
 				or(eq(teamMember.role, TeamRole.ADMIN), eq(teamMember.role, TeamRole.OWNER))
 			)
 		);
+
+	console.log(teamResponse, 'team response');
 
 	if (!teamResponse) {
 		return false;
@@ -42,6 +45,14 @@ export const findTeamById = async (teamId: string) => {
 	});
 
 	return teamResponse;
+};
+
+export const getTeamCustomerByTeamId = async (teamId: string) => {
+	const customerResponse = await db.query.customer.findFirst({
+		where: eq(customer.teamId, teamId),
+	});
+
+	return customerResponse;
 };
 
 export const getTeamById = async (teamId: string) => {
@@ -123,7 +134,7 @@ export const isTeamOwnerServer = async (teamId: string, userId: string) => {
 		)
 		.limit(1); // Equivalent to findFirst
 
-	return !!isTeamAuth;
+	return !!isTeamAuth?.length;
 };
 
 export const getUsersTeams = async (userId: string) => {

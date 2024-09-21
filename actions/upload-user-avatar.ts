@@ -1,18 +1,19 @@
 'use server';
-import { update } from '@/auth';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
 import { s3Path } from '@/lib/s3';
 import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
 import { removeFileFromS3 } from './remove-file-from-s3';
 import { uploadFileToS3 } from './upload-file-to-s3';
+import { db } from '@/db/drizzle/db';
+import { user } from '@/db/drizzle/schema';
+import { eq } from 'drizzle-orm';
 
 export const uploadUserAvatar = async (formData: FormData) => {
 	const uuid = uuidv4();
-	const user = await currentUser();
+	const userResponse = await currentUser();
 
-	if (!user) {
+	if (!userResponse) {
 		return { error: 'User not found' };
 	}
 
@@ -45,20 +46,21 @@ export const uploadUserAvatar = async (formData: FormData) => {
 
 		//Update the user's avatar
 		try {
-			if (user.image && user.image.includes(s3Path)) {
+			if (userResponse.image && userResponse.image.includes(s3Path)) {
 				//If the user already has an avatar, remove it from S3
-				const avatarKey = user.image.split('/').pop();
+				const avatarKey = userResponse.image.split('/').pop();
 				await removeFileFromS3(avatarKey ?? '');
 			}
 
-			const updatedUser = await db.user.update({
-				where: { id: user.id },
-				data: {
+			const [updatedUser] = await db
+				.update(user)
+				.set({
 					image: `${s3Path}/${uuid}-${avatar.name}`,
-				},
-			});
+				})
+				.where(eq(user.id, userResponse.id!))
+				.returning({ id: user.id });
 
-			update({ user: { ...updatedUser } });
+			// update({ user: { ...updatedUser } });
 			revalidatePath(`/dashboard/admin/users/${updatedUser.id}`);
 		} catch (e) {
 			console.log(e, 'e.message');

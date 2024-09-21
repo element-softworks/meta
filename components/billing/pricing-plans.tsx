@@ -14,6 +14,7 @@ import { CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface PricingPlansProps {
+	teamId: string;
 	currentPlanId: string | undefined;
 	stripeCustomerId: string;
 }
@@ -62,6 +63,7 @@ export default function PricingPlans(props: PricingPlansProps) {
 		enabled: !!price,
 		price,
 		stripeCustomerId: props.stripeCustomerId,
+		teamId: props.teamId,
 	});
 
 	const basic = plans.basic;

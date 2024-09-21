@@ -1,9 +1,9 @@
 'use server';
+import { db } from '@/db/drizzle/db';
+import { user } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
 import { UserRole } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
-import Error from 'next/error';
+import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
 /**
  *
@@ -40,11 +40,6 @@ export const getAllUsers = async ({
 	search: string;
 	showArchived: 'true' | 'false';
 	filters: {
-		name: 'neutral' | 'desc' | 'asc';
-		email: 'asc' | 'desc' | 'neutral';
-		emailVerified: 'asc' | 'desc' | 'neutral';
-		isTwoFactorEnabled: 'asc' | 'desc' | 'neutral';
-		role: 'asc' | 'desc' | 'neutral';
 		createdAt: 'asc' | 'desc' | 'neutral';
 	};
 }) => {
@@ -59,38 +54,41 @@ export const getAllUsers = async ({
 			return { error: 'You must be an admin to view users.' };
 		}
 
-		const users = await db.user.findMany({
-			skip: (pageNum - 1) * perPage,
-			take: perPage,
-			orderBy: Object.entries(filters)
-				?.filter?.(([_, value]) => value !== 'neutral' && !!value)
-				?.map(([key, value]) => {
-					return { [key]: value };
-				}),
-			where: {
-				isArchived: showArchived === 'true',
-				AND: {
-					OR: [
-						{ name: { contains: search, mode: 'insensitive' } },
-						{ email: { contains: search, mode: 'insensitive' } },
-						{ id: { equals: search } },
-					],
-				},
-			},
-		});
+		const usersResponse = await db
+			.select()
+			.from(user)
+			.limit(perPage)
+			.offset((pageNum - 1) * perPage)
+			.where(
+				and(
+					eq(user.isArchived, showArchived === 'true'),
+					or(
+						sql`lower(${user.name}) like ${`%${search.toLowerCase()}%`}`,
+						sql`lower(${user.email}) like ${`%${search.toLowerCase()}%`}`,
+						sql`lower(${user.id}) like ${`%${search.toLowerCase()}%`}`
+					)
+				)
+			)
+			.orderBy(filters.createdAt === 'asc' ? asc(user.createdAt) : desc(user.createdAt));
 
-		const totalUsers = await db.user.count({
-			where: {
-				OR: [
-					{ name: { contains: search, mode: 'insensitive' } },
-					{ email: { contains: search, mode: 'insensitive' } },
-					{ id: { equals: search } },
-				],
-			},
-		});
-		const totalPages = Math.ceil(totalUsers / perPage);
+		const [userResponseCount] = await db
+			.select({ count: count() })
+			.from(user)
+			.where(
+				or(
+					sql`lower(${user.name}) like ${`%${search.toLowerCase()}%`}`,
+					sql`lower(${user.email}) like ${`%${search.toLowerCase()}%`}`,
+					sql`lower(${user.id}) like ${`%${search.toLowerCase()}%`}`
+				)
+			);
 
-		return { success: 'Users retrieved successfully.', users: users, totalPages: totalPages };
+		const totalPages = Math.ceil(userResponseCount.count / perPage);
+
+		return {
+			success: 'Users retrieved successfully.',
+			users: usersResponse,
+			totalPages: totalPages,
+		};
 	} catch (error: any) {
 		return { error: error?.message ?? 'There was a problem retrieving users.' };
 	}

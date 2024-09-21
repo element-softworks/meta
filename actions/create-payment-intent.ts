@@ -1,17 +1,19 @@
 'use server';
 
 import { getTeamById } from '@/data/team';
+import { db } from '@/db/drizzle/db';
+import { team } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { eq } from 'drizzle-orm';
 import stripe from 'stripe';
 
 export async function createPaymentIntent({ amount }: { amount: number }) {
 	const stripeData = new stripe(process.env.STRIPE_SECRET_KEY!);
 
 	const user = await currentUser();
-	const team = await getTeamById(user?.currentTeam ?? '');
+	const teamResponse = await getTeamById(user?.currentTeam ?? '');
 
-	if (!team) {
+	if (!teamResponse) {
 		return { error: 'Team not found' };
 	}
 	if (!user) {
@@ -21,7 +23,7 @@ export async function createPaymentIntent({ amount }: { amount: number }) {
 	try {
 		const customer = await stripeData.customers.create({
 			email: user?.email ?? '',
-			name: team?.team?.name ?? '',
+			name: teamResponse?.data?.team?.name ?? '',
 			metadata: {
 				userId: user?.id ?? '',
 				teamId: user?.currentTeam ?? '',
@@ -44,13 +46,13 @@ export async function createPaymentIntent({ amount }: { amount: number }) {
 			},
 		});
 
-		await db.team.update({
-			where: { id: team?.team?.id ?? '' },
-			data: {
+		await db
+			.update(team)
+			.set({
 				stripeCustomerId: customer.id ?? '',
 				stripePaymentId: paymentIntent.id ?? '',
-			},
-		});
+			})
+			.where(eq(team.id, teamResponse?.data?.team?.id ?? ''));
 
 		return { clientSecret: paymentIntent.client_secret };
 	} catch (error) {

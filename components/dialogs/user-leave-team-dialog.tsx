@@ -7,7 +7,6 @@ import { Team, TeamMember } from '@prisma/client';
 import { User } from 'next-auth';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
-import { TableTeam } from '../tables/teams-table';
 import { Button } from '../ui/button';
 import { useSession } from 'next-auth/react';
 
@@ -22,7 +21,7 @@ export function UserLeaveTeamDialog(props: UserLeaveTeamDialogProps) {
 	const currentUser = useCurrentUser();
 
 	const { query: UserLeaveTeamQuery, isLoading } = useMutation<
-		(Team & { members: (TeamMember & { user: User })[] }) | null | TableTeam,
+		(Team & { members: (TeamMember & { user: User })[] }) | null,
 		{}
 	>({
 		queryFn: async () => await userLeaveTeam(props.teamId ?? ''),

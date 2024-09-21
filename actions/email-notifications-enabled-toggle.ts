@@ -1,24 +1,24 @@
 'use server';
 
 import { getUserById } from '@/data/user';
-import { db } from '@/lib/db';
+import { db } from '@/db/drizzle/db';
+import { user } from '@/db/drizzle/schema';
+import { eq, not } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export const emailNotificationsEnabledToggle = async (enabled: boolean, userId: string) => {
-	const user = await getUserById(userId);
+	const userResponse = await getUserById(userId);
 
-	if (!user) {
+	if (!userResponse) {
 		return { error: 'User not found' };
 	}
 
-	await db.user.update({
-		where: {
-			id: userId,
-		},
-		data: {
+	await db
+		.update(user)
+		.set({
 			notificationsEnabled: enabled,
-		},
-	});
+		})
+		.where(eq(user.id, userId));
 
 	revalidatePath('/dashboard/notifications');
 

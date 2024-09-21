@@ -12,8 +12,6 @@ import {
 import { currentUser } from '@/lib/auth';
 import { MarkNotificationsReadButton } from './buttons/mark-notifications-read-button';
 import { NotificationsInfiniteScroll } from './notifications-infinite-scroll';
-import { db } from '@/lib/db';
-import { createNotification } from '@/lib/notifications';
 
 export const NotificationsContainer = async ({
 	searchParams,

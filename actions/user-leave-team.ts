@@ -1,8 +1,10 @@
 'use server';
 
 import { findTeamById, getTeamMemberByIds } from '@/data/team';
+import { db } from '@/db/drizzle/db';
+import { teamMember } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
+import { and, eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export const userLeaveTeam = async (teamId: string) => {
@@ -16,29 +18,22 @@ export const userLeaveTeam = async (teamId: string) => {
 	}
 
 	// Find the team member
-	const teamMember = await getTeamMemberByIds({ teamId, userId: user?.id ?? '' });
+	const teamMemberResponse = await getTeamMemberByIds({ teamId, userId: user?.id ?? '' });
 
-	if (!teamMember) {
+	if (!teamMemberResponse) {
 		return { error: 'User not found in team' };
 	}
 
-	if (teamMember.role === 'OWNER') {
+	if (teamMemberResponse.role === 'OWNER') {
 		return { error: 'Owner cannot leave team' };
 	}
 
 	// Remove the team member
-	const leavingTeam = await db.teamMember.delete({
-		where: {
-			teamId: teamId,
-			userId: user?.id,
-			teamId_userId: {
-				teamId: teamId,
-				userId: user?.id ?? '',
-			},
-		},
-	});
+	await db
+		.delete(teamMember)
+		.where(and(eq(teamMember.teamId, teamId), eq(teamMember.userId, user?.id!)));
 
-	revalidatePath(`/teams/${teamId}`);
+	revalidatePath(`/teams/${teamMemberResponse.teamId!}`);
 
 	return { success: `Successfully left team ${team?.name ?? ''}` };
 };

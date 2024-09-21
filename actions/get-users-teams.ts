@@ -49,7 +49,6 @@ export const getUsersTeams = async (req: GetUserTeamProps) => {
 		return { team: { ...team, members } };
 	});
 
-	console.log(teamWithMembers, 'teamWithMembers');
 	return {
 		success: 'Teams retrieved successfully.',
 		data: teamWithMembers as GetUsersTeamsResponse,

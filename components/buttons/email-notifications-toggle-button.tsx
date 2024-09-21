@@ -2,7 +2,6 @@
 
 import { BellRing } from 'lucide-react';
 import { Switch } from '../ui/switch';
-import { db } from '@/lib/db';
 import { useMutation } from '@/hooks/use-mutation';
 import { useSession } from 'next-auth/react';
 import { emailNotificationsEnabledToggle } from '@/actions/email-notifications-enabled-toggle';

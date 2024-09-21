@@ -1,10 +1,9 @@
 'use server';
 
-import { getTeamById } from '@/data/team';
 import { db } from '@/db/drizzle/db';
 import { team, teamMember, user } from '@/db/drizzle/schema';
-import { Prisma, TeamMember, User } from '@prisma/client';
-import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
+import { User } from '@prisma/client';
+import { and, asc, desc, eq, or, sql } from 'drizzle-orm';
 
 interface GetTeamWithMembersProps {
 	teamId: string;

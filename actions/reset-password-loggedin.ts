@@ -1,18 +1,20 @@
 'use server';
 import { getUserById } from '@/data/user';
+import { db } from '@/db/drizzle/db';
+import { user } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
 import { ResetPasswordSchema, SettingsSchema } from '@/schemas';
 import bcrypt from 'bcryptjs';
+import { eq } from 'drizzle-orm';
 import z from 'zod';
 export const resetPasswordLoggedin = async (values: z.infer<typeof ResetPasswordSchema>) => {
-	const user = await currentUser();
+	const userResponse = await currentUser();
 
-	if (!user) {
+	if (!userResponse) {
 		return { error: 'Unauthorized' };
 	}
 
-	const dbUser = await getUserById(user?.id ?? '');
+	const dbUser = await getUserById(userResponse?.id ?? '');
 
 	if (!dbUser) {
 		return { error: 'Unauthorized' };
@@ -30,16 +32,16 @@ export const resetPasswordLoggedin = async (values: z.infer<typeof ResetPassword
 		values.password = hashedPassword;
 	}
 
-	if (user.isOAuth) {
+	if (userResponse.isOAuth) {
 		return { error: 'Cannot update password as OAuth user' };
 	}
 
-	await db.user.update({
-		where: { id: user.id },
-		data: {
+	await db
+		.update(user)
+		.set({
 			password: values.password,
-		},
-	});
+		})
+		.where(eq(user.id, userResponse.id!));
 
 	return { success: 'Settings updated' };
 };

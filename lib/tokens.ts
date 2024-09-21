@@ -111,7 +111,6 @@ export const generatePasswordResetToken = async (email: string) => {
 	// If a token already exists, delete it
 	if (existingToken) {
 		await db.delete(passwordResetToken).where(eq(passwordResetToken.id, existingToken.id));
-		// await db.passwordResetToken.delete({ where: { id: existingToken.id } });
 	}
 
 	const [passwordResetTokenResponse] = await db
