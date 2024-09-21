@@ -2,7 +2,6 @@
 
 import { getAccountByUserId } from '@/data/account';
 import { getUserByEmail } from '@/data/user';
-import { db } from '@/lib/db';
 import { sendPasswordResetEmail } from '@/lib/mail';
 import { generatePasswordResetToken } from '@/lib/tokens';
 import { ResetSchema } from '@/schemas';

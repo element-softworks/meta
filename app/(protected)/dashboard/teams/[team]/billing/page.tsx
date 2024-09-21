@@ -1,23 +1,24 @@
 import CancelSubscriptionButton from '@/components/billing/cancel-subscription-button';
 import PricingPlans from '@/components/billing/pricing-plans';
 import { Separator } from '@/components/ui/separator';
-import { getTeamById } from '@/data/team';
+import { getTeamById, getTeamCustomerByTeamId } from '@/data/team';
 import { currentUser } from '@/lib/auth';
-import { isTeamOwner } from '@/lib/team';
 import plans from '@/plans.json';
 import { Suspense } from 'react';
 
 export default async function BillingPage({ params }: { params: { team: string } }) {
 	const user = await currentUser();
 	const team = await getTeamById(params.team ?? '');
-	const isOwner = await isTeamOwner(team?.team?.members ?? [], user?.id ?? '');
+	const customer = await getTeamCustomerByTeamId(params.team ?? '');
+	// const isOwner = await isTeamOwner(team?.team?.members ?? [], user?.id ?? '');
 
-	const teamHasPlan =
-		!!team?.team?.subscriptions?.length && team?.team?.subscriptions?.[0]?.status === 'active';
+	const teamHasPlan = !!customer?.id && customer?.status === 'active';
 
 	const currentTeamPlan = Object.entries(plans).find(
-		(plan) => plan?.[1]?.stripePricingId === team?.team?.subscriptions?.[0]?.planId
+		(plan) => plan?.[1]?.stripePricingId === customer?.planId
 	)?.[1];
+
+	const isOwner = team?.data?.currentMember?.role === 'OWNER';
 
 	return (
 		<main className="flex flex-col max-w-5xl gap-6 h-full">
@@ -44,7 +45,8 @@ export default async function BillingPage({ params }: { params: { team: string }
 
 				{isOwner && (
 					<PricingPlans
-						stripeCustomerId={team?.team?.stripeCustomerId ?? ''}
+						teamId={team.data?.team?.id ?? ''}
+						stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
 						currentPlanId={currentTeamPlan?.stripePricingId}
 					/>
 				)}
@@ -53,7 +55,7 @@ export default async function BillingPage({ params }: { params: { team: string }
 					<div className="flex flex-col gap-4 h-full">
 						<div className="mt-auto">
 							<CancelSubscriptionButton
-								customer={team?.team?.subscriptions[0]}
+								customer={customer}
 								userId={user?.id ?? ''}
 								teamId={user?.currentTeam ?? ''}
 							/>

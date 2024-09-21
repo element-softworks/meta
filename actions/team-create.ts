@@ -1,14 +1,14 @@
 'use server';
 
+import { setCookie } from '@/data/cookies';
+import { db } from '@/db/drizzle/db';
+import { team, teamMember } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
 import { s3Path } from '@/lib/s3';
 import { TeamsSchema } from '@/schemas';
-import { TeamRole } from '@prisma/client';
 import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
 import { uploadFileToS3 } from './upload-file-to-s3';
-import { setCookie } from '@/data/cookies';
 export const teamCreate = async (formData: FormData) => {
 	const uuid = uuidv4();
 	const user = await currentUser();
@@ -51,25 +51,26 @@ export const teamCreate = async (formData: FormData) => {
 		await uploadFileToS3(buffer, `${uuid}-${values.image.name}`);
 	}
 	//Create the team
-	const newTeam = await db.team.create({
-		data: {
+	const [newTeam] = await db
+		.insert(team)
+		.values({
 			name: values.name,
 			createdBy: user?.email ?? '',
 			image: !!values.image?.size ? `${s3Path}/${uuid}-${values.image.name}` : undefined,
-		},
-	});
+			updatedAt: new Date(),
+		})
+		.returning({ id: team.id });
 
 	if (!newTeam) {
 		return { error: 'There was a problem creating the team, please try again later' };
 	}
 
 	//Create new team member
-	const newTeamMember = await db.teamMember.create({
-		data: {
-			role: TeamRole.OWNER,
-			teamId: newTeam.id,
-			userId: user?.id ?? '',
-		},
+	await db.insert(teamMember).values({
+		role: 'OWNER',
+		teamId: newTeam.id,
+		userId: user?.id ?? '',
+		updatedAt: new Date(),
 	});
 
 	//Set the current team cookie to the new team

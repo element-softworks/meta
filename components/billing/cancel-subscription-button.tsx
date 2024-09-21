@@ -2,11 +2,9 @@
 import { cancelSubscription } from '@/actions/cancelSubscription';
 import { uncancelSubscription } from '@/actions/uncancelSubscription';
 import { Button } from '@/components/ui/button';
+import { Customer } from '@/db/drizzle/schema/customer';
 import { useMutation } from '@/hooks/use-mutation';
-import { Customer } from '@prisma/client';
 import { format } from 'date-fns';
-import { useSession } from 'next-auth/react';
-import { revalidatePath } from 'next/cache';
 import { useRouter } from 'next/navigation';
 
 interface CancelSubscriptionButtonProps {

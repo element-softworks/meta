@@ -3,17 +3,15 @@
 import { adminArchiveTeam } from '@/actions/admin-archive-team';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
-import { isTeamAuth } from '@/lib/team';
-import { Team, TeamMember } from '@prisma/client';
-import { User } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
-import { TableTeam } from '../tables/teams-table';
 import { Button, ButtonProps } from '../ui/button';
+import { Team } from '@/db/drizzle/schema/team';
 
 interface ArchiveTeamDialogProps {
-	team: (Team & { members: (TeamMember & { user: User })[] }) | null | undefined;
+	team: Team | undefined;
+	isTeamAdmin: boolean;
 }
 
 export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
@@ -22,10 +20,7 @@ export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
 	const { update } = useSession();
 	const currentUser = useCurrentUser();
 
-	const { query: ArchiveTeamQuery, isLoading } = useMutation<
-		(Team & { members: (TeamMember & { user: User })[] }) | null | TableTeam,
-		{}
-	>({
+	const { query: ArchiveTeamQuery, isLoading } = useMutation<(Team | undefined) | null, {}>({
 		queryFn: async (team) => await adminArchiveTeam(team!),
 		onCompleted: () => {
 			update();
@@ -37,9 +32,7 @@ export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
 		if (!props.team) return;
 		ArchiveTeamQuery(props.team);
 	};
-
 	//If you are a team admin, or a site admin, you can archive/restore a team
-	const isTeamAdmin = isTeamAuth(props.team?.members ?? [], currentUser?.id ?? '');
 
 	const isArchived = !!props.team?.isArchived ?? false;
 
@@ -53,7 +46,7 @@ export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
 		? { variant: 'successful' }
 		: { variant: 'destructive' };
 
-	if (!isTeamAdmin) return null;
+	if (!props.isTeamAdmin) return null;
 
 	return (
 		<DialogWrapper

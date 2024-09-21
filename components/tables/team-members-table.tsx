@@ -4,7 +4,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
 import { DataTable } from '../data-table';
 
-import { TeamWithMembers } from '@/actions/get-team-with-members';
+import { TeamMemberResponse } from '@/actions/get-team-with-members';
 import { Button } from '@/components/ui/button';
 import {
 	DropdownMenu,
@@ -14,8 +14,9 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { TeamMember, User } from '@prisma/client';
+import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { format } from 'date-fns';
+import { User } from 'next-auth';
 import Image from 'next/image';
 import { RemoveUserFromTeamDropdownMenuItem } from '../menu-items/remove-user-from-team-dropdown-menu-item';
 import { Avatar } from '../ui/avatar';
@@ -33,19 +34,19 @@ export type TableTeamsMember = {
 };
 
 interface TeamsMemberTableProps {
-	teamMembers?: TeamWithMembers['members'] | undefined;
+	teamMembers?: TeamMemberResponse | undefined;
 	totalPages: number | undefined;
 	isLoading: boolean;
 }
 
 export function TeamsMemberTable(props: TeamsMemberTableProps) {
 	const { isLoading = false } = props;
-	const columns: ColumnDef<TeamWithMembers['members'][0] | undefined>[] = [
+	const columns: ColumnDef<TeamMemberResponse[0]['member'] | undefined>[] = [
 		{
 			accessorKey: 'name',
 			header: 'Name',
-			enableSorting: true,
 			cell: ({ row }) => {
+				console.log(row.original, 'row.original');
 				const member = row.original;
 				return (
 					<div className="flex items-center">
@@ -67,7 +68,6 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 		{
 			accessorKey: 'email',
 			header: 'Email',
-			enableSorting: true,
 			cell: ({ row }) => {
 				const member = row.original;
 				return member?.user?.email;
@@ -76,7 +76,6 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 		{
 			accessorKey: 'role',
 			header: 'Team role',
-			enableSorting: true,
 			cell: ({ row }) => {
 				const member = row.original;
 
@@ -88,6 +87,7 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 		{
 			accessorKey: 'createdAt',
 			header: 'Joined at',
+			sortDescFirst: true,
 			enableSorting: true,
 			cell: ({ row }) => {
 				const member = row.original;
@@ -135,14 +135,16 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 		},
 	];
 
-	const rows: TeamWithMembers['members'] | undefined = props.teamMembers?.map((teamMember) => ({
-		role: teamMember.role,
-		teamId: teamMember.teamId,
-		userId: teamMember.userId,
-		user: teamMember.user,
-		createdAt: teamMember.createdAt,
-		updatedAt: teamMember.updatedAt,
-	}));
+	const rows: TeamMemberResponse[0]['member'][] | undefined = props.teamMembers?.map?.(
+		(teamMember) => ({
+			role: teamMember.member.role,
+			teamId: teamMember.member.teamId,
+			userId: teamMember.member.userId,
+			user: teamMember.member.user,
+			createdAt: teamMember.member.createdAt,
+			updatedAt: teamMember.member.updatedAt,
+		})
+	);
 
 	return (
 		<DataTable

@@ -2,7 +2,6 @@
 
 import { InviteTeamUserSingleSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { $Enums, TeamRole } from '@prisma/client';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import * as z from 'zod';
 import { InviteTeamUsersFormInputProps } from '../forms/invite-user-to-team-form';
@@ -95,10 +94,10 @@ export function InviteUsersInput(props: InviteUsersInputProps) {
 										<FormLabel>Team role</FormLabel>
 
 										<Select
-											onValueChange={(value: $Enums.TeamRole) => {
+											onValueChange={(value: 'ADMIN' | 'USER') => {
 												form.setValue('role', value);
 											}}
-											defaultValue={TeamRole.USER}
+											defaultValue={'USER'}
 											disabled={isLoading}
 										>
 											<SelectTrigger
@@ -107,10 +106,8 @@ export function InviteUsersInput(props: InviteUsersInputProps) {
 												<SelectValue placeholder="Select a role" />
 											</SelectTrigger>
 											<SelectContent>
-												<SelectItem value={TeamRole.ADMIN}>
-													Admin
-												</SelectItem>
-												<SelectItem value={TeamRole.USER}>User</SelectItem>
+												<SelectItem value={'ADMIN'}>Admin</SelectItem>
+												<SelectItem value={'USER'}>User</SelectItem>
 											</SelectContent>
 										</Select>
 									</FormItem>

@@ -1,5 +1,4 @@
-import { TeamMember, TeamRole } from '@prisma/client';
-import { db } from './db';
+import { TeamMember } from '@/db/drizzle/schema/teamMember';
 
 export const isTeamAuth = (members: TeamMember[], userId: string) => {
 	const currentTeamUser = members.find((member) => member.userId === userId);
@@ -8,7 +7,7 @@ export const isTeamAuth = (members: TeamMember[], userId: string) => {
 		return false;
 	}
 
-	return currentTeamUser.role === TeamRole.ADMIN || currentTeamUser.role === TeamRole.OWNER;
+	return currentTeamUser.role === 'ADMIN' || currentTeamUser.role === 'OWNER';
 };
 
 export const getCurrentTeamMember = (members: TeamMember[], userId: string) => {
@@ -24,5 +23,5 @@ export const isTeamOwner = (members: TeamMember[], userId: string) => {
 		return false;
 	}
 
-	return currentTeamUser.role === TeamRole.OWNER;
+	return currentTeamUser.role === 'OWNER';
 };

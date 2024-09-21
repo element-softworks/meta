@@ -1,11 +1,13 @@
 'use client';
 
+import { teamCreate } from '@/actions/team-create';
+import { teamUpdate } from '@/actions/team-update';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
-import { SettingsSchema, TeamsSchema } from '@/schemas';
+import { TeamsSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Team } from '@prisma/client';
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { FormInput } from '../auth/form-input';
@@ -13,9 +15,7 @@ import { DropzoneInput } from '../inputs/dropzone-input';
 import { Button } from '../ui/button';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
-import { teamCreate } from '@/actions/team-create';
-import { teamUpdate } from '@/actions/team-update';
-import { useRouter } from 'next/navigation';
+import { Team } from '@/db/drizzle/schema/team';
 
 type TeamsFormInputProps = z.infer<typeof TeamsSchema>;
 

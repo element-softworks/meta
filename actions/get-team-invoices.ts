@@ -1,6 +1,8 @@
 'use server';
 
-import { db } from '@/lib/db';
+import { db } from '@/db/drizzle/db';
+import { customerInvoice } from '@/db/drizzle/schema';
+import { and, asc, count, eq, or, sql } from 'drizzle-orm';
 
 interface GetTeamInvoicesProps {
 	teamId: string;
@@ -12,35 +14,40 @@ interface GetTeamInvoicesProps {
 	};
 }
 export const getTeamInvoices = async (props: GetTeamInvoicesProps) => {
-	const invoices = await db.customerInvoice.findMany({
-		where: {
-			teamId: props.teamId,
-			AND: {
-				OR: [
-					{ id: { contains: props.search, mode: 'insensitive' } },
-					{ status: { contains: props.search, mode: 'insensitive' } },
-				],
-			},
-		},
-		orderBy: {
-			createdAt: props.filters.createdAt === 'asc' ? 'asc' : 'desc',
-		},
-		skip: (props.pageNum - 1) * props.perPage,
-		take: props.perPage,
-	});
+	const invoicesResponse = await db
+		.select()
+		.from(customerInvoice)
+		.where(
+			and(
+				eq(customerInvoice.teamId, props.teamId),
+				or(
+					sql`lower(${customerInvoice.id}) like ${`%${props.search.toLowerCase()}%`}`,
+					sql`lower(${customerInvoice.status}) like ${`%${props.search.toLowerCase()}%`}`
+				)
+			)
+		)
+		.orderBy(
+			props.filters.createdAt === 'asc'
+				? asc(customerInvoice.createdAt)
+				: customerInvoice.createdAt
+		)
+		.limit(props.perPage)
+		.offset(props.perPage * (props.pageNum - 1));
 
-	const totalInvoices = await db.customerInvoice.count({
-		where: {
-			teamId: props.teamId,
-			AND: {
-				OR: [
-					{ id: { contains: props.search, mode: 'insensitive' } },
-					{ status: { contains: props.search, mode: 'insensitive' } },
-				],
-			},
-		},
-	});
-	const totalPages = Math.ceil(totalInvoices / props.perPage);
+	const [totalInvoices] = await db
+		.select({ count: count() })
+		.from(customerInvoice)
+		.where(
+			and(
+				eq(customerInvoice.teamId, props.teamId),
+				or(
+					sql`lower(${customerInvoice.id}) like ${`%${props.search.toLowerCase()}%`}`,
+					sql`lower(${customerInvoice.status}) like ${`%${props.search.toLowerCase()}%`}`
+				)
+			)
+		);
 
-	return { invoices: invoices, totalPages: totalPages };
+	const totalPages = Math.ceil(totalInvoices.count / props.perPage);
+
+	return { invoices: invoicesResponse, totalPages: totalPages };
 };

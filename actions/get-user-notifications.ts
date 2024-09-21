@@ -1,54 +1,43 @@
 'use server';
 
-import { db } from '@/lib/db';
-import { Prisma } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
-
-export type GetUserNotifications = {
-	notifications: Prisma.UserNotificationGetPayload<{
-		include: {};
-	}>[];
-	total: number;
-	unreadCount: number;
-};
+import { db } from '@/db/drizzle/db';
+import { userNotification } from '@/db/drizzle/schema';
+import { UserNotification } from '@/db/drizzle/schema/userNotification';
+import { and, count, desc, eq, isNull } from 'drizzle-orm';
 
 export const getUserNotifications = async (userId: string, perPage: number, pageNum: number) => {
 	try {
-		const notifications = await db.$transaction([
-			db.userNotification.count({
-				where: {
-					userId,
-				},
-			}),
+		const [notificationsCount] = await db
+			.select({ count: count() })
+			.from(userNotification)
+			.where(eq(userNotification.userId, userId));
 
-			db.userNotification.findMany({
-				where: {
-					userId,
-				},
-				orderBy: {
-					createdAt: 'desc',
-				},
+		const notificationsResponse = await db
+			.select()
+			.from(userNotification)
+			.where(eq(userNotification.userId, userId))
+			.orderBy(desc(userNotification.createdAt))
+			.limit(perPage)
+			.offset(perPage * (pageNum - 1));
 
-				skip: perPage * (pageNum - 1),
-				take: perPage,
-			}),
-			db.userNotification.count({
-				where: {
-					userId,
-					AND: {
-						readAt: null,
-					},
-				},
-			}),
-		]);
+		const [unreadNotifications] = await db
+			.select({ count: count() })
+			.from(userNotification)
+			.where(and(eq(userNotification.userId, userId), isNull(userNotification.readAt)));
 
 		return {
-			notifications: notifications[1],
-			total: notifications[0],
-			unreadCount: notifications[2],
-		};
+			notifications: notificationsResponse,
+			total: notificationsCount.count,
+			unreadCount: unreadNotifications.count,
+		} as GetUserNotificationsResponse;
 	} catch (error) {
 		console.error(error);
 		return null;
 	}
+};
+
+export type GetUserNotificationsResponse = {
+	notifications: UserNotification[];
+	total: number;
+	unreadCount: number;
 };

@@ -1,22 +1,21 @@
 import { ArchiveTeamDialog } from '@/components/dialogs/archive-team-dialog';
 import { TeamsForm } from '@/components/forms/teams-form';
-import { CenteredLoader } from '@/components/layout/centered-loader';
 import { Separator } from '@/components/ui/separator';
-import { getIsUserInTeam, getTeamById } from '@/data/team';
-import { currentUser } from '@/lib/auth';
-import { isTeamAuth } from '@/lib/team';
+import { getTeamById } from '@/data/team';
 import { redirect } from 'next/navigation';
-import { Suspense } from 'react';
 
 export default async function DashboardPage({ params }: { params: { team: string } }) {
 	const teamResponse = await getTeamById(params.team);
 
-	const user = await currentUser();
-	const isUserInTeam = await getIsUserInTeam(params.team, user?.id ?? '');
+	const isTeamAdmin =
+		teamResponse?.data?.currentMember?.role === 'ADMIN' ||
+		teamResponse?.data?.currentMember?.role === 'OWNER';
+	const isOwner = teamResponse?.data?.currentMember?.role === 'OWNER';
 
-	const isTeamAdmin = isTeamAuth(teamResponse?.team?.members ?? [], user?.id ?? '');
-
-	if (!isUserInTeam || (teamResponse?.team?.isArchived && !isTeamAdmin)) {
+	if (
+		!teamResponse?.data?.currentMember ||
+		(teamResponse?.data?.team?.isArchived && !isTeamAdmin)
+	) {
 		return redirect('/dashboard/teams');
 	}
 
@@ -25,7 +24,7 @@ export default async function DashboardPage({ params }: { params: { team: string
 			<div className="">
 				<p className="text-xl font-bold">
 					Edit your team {'"'}
-					{teamResponse.team?.name}
+					{teamResponse.data?.team?.name}
 					{'"'}
 				</p>
 				<p className="text-muted-foreground text-sm">
@@ -34,11 +33,11 @@ export default async function DashboardPage({ params }: { params: { team: string
 			</div>
 			<Separator />
 			<div className="flex flex-col gap-2">
-				<TeamsForm editingTeam={teamResponse.team} editMode />
+				<TeamsForm editingTeam={teamResponse.data?.team} editMode />
 			</div>
 
 			<div className="mt-auto">
-				<ArchiveTeamDialog team={teamResponse?.team} />
+				<ArchiveTeamDialog team={teamResponse?.data?.team} isTeamAdmin={isTeamAdmin} />
 			</div>
 		</main>
 	);

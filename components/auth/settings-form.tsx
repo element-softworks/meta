@@ -1,12 +1,12 @@
 'use client';
 
 import { updateUserSettings } from '@/actions/update-user-settings';
+import { User } from '@/db/drizzle/schema/user';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
 import { SettingsSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User, UserRole } from '@prisma/client';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -38,7 +38,7 @@ export function SettingsForm(props: SettingsFormProps) {
 		resolver: zodResolver(SettingsSchema),
 		defaultValues: {
 			name: formUser?.name ?? undefined,
-			role: formUser?.role ?? UserRole.USER,
+			role: formUser?.role ?? 'USER',
 			isTwoFactorEnabled: formUser?.isTwoFactorEnabled ?? undefined,
 		},
 	});
@@ -94,7 +94,7 @@ export function SettingsForm(props: SettingsFormProps) {
 							label="Role"
 							render={({ field }) => (
 								<Select
-									disabled={isLoading || user?.role !== UserRole.ADMIN}
+									disabled={isLoading || user?.role !== 'ADMIN'}
 									onValueChange={field.onChange}
 									defaultValue={field.value}
 								>
@@ -102,8 +102,8 @@ export function SettingsForm(props: SettingsFormProps) {
 										<SelectValue placeholder="Select a role" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value={UserRole.ADMIN}>Admin</SelectItem>
-										<SelectItem value={UserRole.USER}>User</SelectItem>
+										<SelectItem value={'ADMIN'}>Admin</SelectItem>
+										<SelectItem value={'USER'}>User</SelectItem>
 									</SelectContent>
 								</Select>
 							)}

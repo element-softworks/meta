@@ -1,7 +1,5 @@
 import { TeamsForm } from '@/components/forms/teams-form';
-import { CenteredLoader } from '@/components/layout/centered-loader';
 import { Separator } from '@/components/ui/separator';
-import { Suspense } from 'react';
 
 export default async function DashboardPage() {
 	return (

@@ -4,12 +4,11 @@ import { PasswordResetEmailTemplate } from '@/components/email-templates/passwor
 import { TokenEmailTemplate } from '@/components/email-templates/token-email-template';
 import { VerifyEmailEmailTemplate } from '@/components/email-templates/verify-email-email-template';
 import { getUserByEmail } from '@/data/user';
-import {
-	ConciergeToken,
-	PasswordResetToken,
-	TwoFactorToken,
-	VerificationToken,
-} from '@prisma/client';
+import { ConciergeToken } from '@/db/drizzle/schema/conciergeToken';
+import { PasswordResetToken } from '@/db/drizzle/schema/passwordResetToken';
+import { TwoFactorToken } from '@/db/drizzle/schema/twoFactorToken';
+import { VerificationToken } from '@/db/drizzle/schema/verificationToken';
+
 import { Resend } from 'resend';
 
 const resend = new Resend(process.env.RESEND_API_KEY);

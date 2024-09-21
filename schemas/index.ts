@@ -1,10 +1,9 @@
-import { TeamRole, UserRole } from '@prisma/client';
 import * as z from 'zod';
 
 export const SettingsSchema = z.object({
 	name: z.optional(z.string().min(1, { message: 'Name is required' })),
 	isTwoFactorEnabled: z.optional(z.boolean()),
-	role: z.enum([UserRole.ADMIN, UserRole.USER]),
+	role: z.enum(['ADMIN', 'USER']),
 });
 
 export const TeamsSchema = z.object({
@@ -35,7 +34,7 @@ export const InviteTeamUserSchema = z.object({
 	users: z.array(
 		z.object({
 			email: z.string().email(),
-			role: z.enum([TeamRole.ADMIN, TeamRole.USER, TeamRole.OWNER]),
+			role: z.enum(['ADMIN', 'USER', 'OWNER']),
 			name: z.string().optional(),
 		})
 	),
@@ -43,7 +42,7 @@ export const InviteTeamUserSchema = z.object({
 
 export const InviteTeamUserSingleSchema = z.object({
 	email: z.string().email(),
-	role: z.enum([TeamRole.ADMIN, TeamRole.USER, TeamRole.OWNER]),
+	role: z.enum(['ADMIN', 'USER', 'OWNER']),
 	name: z.string().optional(),
 });
 

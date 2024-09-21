@@ -1,9 +1,9 @@
 'use server';
 
-import { getTeamById } from '@/data/team';
-import { getUserById } from '@/data/user';
-import { db } from '@/lib/db';
-import { isTeamOwner } from '@/lib/team';
+import { isTeamOwnerServer } from '@/data/team';
+import { db } from '@/db/drizzle/db';
+import { customer } from '@/db/drizzle/schema';
+import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
 
 if (!process.env.STRIPE_SECRET_KEY) {
@@ -28,30 +28,11 @@ export const createCheckoutSession = async ({
 	stripeCustomerId: string;
 }) => {
 	if (subscription) {
-		//Handle subscription session
-
-		const team = await getTeamById(teamId);
-
-		if (!team) {
-			return {
-				error: 'Team not found',
-			};
-		}
-
-		const user = await getUserById(userId);
-
-		if (!user) {
-			return {
-				error: 'User not found',
-			};
-		}
-
-		const isOwner = await isTeamOwner(team.team?.members ?? [], userId);
+		//If you are a team admin, or a site admin, you can archive/restore a team
+		const isOwner = await isTeamOwnerServer(teamId, userId);
 
 		if (!isOwner) {
-			return {
-				error: 'You must be the team owner to manage billing',
-			};
+			return { error: 'You must be the team owner to manage billing' };
 		}
 
 		try {
@@ -156,20 +137,18 @@ const handleUpgradeSubscription = async (stripeCustomerId: string, priceId: stri
 	//If we have a stripeCustomerId, we are trying to upgrade / downgrade the subscription
 
 	if (stripeCustomerId) {
-		const customer = await db.customer.findFirst({
-			where: {
-				stripeCustomerId,
-			},
+		const customerResponse = await db.query.customer.findFirst({
+			where: eq(customer.stripeCustomerId, stripeCustomerId),
 		});
 
-		if (!customer) {
+		if (!customerResponse) {
 			return {
 				error: 'Customer not found',
 			};
 		}
 
 		const subscriptionItems = await stripe.subscriptionItems.list({
-			subscription: customer?.stripeSubscriptionId ?? '',
+			subscription: customerResponse?.stripeSubscriptionId ?? '',
 		});
 
 		if (!subscriptionItems?.data[0]?.id) {
@@ -179,7 +158,7 @@ const handleUpgradeSubscription = async (stripeCustomerId: string, priceId: stri
 		}
 
 		const subscription = await stripe.subscriptions.update(
-			customer?.stripeSubscriptionId ?? '',
+			customerResponse?.stripeSubscriptionId ?? '',
 			{
 				proration_behavior: 'always_invoice',
 				items: [
@@ -197,14 +176,12 @@ const handleUpgradeSubscription = async (stripeCustomerId: string, priceId: stri
 			};
 		}
 
-		await db.customer.update({
-			where: {
-				stripeCustomerId,
-			},
-			data: {
+		await db
+			.update(customer)
+			.set({
 				stripeSubscriptionId: subscription.id,
-			},
-		});
+			})
+			.where(eq(customer.stripeCustomerId, stripeCustomerId));
 
 		return {
 			success: 'Subscription updated',

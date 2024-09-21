@@ -1,8 +1,9 @@
 import { getTeamById } from '@/data/team';
 import { getUserByEmail } from '@/data/user';
-import { db } from '@/lib/db';
+import { db } from '@/db/drizzle/db';
+import { customer, customerInvoice, team } from '@/db/drizzle/schema';
 import { createNotification } from '@/lib/notifications';
-import { revalidatePath } from 'next/cache';
+import { eq } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -35,11 +36,11 @@ export async function POST(req: NextRequest, res: Response) {
 	) => {
 		const subscription = event.data.object as Stripe.Subscription;
 
-		const customer = await getCustomer(subscription.customer as string);
-		const user = await getUserByEmail(customer.email ?? '');
-		const team = await getTeamById(customer?.metadata?.teamId ?? '');
+		const customerResponse = await getCustomer(subscription.customer as string);
+		const userResponse = await getUserByEmail(customerResponse.email ?? '');
+		const teamResponse = await getTeamById(customerResponse?.metadata?.teamId ?? '');
 
-		if (!user) {
+		if (!userResponse) {
 			console.error('User not found');
 			return NextResponse.json({ error: 'User not found' }, { status: 404 });
 		}
@@ -53,12 +54,12 @@ export async function POST(req: NextRequest, res: Response) {
 		const endDate = new Date(subscription?.current_period_end * 1000); //Convert unix timestamp to JS date
 
 		const subscriptionData = {
-			teamId: team.team?.id ?? '',
-			userId: user.id ?? '',
+			teamId: teamResponse.data?.team?.id ?? '',
+			userId: userResponse.id ?? '',
 			stripeCustomerId: subscription.customer as string,
 			stripeSubscriptionId: subscription.id,
 			planId: subscription?.items?.data[0]?.price?.id,
-			email: user?.email ?? '',
+			email: userResponse?.email ?? '',
 			status: subscription.status,
 			cancelAtPeriodEnd: subscription?.cancel_at_period_end ?? false,
 			endDate: endDate,
@@ -67,55 +68,45 @@ export async function POST(req: NextRequest, res: Response) {
 		try {
 			if (type === 'created') {
 				// Create subscription
-				await db.customer
-					.create({
-						data: { ...subscriptionData },
-					})
-					.catch((error) => {
-						console.error('Error creating subscription', error);
-					});
 
-				await db.team.update({
-					where: {
-						id: team?.team?.id,
-					},
-					data: {
-						stripeCustomerId: customer.id,
-					},
+				await db.insert(customer).values({
+					...subscriptionData,
 				});
 
+				await db
+					.update(team)
+					.set({
+						stripeCustomerId: customerResponse.id,
+					})
+					.where(eq(team.id, teamResponse?.data?.team?.id!));
+
 				await createNotification({
-					userId: customer.metadata.userId,
-					message: `Your subscription to ${team.team?.name} has been created`,
+					userId: customerResponse.metadata.userId,
+					message: `Your subscription to ${teamResponse?.data?.team?.name} has been created`,
 					title: 'Subscription created',
 				});
 			} else if (type === 'updated') {
 				// Update subscription
-				await db.customer
-					.update({
-						where: {
-							stripeCustomerId: customer.id,
-						},
-						data: { ...subscriptionData },
+
+				await db
+					.update(customer)
+					.set({
+						...subscriptionData,
 					})
-					.catch((error) => {
-						console.error('Error updating subscription', error);
-					});
+					.where(eq(customer.stripeCustomerId, customerResponse.id));
 			} else if (type === 'deleted') {
 				// Delete subscription
-				await db.customer.update({
-					where: {
-						stripeCustomerId: subscriptionData.stripeCustomerId,
-					},
-					data: {
+				await db
+					.update(customer)
+					.set({
 						status: 'cancelled',
-						email: customer.email ?? '',
-					},
-				});
+						email: customerResponse.email ?? '',
+					})
+					.where(eq(customer.stripeCustomerId, subscriptionData.stripeCustomerId));
 
 				await createNotification({
-					userId: customer.metadata.userId,
-					message: `Your subscription to ${team.team?.name} has been deleted`,
+					userId: customerResponse.metadata.userId,
+					message: `Your subscription to ${teamResponse?.data?.team?.name} has been deleted`,
 					title: 'Subscription deleted',
 				});
 			}
@@ -131,14 +122,12 @@ export async function POST(req: NextRequest, res: Response) {
 	const handleInvoiceEvent = async (event: Stripe.Event, status: 'succeeded' | 'failed') => {
 		const invoice = event.data.object as Stripe.Invoice;
 
-		const customer = await getCustomer(invoice.customer as string);
-		const user = await getUserByEmail(customer.email ?? '');
-		const team = await getTeamById(customer?.metadata?.teamId ?? '');
+		const customerResponse = await getCustomer(invoice.customer as string);
+		const user = await getUserByEmail(customerResponse.email ?? '');
+		const teamResponse = await getTeamById(customerResponse?.metadata?.teamId ?? '');
 
-		const foundCustomer = await db.customer.findFirst({
-			where: {
-				stripeCustomerId: customer.id,
-			},
+		const foundCustomer = await db.query.customer.findFirst({
+			where: eq(customer.stripeCustomerId, customerResponse.id),
 		});
 
 		if (!user) {
@@ -150,38 +139,32 @@ export async function POST(req: NextRequest, res: Response) {
 			return NextResponse.json({ error: 'Team not found' }, { status: 404 });
 		}
 
-		await db.customer
-			.update({
-				where: {
-					stripeCustomerId: customer.id,
-				},
-				data: { status: status === 'failed' ? 'unpaid' : 'active' },
+		await db
+			.update(customer)
+			.set({
+				status: status === 'failed' ? 'unpaid' : 'active',
 			})
-			.catch((error) => {
-				console.error('Error updating subscription', error);
-			});
+			.where(eq(customer.stripeCustomerId, customerResponse.id));
 
 		try {
-			await db.customerInvoice.create({
-				data: {
-					invoiceId: invoice.id ?? '',
-					teamId: team.team?.id ?? '',
-					amountPaid: invoice.amount_paid ?? '',
-					amountDue: invoice.amount_due ?? '',
-					total: invoice.total ?? '',
-					invoicePdf: invoice.invoice_pdf ?? '',
-					amountRemaining: invoice.amount_remaining ?? '',
-					currency: invoice.currency ?? '',
-					email: user?.email ?? '',
-					status: status ?? 'failed',
-					stripeSubscriptionId: invoice.subscription?.toString() ?? '',
-					customerId: foundCustomer?.id ?? '',
-				},
+			await db.insert(customerInvoice).values({
+				invoiceId: invoice.id ?? '',
+				teamId: teamResponse?.data?.team?.id ?? '',
+				amountPaid: invoice.amount_paid ?? '',
+				amountDue: invoice.amount_due ?? '',
+				total: invoice.total ?? '',
+				invoicePdf: invoice.invoice_pdf ?? '',
+				amountRemaining: invoice.amount_remaining ?? '',
+				currency: invoice.currency ?? '',
+				email: user?.email ?? '',
+				status: status ?? 'failed',
+				stripeSubscriptionId: invoice.subscription?.toString() ?? '',
+				customerId: foundCustomer?.id ?? '',
 			});
 
 			await createNotification({
-				userId: customer?.metadata?.userId ?? '',
-				message: `Your invoice for ${team.team?.name} has been ${status}`,
+				userId: customerResponse?.metadata?.userId ?? '',
+				message: `Your invoice for ${teamResponse?.data?.team?.name} has been ${status}`,
 				title: `Invoice ${status}`,
 			});
 		} catch (error) {

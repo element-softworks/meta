@@ -1,19 +1,15 @@
 'use client';
 
-import { GetUserNotifications } from '@/actions/get-user-notifications';
-import { Switch } from '@/components/ui/switch';
 import { useParam } from '@/hooks/use-param';
 import { ExtendedUser } from '@/next-auth';
-import { BellRing } from 'lucide-react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { MarkNotificationReadIcon } from './buttons/mark-notification-read-icon';
-import { revalidatePath } from 'next/cache';
-import { useRouter } from 'next/navigation';
 import { ClipLoader } from 'react-spinners';
 import { EmailNotificationsToggleButton } from './buttons/email-notifications-toggle-button';
+import { MarkNotificationReadIcon } from './buttons/mark-notification-read-icon';
+import { GetUserNotificationsResponse } from '@/actions/get-user-notifications';
 
 interface NotificationsInfiniteScrollProps {
-	notifications: GetUserNotifications | null;
+	notifications: GetUserNotificationsResponse | null;
 	user: ExtendedUser | undefined;
 	perPage: number;
 }

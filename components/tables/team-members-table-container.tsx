@@ -9,10 +9,8 @@ interface TeamMembersTableContainerProps {
 }
 export default async function TeamMembersTableContainer(props: TeamMembersTableContainerProps) {
 	// Get the filters from the search params
-	const nameFilter = props.searchParams?.['team-members-name-sort'];
-	const emailFilter = props.searchParams?.['team-members-email-sort'];
-	const teamRoleFilter = props.searchParams?.['team-members-role-sort'];
-	const createdAtFilter = props.searchParams?.['team-members-created-at-sort'];
+
+	const createdAtFilter = props.searchParams?.['team-members-createdAt-sort'];
 
 	const teamResponse = await getTeamWithMembers({
 		teamId: props.teamId,
@@ -22,9 +20,6 @@ export default async function TeamMembersTableContainer(props: TeamMembersTableC
 		showArchived:
 			(props.searchParams?.['team-members-archived'] as 'true' | 'false') ?? 'false',
 		filters: {
-			name: nameFilter,
-			email: emailFilter,
-			role: teamRoleFilter,
 			createdAt: createdAtFilter,
 		},
 	});
@@ -32,7 +27,7 @@ export default async function TeamMembersTableContainer(props: TeamMembersTableC
 	//Render the users table
 	return (
 		<TeamsMemberTable
-			teamMembers={teamResponse.team?.members ?? []}
+			teamMembers={teamResponse?.team ?? []}
 			totalPages={teamResponse.totalPages}
 			isLoading={false}
 		/>

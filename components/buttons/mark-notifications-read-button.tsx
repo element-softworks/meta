@@ -1,10 +1,10 @@
 'use client';
 
-import { markUserNotificationsRead } from '@/actions/mark-user-notifications-read';
 import { useMutation } from '@/hooks/use-mutation';
-import { Button } from '../ui/button';
 import { Check } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { Button } from '../ui/button';
+import { markUserNotificationsRead } from '@/actions/mark-user-notifications-read';
 
 interface MarkNotificationsReadButtonProps {
 	notificationIds: string[];

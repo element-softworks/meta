@@ -13,6 +13,7 @@ interface UseStripePricingProps {
 	enabled: boolean;
 	price: 'basic' | 'pro' | 'enterprise' | null;
 	stripeCustomerId: string;
+	teamId: string;
 }
 
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
@@ -37,7 +38,7 @@ export function useStripePricing(props: UseStripePricingProps) {
 					subscription: !!(pricingPlan.type === 'subscription'),
 					email: user?.email ?? '',
 					userId: user?.id ?? '',
-					teamId: user?.currentTeam ?? '',
+					teamId: props.teamId ?? '',
 					stripeCustomerId: props.stripeCustomerId ?? '',
 				});
 

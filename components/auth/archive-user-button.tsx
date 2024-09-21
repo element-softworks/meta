@@ -4,11 +4,11 @@ import { ExtendedUser } from '@/next-auth';
 import { adminArchiveUser } from '@/actions/admin-archive-user';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
-import { User, UserRole } from '@prisma/client';
 import { useState } from 'react';
 import { TableUser } from '../tables/users-table';
 import { Button, ButtonProps } from '../ui/button';
 import { DialogWrapper } from './dialog-wrapper';
+import { User } from '@/db/drizzle/schema/user';
 
 interface ArchiveUserButtonProps {
 	user: User | null | TableUser;
@@ -28,7 +28,7 @@ export function ArchiveUserButton(props: ArchiveUserButtonProps) {
 	};
 
 	const currentUser = useCurrentUser();
-	if (currentUser?.role !== UserRole.ADMIN) return null;
+	if (currentUser?.role !== 'ADMIN') return null;
 
 	const isArchived = !!props.user?.isArchived ?? false;
 

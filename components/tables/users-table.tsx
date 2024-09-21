@@ -14,13 +14,12 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User } from '@prisma/client';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ArchiveUserDropdownMenuItem } from '../auth/archive-user-dropdown-menu-item';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
-import { DialogWrapper } from '../auth/dialog-wrapper';
-import { ArchiveUserDropdownMenuItem } from '../auth/archive-user-dropdown-menu-item';
+import { User } from '@/db/drizzle/schema/user';
 
 export type TableUser = {
 	id: string;
@@ -47,7 +46,6 @@ export function UsersTable(props: UsersTableProps) {
 		{
 			accessorKey: 'name',
 			header: 'Name',
-			enableSorting: true,
 			cell: ({ row }) => {
 				const user = row.original;
 				return (
@@ -65,17 +63,14 @@ export function UsersTable(props: UsersTableProps) {
 		{
 			accessorKey: 'email',
 			header: 'Email',
-			enableSorting: true,
 		},
 		{
 			accessorKey: 'emailVerified',
 			header: 'Email Verified',
-			enableSorting: true,
 		},
 		{
 			accessorKey: 'isTwoFactorEnabled',
 			header: '2FA',
-			enableSorting: true,
 			cell: ({ row }) => {
 				const user = row.original;
 				return user.isTwoFactorEnabled;
@@ -84,7 +79,6 @@ export function UsersTable(props: UsersTableProps) {
 		{
 			accessorKey: 'role',
 			header: 'Role',
-			enableSorting: true,
 		},
 		{
 			accessorKey: 'createdAt',

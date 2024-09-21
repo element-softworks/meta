@@ -2,7 +2,9 @@
 
 import { getUserByEmail } from '@/data/user';
 import { getVerificationTokenByToken } from '@/data/verification-token';
-import { db } from '@/lib/db';
+import { db } from '@/db/drizzle/db';
+import { user, verificationToken } from '@/db/drizzle/schema';
+import { eq } from 'drizzle-orm';
 
 export const newEmailVerification = async (token: string | null) => {
 	if (!token) {
@@ -28,17 +30,15 @@ export const newEmailVerification = async (token: string | null) => {
 	}
 
 	//If a new email is provided, update the email to the new email
-	await db.user.update({
-		where: { id: existingUser.id },
-		data: {
-			emailVerified: new Date(),
+	await db
+		.update(user)
+		.set({
 			email: !!existingToken.newEmail ? existingToken.newEmail : existingToken.email,
-		},
-	});
+			emailVerified: new Date(),
+		})
+		.where(eq(user.id, existingUser.id));
 
-	await db.verificationToken.delete({
-		where: { id: existingToken.id },
-	});
+	await db.delete(verificationToken).where(eq(verificationToken.id, existingToken.id));
 
 	return { success: 'Email verified successfully' };
 };

@@ -1,4 +1,3 @@
-import { Team, UserRole } from '@prisma/client';
 import { DefaultSession } from 'next-auth';
 
 export type ExtendedUser = DefaultSession['user'] & {
@@ -19,6 +18,7 @@ declare module 'next-auth' {
 
 // The `JWT` interface can be found in the `next-auth/jwt` submodule
 import { JWT } from 'next-auth/jwt';
+import { Team } from './db/drizzle/schema/team';
 
 declare module 'next-auth/jwt' {
 	/** Returned by the `jwt` callback and `auth`, when using JWT sessions */

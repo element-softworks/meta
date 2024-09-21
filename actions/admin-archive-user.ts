@@ -1,10 +1,11 @@
 'use server';
 import { signOut } from '@/auth';
 import { TableUser } from '@/components/tables/users-table';
+import { db } from '@/db/drizzle/db';
+import { user } from '@/db/drizzle/schema';
+import { User, userRole } from '@/db/drizzle/schema/user';
 import { currentUser } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { ExtendedUser } from '@/next-auth';
-import { User, UserRole } from '@prisma/client';
+import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export const adminArchiveUser = async (archivingUser?: User | TableUser) => {
@@ -14,22 +15,18 @@ export const adminArchiveUser = async (archivingUser?: User | TableUser) => {
 		return { error: 'User not found' };
 	}
 
-	if (adminUser.role !== UserRole.ADMIN) {
+	if (adminUser.role !== 'ADMIN') {
 		return { error: 'Unauthorized' };
 	}
 
 	// Archive the user
-	const archivedUser = await db.user.update({
-		where: { id: archivingUser.id },
-		select: {
-			id: true,
-			isArchived: true,
-			name: true,
-		},
-		data: {
+	const [archivedUser] = await db
+		.update(user)
+		.set({
 			isArchived: archivingUser.isArchived ? false : true,
-		},
-	});
+		})
+		.where(eq(user.id, archivingUser.id))
+		.returning({ id: user.id, isArchived: user.isArchived });
 
 	if (!archivedUser) {
 		return { error: 'Failed to archive user' };
