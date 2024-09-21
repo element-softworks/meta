@@ -19,7 +19,7 @@ import { getUserByEmail, getUserById } from './data/user';
 import { db } from './db/drizzle/db';
 import { LoginSchema } from './schemas';
 import { and, eq, exists } from 'drizzle-orm';
-import { teamMember, twoFactorConfirmation, user } from './db/drizzle/schema';
+import { account, teamMember, twoFactorConfirmation, user } from './db/drizzle/schema';
 import { getTwoFactorConfirmationByUserId } from './data/two-factor-confirmation';
 import { getCookie } from './data/cookies';
 import { getAccountByUserId } from './data/account';
@@ -27,7 +27,15 @@ import { getUsersTeams } from './data/team';
 import { team } from './db/drizzle/schema/team';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-	adapter: DrizzleAdapter(db),
+	pages: {
+		signIn: '/auth/login',
+		signOut: '/auth/logout',
+		error: '/auth/error',
+	},
+	adapter: DrizzleAdapter(db, {
+		usersTable: user,
+		accountsTable: account,
+	}),
 	session: { strategy: 'jwt', maxAge: 30 * 24 * 60 * 60 }, // 30 days
 	secret: process.env.AUTH_SECRET,
 	providers: [
