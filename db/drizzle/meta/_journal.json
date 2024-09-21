@@ -5,50 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1726762766185,
-      "tag": "0000_uneven_stellaris",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1726918287688,
-      "tag": "0001_lucky_abomination",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1726929929357,
-      "tag": "0002_ancient_ben_urich",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1726929996971,
-      "tag": "0003_ambitious_serpent_society",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1726930160389,
-      "tag": "0004_glorious_skullbuster",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1726930216159,
-      "tag": "0005_brief_earthquake",
-      "breakpoints": true
-    },
-    {
-      "idx": 6,
-      "version": "7",
-      "when": 1726930283863,
-      "tag": "0006_bright_war_machine",
+      "when": 1726930847097,
+      "tag": "0000_material_blizzard",
       "breakpoints": true
     }
   ]

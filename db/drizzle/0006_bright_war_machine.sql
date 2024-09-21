@@ -1,1 +1,0 @@
-ALTER TABLE "Account" DROP COLUMN IF EXISTS "updatedAt";

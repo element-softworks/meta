@@ -1,2 +1,0 @@
-ALTER TABLE "User" ALTER COLUMN "updatedAt" SET DEFAULT CURRENT_TIMESTAMP;--> statement-breakpoint
-ALTER TABLE "User" ALTER COLUMN "updatedAt" DROP NOT NULL;
