@@ -10,7 +10,7 @@ interface CodeBlockProps {
 export function CodeBlock(props: CodeBlockProps) {
 	return (
 		<Block code={props.code} language={props.language}>
-			<Block.Code className="bg-gray-900 p-6 rounded-xl shadow-lg">
+			<Block.Code className="bg-gray-900 p-6 rounded-xl shadow-lg overflow-scroll">
 				<div className="table-row">
 					{props.enableLineNumbers && (
 						<Block.LineNumber className="table-cell pr-4 text-sm text-gray-500 text-right select-none" />

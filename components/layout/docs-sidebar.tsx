@@ -1,6 +1,6 @@
 'use client';
 import { Sidebar, SidebarGroup, SidebarItem } from '@/components/layout/sidebar';
-import { Code, Lightbulb, MenuIcon, XIcon, Zap } from 'lucide-react';
+import { AppWindowMac, Code, Columns2, Lightbulb, MenuIcon, XIcon, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { NavigationMobileDrawer } from './navigation-mobile-drawer';
@@ -23,9 +23,27 @@ export function DocsSidebar() {
 					icon: <Zap size={20} />,
 					visible: true,
 				},
+			],
+		},
+		{
+			name: 'Creating docs',
+
+			items: [
+				{
+					text: 'Overview',
+					link: '/docs/creating-docs#overview',
+					icon: <AppWindowMac size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Sidebar',
+					link: '/docs/creating-docs#docs-sidebar',
+					icon: <Columns2 size={20} />,
+					visible: true,
+				},
 				{
 					text: 'Code blocks',
-					link: '/docs#code-blocks',
+					link: '/docs/creating-docs#code-blocks',
 					icon: <Code size={20} />,
 					visible: true,
 				},
