@@ -39,7 +39,12 @@ export default function Docs() {
 						Below is an example of how you can use the documentation components to
 						create documentation.
 					</DocumentationTypography>
-					<CodeBlock language="javascript" code={documentationOverviewExample} />
+					<CodeBlock
+						lines={['6:13']}
+						enableLineNumbers
+						language="javascript"
+						code={documentationOverviewExample}
+					/>
 				</DocumentationSection>
 
 				<DocumentationSection id="docs-sidebar">
@@ -50,14 +55,29 @@ export default function Docs() {
 						<span className="bg-muted font-medium">SIDEBAR_ITEMS</span> array. Link this
 						new item to a corresponding documentation section ID.
 					</DocumentationTypography>
+
+					<DocumentationTypography variant="p">
+						To create a new category in the sidebar, add a a new group to{' '}
+						<span className="bg-muted font-medium">SIDEBAR_ITEMS</span> and link it to a
+						newly created page within NextJs router. Below is an example of creating a
+						new section which routes to a new subset page of documentation.
+					</DocumentationTypography>
+
 					<DocumentationTypography variant="h3">Example</DocumentationTypography>
-					<CodeBlock language="javascript" code={docsSidebarExample} />
+					<CodeBlock
+						lines={['15:25']}
+						enableLineNumbers
+						language="javascript"
+						code={docsSidebarExample}
+					/>
 				</DocumentationSection>
 
 				<DocumentationSection id="code-blocks">
 					<DocumentationTypography variant="h2">Code blocks</DocumentationTypography>
 					<DocumentationTypography variant="p">
-						To display code blocks, use the following component:
+						Code blocks are used to display code within the documentation. This is
+						achieved using the CodeBlock component. To display code blocks, use the
+						following component:
 					</DocumentationTypography>
 
 					<DocumentationTypography variant="h2">Props</DocumentationTypography>
@@ -67,6 +87,7 @@ interface CodeBlockProps {
 code: string; // The code to display, this is a string of code
 language: string; // The language of the code, e.g. javascript, typescript, etc.
 enableLineNumbers?: boolean; // Enable line numbers for the code block
+lines?: (number | string)[]; // Highlight specific lines in the code block
 }
 				`}
 						language="javascript"
@@ -79,6 +100,18 @@ enableLineNumbers?: boolean; // Enable line numbers for the code block
 					<DocumentationTypography variant="h3">
 						Advanced use cases
 					</DocumentationTypography>
+
+					<DocumentationTypography variant="h4">
+						Highlighting code
+					</DocumentationTypography>
+					<DocumentationTypography variant="p">
+						To highlight specific lines in the code block, pass an array of line numbers
+						to the <span className="bg-muted font-medium">lines</span> prop. The code
+						block will then highlight the lines specified. To highlight one line, pass
+						type number. To highlight a range of lines, pass type string of format e.g{' '}
+						<span className="bg-muted font-medium">2:5</span>.
+					</DocumentationTypography>
+
 					<DocumentationTypography variant="p">
 						For more advanced use cases you may need to create a custom CodeBlock
 						component, see the following link for more information:{' '}
@@ -99,7 +132,19 @@ enableLineNumbers?: boolean; // Enable line numbers for the code block
 
 const docsSidebarExample = `
 //Import the DocsSidebar component
+
 	const SIDEBAR_ITEMS = [
+		{
+			name: 'Getting setup',
+			items: [
+				{
+					text: 'Introduction',
+					link: '/docs#introduction',
+					icon: <Lightbulb size={20} />,
+					visible: true,
+				},
+			],
+		},
 		{
 			name: 'New section',
 			items: [
@@ -137,6 +182,7 @@ interface CodeBlockProps {
 	code: string;
 	language: string;
 	enableLineNumbers?: boolean;
+	lines?: (number | string)[];
 }
 `;
 
