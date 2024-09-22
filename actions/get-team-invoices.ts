@@ -2,7 +2,7 @@
 
 import { db } from '@/db/drizzle/db';
 import { customerInvoice } from '@/db/drizzle/schema';
-import { and, asc, count, eq, or, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
 interface GetTeamInvoicesProps {
 	teamId: string;
@@ -29,7 +29,7 @@ export const getTeamInvoices = async (props: GetTeamInvoicesProps) => {
 		.orderBy(
 			props.filters.createdAt === 'asc'
 				? asc(customerInvoice.createdAt)
-				: customerInvoice.createdAt
+				: desc(customerInvoice.createdAt)
 		)
 		.limit(props.perPage)
 		.offset(props.perPage * (props.pageNum - 1));

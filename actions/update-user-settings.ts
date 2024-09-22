@@ -1,4 +1,5 @@
 'use server';
+import { update } from '@/auth';
 import { getUserById } from '@/data/user';
 import { db } from '@/db/drizzle/db';
 import { user } from '@/db/drizzle/schema';
@@ -47,9 +48,14 @@ export const updateUserSettings = async (
 			emailVerified: undefined,
 		})
 		.where(eq(user.id, isAdminMode ? userId! : userResponse.id!))
-		.returning({ id: user.id });
+		.returning({
+			id: user.id,
+			name: user.name,
+			role: user.role,
+			isTwoFactorEnabled: user.isTwoFactorEnabled,
+		});
 
-	// update({ user: updatedUser });
+	update({ user: updatedUser });
 	revalidatePath(`/dashboard/admin/users/${updatedUser.id}`);
 
 	return { success: 'Settings updated', user: updatedUser };

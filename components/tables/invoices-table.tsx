@@ -23,6 +23,7 @@ interface InvoicesTableProps {
 	invoices: CustomerInvoice[];
 	totalPages: number | undefined;
 	isLoading: boolean;
+	selectedRows: string[];
 }
 
 export function InvoicesTable(props: InvoicesTableProps) {
@@ -52,11 +53,15 @@ export function InvoicesTable(props: InvoicesTableProps) {
 			},
 		},
 		{
+			accessorKey: 'currency',
+			header: 'Currency',
+		},
+		{
 			accessorKey: 'total',
 			header: 'Total amount',
 			cell: ({ row }) => {
 				const invoice = row.original;
-				return `£${invoice.total / 100}`;
+				return `${invoice.total / 100}`;
 			},
 		},
 
@@ -109,17 +114,20 @@ export function InvoicesTable(props: InvoicesTableProps) {
 	const rows: InvoicesTable[] | undefined = props.invoices;
 
 	return (
-		<DataTable
-			perPageSelectEnabled={true}
-			isLoading={isLoading}
-			stickyHeader
-			lastColumnSticky
-			maxHeight={500}
-			columns={columns}
-			data={rows}
-			search={{ useParams: true }}
-			totalPages={props.totalPages}
-			id="invoices"
-		/>
+		<div>
+			<DataTable
+				perPageSelectEnabled={true}
+				isLoading={isLoading}
+				stickyHeader
+				rowSelectionEnabled={false}
+				lastColumnSticky
+				maxHeight={500}
+				columns={columns}
+				data={rows}
+				search={{ useParams: true }}
+				totalPages={props.totalPages}
+				id="invoices"
+			/>
+		</div>
 	);
 }

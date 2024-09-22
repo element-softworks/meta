@@ -1,14 +1,3 @@
-// import NextAuth from 'next-auth';
-// import authConfig from './auth.config';
-
-// export const {
-// 	auth,
-// 	handlers: { GET, POST },
-// 	signIn,
-// 	signOut,
-// 	unstable_update: update,
-// } = NextAuth(authConfig);
-
 import { DrizzleAdapter } from '@auth/drizzle-adapter';
 import bcrypt from 'bcryptjs';
 import NextAuth from 'next-auth';
@@ -26,7 +15,13 @@ import { getAccountByUserId } from './data/account';
 import { getUsersTeams } from './data/team';
 import { team } from './db/drizzle/schema/team';
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const {
+	handlers,
+	signIn,
+	signOut,
+	auth,
+	unstable_update: update,
+} = NextAuth({
 	pages: {
 		signIn: '/auth/login',
 		signOut: '/auth/logout',

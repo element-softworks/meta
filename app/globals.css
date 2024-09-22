@@ -61,6 +61,7 @@ body,
 		/* The below are custom theme values, these will not be provided inside of online theme generators */
 		--successful: 152 69% 52%;
 		--successful-foreground: 60 9.1% 97.8%;
+		--background-navbar: 0, 0%, 100%, 0.75;
 	}
 
 	.dark {
@@ -92,5 +93,6 @@ body,
 		/* The below are custom theme values, these will not be provided inside of online theme generators */
 		--successful: 152 69% 52%;
 		--successful-foreground: 60 9.1% 97.8%;
+		--background-navbar: 20, 14.3%, 4.1%, 0.75;
 	}
 }

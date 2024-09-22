@@ -78,12 +78,18 @@ export function SidebarGroup(props: SidebarGroupProps) {
 	);
 }
 
-export function Sidebar({ children }: { children: React.ReactNode }) {
+export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed: boolean }) {
 	return (
 		<aside
-			className={`w-0 md:w-[270px] min-h-full border-border transition-all px-0 py-6 md:p-6 md:border-r`}
+			className={`w-0 md:w-[270px]  border-border transition-all px-0 py-6 md:p-6 md:border-r`}
 		>
-			<div className="flex flex-col gap-2 flex-1">{children}</div>
+			<div
+				className={`flex flex-col gap-2 flex-1 ${
+					fixed && 'fixed top-24 left-0 w-0 md:w-[270px] px-0 py-6 md:p-6 overflow-scroll'
+				}`}
+			>
+				{children}
+			</div>
 		</aside>
 	);
 }

@@ -22,7 +22,6 @@ interface NavStripProps {
 const EXCLUDED_PATHS = ['admin'];
 
 export function NavStrip(props: NavStripProps) {
-	const drawerItems = useSidebarItems();
 	const pathname = usePathname();
 
 	// Split the pathname and filter out empty segments
@@ -35,30 +34,10 @@ export function NavStrip(props: NavStripProps) {
 	const lastTwoBreadCrumbs = displayBreadcrumbs.slice(displayBreadcrumbs.length > 3 ? -2 : -3);
 	const showCrumbEllipsis = displayBreadcrumbs.length > 3;
 
-	const [navOpen, setNavOpen] = React.useState(false);
-
 	return (
 		<nav className="border-b border-border py-2 px-4 md:px-6 w-full">
 			<div className="flex items-center">
-				<NavigationMobileDrawer
-					open={navOpen}
-					onOpenChange={(state) => {
-						setNavOpen(state);
-					}}
-					drawerItems={drawerItems}
-				/>
-				<Button
-					className="p-0 mr-4 block md:hidden"
-					onClick={() => setNavOpen((prev) => !prev)}
-					variant="link"
-				>
-					{navOpen ? (
-						<XIcon className="md:hidden" size={30} />
-					) : (
-						<MenuIcon className="md:hidden" size={30} />
-					)}
-				</Button>
-				<Breadcrumb className="flex-1">
+				<Breadcrumb className="flex-1 ml-10 md:ml-0">
 					<BreadcrumbList>
 						{displayBreadcrumbs?.length > 3 ? (
 							<BreadcrumbItem>

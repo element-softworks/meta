@@ -51,6 +51,8 @@ export function SettingsForm(props: SettingsFormProps) {
 		onCompleted: async (data) => {
 			//If we are updating our own settings, update the session, if not, update the form
 			if (props.adminMode) {
+				console.log(data, 'completed data');
+
 				form.reset({
 					isTwoFactorEnabled: data?.user?.isTwoFactorEnabled ?? undefined,
 					role: data?.user?.role,

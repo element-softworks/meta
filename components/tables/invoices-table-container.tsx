@@ -22,9 +22,12 @@ export default async function InvoicesTableContainer(props: InvoicesTableContain
 		},
 	});
 
+	const selectedRows = props.searchParams?.['invoices-selectedRows']?.split(',') ?? [];
+
 	//Render the users table
 	return (
 		<InvoicesTable
+			selectedRows={selectedRows}
 			invoices={invoiceResponse.invoices ?? []}
 			totalPages={invoiceResponse?.totalPages ?? 1}
 			isLoading={false}

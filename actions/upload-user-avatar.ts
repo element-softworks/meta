@@ -8,6 +8,7 @@ import { uploadFileToS3 } from './upload-file-to-s3';
 import { db } from '@/db/drizzle/db';
 import { user } from '@/db/drizzle/schema';
 import { eq } from 'drizzle-orm';
+import { update } from '@/auth';
 
 export const uploadUserAvatar = async (formData: FormData) => {
 	const uuid = uuidv4();
@@ -60,7 +61,7 @@ export const uploadUserAvatar = async (formData: FormData) => {
 				.where(eq(user.id, userResponse.id!))
 				.returning({ id: user.id });
 
-			// update({ user: { ...updatedUser } });
+			update({ user: { ...updatedUser } });
 			revalidatePath(`/dashboard/admin/users/${updatedUser.id}`);
 		} catch (e) {
 			console.log(e, 'e.message');

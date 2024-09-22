@@ -13,12 +13,12 @@ const { auth } = NextAuth(authConfig);
 
 export default auth(async (req, res) => {
 	const { nextUrl } = req;
+
 	const isLoggedIn = !!req.auth;
 
 	const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 	const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
 	const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-	const isAdminRoute = nextUrl.pathname.startsWith(adminRoute);
 
 	if (isApiAuthRoute) {
 		return NextResponse.next();
@@ -40,11 +40,6 @@ export default auth(async (req, res) => {
 		const encodedCallbackUrl = encodeURIComponent(callbackUrl);
 
 		return Response.redirect(new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl));
-	}
-
-	//Admin protected routes
-	if (isAdminRoute && !(req.auth?.user?.role === 'ADMIN')) {
-		return Response.redirect(new URL(`${DEFAULT_LOGIN_REDIRECT}`, nextUrl));
 	}
 
 	return;

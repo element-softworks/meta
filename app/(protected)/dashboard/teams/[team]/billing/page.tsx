@@ -6,6 +6,12 @@ import { currentUser } from '@/lib/auth';
 import plans from '@/plans.json';
 import { Suspense } from 'react';
 
+if (!process.env.STRIPE_WEBHOOK_SECRET) {
+	throw new Error(
+		'Stripe webhook secret not found. A setup guide can be found in the documentation'
+	);
+}
+
 export default async function BillingPage({ params }: { params: { team: string } }) {
 	const user = await currentUser();
 	const team = await getTeamById(params.team ?? '');

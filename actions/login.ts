@@ -51,6 +51,8 @@ export const login = async (
 		return { success: 'Confirmation email sent.' };
 	}
 
+	const isLocalhost = process.env.NODE_ENV === 'development';
+
 	if (existingUser.isTwoFactorEnabled && existingUser.email) {
 		if (code || isTwoFactorStep) {
 			//Verify code
@@ -69,16 +71,14 @@ export const login = async (
 				return { error: 'Two-factor code has expired, please try again.' };
 			}
 
-			await db.delete(twoFactorToken).where(eq(twoFactorToken.id, twoFactorToken.id));
-
 			await db.delete(twoFactorToken).where(eq(twoFactorToken.id, twoFactorTokenResponse.id));
 
 			const existingConfirmation = await getTwoFactorConfirmationByUserId(existingUser.id);
 
 			if (existingConfirmation) {
 				await db
-					.delete(twoFactorToken)
-					.where(eq(twoFactorToken.id, existingConfirmation.id));
+					.delete(twoFactorConfirmation)
+					.where(eq(twoFactorConfirmation.id, existingConfirmation.id));
 			}
 
 			await db.insert(twoFactorConfirmation).values({

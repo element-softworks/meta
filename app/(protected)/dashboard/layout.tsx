@@ -17,7 +17,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 			<Toaster />
 			<div className="flex flex-col min-h-screen ">
 				<Navbar count={count?.count ?? 0} />
-				<div className="border-t border-border flex flex-1">
+				<div className="flex flex-1">
 					<DashboardSidebar />
 					<CreateTeamDialog hasCreateCookie={!!hasCreateCookie} />
 

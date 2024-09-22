@@ -21,9 +21,9 @@ export default async function RootLayout({
 		<SessionProvider>
 			<Toaster />
 			<div className="flex flex-col min-h-screen ">
-				<Navbar />
+				<Navbar sticky />
 
-				<div className="border-t border-border flex flex-1">
+				<div className="flex flex-1">
 					<main className="w-full overflow-hidden flex-1 flex flex-col">{children}</main>
 				</div>
 			</div>

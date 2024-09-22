@@ -190,7 +190,6 @@ export async function POST(req: NextRequest, res: Response) {
 		case 'charge.updated':
 			console.log('Charge updated');
 			break;
-
 		//Subscription logic
 		case 'customer.subscription.created':
 			await handleSubscriptionEvent(event, 'created');

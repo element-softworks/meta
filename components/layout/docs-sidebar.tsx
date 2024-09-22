@@ -1,16 +1,33 @@
 'use client';
 import { Sidebar, SidebarGroup, SidebarItem } from '@/components/layout/sidebar';
-import { useSidebarItems } from '@/hooks/use-sidebar-items';
-import { NavigationMobileDrawer } from './navigation-mobile-drawer';
-import { Button } from '../ui/button';
-import { MenuIcon, XIcon } from 'lucide-react';
+import { Lightbulb, MenuIcon, XIcon, Zap } from 'lucide-react';
 import { useState } from 'react';
+import { Button } from '../ui/button';
+import { NavigationMobileDrawer } from './navigation-mobile-drawer';
 
-export function DashboardSidebar() {
-	const SIDEBAR_ITEMS = useSidebarItems();
+export function DocsSidebar() {
+	const SIDEBAR_ITEMS = [
+		{
+			name: 'Getting setup',
+
+			items: [
+				{
+					text: 'Introduction',
+					link: '/docs#introduction',
+					icon: <Lightbulb size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Quick start',
+					link: '/docs#quick-start',
+					icon: <Zap size={20} />,
+					visible: true,
+				},
+			],
+		},
+	];
+
 	const [navOpen, setNavOpen] = useState(false);
-	const drawerItems = useSidebarItems();
-
 	return (
 		<>
 			<div className="py-2 px-4 md:px-6 absolute">
@@ -19,7 +36,7 @@ export function DashboardSidebar() {
 					onOpenChange={(state) => {
 						setNavOpen(state);
 					}}
-					drawerItems={drawerItems}
+					drawerItems={SIDEBAR_ITEMS}
 				/>
 				<Button
 					className="p-0 mr-4 block md:hidden"
@@ -33,11 +50,10 @@ export function DashboardSidebar() {
 					)}
 				</Button>
 			</div>
-			<Sidebar>
+			<Sidebar fixed>
 				{SIDEBAR_ITEMS?.map?.((group, index) => {
-					if (group.visible === false) return null;
 					return (
-						<SidebarGroup key={index} text={group.name} visible={group.visible}>
+						<SidebarGroup key={index} text={group.name} visible={true}>
 							{group.items.map((item, index) => {
 								if (!item.visible) return null;
 								return (
