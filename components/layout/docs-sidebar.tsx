@@ -1,6 +1,6 @@
 'use client';
 import { Sidebar, SidebarGroup, SidebarItem } from '@/components/layout/sidebar';
-import { Lightbulb, MenuIcon, XIcon, Zap } from 'lucide-react';
+import { Code, Lightbulb, MenuIcon, XIcon, Zap } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { NavigationMobileDrawer } from './navigation-mobile-drawer';
@@ -21,6 +21,12 @@ export function DocsSidebar() {
 					text: 'Quick start',
 					link: '/docs#quick-start',
 					icon: <Zap size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Code blocks',
+					link: '/docs#code-blocks',
+					icon: <Code size={20} />,
 					visible: true,
 				},
 			],
