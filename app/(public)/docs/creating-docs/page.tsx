@@ -126,6 +126,7 @@ code: string; // The code to display, this is a string of code
 language: string; // The language of the code, e.g. javascript, typescript, etc.
 enableLineNumbers?: boolean; // Enable line numbers for the code block
 lines?: (number | string)[]; // Highlight specific lines in the code block
+copyToClipboard?: boolean; // Enable copy to clipboard functionality (defaults to true)
 }
 `;
 
@@ -166,22 +167,23 @@ interface DocumentationProps {
 
 //DocumentationSection component
 interface DocumentationSectionProps {
-	id: string;
+	id: string; // The id of the section which links to the sidebar # value
 	children: React.ReactNode;
 }
 
 //DocumentationTypography component
 interface DocumentationTypographyProps {
-	variant: 'h1' | 'h2' | 'h3' | 'h4' | 'p';
+	variant: 'h1' | 'h2' | 'h3' | 'h4' | 'p'; // The variant of the typography component
 	children: React.ReactNode;
 }
 
 //CodeBlock component
 interface CodeBlockProps {
-	code: string;
-	language: string;
-	enableLineNumbers?: boolean;
-	lines?: (number | string)[];
+	code: string; // The code to display, this is a string of code
+	language: string; // The language of the code, e.g. javascript, typescript, etc.
+	enableLineNumbers?: boolean; // Enable line numbers for the code block
+	lines?: (number | string)[]; // Highlight specific lines in the code block
+	copyToClipboard?: boolean; // Enable copy to clipboard functionality (defaults to true)
 }
 `;
 
