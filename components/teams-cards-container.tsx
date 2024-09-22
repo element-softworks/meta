@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { AvatarGroup } from './avatar-group';
 import { SelectTeamButton } from './buttons/select-team-button';
 import { CardWrapper } from './card-wrapper';
-import { Avatar, AvatarImage } from './ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 
@@ -61,11 +61,19 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 							<div>
 								<p className="text-sm font-semibold">Team owner</p>
 								<div className="flex gap-2 items-center">
-									{!!teamOwner?.details?.image ? (
-										<Avatar className="size-[32px]">
-											<AvatarImage src={teamOwner?.details?.image ?? ''} />
-										</Avatar>
-									) : null}
+									<Avatar key={index} className="relative size-[32px]">
+										{teamOwner?.details?.image && (
+											<AvatarImage
+												width={35}
+												height={35}
+												src={teamOwner?.details?.image}
+												alt="user avatar"
+											/>
+										)}
+										<AvatarFallback>
+											{teamOwner?.details?.name?.slice(0, 2)}
+										</AvatarFallback>
+									</Avatar>
 
 									<p className="text-sm ">{teamOwner?.details?.name}</p>
 								</div>

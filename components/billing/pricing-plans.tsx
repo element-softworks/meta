@@ -14,6 +14,7 @@ import { CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 
 interface PricingPlansProps {
+	readOnly?: boolean;
 	teamId: string;
 	currentPlanId: string | undefined;
 	stripeCustomerId: string;
@@ -108,7 +109,8 @@ export default function PricingPlans(props: PricingPlansProps) {
 							isLoading={price === 'basic' && isLoading}
 							disabled={
 								props.currentPlanId === basic.stripePricingId ||
-								(price === 'basic' && isLoading)
+								(price === 'basic' && isLoading) ||
+								props.readOnly
 							}
 							className="w-full"
 							onClick={() => {
@@ -133,7 +135,8 @@ export default function PricingPlans(props: PricingPlansProps) {
 							isLoading={price === 'pro' && isLoading}
 							disabled={
 								props.currentPlanId === pro.stripePricingId ||
-								(price === 'pro' && isLoading)
+								(price === 'pro' && isLoading) ||
+								props.readOnly
 							}
 							className="w-full"
 							onClick={() => {
@@ -158,7 +161,8 @@ export default function PricingPlans(props: PricingPlansProps) {
 							isLoading={price === 'enterprise' && isLoading}
 							disabled={
 								props.currentPlanId === enterprise.stripePricingId ||
-								(price === 'enterprise' && isLoading)
+								(price === 'enterprise' && isLoading) ||
+								props.readOnly
 							}
 							className="w-full"
 							onClick={() => {

@@ -45,17 +45,16 @@ export default async function BillingPage({ params }: { params: { team: string }
 					!user?.currentTeam ? (
 						<p>You must create a team to setup billing</p>
 					) : (
-						<p>You must be the team owner to setup billing</p>
+						<p>You must be the team owner to setup/manage billing</p>
 					)
 				) : null}
 
-				{isOwner && (
-					<PricingPlans
-						teamId={team.data?.team?.id ?? ''}
-						stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
-						currentPlanId={currentTeamPlan?.stripePricingId}
-					/>
-				)}
+				<PricingPlans
+					readOnly={!isOwner}
+					teamId={team.data?.team?.id ?? ''}
+					stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
+					currentPlanId={currentTeamPlan?.stripePricingId}
+				/>
 
 				{teamHasPlan ? (
 					<div className="flex flex-col gap-4 h-full">

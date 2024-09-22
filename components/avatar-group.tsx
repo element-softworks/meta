@@ -43,20 +43,6 @@ export function AvatarGroup(props: AvatarGroupProps) {
 						)}
 						<AvatarFallback>{avatar.alt?.slice(0, 2)}</AvatarFallback>
 					</Avatar>
-					// <Image
-					// 	key={index}
-					// 	className="rounded-full top-1/2 relative border-2 border-white"
-					// 	style={{
-					// 		left: `${-(index * (size / 2))}px`,
-					// 		zIndex: index,
-					// 		height: `${size}px`,
-					// 		width: `${size}px`,
-					// 	}}
-					// 	width={100}
-					// 	height={100}
-					// 	src={avatar.src}
-					// 	alt={avatar.alt}
-					// />
 				);
 			})}
 
