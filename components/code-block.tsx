@@ -11,7 +11,7 @@ interface CodeBlockProps {
 export function CodeBlock(props: CodeBlockProps) {
 	return (
 		<Block code={props.code} language={props.language} lines={props.lines}>
-			<Block.Code className="bg-gray-900 py-6 rounded-xl shadow-lg">
+			<Block.Code className="bg-gray-900 py-6 rounded-xl shadow-lg overflow-scroll">
 				{({ isLineHighlighted }) => (
 					<div
 						className={`table-row ${
