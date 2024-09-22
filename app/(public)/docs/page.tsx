@@ -36,8 +36,8 @@ export default function Docs() {
 						critical. It empowers users to leverage advanced functionalities without
 						having to rely on trial and error, thus improving productivity and reducing
 						downtime. Overall, this documentation is designed to help you get started
-						with Project Name, whether you're an end-user seeking insight or a developer
-						integrating custom functionality.
+						with Project Name, whether you{"'"}re an end-user seeking insight or a
+						developer integrating custom functionality.
 					</DocumentationTypography>
 					<Image
 						src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"

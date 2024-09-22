@@ -78,7 +78,7 @@ export function SidebarGroup(props: SidebarGroupProps) {
 	);
 }
 
-export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed: boolean }) {
+export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?: boolean }) {
 	return (
 		<aside
 			className={`w-0 md:w-[270px]  border-border transition-all px-0 py-6 md:p-6 md:border-r`}

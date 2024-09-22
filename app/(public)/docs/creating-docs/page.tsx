@@ -81,17 +81,7 @@ export default function Docs() {
 					</DocumentationTypography>
 
 					<DocumentationTypography variant="h2">Props</DocumentationTypography>
-					<CodeBlock
-						code={`
-interface CodeBlockProps {
-code: string; // The code to display, this is a string of code
-language: string; // The language of the code, e.g. javascript, typescript, etc.
-enableLineNumbers?: boolean; // Enable line numbers for the code block
-lines?: (number | string)[]; // Highlight specific lines in the code block
-}
-				`}
-						language="javascript"
-					/>
+					<CodeBlock code={codeBlockPropsCode} language="javascript" />
 
 					<DocumentationTypography variant="h2">Basic example</DocumentationTypography>
 					<CodeBlock code={code} language="javascript" enableLineNumbers />
@@ -129,6 +119,15 @@ lines?: (number | string)[]; // Highlight specific lines in the code block
 		</>
 	);
 }
+
+const codeBlockPropsCode = `
+interface CodeBlockProps {
+code: string; // The code to display, this is a string of code
+language: string; // The language of the code, e.g. javascript, typescript, etc.
+enableLineNumbers?: boolean; // Enable line numbers for the code block
+lines?: (number | string)[]; // Highlight specific lines in the code block
+}
+`;
 
 const docsSidebarExample = `
 //Import the DocsSidebar component
