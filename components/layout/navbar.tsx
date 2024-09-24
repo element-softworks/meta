@@ -27,8 +27,6 @@ export function Navbar(props: NavbarProps) {
 	const isLightMode = theme === 'light';
 
 	const showDropShadow = useWindowScrolled();
-
-	console.log(isLightMode, 'islighmode');
 	return (
 		<nav
 			style={{
@@ -37,7 +35,7 @@ export function Navbar(props: NavbarProps) {
 						? 'rgba(0, 0, 0, 0.05) 0px 1px 20px 0px'
 						: 'none',
 			}}
-			className={`py-6 px-4 md:px-6 h-24 border-b border-border z-[60] transition-all ${
+			className={`py-6 px-4 md:px-6 h-24 border-b border-border z-40 transition-all ${
 				props.sticky && 'sticky top-0'
 			} `}
 		>

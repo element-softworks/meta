@@ -45,8 +45,11 @@ export const NotificationsInfiniteScroll = (props: NotificationsInfiniteScrollPr
 
 			<div className="mt-6">
 				{props.notifications?.notifications?.map?.((notification, index) => (
-					<div key={index} className="mb-4  pb-4 last:mb-0 last:pb-0 flex gap-4">
-						<div className="flex-1 items-center flex gap-2">
+					<div
+						key={index}
+						className="mb-4  pb-4 last:mb-0 last:pb-0 flex gap-4 flex-col sm:flex-row"
+					>
+						<div className="flex-1 items-center flex gap-2 flex-wrap">
 							<span
 								className={`flex h-3 w-3 self-start translate-y-1 rounded-full transition-all ${
 									!!notification?.readAt ? 'bg-green-500' : 'bg-sky-500'

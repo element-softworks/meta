@@ -6,20 +6,19 @@ import {
 	BreadcrumbList,
 	BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { MenuIcon, XIcon } from 'lucide-react';
+import { ExtendedUser } from '@/next-auth';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { TeamSelectMenu } from '../auth/team-select-menu';
-import { Button } from '../ui/button';
-import { NavigationMobileDrawer } from './navigation-mobile-drawer';
-import { ExtendedUser } from '@/next-auth';
-import { useSidebarItems } from '@/hooks/use-sidebar-items';
 
 interface NavStripProps {
 	user: ExtendedUser | undefined;
 }
 const EXCLUDED_PATHS = ['admin'];
+
+// Regex pattern to identify UUIDs
+const UUID_REGEX = /^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$/;
 
 export function NavStrip(props: NavStripProps) {
 	const pathname = usePathname();
@@ -27,7 +26,7 @@ export function NavStrip(props: NavStripProps) {
 	// Split the pathname and filter out empty segments
 	const allSegments = pathname.split('/').filter((path) => path !== '');
 
-	// Create breadcrumbs excluding certain paths for display purposes
+	// Create breadcrumbs excluding certain paths
 	const displayBreadcrumbs = allSegments.filter((path) => !EXCLUDED_PATHS.includes(path));
 
 	const firstCrumb = displayBreadcrumbs[0];
@@ -39,7 +38,7 @@ export function NavStrip(props: NavStripProps) {
 			<div className="flex items-center">
 				<Breadcrumb className="flex-1 ml-10 md:ml-0">
 					<BreadcrumbList>
-						{displayBreadcrumbs?.length > 3 ? (
+						{displayBreadcrumbs.length > 3 ? (
 							<BreadcrumbItem>
 								<Link href={`/${firstCrumb}`}>{firstCrumb}</Link>
 							</BreadcrumbItem>
@@ -47,10 +46,16 @@ export function NavStrip(props: NavStripProps) {
 						{lastTwoBreadCrumbs.map((path, index) => {
 							const isActive = index === lastTwoBreadCrumbs.length - 1;
 
+							// Check if the current path is a UUID
+							const isUUID = UUID_REGEX.test(path);
+
 							// Construct the path URL including all original segments
 							const pathUrl = allSegments
 								.slice(0, allSegments.indexOf(path) + 1)
 								.join('/');
+
+							// Find the singular version of the previous crumb
+							const previousCrumb = lastTwoBreadCrumbs[index - 1];
 
 							return (
 								<React.Fragment key={index}>
@@ -63,16 +68,29 @@ export function NavStrip(props: NavStripProps) {
 										</>
 									) : null}
 
-									<React.Fragment key={index}>
-										{index !== 0 ? <BreadcrumbSeparator /> : null}
-										<BreadcrumbItem className={`${isActive && 'font-bold'}`}>
-											{isActive ? (
-												<p>{path}</p>
-											) : (
-												<Link href={`/${pathUrl}`}>{path}</Link>
-											)}
-										</BreadcrumbItem>
-									</React.Fragment>
+									{index !== 0 ? <BreadcrumbSeparator /> : null}
+
+									<BreadcrumbItem className={`${isActive ? 'font-bold' : ''}`}>
+										{isActive ? (
+											<p>
+												{isUUID
+													? previousCrumb?.slice(
+															0,
+															previousCrumb?.length - 1
+													  )
+													: path}
+											</p> // Show previous crumb if current is UUID
+										) : (
+											<Link href={`/${pathUrl}`}>
+												{isUUID
+													? previousCrumb?.slice(
+															0,
+															previousCrumb?.length - 1
+													  )
+													: path}
+											</Link>
+										)}
+									</BreadcrumbItem>
 								</React.Fragment>
 							);
 						})}
