@@ -24,11 +24,11 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 		return { error: 'You are not authorized to view this page' };
 	}
 
-	let subscriptionsResponse: { time: string; count: number }[] | undefined = [];
+	let paymentResponse: { time: string; count: number }[] | undefined = [];
 
 	if (dateDifferenceInHours <= 24) {
 		// Group by hour if less than or equal to 24 hours
-		subscriptionsResponse = await db
+		paymentResponse = await db
 			.select({
 				count: count(),
 				time: sql<string>`EXTRACT(HOUR FROM ${customer.startDate})`.as('hour'),
@@ -40,7 +40,7 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 		const hours = Array.from({ length: 24 }, (_, i) => ({ time: i, count: 0 }));
 
 		const formattedSubs = hours.map((hour) => {
-			const foundHour = subscriptionsResponse?.find((sub) => Number(sub.time) === hour.time);
+			const foundHour = paymentResponse?.find((sub) => Number(sub.time) === hour.time);
 			const formattedTime =
 				hour.time >= 12 ? `${hour.time - 12 || 12} PM` : `${hour.time} AM`;
 			return {
@@ -49,10 +49,10 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 			};
 		});
 
-		subscriptionsResponse = formattedSubs;
+		paymentResponse = formattedSubs;
 	} else if (dateDifferenceInDays < 7) {
 		// Group by day if more than 24 hours but less than 7 days
-		subscriptionsResponse = await db
+		paymentResponse = await db
 			.select({
 				count: count(),
 				time: sql<string>`DATE_TRUNC('day', ${customer.startDate})`.as('day'),
@@ -70,7 +70,7 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 		}
 
 		const formattedSubs = days.map((day) => {
-			const foundDay = subscriptionsResponse?.find((sub) => {
+			const foundDay = paymentResponse?.find((sub) => {
 				const subDate = new Date(sub.time);
 				return format(subDate, 'dd/MM/yy') === format(day.time, 'dd/MM/yy');
 			});
@@ -84,10 +84,10 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 			};
 		});
 
-		subscriptionsResponse = formattedSubs;
+		paymentResponse = formattedSubs;
 	} else {
 		// Group by week if more than or equal to 7 days
-		subscriptionsResponse = await db
+		paymentResponse = await db
 			.select({
 				count: count(),
 				time: sql<string>`DATE_TRUNC('week', ${customer.startDate})`.as('week'),
@@ -105,7 +105,7 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 		}
 
 		const formattedSubs = weeks.map((week) => {
-			const foundWeek = subscriptionsResponse?.find((sub) => {
+			const foundWeek = paymentResponse?.find((sub) => {
 				const subDate = new Date(sub.time);
 				return isWithinInterval(subDate, {
 					start: startOfWeek(week.time),
@@ -122,11 +122,11 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 			};
 		});
 
-		subscriptionsResponse = formattedSubs;
+		paymentResponse = formattedSubs;
 	}
 
 	return {
-		analytics: 'subscription analytics',
-		subscriptions: subscriptionsResponse,
+		analytics: 'payment analytics',
+		payments: paymentResponse,
 	};
 };

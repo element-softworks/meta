@@ -67,7 +67,7 @@ export function useSidebarItems() {
 				{
 					text: 'Analytics',
 					link: '/dashboard/admin/analytics',
-					icon: <ChartPie />,
+					icon: <ChartPie size={20} />,
 					visible: true,
 				},
 			],

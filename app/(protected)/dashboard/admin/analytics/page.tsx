@@ -1,4 +1,4 @@
-import { SubscriptionsTodayChartContainer } from '@/components/charts/subscriptions-today-chart-container';
+import { NewPaymentsChartContainer } from '@/components/charts/new-payments-chart-container';
 import { DateSelectorPicker } from '@/components/date-selector-picker';
 import { Separator } from '@/components/ui/separator';
 
@@ -16,7 +16,7 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 
 			<DateSelectorPicker searchParams={searchParams} />
 			<div className="">
-				<SubscriptionsTodayChartContainer searchParams={searchParams} />
+				<NewPaymentsChartContainer searchParams={searchParams} />
 			</div>
 			{/* {subscriptions?.subscriptions?.map((sub) => {
 				return (
