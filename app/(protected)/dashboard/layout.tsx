@@ -1,16 +1,13 @@
 import { getUserNotificationsCount } from '@/actions/get-user-notifications-count';
 import { auth } from '@/auth';
-import { CreateTeamDialog } from '@/components/dialogs/create-team-dialog';
 import { DashboardSidebar } from '@/components/layout/dashboard-sidebar';
 import { NavStrip } from '@/components/layout/nav-strip';
 import { Navbar } from '@/components/layout/navbar';
 import { Toaster } from '@/components/ui/toaster';
-import { getCookie } from '@/data/cookies';
 import { SessionProvider } from 'next-auth/react';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 	const session = await auth();
-	const hasCreateCookie = await getCookie(`${session?.user.email}-create-team-dialog`);
 	const count = await getUserNotificationsCount(session?.user?.id ?? '');
 	return (
 		<SessionProvider session={session}>
@@ -19,7 +16,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
 				<Navbar count={count?.count ?? 0} />
 				<div className="flex flex-1">
 					<DashboardSidebar />
-					<CreateTeamDialog hasCreateCookie={!!hasCreateCookie} />
 
 					<div className="w-full overflow-hidden flex-1 flex flex-col">
 						<NavStrip user={session?.user} />

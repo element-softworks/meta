@@ -6,11 +6,12 @@
 
 export const publicRoutes = [
 	'/',
-	'/docs',
 	'/auth/new-verification',
 	'/auth/new-password',
 	'/api/webhooks/stripe',
 ];
+export const fuzzyPublicRoutes = ['/docs']; //Anything prefixed with the string in the array will be considered public
+
 export const adminRoute = '/dashboard/admin';
 
 /**

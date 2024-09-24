@@ -6,6 +6,7 @@ import {
 	adminRoute,
 	apiAuthPrefix,
 	authRoutes,
+	fuzzyPublicRoutes,
 	publicRoutes,
 } from './routes';
 import { getSession } from 'next-auth/react';
@@ -18,6 +19,9 @@ export default auth(async (req, res) => {
 
 	const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
 	const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
+	const isFuzzyPublicRoute = fuzzyPublicRoutes.some((route) =>
+		nextUrl.pathname.startsWith(route)
+	);
 	const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
 	if (isApiAuthRoute) {
@@ -31,7 +35,7 @@ export default auth(async (req, res) => {
 		return;
 	}
 
-	if (!isLoggedIn && !isPublicRoute) {
+	if (!isLoggedIn && !isPublicRoute && !isFuzzyPublicRoute) {
 		let callbackUrl = nextUrl.pathname;
 		if (nextUrl.search) {
 			callbackUrl += nextUrl.search;

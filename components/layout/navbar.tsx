@@ -37,7 +37,7 @@ export function Navbar(props: NavbarProps) {
 						? 'rgba(0, 0, 0, 0.05) 0px 1px 20px 0px'
 						: 'none',
 			}}
-			className={`py-6 px-4 md:px-6 h-24 border-b border-border transition-all ${
+			className={`py-6 px-4 md:px-6 h-24 border-b border-border z-[60] transition-all ${
 				props.sticky && 'sticky top-0'
 			} `}
 		>
@@ -48,9 +48,9 @@ export function Navbar(props: NavbarProps) {
 				></div>
 			)}
 
-			<div className="flex flex-row justify-between items-center z-50 relative">
+			<div className="flex flex-row justify-between items-center z-[200] relative">
 				<Link href="/">
-					<div className=" flex items-center text-lg font-light z-20 relative">
+					<div className=" flex items-center text-lg font-light z-[200] relative">
 						<FrameIcon className="mr-2" size={30} />
 						<p className="hidden md:block">NextJS SaaS Boilerplate</p>
 					</div>
