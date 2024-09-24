@@ -1,7 +1,17 @@
 'use client';
 
-import { Banknote, CreditCard, LayoutDashboard, Users } from 'lucide-react';
+import {
+	Banknote,
+	ChartBar,
+	ChartPie,
+	CreditCard,
+	DollarSign,
+	LayoutDashboard,
+	PiggyBank,
+	Users,
+} from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
+import { FaMoneyBill } from 'react-icons/fa';
 
 export function useSidebarItems() {
 	const user = useCurrentUser();
@@ -52,6 +62,12 @@ export function useSidebarItems() {
 					text: 'Users',
 					link: '/dashboard/admin/users',
 					icon: <CreditCard size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Analytics',
+					link: '/dashboard/admin/analytics',
+					icon: <ChartPie size={20} />,
 					visible: true,
 				},
 			],
