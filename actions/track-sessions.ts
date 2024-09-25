@@ -24,7 +24,7 @@ export const trackSessions = async (email: string) => {
 	const userAgentStructure = { headers: headersList };
 	const agent = userAgent(userAgentStructure);
 
-	const endsAtDate = addHours(new Date(), 2);
+	const endsAtDate = addHours(new Date(), 1);
 	const [newSession] = await db
 		.insert(session)
 		.values({
