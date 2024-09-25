@@ -20,7 +20,6 @@ export default async function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body className={inter.className}>
 				<Toaster />
-
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="system"

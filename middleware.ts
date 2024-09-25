@@ -3,13 +3,11 @@ import { NextResponse } from 'next/server';
 import authConfig from './auth.config';
 import {
 	DEFAULT_LOGIN_REDIRECT,
-	adminRoute,
 	apiAuthPrefix,
 	authRoutes,
 	fuzzyPublicRoutes,
 	publicRoutes,
 } from './routes';
-import { getSession } from 'next-auth/react';
 const { auth } = NextAuth(authConfig);
 
 export default auth(async (req, res) => {

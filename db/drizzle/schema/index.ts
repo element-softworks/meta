@@ -10,3 +10,4 @@ export { twoFactorToken } from './twoFactorToken';
 export { user, userRelations } from './user';
 export { userNotification, userNotificationRelations } from './userNotification';
 export { verificationToken } from './verificationToken';
+export { session, sessionRelations } from './session';

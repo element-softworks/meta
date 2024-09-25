@@ -8,6 +8,41 @@
       "when": 1726930847097,
       "tag": "0000_material_blizzard",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1727289050680,
+      "tag": "0001_smiling_celestials",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1727289871059,
+      "tag": "0002_strange_rhino",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1727290335846,
+      "tag": "0003_bouncy_naoko",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1727290534558,
+      "tag": "0004_sweet_ender_wiggin",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1727290645642,
+      "tag": "0005_jittery_cerebro",
+      "breakpoints": true
     }
   ]
 }

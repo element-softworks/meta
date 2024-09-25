@@ -1,10 +1,10 @@
+import { Navbar } from '@/components/layout/navbar';
+import { SessionTrackerProvider } from '@/components/session-provider';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';
 import '../globals.css';
-import { Navbar } from '@/components/layout/navbar';
-import { getUserNotificationsCount } from '@/actions/get-user-notifications-count';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,14 +20,18 @@ export default async function RootLayout({
 }>) {
 	return (
 		<SessionProvider>
-			<Toaster />
-			<div className={`flex flex-col min-h-screen ${inter.className}`}>
-				<Navbar sticky />
+			<SessionTrackerProvider>
+				<Toaster />
+				<div className={`flex flex-col min-h-screen ${inter.className}`}>
+					<Navbar sticky />
 
-				<div className="flex flex-1">
-					<main className="w-full overflow-hidden flex-1 flex flex-col">{children}</main>
+					<div className="flex flex-1">
+						<main className="w-full overflow-hidden flex-1 flex flex-col">
+							{children}
+						</main>
+					</div>
 				</div>
-			</div>
+			</SessionTrackerProvider>
 		</SessionProvider>
 	);
 }

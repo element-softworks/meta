@@ -1,0 +1,1 @@
+ALTER TABLE "Session" ADD COLUMN "id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL;
