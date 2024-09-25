@@ -75,7 +75,11 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 			{/* Mobile menu */}
 			<DropdownMenu onOpenChange={(open) => props.onNavOpenChange(open)}>
 				<DropdownMenuTrigger asChild className="cursor-pointer">
-					<Button onClick={() => props.onNavOpenChange(!props.navOpen)} variant="link">
+					<Button
+						aria-label="Open user menu"
+						onClick={() => props.onNavOpenChange(!props.navOpen)}
+						variant="link"
+					>
 						{props.navOpen ? (
 							<XIcon className="md:hidden" size={30} />
 						) : (

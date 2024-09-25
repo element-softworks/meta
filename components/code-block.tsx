@@ -56,6 +56,7 @@ export function CodeBlock(props: CodeBlockProps) {
 				</Block.Code>
 				{copyToClipboard ? (
 					<Button
+						aria-label="Copy code to clipboard"
 						size="icon"
 						variant="default"
 						className=" absolute top-2 right-2"
