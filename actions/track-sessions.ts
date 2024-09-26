@@ -6,7 +6,6 @@ import { session } from '@/db/drizzle/schema';
 import { addDays, addHours, addMinutes } from 'date-fns';
 import { cookies, headers } from 'next/headers';
 import { userAgent } from 'next/server';
-import { UAParser } from 'ua-parser-js';
 
 export const trackSessions = async (email: string) => {
 	const sessionCookie = await getCookie('session');
@@ -16,6 +15,7 @@ export const trackSessions = async (email: string) => {
 	}
 
 	const headersList = headers();
+	const { get } = headers();
 
 	const ipAddress =
 		headersList.get('x-real-ip') ||
@@ -27,12 +27,12 @@ export const trackSessions = async (email: string) => {
 	console.log(agent?.device, 'agent device');
 	const endsAtDate = addHours(new Date(), 1);
 
-	const device = new UAParser(userAgent || '').getDevice();
+	const viewport = agent?.device?.type === 'mobile' ? 'mobile' : 'desktop';
 
 	const [newSession] = await db
 		.insert(session)
 		.values({
-			deviceType: agent?.device?.type ?? 'Unknown',
+			deviceType: viewport,
 			createdAt: new Date(),
 			email: email,
 			browser: agent?.browser?.name ?? 'Unknown',

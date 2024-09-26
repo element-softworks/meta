@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import { NextResponse } from 'next/server';
+import { NextResponse, userAgent } from 'next/server';
 import authConfig from './auth.config';
 import {
 	DEFAULT_LOGIN_REDIRECT,
