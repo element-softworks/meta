@@ -182,11 +182,13 @@ export function DataTable<TData, TValue>({
 	return (
 		<Suspense fallback={<>Loading....</>}>
 			<div className="w-full">
-				<div className="pt-4">
-					<p className="text-md font-semibold">{title}</p>
-					<p className="text-xs text-muted-foreground">{description}</p>
-				</div>
-				<div className="flex items-center pb-4 pt-2 gap-2">
+				{!!title && (
+					<div className="pt-4 pb-2">
+						<p className="text-md font-semibold">{title}</p>
+						<p className="text-xs text-muted-foreground">{description}</p>
+					</div>
+				)}
+				<div className="flex items-center pb-4  gap-2">
 					{!!search ? (
 						<Input
 							disabled={isLoading}
@@ -374,7 +376,7 @@ export function DataTable<TData, TValue>({
 												return (
 													<TableCell
 														key={cell?.id}
-														className={`${
+														className={`py-2 ${
 															lastColumnSticky &&
 															isLastColumn &&
 															'sticky right-0 bg-accent '

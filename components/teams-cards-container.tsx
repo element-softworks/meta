@@ -27,7 +27,7 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 
 	//Render the users table
 	return (
-		<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+		<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
 			{data?.data?.map((teamData, index) => {
 				const currentUserRole = teamData?.team.members?.find?.(
 					(member) => member.details?.id === user?.id
@@ -46,7 +46,7 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 						}`}
 					>
 						<Badge className="absolute top-6 right-6">{currentUserRole?.role}</Badge>
-						<div className="flex gap-6 md:gap-4 flex-wrap justify-between">
+						<div className="flex gap-4 md:gap-4 flex-wrap justify-between">
 							<div>
 								<p className="text-sm font-semibold ">Members</p>
 								<AvatarGroup

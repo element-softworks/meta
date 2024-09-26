@@ -31,7 +31,7 @@ export default async function DashboardPage({
 	}
 
 	return (
-		<main className="flex flex-col max-w-4xl gap-6 h-full">
+		<main className="flex flex-col  gap-4 h-full">
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
 					<p className="text-xl font-bold">{teamResponse?.data?.team.name}</p>

@@ -1,26 +1,19 @@
 'use server';
 
-import { getSubscriptionAnalytics } from '@/actions/get-payment-analytics';
+import { getSessionAnalytics } from '@/actions/get-session-analytics';
 import { ChartConfig } from '@/components/ui/chart';
 import { addDays, endOfDay, format } from 'date-fns';
-import { NewPaymentsChart } from './new-payments-chart';
+import { SessionsChart } from './sessions-chart';
 
-export async function NewPaymentsChartContainer({ searchParams }: { searchParams: any }) {
+export async function SessionsChartContainer({ searchParams }: { searchParams: any }) {
 	const startDate = searchParams?.['new-payments-startDate'];
 	const endDate = searchParams?.['new-payments-endDate'];
 	const dataTypeQuery = searchParams?.['new-payments-dateType'];
 
-	const paymentsResponse = await getSubscriptionAnalytics(
+	const paymentsResponse = await getSessionAnalytics(
 		!!startDate?.length ? startDate : addDays(new Date(), -6).toISOString(),
 		!!endDate?.length ? endDate : endOfDay(new Date()).toISOString()
 	);
-
-	const chartConfig = {
-		hour: {
-			label: 'Hour',
-			color: 'hsl(var(--chart-1))',
-		},
-	} satisfies ChartConfig;
 
 	let chartTitle = '';
 
@@ -34,17 +27,31 @@ export async function NewPaymentsChartContainer({ searchParams }: { searchParams
 			'dd LLL'
 		)}`;
 	} else {
-		chartTitle = 'New payments past week';
+		chartTitle = 'Session analytics';
 	}
+
+	const chartConfig = {
+		views: {
+			label: 'Page Views',
+		},
+		desktop: {
+			label: 'Desktop',
+			color: 'hsl(var(--chart-1))',
+		},
+		mobile: {
+			label: 'Mobile',
+			color: 'hsl(var(--chart-2))',
+		},
+	} satisfies ChartConfig;
 
 	return (
 		<>
-			<NewPaymentsChart
+			<SessionsChart
 				searchParams={searchParams}
 				chartData={paymentsResponse?.payments}
 				chartConfig={chartConfig}
 				title={chartTitle}
-				description="Amount of payments over time"
+				description="Amount of sessions over time"
 			/>
 		</>
 	);

@@ -54,7 +54,7 @@ export default function Docs() {
 						To get started with Project Name, follow the steps below:
 					</DocumentationTypography>
 
-					<ol className="mt-4 list-none flex flex-col gap-6">
+					<ol className="mt-4 list-none flex flex-col gap-4">
 						<li>
 							<DocumentationTypography variant="p">
 								Step 1: Clone the repository

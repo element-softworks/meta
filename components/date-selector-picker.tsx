@@ -32,7 +32,7 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 
 	const { mutateParams } = useParam();
 	const [selectedValue, setSelectedValue] = useState<string>(
-		!!dateTypeQuery?.length ? dateTypeQuery : '24 hours'
+		!!dateTypeQuery?.length ? dateTypeQuery : 'week'
 	);
 	const [selectOpen, setSelectOpen] = useState<boolean>(false);
 	const [customPickerOpen, setCustomPickerOpen] = useState<boolean>(false);
@@ -116,7 +116,10 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 					}
 				}}
 			>
-				<SelectTrigger onClick={() => setSelectOpen((prev) => !prev)} className="w-[180px]">
+				<SelectTrigger
+					onClick={() => setSelectOpen((prev) => !prev)}
+					className="w-[180px] !mt-0"
+				>
 					<SelectValue placeholder="Select a date range" />
 				</SelectTrigger>
 				<SelectContent>

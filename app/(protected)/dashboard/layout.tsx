@@ -21,9 +21,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
 						<div className="w-full overflow-hidden flex-1 flex flex-col">
 							<NavStrip user={session?.user} />
-							<main className="w-full p-4 md:p-6 overflow-hidden flex-1">
-								{children}
-							</main>
+							<main className="w-full p-4  overflow-hidden flex-1">{children}</main>
 						</div>
 					</div>
 				</div>

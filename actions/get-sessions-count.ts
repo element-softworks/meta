@@ -1,0 +1,48 @@
+'use server';
+
+import { db } from '@/db/drizzle/db';
+import { session } from '@/db/drizzle/schema';
+import { addMilliseconds, differenceInMilliseconds } from 'date-fns';
+import { and, between, count, gte, lte } from 'drizzle-orm';
+
+export const getSessionsCount = async (startDate: string, endDate: string, active: boolean) => {
+	const [sessionsResponse] = await db
+		.select({ count: count() })
+		.from(session)
+		.where(
+			and(
+				between(session.createdAt, new Date(startDate), new Date(endDate)),
+				active
+					? and(gte(session.endsAt, new Date()), lte(session.createdAt, new Date()))
+					: undefined
+			)
+		);
+
+	const differenceInMs = differenceInMilliseconds(new Date(endDate), new Date(startDate));
+	const [previousSessionsResponse] = await db
+		.select({ count: count() })
+		.from(session)
+		.where(
+			and(
+				between(
+					session.createdAt,
+					addMilliseconds(new Date(startDate), -differenceInMs),
+					new Date(startDate)
+				)
+			)
+		);
+
+	console.log(previousSessionsResponse, 'previous esssiosn response');
+
+	const percentageDifference = active
+		? null
+		: previousSessionsResponse.count
+		? (
+				((sessionsResponse.count - previousSessionsResponse.count) /
+					previousSessionsResponse.count) *
+				100
+		  ).toFixed(2)
+		: 0;
+
+	return { sessions: sessionsResponse, percentageDifference };
+};

@@ -27,7 +27,7 @@ export default async function BillingPage({ params }: { params: { team: string }
 	const isOwner = team?.data?.currentMember?.role === 'OWNER';
 
 	return (
-		<main className="flex flex-col max-w-5xl gap-6 h-full">
+		<main className="flex flex-col  gap-4 h-full">
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
 					<p className="text-xl font-bold">Billing settings</p>
