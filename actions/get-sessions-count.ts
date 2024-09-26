@@ -32,8 +32,6 @@ export const getSessionsCount = async (startDate: string, endDate: string, activ
 			)
 		);
 
-	console.log(previousSessionsResponse, 'previous esssiosn response');
-
 	const percentageDifference = active
 		? null
 		: previousSessionsResponse.count

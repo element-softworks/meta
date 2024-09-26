@@ -1,5 +1,5 @@
 'use client';
-import { CartesianGrid, XAxis } from 'recharts';
+import { CartesianGrid, Line, LineChart, XAxis } from 'recharts';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -11,12 +11,14 @@ import {
 import { Bar, BarChart } from 'recharts';
 
 import { useMemo, useState } from 'react';
+import { DateSelectorPicker } from '../date-selector-picker';
 interface SessionsChart {
 	searchParams: any;
 	chartConfig: ChartConfig;
 	chartData: { time: string; desktop: number; mobile: number }[] | undefined;
 	title: string;
 	description: string;
+	type: 'bar' | 'line';
 }
 
 export function SessionsChart(props: SessionsChart) {
@@ -29,15 +31,48 @@ export function SessionsChart(props: SessionsChart) {
 		[]
 	);
 
-	console.log(props.chartData, 'chart date');
-
+	const chartContent = (
+		<>
+			<CartesianGrid vertical={false} />
+			<XAxis
+				dataKey="time"
+				tickLine={false}
+				axisLine={false}
+				tickMargin={8}
+				minTickGap={40}
+			/>
+			<ChartTooltip content={<ChartTooltipContent className="w-[150px]" nameKey="views" />} />
+			{props.type === 'line' && (
+				<Line
+					dataKey={activeChart}
+					type="monotone"
+					stroke={`var(--color-${activeChart})`}
+					strokeWidth={2}
+					dot={false}
+				/>
+			)}
+			{props.type === 'bar' && (
+				<Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
+			)}
+		</>
+	);
 	return (
 		<Card>
 			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-				<div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-					<CardTitle>Total visitors</CardTitle>
-					<CardDescription>Showing total visitors for the last 3 months</CardDescription>
+				<div className="flex flex-1 flex-col lg:flex-row justify-center lg:justify-start lg:items-start gap-1 lg:gap-4 px-4 py-4 sm:py-4">
+					<div className="flex-1">
+						<CardTitle>{props.title}</CardTitle>
+						<CardDescription>{props.description}</CardDescription>
+					</div>
+					<div className="">
+						<DateSelectorPicker
+							searchParams={props.searchParams}
+							id="sessions"
+							longRanges
+						/>
+					</div>
 				</div>
+
 				<div className="flex">
 					{['desktop', 'mobile'].map((key, index) => {
 						const chart = key as keyof typeof props.chartConfig;
@@ -61,27 +96,23 @@ export function SessionsChart(props: SessionsChart) {
 			</CardHeader>
 			<CardContent className="px-2 sm:p-6">
 				<ChartContainer config={props.chartConfig} className="aspect-auto h-[250px] w-full">
-					<BarChart
-						accessibilityLayer
-						data={props.chartData}
-						margin={{
-							left: 12,
-							right: 12,
-						}}
-					>
-						<CartesianGrid vertical={false} />
-						<XAxis
-							dataKey="time"
-							tickLine={false}
-							axisLine={false}
-							tickMargin={8}
-							minTickGap={40}
-						/>
-						<ChartTooltip
-							content={<ChartTooltipContent className="w-[150px]" nameKey="views" />}
-						/>
-						<Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
-					</BarChart>
+					{props.type === 'line' ? (
+						<LineChart
+							accessibilityLayer
+							data={props.chartData}
+							margin={{ left: 12, right: 12 }}
+						>
+							{chartContent}
+						</LineChart>
+					) : (
+						<BarChart
+							accessibilityLayer
+							data={props.chartData}
+							margin={{ left: 12, right: 12 }}
+						>
+							{chartContent}
+						</BarChart>
+					)}
 				</ChartContainer>
 			</CardContent>
 		</Card>

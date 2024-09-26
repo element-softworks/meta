@@ -1,21 +1,10 @@
 import { db } from '@/db/drizzle/db';
 import { session } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import {
-	addDays,
-	addWeeks,
-	differenceInDays,
-	differenceInHours,
-	endOfWeek,
-	format,
-	isWithinInterval,
-	startOfDay,
-	startOfWeek,
-} from 'date-fns';
-import { between, count, sql } from 'drizzle-orm';
+import { addDays, differenceInHours, format, startOfDay } from 'date-fns';
+import { between, sql } from 'drizzle-orm';
 
 export const getSessionAnalytics = async (startDate: string, endDate: string) => {
-	const dateDifferenceInDays = differenceInDays(new Date(endDate), new Date(startDate));
 	const dateDifferenceInHours = differenceInHours(new Date(endDate), new Date(startDate));
 
 	const adminUser = await currentUser();
@@ -58,7 +47,6 @@ export const getSessionAnalytics = async (startDate: string, endDate: string) =>
 		});
 
 		sessionResponse = formattedSubs;
-		// } else if (dateDifferenceInDays < 7) {
 	} else {
 		// Group by day if more than 24 hours but less than 7 days
 		sessionResponse = await db
@@ -88,11 +76,17 @@ export const getSessionAnalytics = async (startDate: string, endDate: string) =>
 		const formattedSubs = days.map((day) => {
 			const foundDay = sessionResponse?.find((sub) => {
 				const subDate = new Date(sub.time);
-				return format(subDate, 'do MMM') === format(day.time, 'do MMM');
+				return (
+					format(subDate, `do MMM ${dateDifferenceInHours >= 8760 ? 'yy' : ''}`) ===
+					format(day.time, `do MMM ${dateDifferenceInHours >= 8760 ? 'yy' : ''}`)
+				);
 			});
 
 			// Format the day date for display purposes
-			const formattedTime = format(day.time, 'do MMM');
+			const formattedTime = format(
+				day.time,
+				`do MMM ${dateDifferenceInHours >= 8760 ? 'yy' : ''}`
+			);
 
 			return {
 				time: formattedTime,
@@ -103,54 +97,6 @@ export const getSessionAnalytics = async (startDate: string, endDate: string) =>
 
 		sessionResponse = formattedSubs;
 	}
-	// } else {
-	// 	// Group by week if more than or equal to 7 days
-	// 	sessionResponse = await db
-	// 		.select({
-	// 			desktop:
-	// 				sql<number>`SUM(CASE WHEN ${session.deviceType} IS NULL OR ${session.deviceType} = 'desktop' THEN 1 ELSE 0 END)`.as(
-	// 					'desktop'
-	// 				),
-	// 			mobile: sql<number>`SUM(CASE WHEN ${session.deviceType} = 'mobile' THEN 1 ELSE 0 END)`.as(
-	// 				'mobile'
-	// 			),
-	// 			time: sql<string>`DATE_TRUNC('week', ${session.createdAt})`.as('week'),
-	// 		})
-	// 		.from(session)
-	// 		.where(between(session.createdAt, new Date(startDate), new Date(endDate)))
-	// 		.groupBy(sql`DATE_TRUNC('week', ${session.createdAt})`); // Only group by the week
-
-	// 	console.log(sessionResponse, 'sessionResponse cheeeese');
-
-	// 	// Generate all weeks between start and end dates
-	// 	const weeks = [];
-	// 	let currentWeek = startOfWeek(new Date(startDate)); // Start from the first full week
-	// 	while (currentWeek <= new Date(endDate)) {
-	// 		weeks.push({ time: currentWeek, desktop: 0 });
-	// 		currentWeek = addWeeks(currentWeek, 1); // Increment by a full week
-	// 	}
-
-	// 	const formattedSubs = weeks.map((week) => {
-	// 		const foundWeek = sessionResponse?.find((sub) => {
-	// 			const subDate = new Date(sub.time);
-	// 			return isWithinInterval(subDate, {
-	// 				start: startOfWeek(week.time),
-	// 				end: endOfWeek(week.time),
-	// 			});
-	// 		});
-
-	// 		// Format the week start date for display purposes
-	// 		const formattedTime = format(week.time, 'do MMM');
-
-	// 		return {
-	// 			time: formattedTime,
-	// 			mobile: Number(foundWeek?.mobile ?? 0),
-	// 			desktop: Number(foundWeek?.desktop ?? 0),
-	// 		};
-	// 	});
-
-	// 	sessionResponse = formattedSubs;
-	// }
 
 	return {
 		analytics: 'payment analytics',

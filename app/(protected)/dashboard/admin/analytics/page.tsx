@@ -21,7 +21,7 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 				<SessionsDataCard variant="today" title="Total sessions" subtitle="From today" />
 				<SessionsDataCard variant="week" title="Total sessions" subtitle="Past week" />
 			</div>
-			<SessionsChartContainer searchParams={searchParams} />
+			<SessionsChartContainer searchParams={searchParams} type="line" />
 			<div className="grid grid-cols-1 md:grid-cols-2">
 				<NewPaymentsChartContainer searchParams={searchParams} />
 			</div>

@@ -18,13 +18,14 @@ import {
 import { useParam } from '@/hooks/use-param';
 import { useState } from 'react';
 import { DateRangePicker } from './date-range-picker';
-import { addDays, format } from 'date-fns';
+import { addDays, format, subYears } from 'date-fns';
 import { subDays, subWeeks, subMonths, startOfDay, endOfDay } from 'date-fns';
 
 interface DateSelectorPicker {
 	id?: string;
 	searchParams: any;
 	className?: string;
+	longRanges?: boolean;
 }
 
 export function DateSelectorPicker(props: DateSelectorPicker) {
@@ -51,6 +52,65 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 		!!startDateQuery && !!endDateQuery && dateTypeQuery === 'custom'
 			? `${formattedStartDate} - ${formattedEndDate}`
 			: 'Custom';
+
+	const handleOnValueChange = (val: string) => {
+		setSelectedValue(val);
+
+		let startDate;
+		let endDate: Date = new Date(); // Default to the current date and time for the endDate
+
+		switch (val) {
+			case '24 hours':
+				startDate = startOfDay(new Date());
+				endDate = endOfDay(new Date());
+				break;
+
+			case 'week':
+				startDate = addDays(new Date(), -6); // Start date is 1 week ago
+				endDate = new Date(); // End date is now
+				break;
+
+			case 'month':
+				startDate = subMonths(new Date(), 1); // Start date is 1 month ago
+				endDate = new Date(); // End date is now
+				break;
+
+			case '3 months':
+				startDate = subMonths(new Date(), 3); // Start date is 3 months ago
+				endDate = new Date(); // End date is now
+				break;
+
+			case '6 months':
+				startDate = subMonths(new Date(), 6); // Start date is 6 months ago
+				endDate = new Date(); // End date is now
+				break;
+
+			case 'year':
+				startDate = subMonths(new Date(), 12); // Start date is 1 year ago
+				endDate = new Date(); // End date is now
+				break;
+
+			default:
+				// Optional: Handle invalid or unrecognized input
+				console.error('Invalid time range:', val);
+				startDate = new Date(); // Set a default start date if needed
+				endDate = new Date(); // Set a default end date if needed
+				break;
+		}
+
+		if (val === 'custom') {
+			setCustomPickerOpen(true);
+		} else {
+			setSelectOpen(false);
+			mutateParams({
+				[`${!!props.id ? `${props.id}-` : ''}startDate`]:
+					startDate?.toISOString() ?? new Date(Date.now()).toISOString(),
+				[`${!!props.id ? `${props.id}-` : ''}endDate`]:
+					endDate?.toISOString() ?? new Date(Date.now()).toISOString(),
+				[`${!!props.id ? `${props.id}-` : ''}dateType`]: val,
+			});
+		}
+	};
 
 	return (
 		<>
@@ -83,38 +143,7 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 				}}
 				open={selectOpen}
 				value={selectedValue}
-				onValueChange={(val) => {
-					setSelectedValue(val);
-
-					let startDate;
-					let endDate: Date = new Date(); // Default to the current date and time for the endDate
-
-					if (val === '24 hours') {
-						startDate = new Date(Date.now());
-						endDate = new Date(Date.now());
-					} else if (val === 'week') {
-						// Start 7 days ago and end now
-						startDate = addDays(new Date(), -6); // Start date is 1 week ago
-						endDate = new Date(); // End date is now
-					} else if (val === 'month') {
-						// Start 1 month ago and end now
-						startDate = subMonths(new Date(), 1); // Start date is 1 month ago
-						endDate = new Date(); // End date is now
-					}
-
-					if (val === 'custom') {
-						setCustomPickerOpen(true);
-					} else {
-						setSelectOpen(false);
-						mutateParams({
-							[`${!!props.id ? `${props.id}-` : ''}startDate`]:
-								startDate?.toISOString() ?? new Date(Date.now()).toISOString(),
-							[`${!!props.id ? `${props.id}-` : ''}endDate`]:
-								endDate?.toISOString() ?? new Date(Date.now()).toISOString(),
-							[`${!!props.id ? `${props.id}-` : ''}dateType`]: val,
-						});
-					}
-				}}
+				onValueChange={handleOnValueChange}
 			>
 				<SelectTrigger
 					onClick={() => setSelectOpen((prev) => !prev)}
@@ -127,6 +156,14 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 						<SelectItem value="24 hours">Last 24 hours</SelectItem>
 						<SelectItem value="week">Last week</SelectItem>
 						<SelectItem value="month">Last month</SelectItem>
+
+						{props.longRanges && (
+							<>
+								<SelectItem value="3 months">Last 3 months</SelectItem>
+								<SelectItem value="6 months">Last 6 months</SelectItem>
+								<SelectItem value="year">Last year</SelectItem>
+							</>
+						)}
 						<SelectItem onClick={() => setCustomPickerOpen(true)} value="custom">
 							{customText}
 						</SelectItem>
