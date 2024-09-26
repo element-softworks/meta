@@ -2,6 +2,7 @@ import { NewPaymentsChartContainer } from '@/components/charts/new-payments-char
 import { SessionsChartContainer } from '@/components/charts/sessions-chart-container';
 import { SessionsDataCard } from '@/components/data-cards/sessions-data-card';
 import { Separator } from '@/components/ui/separator';
+import { Radio, Users, Users2 } from 'lucide-react';
 
 export default async function AdminAnalyticsPage({ searchParams }: { searchParams: any }) {
 	return (
@@ -16,9 +17,24 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 			<Separator />
 
 			<div className="flex flex-wrap gap-4">
-				<SessionsDataCard variant="now" title="Sessions now" subtitle="Live" />
-				<SessionsDataCard variant="today" title="Total sessions" subtitle="From today" />
-				<SessionsDataCard variant="week" title="Total sessions" subtitle="Past week" />
+				<SessionsDataCard
+					variant="now"
+					title="Sessions now"
+					subtitle="Live"
+					icon={<Radio size={20} />}
+				/>
+				<SessionsDataCard
+					variant="today"
+					title="Total sessions"
+					subtitle="From today"
+					icon={<Users size={20} />}
+				/>
+				<SessionsDataCard
+					variant="week"
+					title="Total sessions"
+					subtitle="Past week"
+					icon={<Users2 size={20} />}
+				/>
 			</div>
 			<SessionsChartContainer searchParams={searchParams} />
 			<div className="grid grid-cols-1 md:grid-cols-2">

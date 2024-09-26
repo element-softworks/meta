@@ -9,6 +9,7 @@ interface SessionsDataCardProps {
 	subtitle: string | React.ReactNode;
 	analytic?: number;
 	analyticSuffix?: string;
+	icon?: React.ReactNode;
 }
 
 export async function SessionsDataCard(props: SessionsDataCardProps) {
@@ -37,10 +38,13 @@ export async function SessionsDataCard(props: SessionsDataCardProps) {
 			<MoveDown size={20} className="text-destructive" />
 		);
 	return (
-		<Card className={`w-fit relative`}>
-			<CardHeader>
-				<CardDescription>{props.title}</CardDescription>
-				<CardTitle>{sessionsResponse?.sessions?.count ?? 0}</CardTitle>
+		<Card className={`w-full  sm:w-fit relative`}>
+			<CardHeader className="flex flex-row gap-10">
+				<div className="flex-1">
+					<CardDescription>{props.title}</CardDescription>
+					<CardTitle>{sessionsResponse?.sessions?.count ?? 0}</CardTitle>
+				</div>
+				{props.icon}
 			</CardHeader>
 			<CardContent></CardContent>
 			<CardFooter className="flex gap-10">
