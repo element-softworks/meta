@@ -72,11 +72,11 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 		const formattedSubs = days.map((day) => {
 			const foundDay = paymentResponse?.find((sub) => {
 				const subDate = new Date(sub.time);
-				return format(subDate, 'dd/MM/yy') === format(day.time, 'dd/MM/yy');
+				return format(subDate, 'do MMM') === format(day.time, 'do MMM');
 			});
 
 			// Format the day date for display purposes
-			const formattedTime = format(day.time, 'dd/MM/yy');
+			const formattedTime = format(day.time, 'do MMM');
 
 			return {
 				time: formattedTime,
@@ -114,7 +114,7 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 			});
 
 			// Format the week start date for display purposes
-			const formattedTime = format(week.time, 'dd/MM/yy');
+			const formattedTime = format(week.time, 'do MMM');
 
 			return {
 				time: formattedTime,

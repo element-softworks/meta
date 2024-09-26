@@ -29,11 +29,13 @@ export function SessionsChart(props: SessionsChart) {
 		[]
 	);
 
+	console.log(props.chartData, 'chart date');
+
 	return (
 		<Card>
 			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
 				<div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
-					<CardTitle>Bar Chart - Interactive</CardTitle>
+					<CardTitle>Total visitors</CardTitle>
 					<CardDescription>Showing total visitors for the last 3 months</CardDescription>
 				</div>
 				<div className="flex">
@@ -73,22 +75,10 @@ export function SessionsChart(props: SessionsChart) {
 							tickLine={false}
 							axisLine={false}
 							tickMargin={8}
-							minTickGap={32}
+							minTickGap={40}
 						/>
 						<ChartTooltip
-							content={
-								<ChartTooltipContent
-									className="w-[150px]"
-									nameKey="views"
-									labelFormatter={(value) => {
-										return new Date(value).toLocaleDateString('en-US', {
-											month: 'short',
-											day: 'numeric',
-											year: 'numeric',
-										});
-									}}
-								/>
-							}
+							content={<ChartTooltipContent className="w-[150px]" nameKey="views" />}
 						/>
 						<Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
 					</BarChart>

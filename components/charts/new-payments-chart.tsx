@@ -29,8 +29,8 @@ interface NewPaymentsChartProps {
 
 export function NewPaymentsChart(props: NewPaymentsChartProps) {
 	return (
-		<Card className="overflow-scroll">
-			<CardHeader className="flex sm:flex-row gap-4">
+		<Card className="">
+			<CardHeader className="flex flex-col lg:flex-row gap-4">
 				<div className="flex-1">
 					<CardTitle>{props.title}</CardTitle>
 					<CardDescription>{props.description}</CardDescription>
@@ -38,8 +38,12 @@ export function NewPaymentsChart(props: NewPaymentsChartProps) {
 				<DateSelectorPicker searchParams={props.searchParams} id="new-payments" />
 			</CardHeader>
 			<CardContent>
-				<ChartContainer config={props.chartConfig} className="min-w-[500px]">
-					<BarChart accessibilityLayer data={props.chartData}>
+				<ChartContainer config={props.chartConfig} className="overflow-scroll">
+					<BarChart
+						accessibilityLayer
+						data={props.chartData}
+						className="min-w-[300px] [&_svg]:!w-fit"
+					>
 						<CartesianGrid vertical={false} />
 						<YAxis tickLine={false} axisLine={false} />
 						<XAxis dataKey="time" tickLine={false} tickMargin={10} axisLine={false} />
