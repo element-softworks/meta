@@ -5,13 +5,7 @@ import { ChartConfig } from '@/components/ui/chart';
 import { addDays, addMonths, addWeeks, endOfDay, format } from 'date-fns';
 import { SessionsChart } from './sessions-chart';
 
-export async function SessionsChartContainer({
-	searchParams,
-	type,
-}: {
-	searchParams: any;
-	type: 'bar' | 'line';
-}) {
+export async function SessionsChartContainer({ searchParams }: { searchParams: any }) {
 	const startDate = searchParams?.['sessions-startDate'];
 	const endDate = searchParams?.['sessions-endDate'];
 	const dataTypeQuery = searchParams?.['sessions-dateType'];
@@ -56,7 +50,6 @@ export async function SessionsChartContainer({
 	return (
 		<>
 			<SessionsChart
-				type={type}
 				searchParams={searchParams}
 				chartData={paymentsResponse?.payments}
 				chartConfig={chartConfig}

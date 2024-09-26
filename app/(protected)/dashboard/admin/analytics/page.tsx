@@ -1,7 +1,6 @@
 import { NewPaymentsChartContainer } from '@/components/charts/new-payments-chart-container';
 import { SessionsChartContainer } from '@/components/charts/sessions-chart-container';
 import { SessionsDataCard } from '@/components/data-cards/sessions-data-card';
-import { DateSelectorPicker } from '@/components/date-selector-picker';
 import { Separator } from '@/components/ui/separator';
 
 export default async function AdminAnalyticsPage({ searchParams }: { searchParams: any }) {
@@ -21,17 +20,10 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 				<SessionsDataCard variant="today" title="Total sessions" subtitle="From today" />
 				<SessionsDataCard variant="week" title="Total sessions" subtitle="Past week" />
 			</div>
-			<SessionsChartContainer searchParams={searchParams} type="line" />
+			<SessionsChartContainer searchParams={searchParams} />
 			<div className="grid grid-cols-1 md:grid-cols-2">
 				<NewPaymentsChartContainer searchParams={searchParams} />
 			</div>
-			{/* {subscriptions?.subscriptions?.map((sub) => {
-				return (
-					<div>
-						{sub?.planId} - {sub?.startDate?.toTimeString()}
-					</div>
-				);
-			})} */}
 		</main>
 	);
 }

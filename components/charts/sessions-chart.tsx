@@ -12,13 +12,14 @@ import { Bar, BarChart } from 'recharts';
 
 import { useMemo, useState } from 'react';
 import { DateSelectorPicker } from '../date-selector-picker';
+import { Button } from '../ui/button';
+import { ChartColumnBig, ChartLine } from 'lucide-react';
 interface SessionsChart {
 	searchParams: any;
 	chartConfig: ChartConfig;
 	chartData: { time: string; desktop: number; mobile: number }[] | undefined;
 	title: string;
 	description: string;
-	type: 'bar' | 'line';
 }
 
 export function SessionsChart(props: SessionsChart) {
@@ -31,6 +32,8 @@ export function SessionsChart(props: SessionsChart) {
 		[]
 	);
 
+	const [type, setType] = useState('line');
+
 	const chartContent = (
 		<>
 			<CartesianGrid vertical={false} />
@@ -42,7 +45,7 @@ export function SessionsChart(props: SessionsChart) {
 				minTickGap={40}
 			/>
 			<ChartTooltip content={<ChartTooltipContent className="w-[150px]" nameKey="views" />} />
-			{props.type === 'line' && (
+			{type === 'line' && (
 				<Line
 					dataKey={activeChart}
 					type="monotone"
@@ -51,18 +54,32 @@ export function SessionsChart(props: SessionsChart) {
 					dot={false}
 				/>
 			)}
-			{props.type === 'bar' && (
-				<Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
-			)}
+			{type === 'bar' && <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />}
 		</>
 	);
 	return (
 		<Card>
 			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
 				<div className="flex flex-1 flex-col lg:flex-row justify-center lg:justify-start lg:items-start gap-1 lg:gap-4 px-4 py-4 sm:py-4">
-					<div className="flex-1">
-						<CardTitle>{props.title}</CardTitle>
-						<CardDescription>{props.description}</CardDescription>
+					<div className="flex-1 flex gap-2 ">
+						<div className="flex-1">
+							<CardTitle>{props.title}</CardTitle>
+							<CardDescription>{props.description}</CardDescription>
+						</div>
+						<Button
+							variant="outline"
+							className="w-fit py-2 px-2.5"
+							onClick={() => {
+								setType(type === 'line' ? 'bar' : 'line');
+							}}
+							aria-label="Toggle graph line or chart"
+						>
+							{type === 'line' ? (
+								<ChartColumnBig size={20} />
+							) : (
+								<ChartLine size={20} />
+							)}
+						</Button>
 					</div>
 					<div className="">
 						<DateSelectorPicker
@@ -96,7 +113,7 @@ export function SessionsChart(props: SessionsChart) {
 			</CardHeader>
 			<CardContent className="px-2 sm:p-6">
 				<ChartContainer config={props.chartConfig} className="aspect-auto h-[250px] w-full">
-					{props.type === 'line' ? (
+					{type === 'line' ? (
 						<LineChart
 							accessibilityLayer
 							data={props.chartData}
