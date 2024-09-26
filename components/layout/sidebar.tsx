@@ -65,7 +65,7 @@ export function SidebarGroup(props: SidebarGroupProps) {
 				defaultValue="item-1"
 				collapsible
 			>
-				<AccordionItem value="item-1 ">
+				<AccordionItem value="item-1">
 					<AccordionTrigger className="text-xs py-2 text-muted-foreground font-semibold uppercase">
 						{props.text}
 					</AccordionTrigger>
@@ -81,7 +81,7 @@ export function SidebarGroup(props: SidebarGroupProps) {
 export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?: boolean }) {
 	return (
 		<aside
-			className={`w-0 md:w-[270px]  border-border transition-all px-0 py-6 md:p-4 md:border-r`}
+			className={`w-0 md:w-[270px]  border-border transition-all px-0 py-3 md:px-4 md:border-r`}
 		>
 			<div
 				className={`flex flex-col flex-1 ${
