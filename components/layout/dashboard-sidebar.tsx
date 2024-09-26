@@ -13,7 +13,7 @@ export function DashboardSidebar() {
 
 	return (
 		<>
-			<div className="py-2 px-4 md:px-6 absolute">
+			<div className="py-2 px-4 md:px-4 absolute">
 				<NavigationMobileDrawer
 					open={navOpen}
 					onOpenChange={(state) => {

@@ -16,22 +16,30 @@ export async function SessionsChartContainer({ searchParams }: { searchParams: a
 	);
 
 	let chartTitle = '';
+	let chartDescription = '';
 
 	if (dataTypeQuery === 'week') {
-		chartTitle = 'New payments past week';
+		chartTitle = 'Total sessions past week';
+		chartDescription = 'Displaying the number of sessions recorded over the last 7 days.';
 	} else if (dataTypeQuery === 'month') {
-		chartTitle = 'New payments past month';
-	} else if (dataTypeQuery === 'custom' && !!startDate?.length && !!endDate?.length) {
-		chartTitle = `New payments from ${format(new Date(startDate), 'dd LLL')} to ${format(
-			new Date(endDate),
-			'dd LLL'
-		)}`;
+		chartTitle = 'Total sessions past month';
+		chartDescription = 'Showing session data for the last 30 days.';
+	} else if (dataTypeQuery === 'year') {
+		chartTitle = 'Total sessions past year';
+		chartDescription = 'Visualizing session data from the past 12 months.';
+	} else if (dataTypeQuery === '3 months') {
+		chartTitle = 'Total sessions past 3 months';
+		chartDescription = 'Aggregated session data from the last 3 months.';
+	} else if (dataTypeQuery === '6 months') {
+		chartTitle = 'Total sessions past 6 months';
+		chartDescription = 'Total sessions recorded in the past 6 months.';
+	} else if (dataTypeQuery === 'today') {
+		chartTitle = 'Total sessions today';
+		chartDescription = 'Session activity data recorded today';
 	} else {
-		chartTitle = 'Session analytics';
+		chartTitle = 'Total Sessions for the Past 3 Months';
+		chartDescription = 'Aggregated session data from the last 3 months.';
 	}
-
-	// <CardTitle>Total visitors</CardTitle>
-	// <CardDescription>Showing total visitors for the last 3 months</CardDescription>
 
 	const chartConfig = {
 		views: {
@@ -54,7 +62,7 @@ export async function SessionsChartContainer({ searchParams }: { searchParams: a
 				chartData={paymentsResponse?.payments}
 				chartConfig={chartConfig}
 				title={chartTitle}
-				description="Amount of sessions over time"
+				description={chartDescription}
 			/>
 		</>
 	);

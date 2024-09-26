@@ -31,11 +31,11 @@ export function SidebarItem(props: SidebarItemProps) {
 			className="h-9"
 		>
 			<Button
-				size="lg"
-				className={`w-full justify-start px-4 flex items-center gap-2 ${
+				size="sm"
+				className={`w-full text-sm justify-start px-4 flex items-center gap-2 ${
 					isActive && 'font-bold'
 				} `}
-				variant={isActive ? 'secondary' : 'ghost'}
+				variant={isActive ? 'default' : 'ghost'}
 			>
 				{props.icon}
 				{props.text}
@@ -60,16 +60,16 @@ export function SidebarGroup(props: SidebarGroupProps) {
 				defaultChecked
 				className={`${
 					props.mobile && !props.hideOnMobile ? 'md:hidden block' : 'hidden md:block'
-				}`}
+				} `}
 				type="single"
 				defaultValue="item-1"
 				collapsible
 			>
-				<AccordionItem value="item-1">
-					<AccordionTrigger className="text-xs text-muted-foreground font-semibold uppercase">
+				<AccordionItem value="item-1 ">
+					<AccordionTrigger className="text-xs py-2 text-muted-foreground font-semibold uppercase">
 						{props.text}
 					</AccordionTrigger>
-					<AccordionContent className="flex flex-col gap-1">
+					<AccordionContent className="flex flex-col pb-2">
 						{props.children}
 					</AccordionContent>
 				</AccordionItem>
@@ -84,7 +84,7 @@ export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?
 			className={`w-0 md:w-[270px]  border-border transition-all px-0 py-6 md:p-4 md:border-r`}
 		>
 			<div
-				className={`flex flex-col gap-2 flex-1 ${
+				className={`flex flex-col flex-1 ${
 					fixed && 'fixed top-24 left-0 w-0 md:w-[270px] px-0 py-6 md:p-4 overflow-scroll'
 				}`}
 			>

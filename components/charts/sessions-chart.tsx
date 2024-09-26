@@ -29,7 +29,7 @@ export function SessionsChart(props: SessionsChart) {
 			desktop: props?.chartData?.reduce((acc, curr) => acc + curr.desktop, 0),
 			mobile: props?.chartData?.reduce((acc, curr) => acc + curr.mobile, 0),
 		}),
-		[]
+		[props.chartData]
 	);
 
 	const [type, setType] = useState('line');
@@ -83,6 +83,7 @@ export function SessionsChart(props: SessionsChart) {
 					</div>
 					<div className="">
 						<DateSelectorPicker
+							default="3 months"
 							searchParams={props.searchParams}
 							id="sessions"
 							longRanges

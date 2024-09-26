@@ -26,6 +26,7 @@ interface DateSelectorPicker {
 	searchParams: any;
 	className?: string;
 	longRanges?: boolean;
+	default?: 'week' | 'month' | 'year' | '3 months' | '6 months' | 'today';
 }
 
 export function DateSelectorPicker(props: DateSelectorPicker) {
@@ -33,7 +34,7 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 
 	const { mutateParams } = useParam();
 	const [selectedValue, setSelectedValue] = useState<string>(
-		!!dateTypeQuery?.length ? dateTypeQuery : 'week'
+		!!dateTypeQuery?.length ? dateTypeQuery : !!props.default?.length ? props.default : 'week'
 	);
 	const [selectOpen, setSelectOpen] = useState<boolean>(false);
 	const [customPickerOpen, setCustomPickerOpen] = useState<boolean>(false);
@@ -60,7 +61,7 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 		let endDate: Date = new Date(); // Default to the current date and time for the endDate
 
 		switch (val) {
-			case '24 hours':
+			case 'today':
 				startDate = startOfDay(new Date());
 				endDate = endOfDay(new Date());
 				break;
@@ -153,7 +154,7 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 				</SelectTrigger>
 				<SelectContent>
 					<SelectGroup>
-						<SelectItem value="24 hours">Last 24 hours</SelectItem>
+						<SelectItem value="today">Today</SelectItem>
 						<SelectItem value="week">Last week</SelectItem>
 						<SelectItem value="month">Last month</SelectItem>
 
