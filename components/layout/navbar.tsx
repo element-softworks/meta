@@ -17,6 +17,7 @@ export const NAVBAR_ITEMS = [
 interface NavbarProps {
 	count?: number;
 	sticky?: boolean;
+	contained?: boolean;
 }
 
 export function Navbar(props: NavbarProps) {
@@ -46,7 +47,11 @@ export function Navbar(props: NavbarProps) {
 				></div>
 			)}
 
-			<div className="flex flex-row justify-between items-center z-[200] relative">
+			<div
+				className={`flex flex-row justify-between items-center z-[200] relative ${
+					props.contained && 'container'
+				}`}
+			>
 				<Link href="/" aria-label="Go to homepage">
 					<div className=" flex items-center text-lg font-light z-[200] relative">
 						<FrameIcon className="mr-2" size={30} />

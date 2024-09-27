@@ -2,6 +2,7 @@ import { getSessionsCount } from '@/actions/get-sessions-count';
 import { addDays, addHours, addWeeks, startOfDay } from 'date-fns';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { MoveDown, MoveLeft, MoveUp } from 'lucide-react';
+import { DataCard } from '../data-card';
 
 interface SessionsDataCardProps {
 	variant: 'today' | 'week' | 'now';
@@ -39,30 +40,21 @@ export async function SessionsDataCard(props: SessionsDataCardProps) {
 			<MoveDown size={20} className="text-destructive" />
 		);
 	return (
-		<Card className={`w-full  sm:w-fit relative`}>
-			<CardHeader className="flex flex-row gap-10">
-				<div className="flex-1">
-					<CardDescription>{props.title}</CardDescription>
-					<CardTitle>{sessionsResponse?.sessions?.count ?? 0}</CardTitle>
-				</div>
-				{props.icon}
-			</CardHeader>
-			<CardContent></CardContent>
-			<CardFooter className="flex gap-10">
-				<CardDescription className="flex-1 whitespace-nowrap">
-					{props.subtitle}
-				</CardDescription>
-				<div className="flex gap-1 items-center">
-					{props.variant !== 'now' ? (
-						<>
-							<CardDescription className="flex-1 text-right">
-								{sessionsResponse?.percentageDifference}%
-							</CardDescription>
-							<div className="">{icon}</div>
-						</>
-					) : null}
-				</div>
-			</CardFooter>
-		</Card>
+		<DataCard
+			title={sessionsResponse?.sessions?.count ?? 0}
+			subtitle={props.title}
+			descriptor={props.subtitle}
+			icon={props.icon}
+			change={
+				props.variant !== 'now' ? (
+					<>
+						<CardDescription className="flex-1 text-right">
+							{sessionsResponse?.percentageDifference}%
+						</CardDescription>
+						<div className="">{icon}</div>
+					</>
+				) : null
+			}
+		/>
 	);
 }

@@ -1,3 +1,4 @@
+import { MonthlyRevenueDataCard } from '@/components/data-cards/monthly-revenue-data-card';
 import { SessionsDataCard } from '@/components/data-cards/sessions-data-card';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -58,7 +59,10 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 						<SessionsChartContainer searchParams={searchParams} />
 					</Suspense>
 				</TabsContent>
-				<TabsContent value="payments">
+				<TabsContent value="payments" className="flex flex-col gap-4">
+					<div className="flex flex-wrap gap-4">
+						<MonthlyRevenueDataCard />
+					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2">
 						<Suspense
 							fallback={

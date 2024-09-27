@@ -22,11 +22,11 @@ export default async function RootLayout({
 		<SessionProvider>
 			<SessionTrackerProvider>
 				<Toaster />
-				<div className={`flex flex-col min-h-screen ${inter.className}`}>
-					<Navbar sticky />
+				<div className={`flex flex-col min-h-screen mx-auto ${inter.className}`}>
+					<Navbar sticky contained />
 
 					<div className="flex flex-1">
-						<main className="w-full overflow-hidden flex-1 flex flex-col">
+						<main className="w-full overflow-hidden flex-1 flex flex-col ">
 							{children}
 						</main>
 					</div>

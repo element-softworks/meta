@@ -121,7 +121,7 @@ export function InvoicesTable(props: InvoicesTableProps) {
 				stickyHeader
 				rowSelectionEnabled={false}
 				lastColumnSticky
-				maxHeight={500}
+				maxHeight={800}
 				columns={columns}
 				data={rows}
 				search={{ useParams: true }}

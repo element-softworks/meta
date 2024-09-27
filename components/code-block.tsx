@@ -47,7 +47,9 @@ export function CodeBlock(props: CodeBlockProps) {
 								/>
 							)}
 							<Block.LineContent
-								className={`table-cell w-full pr-6 ${!props.lines && 'pl-4'}`}
+								className={`table-cell w-full text-sm pr-6 ${
+									!props.lines && 'pl-4'
+								}`}
 							>
 								<Block.Token />
 							</Block.LineContent>
@@ -57,7 +59,7 @@ export function CodeBlock(props: CodeBlockProps) {
 				{copyToClipboard ? (
 					<Button
 						aria-label="Copy code to clipboard"
-						size="icon"
+						size="sm"
 						variant="default"
 						className=" absolute top-2 right-2"
 						onClick={() => {
