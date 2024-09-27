@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 
 export default async function SecurityPage() {
 	return (
-		<main className="flex flex-col  gap-4">
+		<main className="flex flex-col max-w-2xl gap-4">
 			<div className="">
 				<h1 className="text-xl font-bold">Account security</h1>
 				<p className="text-muted-foreground text-sm">

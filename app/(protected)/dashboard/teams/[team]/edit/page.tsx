@@ -20,7 +20,7 @@ export default async function DashboardPage({ params }: { params: { team: string
 	}
 
 	return (
-		<main className="flex flex-col  gap-4 h-full">
+		<main className="flex flex-col max-w-2xl gap-4 h-full">
 			<div className="">
 				<p className="text-xl font-bold">
 					Edit your team {'"'}

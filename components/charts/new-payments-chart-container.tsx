@@ -5,7 +5,7 @@ import { ChartConfig } from '@/components/ui/chart';
 import { addDays, endOfDay, format } from 'date-fns';
 import { NewPaymentsChart } from './new-payments-chart';
 
-export async function NewPaymentsChartContainer({ searchParams }: { searchParams: any }) {
+export default async function NewPaymentsChartContainer({ searchParams }: { searchParams: any }) {
 	const startDate = searchParams?.['new-payments-startDate'];
 	const endDate = searchParams?.['new-payments-endDate'];
 	const dataTypeQuery = searchParams?.['new-payments-dateType'];

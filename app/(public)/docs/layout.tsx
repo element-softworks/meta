@@ -7,7 +7,7 @@ export default async function DocsLayout({ children }: { children: React.ReactNo
 				<DocsSidebar />
 
 				<div className="w-full overflow-hidden flex-1 flex flex-col">
-					<main className="w-full p-4  overflow-hidden flex-1">{children}</main>
+					<main className="w-full p-4  overflow-hidden flex-1 max-w-4xl">{children}</main>
 				</div>
 			</div>
 		</div>

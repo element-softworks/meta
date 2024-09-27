@@ -10,6 +10,7 @@ interface SessionsDataCardProps {
 	analytic?: number;
 	analyticSuffix?: string;
 	icon?: React.ReactNode;
+	loading?: boolean;
 }
 
 export async function SessionsDataCard(props: SessionsDataCardProps) {
