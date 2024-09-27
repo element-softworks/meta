@@ -85,7 +85,7 @@ export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?
 		>
 			<div
 				className={`flex flex-col flex-1 ${
-					fixed && 'fixed top-24 left-0 w-0 md:w-[270px] px-0 py-6 md:p-4 overflow-scroll'
+					fixed && 'overflow-auto fixed top-24 left-0 w-0 md:w-[270px] px-0 py-6 md:p-4'
 				}`}
 			>
 				{children}
