@@ -38,17 +38,17 @@ export const getTotalSales = async (startDate: string, endDate: string) => {
 				)
 			)
 		);
+
 	const salesDifference = invoicesResponse?.total - invoicesDifferenceResponse?.total;
 	const salesDifferencePercentage = (
 		(salesDifference / invoicesDifferenceResponse?.total) *
 		100
 	).toFixed(2);
 
-	console.log(invoicesResponse, 'invoicesResponse');
-
 	return {
-		sales: (invoicesResponse?.total / 100 ?? 0).toFixed(2),
-		salesDifference: (salesDifference / 100 ?? 0).toFixed(2),
-		salesDifferencePercentage: salesDifferencePercentage ?? 0,
+		sales: ((invoicesResponse?.total ?? 0) / 100 ?? 0).toFixed(2),
+		salesDifference: ((salesDifference ?? 0) / 100 ?? 0).toFixed(2),
+		salesDifferencePercentage:
+			salesDifferencePercentage === 'Infinity' ? 0 : salesDifferencePercentage,
 	};
 };

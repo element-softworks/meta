@@ -8,7 +8,7 @@ interface AnalyticsIconProps {
 	percentage: number;
 }
 export function AnalyticsIcon(props: AnalyticsIconProps) {
-	const { size = 20 } = props;
+	const { size = 18 } = props;
 
 	const icon =
 		Number(props.percentage) === 0 ? (

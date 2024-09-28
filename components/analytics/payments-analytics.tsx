@@ -18,9 +18,9 @@ export function PaymentsAnalytics({ searchParams }: { searchParams: any }) {
 	return (
 		<>
 			<div className="flex flex-wrap gap-4 mt-4">
+				<SalesDataCard />
 				<MonthlyRevenueDataCard />
 				<TotalSubscriptionsDataCard />
-				<SalesDataCard />
 			</div>
 			<Suspense
 				fallback={

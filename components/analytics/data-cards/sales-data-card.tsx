@@ -4,13 +4,13 @@ import { BadgeCent, Landmark } from 'lucide-react';
 import { DataCard } from '../../data-card';
 import { CardDescription } from '../../ui/card';
 import { getTotalSales } from '@/actions/get-total-sales';
-import { subMonths } from 'date-fns';
+import { startOfYear, subMonths } from 'date-fns';
 
 interface SalesDataCardProps {}
 
 export default async function SalesDataCard(props: SalesDataCardProps) {
 	const revenueAnalytics = await getTotalSales(
-		subMonths(new Date(), 1).toISOString(),
+		startOfYear(new Date()).toISOString(),
 		new Date().toISOString()
 	);
 
@@ -23,7 +23,7 @@ export default async function SalesDataCard(props: SalesDataCardProps) {
 		<DataCard
 			title={UkCurrency.format(Number(revenueAnalytics.sales))}
 			subtitle="Sales"
-			descriptor="Past month"
+			descriptor="This year"
 			icon={<BadgeCent size={20} />}
 			change={
 				<>

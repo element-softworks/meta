@@ -25,7 +25,7 @@ export function DataCard(props: DataCardProps) {
 				<CardDescription className="flex-1 whitespace-nowrap">
 					{props.descriptor}
 				</CardDescription>
-				<div className="flex gap-1 items-center">{props.change}</div>
+				<div className="flex gap-1 items-center text-xs">{props.change}</div>
 			</CardFooter>
 		</Card>
 	);
