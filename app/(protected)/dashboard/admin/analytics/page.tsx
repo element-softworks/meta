@@ -2,7 +2,6 @@ import { PaymentsAnalytics } from '@/components/analytics/payments-analytics';
 import { SessionsAnalytics } from '@/components/analytics/sessions-analytics';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { lazy } from 'react';
 
 export default async function AdminAnalyticsPage({ searchParams }: { searchParams: any }) {
 	return (

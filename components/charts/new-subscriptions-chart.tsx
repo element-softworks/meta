@@ -29,7 +29,10 @@ export function NewSubscriptionsChart(props: NewSubscriptionsChartProps) {
 				<DateSelectorPicker searchParams={props.searchParams} id="new-subscriptions" />
 			</CardHeader>
 			<CardContent>
-				<ChartContainer config={props.chartConfig} className="overflow-scroll">
+				<ChartContainer
+					config={props.chartConfig}
+					className="overflow-scroll aspect-auto h-[300px]"
+				>
 					<BarChart
 						accessibilityLayer
 						data={props.chartData}

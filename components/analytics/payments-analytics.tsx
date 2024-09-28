@@ -1,6 +1,7 @@
 import SalesChartContainer from '@/components/charts/sales-chart-container';
 import { Suspense, lazy } from 'react';
 import { ClipLoader } from 'react-spinners';
+import RecentSalesContainer from './recent-sales-container';
 
 const NewPaymentsChartContainer = lazy(
 	() => import('@/components/charts/new-subscriptions-chart-container')
@@ -31,17 +32,31 @@ export function PaymentsAnalytics({ searchParams }: { searchParams: any }) {
 			>
 				<SalesChartContainer searchParams={searchParams} />
 			</Suspense>
-			<div className="grid grid-cols-1 md:grid-cols-2">
-				<Suspense
-					fallback={
-						<ClipLoader
-							className="m-auto !border-t-primary !border-r-primary !border-l-primary"
-							size={50}
-						/>
-					}
-				>
-					<NewPaymentsChartContainer searchParams={searchParams} />
-				</Suspense>
+			<div className="flex gap-4 flex-col xl:flex-row ">
+				<div className="w-full xl:w-[60%]">
+					<Suspense
+						fallback={
+							<ClipLoader
+								className="m-auto !border-t-primary !border-r-primary !border-l-primary"
+								size={50}
+							/>
+						}
+					>
+						<NewPaymentsChartContainer searchParams={searchParams} />
+					</Suspense>
+				</div>
+				<div className="w-full xl:w-[40%]">
+					<Suspense
+						fallback={
+							<ClipLoader
+								className="m-auto !border-t-primary !border-r-primary !border-l-primary"
+								size={50}
+							/>
+						}
+					>
+						<RecentSalesContainer />
+					</Suspense>
+				</div>
 			</div>
 		</>
 	);

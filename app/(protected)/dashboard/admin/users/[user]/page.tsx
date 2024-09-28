@@ -8,7 +8,7 @@ export default async function AdminUserPage({ params }: { params: { user: string
 	const user = await getUserById(params.user);
 
 	return (
-		<main className="flex flex-col  gap-4 h-full">
+		<main className="flex flex-col  gap-4 h-full max-w-2xl">
 			<div className="">
 				<p className="text-xl font-bold">
 					{user?.name ?? 'Users'}
