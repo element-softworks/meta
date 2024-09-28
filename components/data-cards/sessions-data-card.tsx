@@ -3,6 +3,7 @@ import { addDays, addHours, addWeeks, startOfDay } from 'date-fns';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { MoveDown, MoveLeft, MoveUp } from 'lucide-react';
 import { DataCard } from '../data-card';
+import { AnalyticsIcon } from '@/app/analytics-icon';
 
 interface SessionsDataCardProps {
 	variant: 'today' | 'week' | 'now';
@@ -31,14 +32,6 @@ export async function SessionsDataCard(props: SessionsDataCardProps) {
 		props.variant === 'now'
 	);
 
-	const icon =
-		Number(sessionsResponse?.percentageDifference) === 0 ? (
-			<MoveLeft size={20} className="text-neutral-500" />
-		) : Number(sessionsResponse?.percentageDifference) > 0 ? (
-			<MoveUp size={20} className="text-successful" />
-		) : (
-			<MoveDown size={20} className="text-destructive" />
-		);
 	return (
 		<DataCard
 			title={sessionsResponse?.sessions?.count ?? 0}
@@ -51,7 +44,10 @@ export async function SessionsDataCard(props: SessionsDataCardProps) {
 						<CardDescription className="flex-1 text-right">
 							{sessionsResponse?.percentageDifference}%
 						</CardDescription>
-						<div className="">{icon}</div>
+						<AnalyticsIcon
+							className="flex-1"
+							percentage={Number(sessionsResponse?.percentageDifference)}
+						/>
 					</>
 				) : null
 			}

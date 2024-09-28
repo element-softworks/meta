@@ -1,0 +1,1 @@
+ALTER TABLE "Customer" ADD COLUMN "type" text DEFAULT 'subscription' NOT NULL;

@@ -1,5 +1,7 @@
 import { MonthlyRevenueDataCard } from '@/components/data-cards/monthly-revenue-data-card';
+import { SalesDataCard } from '@/components/data-cards/sales-data-card';
 import { SessionsDataCard } from '@/components/data-cards/sessions-data-card';
+import { TotalSubscriptionsDataCard } from '@/components/data-cards/total-subscriptions-data-card';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Radio, Users, Users2 } from 'lucide-react';
@@ -28,7 +30,7 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 					<TabsTrigger value="payments">Payments</TabsTrigger>
 				</TabsList>
 				<TabsContent value="sessions" className="flex flex-col gap-4">
-					<div className="flex flex-wrap gap-4">
+					<div className="flex flex-wrap gap-4 mt-4">
 						<SessionsDataCard
 							variant="now"
 							title="Sessions now"
@@ -60,8 +62,10 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 					</Suspense>
 				</TabsContent>
 				<TabsContent value="payments" className="flex flex-col gap-4">
-					<div className="flex flex-wrap gap-4">
+					<div className="flex flex-wrap gap-4 mt-4">
 						<MonthlyRevenueDataCard />
+						<TotalSubscriptionsDataCard />
+						<SalesDataCard />
 					</div>
 					<div className="grid grid-cols-1 md:grid-cols-2">
 						<Suspense

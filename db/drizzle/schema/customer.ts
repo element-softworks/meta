@@ -31,6 +31,7 @@ export const customer = pgTable(
 		email: text('email').notNull(),
 		status: text('status').notNull(),
 		cancelAtPeriodEnd: boolean('cancelAtPeriodEnd').notNull(),
+		type: text('type').notNull().default('subscription'),
 	},
 	(table) => {
 		return {

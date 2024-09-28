@@ -1,0 +1,1 @@
+ALTER TABLE "Customer" ADD COLUMN "createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL;
