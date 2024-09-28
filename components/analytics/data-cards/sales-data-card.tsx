@@ -1,14 +1,14 @@
 import { getRevenueAnalytics } from '@/actions/get-revenue-analytics';
 import { AnalyticsIcon } from '@/app/analytics-icon';
 import { BadgeCent, Landmark } from 'lucide-react';
-import { DataCard } from '../data-card';
-import { CardDescription } from '../ui/card';
+import { DataCard } from '../../data-card';
+import { CardDescription } from '../../ui/card';
 import { getTotalSales } from '@/actions/get-total-sales';
 import { subMonths } from 'date-fns';
 
 interface SalesDataCardProps {}
 
-export async function SalesDataCard(props: SalesDataCardProps) {
+export default async function SalesDataCard(props: SalesDataCardProps) {
 	const revenueAnalytics = await getTotalSales(
 		subMonths(new Date(), 1).toISOString(),
 		new Date().toISOString()

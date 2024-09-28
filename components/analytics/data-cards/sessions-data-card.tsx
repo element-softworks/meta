@@ -1,8 +1,15 @@
 import { getSessionsCount } from '@/actions/get-sessions-count';
 import { addDays, addHours, addMonths, addWeeks, startOfDay, subDays, subMonths } from 'date-fns';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '../../ui/card';
 import { MoveDown, MoveLeft, MoveUp } from 'lucide-react';
-import { DataCard } from '../data-card';
+import { DataCard } from '../../data-card';
 import { AnalyticsIcon } from '@/app/analytics-icon';
 
 interface SessionsDataCardProps {
@@ -15,7 +22,7 @@ interface SessionsDataCardProps {
 	loading?: boolean;
 }
 
-export async function SessionsDataCard(props: SessionsDataCardProps) {
+export default async function SessionsDataCard(props: SessionsDataCardProps) {
 	let startDate = new Date();
 
 	if (props.variant === 'week') {

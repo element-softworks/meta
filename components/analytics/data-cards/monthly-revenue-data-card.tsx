@@ -1,12 +1,12 @@
 import { getRevenueAnalytics } from '@/actions/get-revenue-analytics';
 import { AnalyticsIcon } from '@/app/analytics-icon';
 import { Landmark } from 'lucide-react';
-import { DataCard } from '../data-card';
-import { CardDescription } from '../ui/card';
+import { DataCard } from '../../data-card';
+import { CardDescription } from '../../ui/card';
 
 interface MonthlyRevenueDataCardProps {}
 
-export async function MonthlyRevenueDataCard(props: MonthlyRevenueDataCardProps) {
+export default async function MonthlyRevenueDataCard(props: MonthlyRevenueDataCardProps) {
 	const revenueAnalytics = await getRevenueAnalytics();
 
 	let UkCurrency = new Intl.NumberFormat('en-GB', {

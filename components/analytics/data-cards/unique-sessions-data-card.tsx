@@ -1,9 +1,8 @@
-import { addDays, addHours, addMonths, addWeeks, startOfDay, subDays, subMonths } from 'date-fns';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card';
-import { MoveDown, MoveLeft, MoveUp } from 'lucide-react';
-import { DataCard } from '../data-card';
-import { AnalyticsIcon } from '@/app/analytics-icon';
 import { getUniqueSessionsCount } from '@/actions/get-unique-sessions-count';
+import { AnalyticsIcon } from '@/app/analytics-icon';
+import { subDays } from 'date-fns';
+import { DataCard } from '../../data-card';
+import { CardDescription } from '../../ui/card';
 
 interface UniqueSessionsDataCardProps {
 	title: string;
@@ -14,7 +13,7 @@ interface UniqueSessionsDataCardProps {
 	loading?: boolean;
 }
 
-export async function UniqueSessionsDataCard(props: UniqueSessionsDataCardProps) {
+export default async function UniqueSessionsDataCard(props: UniqueSessionsDataCardProps) {
 	let startDate = subDays(new Date(), 30);
 
 	const sessionsResponse = await getUniqueSessionsCount(

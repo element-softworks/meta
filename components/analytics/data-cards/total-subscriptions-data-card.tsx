@@ -1,12 +1,12 @@
 import { getRevenueAnalytics } from '@/actions/get-revenue-analytics';
 import { AnalyticsIcon } from '@/app/analytics-icon';
 import { UserRoundPlus } from 'lucide-react';
-import { DataCard } from '../data-card';
-import { CardDescription } from '../ui/card';
+import { DataCard } from '../../data-card';
+import { CardDescription } from '../../ui/card';
 
 interface TotalSubscriptionsDataCardProps {}
 
-export async function TotalSubscriptionsDataCard(props: TotalSubscriptionsDataCardProps) {
+export default async function TotalSubscriptionsDataCard(props: TotalSubscriptionsDataCardProps) {
 	const revenueAnalytics = await getRevenueAnalytics();
 
 	return (
