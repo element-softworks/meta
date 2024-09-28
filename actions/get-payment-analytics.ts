@@ -12,7 +12,7 @@ import {
 	startOfDay,
 	startOfWeek,
 } from 'date-fns';
-import { between, count, sql } from 'drizzle-orm';
+import { and, between, count, eq, sql } from 'drizzle-orm';
 
 export const getSubscriptionAnalytics = async (startDate: string, endDate: string) => {
 	const dateDifferenceInDays = differenceInDays(new Date(endDate), new Date(startDate));
@@ -34,7 +34,12 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 				time: sql<string>`EXTRACT(HOUR FROM ${customer.startDate})`.as('hour'),
 			})
 			.from(customer)
-			.where(between(customer.startDate, new Date(startDate), new Date(endDate)))
+			.where(
+				and(
+					between(customer.startDate, new Date(startDate), new Date(endDate)),
+					eq(customer.type, 'subscription')
+				)
+			)
 			.groupBy(sql`EXTRACT(HOUR FROM ${customer.startDate})`);
 
 		const hours = Array.from({ length: 24 }, (_, i) => ({ time: i, count: 0 }));
@@ -58,7 +63,12 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 				time: sql<string>`DATE_TRUNC('day', ${customer.startDate})`.as('day'),
 			})
 			.from(customer)
-			.where(between(customer.startDate, new Date(startDate), new Date(endDate)))
+			.where(
+				and(
+					between(customer.startDate, new Date(startDate), new Date(endDate)),
+					eq(customer.type, 'subscription')
+				)
+			)
 			.groupBy(sql`DATE_TRUNC('day', ${customer.startDate})`);
 
 		// Generate all days between start and end dates
@@ -93,7 +103,12 @@ export const getSubscriptionAnalytics = async (startDate: string, endDate: strin
 				time: sql<string>`DATE_TRUNC('week', ${customer.startDate})`.as('week'),
 			})
 			.from(customer)
-			.where(between(customer.startDate, new Date(startDate), new Date(endDate)))
+			.where(
+				and(
+					between(customer.startDate, new Date(startDate), new Date(endDate)),
+					eq(customer.type, 'subscription')
+				)
+			)
 			.groupBy(sql`DATE_TRUNC('week', ${customer.startDate})`);
 
 		// Generate all weeks between start and end dates

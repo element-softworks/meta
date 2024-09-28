@@ -5,22 +5,15 @@ import { session } from '@/db/drizzle/schema';
 import { addMilliseconds, differenceInMilliseconds } from 'date-fns';
 import { and, between, count, eq, gte, lte, sql } from 'drizzle-orm';
 
-export const getSessionsCount = async (startDate: string, endDate: string, active: boolean) => {
+export const getUniqueSessionsCount = async (startDate: string, endDate: string) => {
 	const [sessionsResponse] = await db
-		.select({ count: count() })
+		.select({ unique: sql<string>`COUNT(DISTINCT ${session.ipAddress})` })
 		.from(session)
-		.where(
-			and(
-				between(session.createdAt, new Date(startDate), new Date(endDate)),
-				active
-					? and(gte(session.endsAt, new Date()), lte(session.createdAt, new Date()))
-					: undefined
-			)
-		);
+		.where(and(between(session.createdAt, new Date(startDate), new Date(endDate))));
 
 	const differenceInMs = differenceInMilliseconds(new Date(endDate), new Date(startDate));
 	const [previousSessionsResponse] = await db
-		.select({ count: count() })
+		.select({ unique: sql<string>`COUNT(DISTINCT ${session.ipAddress})` })
 		.from(session)
 		.where(
 			and(
@@ -32,12 +25,10 @@ export const getSessionsCount = async (startDate: string, endDate: string, activ
 			)
 		);
 
-	const percentageDifference = active
-		? null
-		: previousSessionsResponse.count
+	const percentageDifference = previousSessionsResponse.unique
 		? (
-				((sessionsResponse.count - previousSessionsResponse.count) /
-					previousSessionsResponse.count) *
+				((Number(sessionsResponse.unique) - Number(previousSessionsResponse.unique)) /
+					Number(previousSessionsResponse.unique)) *
 				100
 		  ).toFixed(2)
 		: 0;

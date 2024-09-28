@@ -3,6 +3,7 @@ import { session } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import { addDays, differenceInHours, format, startOfDay } from 'date-fns';
 import { between, sql } from 'drizzle-orm';
+import { unique } from 'drizzle-orm/pg-core';
 
 export const getSessionAnalytics = async (startDate: string, endDate: string) => {
 	const dateDifferenceInHours = differenceInHours(new Date(endDate), new Date(startDate));
@@ -17,6 +18,7 @@ export const getSessionAnalytics = async (startDate: string, endDate: string) =>
 
 	if (dateDifferenceInHours <= 24) {
 		// Group by hour if less than or equal to 24 hours
+
 		sessionResponse = await db
 			.select({
 				desktop:
@@ -64,6 +66,8 @@ export const getSessionAnalytics = async (startDate: string, endDate: string) =>
 			.from(session)
 			.where(between(session.createdAt, new Date(startDate), new Date(endDate)))
 			.groupBy(sql`DATE_TRUNC('day', ${session.createdAt})`);
+
+		console.log(sessionResponse, 'formattedSubs data');
 
 		// Generate all days between start and end dates
 		const days = [];

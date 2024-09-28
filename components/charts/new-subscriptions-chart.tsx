@@ -1,25 +1,16 @@
 'use client';
-import { TrendingUp } from 'lucide-react';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
 	ChartConfig,
 	ChartContainer,
 	ChartTooltip,
 	ChartTooltipContent,
 } from '@/components/ui/chart';
-import { format } from 'date-fns';
 import { DateSelectorPicker } from '../date-selector-picker';
 
-interface NewPaymentsChartProps {
+interface NewSubscriptionsChartProps {
 	searchParams: any;
 	chartConfig: ChartConfig;
 	chartData: { time: string; count: number }[] | undefined;
@@ -27,7 +18,7 @@ interface NewPaymentsChartProps {
 	description: string;
 }
 
-export function NewPaymentsChart(props: NewPaymentsChartProps) {
+export function NewSubscriptionsChart(props: NewSubscriptionsChartProps) {
 	return (
 		<Card className="">
 			<CardHeader className="flex flex-col lg:flex-row gap-4">
@@ -35,7 +26,7 @@ export function NewPaymentsChart(props: NewPaymentsChartProps) {
 					<CardTitle>{props.title}</CardTitle>
 					<CardDescription>{props.description}</CardDescription>
 				</div>
-				<DateSelectorPicker searchParams={props.searchParams} id="new-payments" />
+				<DateSelectorPicker searchParams={props.searchParams} id="new-subscriptions" />
 			</CardHeader>
 			<CardContent>
 				<ChartContainer config={props.chartConfig} className="overflow-scroll">

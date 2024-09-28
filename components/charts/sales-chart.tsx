@@ -14,21 +14,19 @@ import { useMemo, useState } from 'react';
 import { DateSelectorPicker } from '../date-selector-picker';
 import { Button } from '../ui/button';
 import { ChartColumnBig, ChartLine } from 'lucide-react';
-interface SessionsChart {
+interface SalesChart {
 	searchParams: any;
 	chartConfig: ChartConfig;
-	chartData: { time: string; desktop: number; mobile: number }[] | undefined;
+	chartData: { time: string; amount: number }[] | undefined;
 	title: string;
 	description: string;
 }
 
-export function SessionsChart(props: SessionsChart) {
-	const [activeChart, setActiveChart] = useState<keyof typeof props.chartConfig>('all');
+export function SalesChart(props: SalesChart) {
+	const [activeChart, setActiveChart] = useState<keyof typeof props.chartConfig>('amount');
 	const total = useMemo(
 		() => ({
-			desktop: props?.chartData?.reduce((acc, curr) => acc + curr.desktop, 0),
-			mobile: props?.chartData?.reduce((acc, curr) => acc + curr.mobile, 0),
-			all: props?.chartData?.reduce((acc, curr) => acc + curr.desktop + curr.mobile, 0),
+			amount: props?.chartData?.reduce((acc, curr) => acc + curr.amount, 0),
 		}),
 		[props.chartData]
 	);
@@ -45,12 +43,8 @@ export function SessionsChart(props: SessionsChart) {
 				tickMargin={8}
 				minTickGap={40}
 			/>
-			{activeChart !== 'all' && (
-				<ChartTooltip
-					content={<ChartTooltipContent className="w-[150px]" nameKey="views" />}
-				/>
-			)}
-			{type === 'line' && activeChart !== 'all' && (
+			<ChartTooltip content={<ChartTooltipContent className="w-[150px]" nameKey="views" />} />
+			{type === 'line' && (
 				<Line
 					dataKey={activeChart}
 					type="monotone"
@@ -59,48 +53,12 @@ export function SessionsChart(props: SessionsChart) {
 					dot={false}
 				/>
 			)}
-			{type === 'bar' && activeChart !== 'all' && (
-				<Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
-			)}
-
-			{activeChart === 'all' && (
-				<>
-					{type === 'line' && (
-						<>
-							<ChartTooltip content={<ChartTooltipContent className="w-[150px]" />} />
-							<Line
-								dataKey="desktop"
-								type="monotone"
-								stroke={`var(--color-desktop)`}
-								strokeWidth={2}
-								dot={false}
-								label="Desktop"
-							/>
-							<Line
-								dataKey="mobile"
-								type="monotone"
-								stroke={`var(--color-mobile)`}
-								strokeWidth={2}
-								dot={false}
-								label="Mobile"
-							/>
-						</>
-					)}
-
-					{type === 'bar' && (
-						<>
-							<ChartTooltip content={<ChartTooltipContent className="w-[150px]" />} />
-							<Bar dataKey="desktop" strokeWidth={2} fill={`var(--color-desktop)`} />
-							<Bar dataKey="mobile" strokeWidth={2} fill={`var(--color-mobile)`} />
-						</>
-					)}
-				</>
-			)}
+			{type === 'bar' && <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />}
 		</>
 	);
 	return (
 		<Card>
-			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 xl:flex-row">
+			<CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
 				<div className="flex flex-1 flex-col lg:flex-row justify-center lg:justify-start lg:items-start gap-1 lg:gap-4 px-4 py-4 sm:py-4">
 					<div className="flex-1 flex gap-2 ">
 						<div className="flex-1">
@@ -124,31 +82,30 @@ export function SessionsChart(props: SessionsChart) {
 					</div>
 					<div className="">
 						<DateSelectorPicker
-							default="3 months"
+							default="month"
 							searchParams={props.searchParams}
-							id="sessions"
+							id="sales"
 							longRanges
 						/>
 					</div>
 				</div>
 
-				<div className="flex flex-wrap">
-					{['all', 'desktop', 'mobile'].map((key, index) => {
+				<div className="flex">
+					{['amount'].map((key, index) => {
 						const chart = key as keyof typeof props.chartConfig;
 						return (
-							<button
+							<div
 								key={index}
 								data-active={activeChart === chart}
-								className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l xl:border-t-0 sm:px-8 sm:py-6"
-								onClick={() => setActiveChart(chart)}
+								className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l data-[active=true]:bg-muted/50 sm:border-l sm:border-t-0 sm:px-8 sm:py-6"
 							>
 								<span className="text-xs text-muted-foreground">
 									{props.chartConfig[chart].label}
 								</span>
 								<span className="text-lg font-bold leading-none sm:text-3xl">
-									{total?.[key as keyof typeof total]?.toLocaleString()}
+									£{total?.[key as keyof typeof total]?.toLocaleString()}
 								</span>
-							</button>
+							</div>
 						);
 					})}
 				</div>

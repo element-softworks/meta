@@ -1,14 +1,16 @@
+import SalesChartContainer from '@/components/charts/sales-chart-container';
 import { MonthlyRevenueDataCard } from '@/components/data-cards/monthly-revenue-data-card';
 import { SalesDataCard } from '@/components/data-cards/sales-data-card';
 import { SessionsDataCard } from '@/components/data-cards/sessions-data-card';
 import { TotalSubscriptionsDataCard } from '@/components/data-cards/total-subscriptions-data-card';
+import { UniqueSessionsDataCard } from '@/components/data-cards/unique-sessions-data-card';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Radio, Users, Users2 } from 'lucide-react';
+import { BookUser, Radio, Users, Users2 } from 'lucide-react';
 import { Suspense, lazy } from 'react';
 import { ClipLoader } from 'react-spinners';
 const NewPaymentsChartContainer = lazy(
-	() => import('@/components/charts/new-payments-chart-container')
+	() => import('@/components/charts/new-subscriptions-chart-container')
 );
 const SessionsChartContainer = lazy(() => import('@/components/charts/sessions-chart-container'));
 
@@ -49,7 +51,14 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 							subtitle="Past week"
 							icon={<Users2 size={20} />}
 						/>
+
+						<UniqueSessionsDataCard
+							title="Unique sessions"
+							subtitle="Past month"
+							icon={<BookUser size={20} />}
+						/>
 					</div>
+
 					<Suspense
 						fallback={
 							<ClipLoader
@@ -67,6 +76,16 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 						<TotalSubscriptionsDataCard />
 						<SalesDataCard />
 					</div>
+					<Suspense
+						fallback={
+							<ClipLoader
+								className="m-auto !border-t-primary !border-r-primary !border-l-primary"
+								size={50}
+							/>
+						}
+					>
+						<SalesChartContainer searchParams={searchParams} />
+					</Suspense>
 					<div className="grid grid-cols-1 md:grid-cols-2">
 						<Suspense
 							fallback={

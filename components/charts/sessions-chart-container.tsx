@@ -51,7 +51,11 @@ export default async function SessionsChartContainer({ searchParams }: { searchP
 		},
 		mobile: {
 			label: 'Mobile',
-			color: 'hsl(var(--chart-3))',
+			color: 'hsl(var(--chart-2))',
+		},
+
+		all: {
+			label: 'All',
 		},
 	} satisfies ChartConfig;
 
