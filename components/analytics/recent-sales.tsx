@@ -51,16 +51,16 @@ export function RecentSales(props: RecentSales) {
 									<AvatarFallback>{sale?.user?.name?.slice(0, 2)}</AvatarFallback>
 								</Avatar>
 								<div>
-									<div className="text-sm font-semibold text-gray-800 ">
+									<div className="text-sm font-semibold ">
 										{sale.user?.name ?? 'Unknown'}
 									</div>
-									<div className="text-xs text-gray-500">
+									<div className="text-xs text-muted-foreground">
 										{sale.invoice.createdAt.toLocaleDateString()}
 									</div>
 								</div>
 							</Link>
-							<div className="text-sm font-semibold text-gray-800">
-								${sale.invoice.total}
+							<div className="text-sm font-semibold ">
+								£{sale?.invoice?.total / 100}
 							</div>
 						</div>
 					);
