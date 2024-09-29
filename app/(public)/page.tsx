@@ -8,7 +8,7 @@ import Link from 'next/link';
 export default function Home() {
 	return (
 		<main className="flex h-full flex-col ">
-			<MarketingSection className="pb-4 md:pb-8">
+			<MarketingSection className="pb-4 md:pb-8 pt-8 md:pt-16">
 				<Header
 					title="Enter a catchy title here with a highlighted section"
 					highlighted="highlighted section"
@@ -48,9 +48,9 @@ export default function Home() {
 					priority
 					basis="basis-full md:basis-1/2"
 					options={{
-						loop: true,
 						duration: 100,
-						align: 'start',
+						align: 'center',
+						slidesToScroll: 1,
 					}}
 					slides={[
 						{

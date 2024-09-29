@@ -50,7 +50,7 @@ export function MarketingSlider(props: MarketingSliderProps) {
 					}}
 					plugins={[
 						Autoplay({
-							delay: 7000,
+							delay: 5000,
 							playOnInit: true,
 							stopOnInteraction: true,
 						}),
@@ -60,7 +60,7 @@ export function MarketingSlider(props: MarketingSliderProps) {
 						{props.slides.map((slide, index) => (
 							<CarouselItem
 								key={index}
-								className={`${!!props.basis?.length ? props.basis : 'basis-1/3'}`}
+								className={`${!!props.basis?.length ? props.basis : 'basis-1/3'} ]`}
 							>
 								<div className="p-1 rounded-2xl border-2 border-border">
 									<Image
