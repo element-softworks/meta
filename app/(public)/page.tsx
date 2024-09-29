@@ -2,6 +2,7 @@ import { Header } from '@/components/marketing/header';
 import { MarketingSection } from '@/components/marketing/marketing-section';
 import { MarketingSlider } from '@/components/marketing/marketing-slider';
 import { Button } from '@/components/ui/button';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Home() {
@@ -30,10 +31,22 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
+			<div className={`rounded-2xl  w-full px-4 block md:hidden`}>
+				<Image
+					priority
+					loading="eager"
+					className="rounded-xl border-2 border-border"
+					src="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
+					alt="Advanced analytics"
+					layout="responsive"
+					width={1200}
+					height={800}
+				/>
+			</div>
 			<MarketingSection disablePaddingTop disableContainer disablePaddingX>
 				<MarketingSlider
 					priority
-					basis="basis-full xl:basis-1/2"
+					basis="basis-full md:basis-1/2"
 					options={{
 						loop: true,
 						duration: 100,

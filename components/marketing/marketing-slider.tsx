@@ -19,60 +19,68 @@ interface MarketingSliderProps {
 		image: string;
 		alt: string;
 	}[];
+	carouselOnMobile?: boolean;
 }
 export function MarketingSlider(props: MarketingSliderProps) {
-	const isMobile = useBreakpoint('xl');
+	//We default to no carousel on mobile because it's bad for core web vitals
+	const { carouselOnMobile = false } = props;
+	const isMobile = useBreakpoint('md');
+
 	return (
-		<div
-			className="relative flex justify-center max-w-[2300px] p-4 xl:p-0"
-			style={
-				isMobile
-					? {}
-					: {
-							WebkitMaskImage:
-								'linear-gradient(to right, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 96%)',
-							maskImage:
-								'linear-gradient(to right, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 96%)',
-					  }
-			}
-		>
-			<Carousel
-				className="w-full"
-				opts={{
-					...props.options,
-				}}
-				plugins={[
-					Autoplay({
-						delay: 7000,
-						playOnInit: true,
-						stopOnInteraction: true,
-					}),
-				]}
+		<>
+			<div
+				className={`relative flex justify-center max-w-[2300px] p-4 xl:p-0 ${
+					carouselOnMobile ? '' : 'hidden md:block'
+				}`}
+				style={
+					isMobile
+						? {}
+						: {
+								WebkitMaskImage:
+									'linear-gradient(to right, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 96%)',
+								maskImage:
+									'linear-gradient(to right, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 96%)',
+						  }
+				}
 			>
-				<CarouselContent>
-					{props.slides.map((slide, index) => (
-						<CarouselItem
-							key={index}
-							className={`${!!props.basis?.length ? props.basis : 'basis-1/3'}`}
-						>
-							<div className="p-1 rounded-2xl border-2 border-border">
-								<Image
-									priority={props.priority}
-									loading={props.priority ? 'eager' : 'lazy'}
-									className="rounded-xl"
-									src={slide.image}
-									alt={slide.alt}
-									layout="responsive"
-									width={1200}
-									height={800}
-								/>
-							</div>
-						</CarouselItem>
-					))}
-				</CarouselContent>
-				{/* <CarouselPrevious /> */}
-				{/* <CarouselNext /> */}
-			</Carousel>
-		</div>
+				<Carousel
+					className="w-full"
+					opts={{
+						...props.options,
+					}}
+					plugins={[
+						Autoplay({
+							delay: 7000,
+							playOnInit: true,
+							stopOnInteraction: true,
+						}),
+					]}
+				>
+					<CarouselContent>
+						{props.slides.map((slide, index) => (
+							<CarouselItem
+								key={index}
+								className={`${!!props.basis?.length ? props.basis : 'basis-1/3'}`}
+							>
+								<div className="p-1 rounded-2xl border-2 border-border">
+									<Image
+										priority={props.priority}
+										loading={props.priority ? 'eager' : 'lazy'}
+										className="rounded-xl"
+										src={slide.image}
+										alt={slide.alt}
+										layout="responsive"
+										width={1200}
+										height={800}
+									/>
+								</div>
+							</CarouselItem>
+						))}
+					</CarouselContent>
+					{/* <CarouselPrevious /> */}
+					{/* <CarouselNext /> */}
+				</Carousel>
+			</div>
+		</>
 	);
 }
