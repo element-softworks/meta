@@ -47,7 +47,12 @@ export default function Home() {
 					height={800}
 				/>
 			</div>
-			<MarketingSection disablePaddingTop disableContainer disablePaddingX>
+			<MarketingSection
+				disablePaddingTop
+				disableContainer
+				disablePaddingX
+				disablePaddingBottom
+			>
 				<MarketingSlider
 					priority
 					basis="basis-full md:basis-1/2"
@@ -85,7 +90,7 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<MarketingSection disablePaddingTop>
+			<MarketingSection className="pt-8 md:pt-16">
 				<MarqueeText
 					text={['Built using', 'NextJS', 'Shadcn/ui', 'Tailwind css']}
 					direction="left"
