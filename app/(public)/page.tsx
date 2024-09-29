@@ -2,6 +2,7 @@ import { Header } from '@/components/marketing/header';
 import { KeyPointList } from '@/components/marketing/key-point-list';
 import { MarketingSection } from '@/components/marketing/marketing-section';
 import { MarketingSlider } from '@/components/marketing/marketing-slider';
+import { MarqueeText } from '@/components/marketing/marquee-text';
 import { Button } from '@/components/ui/button';
 import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
@@ -85,33 +86,7 @@ export default function Home() {
 			</MarketingSection>
 
 			<MarketingSection disablePaddingTop>
-				<Marquee autoFill gradient>
-					<p className="font-extrabold text-6xl mx-8">Built using</p>
-					<p
-						style={{
-							color: 'white',
-							backgroundColor: 'white',
-							textShadow:
-								'-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000',
-						}}
-						className="font-extrabold text-6xl mx-8"
-					>
-						NextJS
-					</p>
-					<p className="font-extrabold text-6xl mx-8">Shadcn/ui</p>
-
-					<p
-						style={{
-							color: 'white',
-							backgroundColor: 'white',
-							textShadow:
-								'-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000',
-						}}
-						className="font-extrabold text-6xl mx-8"
-					>
-						Tailwind css
-					</p>
-				</Marquee>
+				<MarqueeText text={['Built using', 'NextJS', 'Shadcn/ui', 'Tailwind css']} />
 			</MarketingSection>
 
 			<MarketingSection disablePaddingTop>

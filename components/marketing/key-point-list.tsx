@@ -38,7 +38,7 @@ export function KeyPointList(props: KeyPointListProps) {
 				))}
 
 				<div className="flex flex-col md:flex-row gap-2 md:items-center md:justify-center md:mt-8 w-full">
-					<p className="text-xl ">We've got what you need </p>
+					<p className="text-xl ">We{"'"}ve got what you need </p>
 					<LoginButton>
 						<Button>Sign up today</Button>
 					</LoginButton>
