@@ -174,7 +174,6 @@ export async function POST(req: NextRequest, res: Response) {
 				stripeSubscriptionId: invoice.subscription?.toString() ?? '',
 				customerId: foundCustomer?.id ?? '',
 			});
-
 			await createNotification({
 				userId: customerResponse?.metadata?.userId ?? '',
 				message: `Your invoice for ${teamResponse?.data?.team?.name} has been ${status}`,

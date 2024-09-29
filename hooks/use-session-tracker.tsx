@@ -1,6 +1,7 @@
 'use client';
 
 import { trackSessions } from '@/actions/track-sessions';
+import { set } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 
@@ -9,7 +10,7 @@ export function useSessionTracker(email: string) {
 	const [remaining, setRemaining] = useState<number>(0);
 
 	const onIdle = async () => {
-		console.log('User is idle');
+		setState('Idle');
 		await trackSessions(email ?? '', true);
 	};
 
@@ -37,8 +38,9 @@ export function useSessionTracker(email: string) {
 	});
 
 	useEffect(() => {
+		if (state === 'Idle') return;
 		(async () => {
 			await trackSessions(email ?? '');
 		})();
-	}, []);
+	}, [state]);
 }

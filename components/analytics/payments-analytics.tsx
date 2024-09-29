@@ -2,6 +2,7 @@ import SalesChartContainer from '@/components/charts/sales-chart-container';
 import { Suspense, lazy } from 'react';
 import { ClipLoader } from 'react-spinners';
 import RecentSalesContainer from './recent-sales-container';
+import ConversionRateDataCard from './data-cards/conversion-rate-data-card';
 
 const NewPaymentsChartContainer = lazy(
 	() => import('@/components/charts/new-subscriptions-chart-container')
@@ -21,6 +22,7 @@ export function PaymentsAnalytics({ searchParams }: { searchParams: any }) {
 				<SalesDataCard />
 				<MonthlyRevenueDataCard />
 				<TotalSubscriptionsDataCard />
+				<ConversionRateDataCard />
 			</div>
 			<Suspense
 				fallback={
