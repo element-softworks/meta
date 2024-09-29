@@ -1,8 +1,9 @@
 'use server';
 
+import { getCookie } from '@/data/cookies';
 import { isTeamOwnerServer } from '@/data/team';
 import { db } from '@/db/drizzle/db';
-import { customer } from '@/db/drizzle/schema';
+import { customer, session } from '@/db/drizzle/schema';
 import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
 
@@ -62,7 +63,9 @@ export const createCheckoutSession = async ({
 				customer = newCustomer;
 			}
 
-			const session = await stripe.checkout.sessions.create({
+			const sessionResponse = await getCookie('session');
+
+			const checkoutSession = await stripe.checkout.sessions.create({
 				customer: customer.id,
 				mode: 'subscription',
 				payment_method_types: ['card'],
@@ -80,13 +83,14 @@ export const createCheckoutSession = async ({
 					userId: userId,
 					teamId: teamId,
 					email: email,
+					userSession: sessionResponse?.value ?? '',
 				},
 			});
 
 			return {
 				success: true,
 				type: 'subscription',
-				sessionId: session.id,
+				sessionId: checkoutSession.id,
 			};
 		} catch (err) {
 			console.error(`Error creating subscription session: ${err}`);

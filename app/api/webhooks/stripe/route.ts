@@ -1,9 +1,10 @@
 import { getTeamById } from '@/data/team';
 import { getUserByEmail } from '@/data/user';
 import { db } from '@/db/drizzle/db';
-import { customer, customerInvoice, team } from '@/db/drizzle/schema';
+import { customer, customerInvoice, session, team } from '@/db/drizzle/schema';
 import { createNotification } from '@/lib/notifications';
 import { eq } from 'drizzle-orm';
+import { stat } from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -137,6 +138,17 @@ export async function POST(req: NextRequest, res: Response) {
 		if (!team) {
 			console.error('Team not found');
 			return NextResponse.json({ error: 'Team not found' }, { status: 404 });
+		}
+
+		if (status === 'succeeded') {
+			if (!!customerResponse?.metadata?.userSession) {
+				await db
+					.update(session)
+					.set({
+						converted: true,
+					})
+					.where(eq(session.id, customerResponse?.metadata?.userSession));
+			}
 		}
 
 		await db

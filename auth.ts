@@ -8,12 +8,13 @@ import { getUserByEmail, getUserById } from './data/user';
 import { db } from './db/drizzle/db';
 import { LoginSchema } from './schemas';
 import { and, eq, exists } from 'drizzle-orm';
-import { account, teamMember, twoFactorConfirmation, user } from './db/drizzle/schema';
+import { account, session, teamMember, twoFactorConfirmation, user } from './db/drizzle/schema';
 import { getTwoFactorConfirmationByUserId } from './data/two-factor-confirmation';
 import { getCookie } from './data/cookies';
 import { getAccountByUserId } from './data/account';
 import { getUsersTeams } from './data/team';
 import { team } from './db/drizzle/schema/team';
+import { get } from 'http';
 
 export const {
 	handlers,
@@ -78,8 +79,16 @@ export const {
 
 	callbacks: {
 		signIn: async ({ user, account }) => {
-			console.log(account, 'account, user');
 			const existingUser = await getUserById(user?.id ?? '');
+
+			//Update the session with the user's email
+			const sessionResponse = await getCookie('session');
+			if (!!sessionResponse?.value?.length) {
+				await db
+					.update(session)
+					.set({ email: existingUser?.email })
+					.where(eq(session.id, sessionResponse?.value));
+			}
 
 			//Prevent login if user is archived
 			if (existingUser?.isArchived) return false;

@@ -4,52 +4,69 @@ import { getCookie, setCookie } from '@/data/cookies';
 import { db } from '@/db/drizzle/db';
 import { session } from '@/db/drizzle/schema';
 import { addDays, addHours, addMinutes } from 'date-fns';
+import { eq } from 'drizzle-orm';
 import { cookies, headers } from 'next/headers';
 import { userAgent } from 'next/server';
 
-export const trackSessions = async (email: string) => {
+export const trackSessions = async (email: string, endSession?: boolean, action?: boolean) => {
 	const sessionCookie = await getCookie('session');
 
-	if (sessionCookie) {
-		return { sessionCookie };
+	if (!!sessionCookie?.value && endSession) {
+		await db
+			.update(session)
+			.set({
+				endsAt: new Date(),
+			})
+			.where(eq(session.id, sessionCookie?.value));
+		await cookies().set('session', '', {
+			maxAge: 0,
+		});
+		return;
 	}
 
-	const headersList = headers();
-	const { get } = headers();
+	console.log(!!sessionCookie?.value, 'session cookie');
 
-	const ipAddress =
-		headersList.get('x-real-ip') ||
-		headersList.get('x-forwarded-for') ||
-		headersList.get('remote-addr');
+	if (!!sessionCookie) {
+		console.log('session cookie exists');
+		return { sessionCookie };
+	} else {
+		console.log('session cookie does not exist');
+		const headersList = headers();
+		const { get } = headers();
 
-	const userAgentStructure = { headers: headersList };
-	const agent = userAgent(userAgentStructure);
-	console.log(agent?.device, 'agent device');
-	const endsAtDate = addHours(new Date(), 1);
+		const ipAddress =
+			headersList.get('x-real-ip') ||
+			headersList.get('x-forwarded-for') ||
+			headersList.get('remote-addr');
 
-	const viewport = agent?.device?.type === 'mobile' ? 'mobile' : 'desktop';
+		const userAgentStructure = { headers: headersList };
+		const agent = userAgent(userAgentStructure);
+		const endsAtDate = addHours(new Date(), 1);
 
-	const [newSession] = await db
-		.insert(session)
-		.values({
-			deviceType: viewport,
-			createdAt: new Date(),
-			email: email,
-			browser: agent?.browser?.name ?? 'Unknown',
-			engine: agent?.engine?.name ?? 'Unknown',
-			os: agent?.os?.name ?? 'Unknown',
-			device: agent?.device?.model ?? 'Unknown',
-			cpu: agent?.cpu?.architecture ?? 'Unknown',
-			ipAddress: ipAddress ?? 'Unknown',
-			userAgent: agent?.ua,
-			isBot: agent?.isBot,
-			endsAt: endsAtDate,
-		})
-		.returning({ id: session.id });
+		const viewport = agent?.device?.type === 'mobile' ? 'mobile' : 'desktop';
 
-	await cookies().set('session', newSession.id, {
-		maxAge: 60 * 60, // 1 hour
-	});
+		const [newSession] = await db
+			.insert(session)
+			.values({
+				deviceType: viewport,
+				createdAt: new Date(),
+				email: email,
+				browser: agent?.browser?.name ?? 'Unknown',
+				engine: agent?.engine?.name ?? 'Unknown',
+				os: agent?.os?.name ?? 'Unknown',
+				device: agent?.device?.model ?? 'Unknown',
+				cpu: agent?.cpu?.architecture ?? 'Unknown',
+				ipAddress: ipAddress ?? 'Unknown',
+				userAgent: agent?.ua,
+				isBot: agent?.isBot,
+				endsAt: endsAtDate,
+			})
+			.returning({ id: session.id });
 
-	return;
+		await cookies().set('session', newSession.id, {
+			maxAge: 60 * 30, // 1 hour
+		});
+
+		return;
+	}
 };

@@ -71,6 +71,13 @@
       "when": 1727511990735,
       "tag": "0009_warm_hardball",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1727602064539,
+      "tag": "0010_large_strong_guy",
+      "breakpoints": true
     }
   ]
 }

@@ -20,6 +20,7 @@ export const session = pgTable('Session', {
 	cpu: text('cpu'),
 	email: text('email'),
 	deviceType: text('deviceType'),
+	converted: boolean('converted'),
 });
 
 export type Session = InferSelectModel<typeof session>;
