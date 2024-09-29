@@ -149,6 +149,7 @@ export const {
 		session: async ({ token, session }) => {
 			//Signout users that are archived
 			if (token?.isArchived) {
+				await setCookie({ name: 'session', value: '', maxAge: 0 });
 				await signOut();
 			}
 

@@ -1,3 +1,5 @@
+import withBundleAnalyzer from '@next/bundle-analyzer';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
@@ -8,15 +10,10 @@ const nextConfig = {
 			},
 		],
 	},
-	webpack: (config, { webpack }) => {
-		config.plugins.push(
-			new webpack.IgnorePlugin({
-				resourceRegExp: /^pg-native$|^cloudflare:sockets$/,
-			})
-		);
-
-		return config;
-	},
 };
 
-export default nextConfig;
+const withBundleAnalyzerData = withBundleAnalyzer({
+	enabled: process.env.ANALYZE === 'true',
+});
+
+export default withBundleAnalyzerData(nextConfig);

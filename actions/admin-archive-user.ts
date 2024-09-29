@@ -1,6 +1,7 @@
 'use server';
 import { signOut } from '@/auth';
 import { TableUser } from '@/components/tables/users-table';
+import { setCookie } from '@/data/cookies';
 import { db } from '@/db/drizzle/db';
 import { user } from '@/db/drizzle/schema';
 import { User, userRole } from '@/db/drizzle/schema/user';
@@ -33,6 +34,7 @@ export const adminArchiveUser = async (archivingUser?: User | TableUser) => {
 	}
 
 	if (archivedUser.isArchived && archivedUser.id === adminUser.id) {
+		await setCookie({ name: 'session', value: '', maxAge: 0 });
 		return signOut();
 	}
 

@@ -1,5 +1,6 @@
 'use client';
 
+import { setCookie } from '@/data/cookies';
 import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +12,8 @@ interface LogoutButtonProps {
 export function LogoutButton(props: LogoutButtonProps) {
 	const router = useRouter();
 
-	const onClick = () => {
+	const onClick = async () => {
+		await setCookie({ name: 'session', value: '', maxAge: 0 });
 		signOut();
 	};
 
