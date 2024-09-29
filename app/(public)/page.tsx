@@ -90,7 +90,7 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<MarketingSection className="pt-8 md:pt-16">
+			<MarketingSection className="pt-8 md:pt-16" fadeSides>
 				<MarqueeText
 					text={['Built using', 'NextJS', 'Shadcn/ui', 'Tailwind css']}
 					direction="left"
