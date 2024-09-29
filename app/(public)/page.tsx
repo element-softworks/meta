@@ -86,7 +86,14 @@ export default function Home() {
 			</MarketingSection>
 
 			<MarketingSection disablePaddingTop>
-				<MarqueeText text={['Built using', 'NextJS', 'Shadcn/ui', 'Tailwind css']} />
+				<MarqueeText
+					text={['Built using', 'NextJS', 'Shadcn/ui', 'Tailwind css']}
+					direction="left"
+				/>
+				<MarqueeText
+					text={['Built using', 'NextJS', 'Shadcn/ui', 'Tailwind css']}
+					direction="right"
+				/>
 			</MarketingSection>
 
 			<MarketingSection disablePaddingTop>
