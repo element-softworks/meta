@@ -1,8 +1,11 @@
 'use server';
 
 import { getCookie, setCookie } from '@/data/cookies';
+import { getUsersTeams } from '@/data/team';
+import { getUserByEmail } from '@/data/user';
 import { db } from '@/db/drizzle/db';
-import { session } from '@/db/drizzle/schema';
+import { session, team, teamMember, user } from '@/db/drizzle/schema';
+import { Team } from '@/db/drizzle/schema/team';
 import { addDays, addHours, addMinutes } from 'date-fns';
 import { eq } from 'drizzle-orm';
 import { cookies, headers } from 'next/headers';
@@ -23,8 +26,6 @@ export const trackSessions = async (email: string, endSession?: boolean, action?
 		});
 		return;
 	}
-
-	console.log(!!sessionCookie?.value, 'session cookie');
 
 	if (!!sessionCookie) {
 		console.log('session cookie exists');

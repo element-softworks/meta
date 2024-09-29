@@ -9,8 +9,9 @@ export default async function ConversionRateDataCard(props: ConversionRateDataCa
 
 	return (
 		<DataCard
+			tooltip="Chance of a unique IP address converting to a sale."
 			title={`${conversionRateResponse.conversionRate}%`}
-			subtitle="Conversion Rate"
+			subtitle="Conversion rate"
 			descriptor="Overall"
 			icon={<Handshake size={20} />}
 		/>

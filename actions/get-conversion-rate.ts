@@ -2,21 +2,19 @@
 
 import { db } from '@/db/drizzle/db';
 import { session } from '@/db/drizzle/schema';
-import { count, eq } from 'drizzle-orm';
+import { and, count, countDistinct, eq } from 'drizzle-orm';
 
 export const getConversionRate = async () => {
-	//Get the total number of sessions with emails
-
 	const [convertedCount] = await db
 		.select({
-			count: count(),
+			count: countDistinct(session.ipAddress), // Count distinct IP addresses
 		})
 		.from(session)
-		.where(eq(session.converted, true));
+		.where(and(eq(session.converted, true)));
 
 	const [totalCount] = await db
 		.select({
-			count: count(),
+			count: countDistinct(session.ipAddress), // Count distinct IP addresses
 		})
 		.from(session);
 
