@@ -141,7 +141,8 @@ export async function POST(req: NextRequest, res: Response) {
 		}
 
 		if (status === 'succeeded') {
-			if (!!customerResponse?.metadata?.userSession) {
+			console.log('Invoice succeeded', customerResponse?.metadata, invoice?.amount_paid);
+			if (!!customerResponse?.metadata?.userSession && invoice?.amount_paid > 0) {
 				await db
 					.update(session)
 					.set({

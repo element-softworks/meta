@@ -39,6 +39,10 @@ export const createCheckoutSession = async ({
 		try {
 			let customer = null;
 
+			const sessionResponse = await getCookie('session');
+
+			console.log('Session response', sessionResponse?.value);
+
 			//If we have a stripeCustomerId, we are to retrieve the customer
 			if (!!stripeCustomerId?.length) {
 				try {
@@ -58,12 +62,11 @@ export const createCheckoutSession = async ({
 						userId: userId,
 						teamId: teamId,
 						email: email,
+						userSession: sessionResponse?.value ?? '',
 					},
 				});
 				customer = newCustomer;
 			}
-
-			const sessionResponse = await getCookie('session');
 
 			const checkoutSession = await stripe.checkout.sessions.create({
 				customer: customer.id,
@@ -101,6 +104,7 @@ export const createCheckoutSession = async ({
 	} else {
 		//Handle payment session
 		//TODO: CREATE ONE TIME PAYMENTS HERE
+		const sessionResponse = await getCookie('session');
 
 		try {
 			const session = await stripe.checkout.sessions.create({
@@ -110,6 +114,7 @@ export const createCheckoutSession = async ({
 					userId,
 					teamId,
 					email,
+					userSession: sessionResponse?.value ?? '',
 				},
 				line_items: [
 					{
