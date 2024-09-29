@@ -5,7 +5,6 @@ import { teamMember } from './../db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 
 export const getIsUserTeamAdmin = async (teamId: string, userId: string) => {
-	console.log(teamId, userId, 'teamId, userId');
 	const [teamResponse] = await db
 		.select()
 		.from(teamMember)

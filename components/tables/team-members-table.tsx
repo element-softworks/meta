@@ -46,7 +46,6 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 			accessorKey: 'name',
 			header: 'Name',
 			cell: ({ row }) => {
-				console.log(row.original, 'row.original');
 				const member = row.original;
 				return (
 					<div className="flex items-center">

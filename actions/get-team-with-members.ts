@@ -21,7 +21,6 @@ export const getTeamWithMembers = async (req: GetTeamWithMembersProps) => {
 		return { error: 'Team ID not provided' };
 	}
 
-	console.log('req filters', req.filters);
 	const teamMembersResponse = await db
 		.select({ member: { ...teamMember, user: user } })
 		.from(teamMember)

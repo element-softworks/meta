@@ -101,15 +101,6 @@ export const inviteUsersToTeam = async (
 
 	revalidatePath(`/teams/${teamId}`);
 
-	console.log(
-		'usersAlreadyInTeam',
-		usersAlreadyInTeam,
-		'nonExistingUsersToInvite',
-		nonExistingUsersToInvite,
-		'usersNotInTeam',
-		usersNotInTeam
-	);
-
 	return {
 		success: 'Users invited to team',
 		usersAlreadyInTeam,

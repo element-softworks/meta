@@ -84,8 +84,6 @@ export const getSaleAnalytics = async (startDate: string, endDate: string) => {
 		customerInvoiceResponse = formattedSubs;
 	}
 
-	console.log(customerInvoiceResponse, 'reponse data');
-
 	return {
 		analytics: 'payment analytics',
 		payments: customerInvoiceResponse,

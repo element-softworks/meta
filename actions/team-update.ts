@@ -68,8 +68,6 @@ export const teamUpdate = async (formData: FormData, teamId: string) => {
 			.where(eq(team.id, teamId))
 			.returning();
 
-		console.log(updatedTeam, ' updated team');
-
 		revalidatePath(`/dashboard/teams/${teamId}`);
 
 		return { success: 'Team updated successfully', team: updatedTeam };

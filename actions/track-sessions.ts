@@ -27,11 +27,9 @@ export const trackSessions = async (email: string, endSession?: boolean, action?
 		return;
 	}
 
-	if (!!sessionCookie) {
-		console.log('session cookie exists');
+	if (!!sessionCookie?.value) {
 		return { sessionCookie };
 	} else {
-		console.log('session cookie does not exist');
 		const headersList = headers();
 		const { get } = headers();
 

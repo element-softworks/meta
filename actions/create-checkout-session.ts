@@ -41,12 +41,14 @@ export const createCheckoutSession = async ({
 
 			const sessionResponse = await getCookie('session');
 
-			console.log('Session response', sessionResponse?.value);
-
 			//If we have a stripeCustomerId, we are to retrieve the customer
 			if (!!stripeCustomerId?.length) {
 				try {
-					await handleUpgradeSubscription(stripeCustomerId, priceId);
+					await handleUpgradeSubscription(
+						stripeCustomerId,
+						priceId,
+						sessionResponse?.value ?? ''
+					);
 					return { success: 'Subscription updated', updated: true };
 				} catch (err) {
 					console.error(`Error updating subscription: ${err}`);
@@ -142,7 +144,11 @@ export const createCheckoutSession = async ({
 	}
 };
 
-const handleUpgradeSubscription = async (stripeCustomerId: string, priceId: string) => {
+const handleUpgradeSubscription = async (
+	stripeCustomerId: string,
+	priceId: string,
+	userSession: string
+) => {
 	//If we have a stripeCustomerId, we are trying to upgrade / downgrade the subscription
 
 	if (stripeCustomerId) {
@@ -165,6 +171,15 @@ const handleUpgradeSubscription = async (stripeCustomerId: string, priceId: stri
 				error: 'Subscription not found',
 			};
 		}
+
+		await stripe.customers.update(stripeCustomerId, {
+			metadata: {
+				userId: customerResponse?.userId,
+				teamId: customerResponse?.teamId,
+				email: customerResponse?.email,
+				userSession: userSession ?? '',
+			},
+		});
 
 		const subscription = await stripe.subscriptions.update(
 			customerResponse?.stripeSubscriptionId ?? '',

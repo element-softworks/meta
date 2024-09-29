@@ -55,8 +55,6 @@ export function InviteUsersInput(props: InviteUsersInputProps) {
 		});
 	}
 
-	console.log(form.formState.errors, 'errors');
-
 	return (
 		<div className="flex flex-col gap-2">
 			<div className="">

@@ -47,8 +47,6 @@ export async function POST(req: NextRequest, res: Response) {
 		}
 
 		if (!!subscription.pending_update) {
-			console.log('Subscription pending update' + subscription.pending_update);
-
 			return NextResponse.json({ error: 'Subscription pending update' });
 		}
 
@@ -141,7 +139,6 @@ export async function POST(req: NextRequest, res: Response) {
 		}
 
 		if (status === 'succeeded') {
-			console.log('Invoice succeeded', customerResponse?.metadata, invoice?.amount_paid);
 			if (!!customerResponse?.metadata?.userSession && invoice?.amount_paid > 0) {
 				await db
 					.update(session)

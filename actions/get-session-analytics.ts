@@ -67,8 +67,6 @@ export const getSessionAnalytics = async (startDate: string, endDate: string) =>
 			.where(between(session.createdAt, new Date(startDate), new Date(endDate)))
 			.groupBy(sql`DATE_TRUNC('day', ${session.createdAt})`);
 
-		console.log(sessionResponse, 'formattedSubs data');
-
 		// Generate all days between start and end dates
 		const days = [];
 		let currentDay = startOfDay(new Date(startDate)); // Start of the first day

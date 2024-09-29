@@ -15,7 +15,6 @@ export function useSessionTracker(email: string) {
 	};
 
 	const onActive = async () => {
-		console.log('User is active');
 		await trackSessions(email ?? '');
 	};
 

@@ -12,7 +12,6 @@ export const removeUserFromTeam = async (teamId: string, userId: string) => {
 
 	const isTeamAdmin = await getIsUserTeamAdmin(teamId, adminUser?.id ?? '');
 
-	console.log('isTeamAdmin', isTeamAdmin);
 	if (!isTeamAdmin) {
 		return { error: 'You are not authorized to remove a user from this team' };
 	}
