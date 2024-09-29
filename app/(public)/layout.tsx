@@ -26,9 +26,7 @@ export default async function RootLayout({
 					<Navbar sticky contained />
 
 					<div className="flex flex-1">
-						<main className="w-full overflow-hidden flex-1 flex flex-col ">
-							{children}
-						</main>
+						<main className="w-full flex-1 flex flex-col ">{children}</main>
 					</div>
 				</div>
 			</SessionTrackerProvider>

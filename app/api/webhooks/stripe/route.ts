@@ -173,7 +173,9 @@ export async function POST(req: NextRequest, res: Response) {
 			});
 			await createNotification({
 				userId: customerResponse?.metadata?.userId ?? '',
-				message: `Your invoice for ${teamResponse?.data?.team?.name} has been ${status}`,
+				message: `Your invoice for ${teamResponse?.data?.team?.name} has ${
+					status === 'succeeded' ? 'been paid' : 'failed'
+				}`,
 				title: `Invoice ${status}`,
 			});
 		} catch (error) {

@@ -10,7 +10,7 @@ import { LoginSchema } from './schemas';
 import { and, eq, exists } from 'drizzle-orm';
 import { account, session, teamMember, twoFactorConfirmation, user } from './db/drizzle/schema';
 import { getTwoFactorConfirmationByUserId } from './data/two-factor-confirmation';
-import { getCookie } from './data/cookies';
+import { getCookie, setCookie } from './data/cookies';
 import { getAccountByUserId } from './data/account';
 import { getUsersTeams } from './data/team';
 import { team } from './db/drizzle/schema/team';
@@ -80,6 +80,36 @@ export const {
 	callbacks: {
 		signIn: async ({ user, account }) => {
 			const existingUser = await getUserById(user?.id ?? '');
+
+			//If the user isnt in a team, create a team and put them into it
+			const userInTeam = await db
+				.select()
+				.from(teamMember)
+				.where(eq(teamMember.userId, user?.id!));
+
+			if (!userInTeam.length) {
+				const [newTeam] = await db
+					.insert(team)
+					.values({
+						name: `${existingUser?.name}'s Team`,
+						updatedAt: new Date(),
+						createdBy: user?.id!,
+					})
+					.returning({ id: team.id });
+
+				await db.insert(teamMember).values({
+					userId: user?.id!,
+					teamId: newTeam.id,
+					role: 'OWNER',
+					updatedAt: new Date(),
+				});
+
+				//Set the current team cookie to the new team
+				setCookie({
+					name: `${user?.email}-current-team`,
+					value: newTeam.id,
+				});
+			}
 
 			//Update the session with the user's email
 			const sessionResponse = await getCookie('session');

@@ -1,12 +1,68 @@
-import { LoginButton } from '@/components/auth/login-button';
+import { Header } from '@/components/marketing/header';
+import { MarketingSection } from '@/components/marketing/marketing-section';
+import { MarketingSlider } from '@/components/marketing/marketing-slider';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export default function Home() {
 	return (
-		<main className="flex h-full flex-col items-center justify-center">
-			<LoginButton>
-				<Button variant="secondary">Sign in</Button>
-			</LoginButton>
+		<main className="flex h-full flex-col ">
+			<MarketingSection className="pb-4 md:pb-8">
+				<Header
+					title="Enter a catchy title here with highlighted section."
+					highlighted="with highlighted section."
+					caption="Caption for the header"
+					subtitle="Put a short descriptor or slogan about your product here. This is a good place to explain what your product does and why it's great."
+					buttons={
+						<>
+							<Link className="flex-1 sm:!flex-none" href="/auth/register">
+								<Button className="w-full sm:w-fit" size="lg">
+									Get started
+								</Button>
+							</Link>
+							<Link className="flex-1 sm:!flex-none" href="/pricing">
+								<Button className="w-full sm:w-fit" variant="outline" size="lg">
+									See pricing
+								</Button>
+							</Link>
+						</>
+					}
+				/>
+			</MarketingSection>
+
+			<MarketingSection disablePaddingTop disableContainer disablePaddingX>
+				<MarketingSlider
+					priority
+					basis="basis-full xl:basis-1/2"
+					options={{
+						loop: true,
+						duration: 100,
+						align: 'start',
+					}}
+					slides={[
+						{
+							image: 'https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/invoice-management.webp',
+							alt: 'Invoice management',
+						},
+						{
+							image: 'https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp',
+							alt: 'Advanced analytics',
+						},
+						{
+							image: 'https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/user-management.webp',
+							alt: 'User management',
+						},
+						{
+							image: 'https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp',
+							alt: 'Advanced analytics',
+						},
+						{
+							image: 'https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/user-management.webp',
+							alt: 'User management',
+						},
+					]}
+				/>
+			</MarketingSection>
 		</main>
 	);
 }

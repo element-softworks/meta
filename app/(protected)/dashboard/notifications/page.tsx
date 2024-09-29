@@ -3,7 +3,7 @@ import { Separator } from '@/components/ui/separator';
 
 export default async function DashboardPage({ searchParams }: any) {
 	return (
-		<main className="flex flex-col  gap-4">
+		<main className="flex flex-col  gap-4 max-w-2xl">
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
 					<p className="text-xl font-bold">Manage notifications</p>
