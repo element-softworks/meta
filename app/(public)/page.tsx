@@ -1,7 +1,9 @@
 import { Header } from '@/components/marketing/header';
+import { KeyPointList } from '@/components/marketing/key-point-list';
 import { MarketingSection } from '@/components/marketing/marketing-section';
 import { MarketingSlider } from '@/components/marketing/marketing-slider';
 import { Button } from '@/components/ui/button';
+import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -31,7 +33,7 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<div className={`rounded-2xl  w-full px-4 block md:hidden`}>
+			<div className={`rounded-2xl  w-full px-4 block md:hidden `}>
 				<Image
 					priority
 					loading="eager"
@@ -50,7 +52,7 @@ export default function Home() {
 					options={{
 						duration: 100,
 						align: 'center',
-						slidesToScroll: 1,
+						startIndex: 0,
 					}}
 					slides={[
 						{
@@ -66,12 +68,63 @@ export default function Home() {
 							alt: 'User management',
 						},
 						{
+							image: 'https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/invoice-management.webp',
+							alt: 'Invoice management',
+						},
+						{
 							image: 'https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp',
 							alt: 'Advanced analytics',
 						},
 						{
 							image: 'https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/user-management.webp',
 							alt: 'User management',
+						},
+					]}
+				/>
+			</MarketingSection>
+
+			<MarketingSection disablePaddingTop>
+				<KeyPointList
+					title="Enter Your Section Title Here"
+					subtitle="Provide a brief description here. Summarize the value or key benefits of your product in a few sentences."
+					keyPoints={[
+						{
+							icon: <Pointer size={50} />, // Replace with a relevant Lucide icon, e.g., Target, Rocket, ShieldCheck
+							point: (
+								<p className="text-start text-base md:text-xl">
+									Provide a concise description of your first key benefit here.
+									Explain the process, outcome, or unique feature of your product
+									or service in a way that{' '}
+									<span className="font-bold">resonates with your audience.</span>
+								</p>
+							),
+						},
+						{
+							icon: <Goal size={50} />, // Replace with another relevant Lucide icon
+							point: (
+								<p className="text-start text-base md:text-xl">
+									Provide a description for your second key point. This should
+									focus on a specific advantage, such as{' '}
+									<span className="font-bold">
+										{' '}
+										improved performance, efficiency, or satisfaction{' '}
+									</span>
+									, related to your offering.
+								</p>
+							),
+						},
+						{
+							icon: <ChartArea size={50} />, // Replace with a different relevant Lucide icon
+							point: (
+								<p className="text-start text-base md:text-xl">
+									Describe the final key benefit or unique selling proposition
+									that sets your product apart, ensuring you tie it back to the
+									<span className="font-bold">
+										{' '}
+										customer’s needs and expectations.
+									</span>
+								</p>
+							),
 						},
 					]}
 				/>

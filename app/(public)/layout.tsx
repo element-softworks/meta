@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
 import { Inter } from 'next/font/google';
 import '../globals.css';
+import { ThemeProvider } from '@/components/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,14 +22,16 @@ export default async function RootLayout({
 	return (
 		<SessionProvider>
 			<SessionTrackerProvider>
-				<Toaster />
-				<div className={`flex flex-col min-h-screen mx-auto ${inter.className}`}>
-					<Navbar sticky contained />
+				<ThemeProvider>
+					<Toaster />
+					<div className={`flex flex-col min-h-screen mx-auto ${inter.className}`}>
+						<Navbar sticky contained />
 
-					<div className="flex flex-1">
-						<main className="w-full flex-1 flex flex-col ">{children}</main>
+						<div className="flex flex-1">
+							<main className="w-full flex-1 flex flex-col ">{children}</main>
+						</div>
 					</div>
-				</div>
+				</ThemeProvider>
 			</SessionTrackerProvider>
 		</SessionProvider>
 	);

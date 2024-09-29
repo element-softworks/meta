@@ -9,6 +9,7 @@ interface MarketingSectionProps {
 	disablePaddingX?: boolean;
 	disablePaddingBottom?: boolean;
 	className?: string;
+	fadeSides?: boolean;
 }
 export function MarketingSection(props: MarketingSectionProps) {
 	return (
@@ -18,6 +19,16 @@ export function MarketingSection(props: MarketingSectionProps) {
 			${props.disableContainer ? '' : 'container'}
 			${props.disablePaddingTop ? '!pt-0' : ''} ${props.disablePaddingBottom ? '!pb-0' : ''}
 			${props.className}`}
+			style={
+				props.fadeSides
+					? {
+							WebkitMaskImage:
+								'linear-gradient(to right, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 96%)',
+							maskImage:
+								'linear-gradient(to right, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 96%)',
+					  }
+					: {}
+			}
 		>
 			{props.children}
 		</section>
