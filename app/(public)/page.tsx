@@ -9,8 +9,8 @@ export default function Home() {
 		<main className="flex h-full flex-col ">
 			<MarketingSection className="pb-4 md:pb-8">
 				<Header
-					title="Enter a catchy title here with highlighted section."
-					highlighted="with highlighted section."
+					title="Enter a catchy title here with a highlighted section"
+					highlighted="highlighted section"
 					caption="Caption for the header"
 					subtitle="Put a short descriptor or slogan about your product here. This is a good place to explain what your product does and why it's great."
 					buttons={
