@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import Marquee from 'react-fast-marquee';
 
 export default function Home() {
 	return (
@@ -81,6 +82,36 @@ export default function Home() {
 						},
 					]}
 				/>
+			</MarketingSection>
+
+			<MarketingSection disablePaddingTop>
+				<Marquee autoFill gradient>
+					<p className="font-extrabold text-6xl mx-8">Built using</p>
+					<p
+						style={{
+							color: 'white',
+							backgroundColor: 'white',
+							textShadow:
+								'-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000',
+						}}
+						className="font-extrabold text-6xl mx-8"
+					>
+						NextJS
+					</p>
+					<p className="font-extrabold text-6xl mx-8">Shadcn/ui</p>
+
+					<p
+						style={{
+							color: 'white',
+							backgroundColor: 'white',
+							textShadow:
+								'-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000',
+						}}
+						className="font-extrabold text-6xl mx-8"
+					>
+						Tailwind css
+					</p>
+				</Marquee>
 			</MarketingSection>
 
 			<MarketingSection disablePaddingTop>
