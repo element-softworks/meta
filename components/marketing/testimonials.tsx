@@ -67,7 +67,11 @@ export function Testimonials(props: TestimonialsProps) {
 											</div>
 										</div>
 									</CardHeader>
-									<p className="text-start text-base">"{testimonial.quote}"</p>
+									<p className="text-start text-base">
+										{'"'}
+										{testimonial.quote}
+										{'"'}
+									</p>
 								</CardContent>
 							</Card>
 						))}
