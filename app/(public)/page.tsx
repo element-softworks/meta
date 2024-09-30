@@ -1,3 +1,4 @@
+import { CallToAction } from '@/components/marketing/call-to-action';
 import { Content } from '@/components/marketing/content';
 import { Header } from '@/components/marketing/header';
 import { KeyPointList } from '@/components/marketing/key-point-list';
@@ -10,7 +11,6 @@ import { DUMMY_TESTIMONIALS } from '@/lib/dummy-data';
 import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Marquee from 'react-fast-marquee';
 
 export default function Home() {
 	return (
@@ -193,6 +193,16 @@ export default function Home() {
 
 			<MarketingSection>
 				<Testimonials title="Loved by users worldwide" testimonials={DUMMY_TESTIMONIALS} />
+			</MarketingSection>
+
+			<MarketingSection fadeSides disablePaddingTop disablePaddingBottom>
+				<MarqueeText text={['Start', 'Your', 'Journey', 'Today']} direction="left" />
+			</MarketingSection>
+			<MarketingSection>
+				<CallToAction
+					title="Call to action title"
+					description="Try and convince your visitors to take action. This could be signing up for a free trial, subscribing to a newsletter, or purchasing your product."
+				/>
 			</MarketingSection>
 		</main>
 	);
