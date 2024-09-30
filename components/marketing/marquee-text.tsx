@@ -9,7 +9,7 @@ interface MarqueeTextProps {
 
 export function MarqueeText(props: MarqueeTextProps) {
 	return (
-		<Marquee autoFill direction={props.direction} speed={20} className="h-20">
+		<Marquee autoFill direction={props.direction} speed={20} className="h-12 md:h-20">
 			{props.text?.map((text, index) => {
 				const isEven = index % 2 === 0;
 				return (

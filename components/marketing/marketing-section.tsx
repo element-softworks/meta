@@ -14,7 +14,7 @@ interface MarketingSectionProps {
 export function MarketingSection(props: MarketingSectionProps) {
 	return (
 		<section
-			className={`mx-auto text-center py-12 md:py-32 
+			className={`mx-auto text-center py-12 md:py-28 
 			${props.disablePaddingX ? '' : 'px-4'}
 			${props.disableContainer ? '' : 'container'}
 			${props.disablePaddingTop ? '!pt-0' : ''} ${props.disablePaddingBottom ? '!pb-0' : ''}

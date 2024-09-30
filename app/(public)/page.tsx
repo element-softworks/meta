@@ -1,9 +1,12 @@
+import { Content } from '@/components/marketing/content';
 import { Header } from '@/components/marketing/header';
 import { KeyPointList } from '@/components/marketing/key-point-list';
 import { MarketingSection } from '@/components/marketing/marketing-section';
 import { MarketingSlider } from '@/components/marketing/marketing-slider';
 import { MarqueeText } from '@/components/marketing/marquee-text';
+import { Testimonials } from '@/components/marketing/testimonials';
 import { Button } from '@/components/ui/button';
+import { DUMMY_TESTIMONIALS } from '@/lib/dummy-data';
 import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -96,7 +99,7 @@ export default function Home() {
 					direction="left"
 				/>
 				<MarqueeText
-					text={['Built using', 'NextJS', 'Shadcn/ui', 'Tailwind css']}
+					text={['Tailwind css', 'Built using', 'NextJS', 'Shadcn/ui']}
 					direction="right"
 				/>
 			</MarketingSection>
@@ -146,6 +149,50 @@ export default function Home() {
 						},
 					]}
 				/>
+			</MarketingSection>
+
+			<MarketingSection>
+				<Content
+					title="Enter a title for this section, such as 'Advanced Analytics'"
+					description="Provide a brief description of the content in this section. This could be a feature, benefit, or use case of your product or service."
+					image="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
+					imageCover
+				/>
+			</MarketingSection>
+
+			<MarketingSection disablePaddingTop>
+				<Content
+					title="Enter a title for this section, such as 'User Management'"
+					description="Provide a brief description of the content in this section. This could be a feature, benefit, or use case of your product or service."
+					image="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
+					imageCover
+					reverse
+					actions={
+						<Link href="/docs">
+							<Button variant="outline" className="w-fit">
+								Read the documentation
+							</Button>
+						</Link>
+					}
+				/>
+			</MarketingSection>
+
+			<MarketingSection disablePaddingTop>
+				<Content
+					title="Enter a title for this section, such as 'Invoice Management'"
+					description="Provide a brief description of the content in this section. This could be a feature, benefit, or use case of your product or service."
+					image="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
+					imageCover
+					actions={
+						<Link href="/auth/register">
+							<Button className="w-fit">Start your journey today</Button>
+						</Link>
+					}
+				/>
+			</MarketingSection>
+
+			<MarketingSection>
+				<Testimonials title="Loved by users worldwide" testimonials={DUMMY_TESTIMONIALS} />
 			</MarketingSection>
 		</main>
 	);
