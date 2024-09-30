@@ -1,3 +1,4 @@
+import PricingPlans from '@/components/billing/pricing-plans';
 import { CallToAction } from '@/components/marketing/call-to-action';
 import { Content } from '@/components/marketing/content';
 import { Header } from '@/components/marketing/header';
@@ -202,6 +203,14 @@ export default function Home() {
 				<CallToAction
 					title="Call to action title"
 					description="Try and convince your visitors to take action. This could be signing up for a free trial, subscribing to a newsletter, or purchasing your product."
+				/>
+			</MarketingSection>
+
+			<MarketingSection disablePaddingTop>
+				<Content
+					title="Enter an intro for your pricing plans"
+					description="Provide a brief description of the pricing plans available. This could include the features, benefits, or value of each plan."
+					imageCover
 				/>
 			</MarketingSection>
 		</main>

@@ -5,16 +5,19 @@ import Image from 'next/image';
 interface ContentProps {
 	title: string;
 	description: string;
-	image: string;
+	image?: string;
 	imageCover?: boolean;
 	reverse?: boolean;
 	actions?: React.ReactNode;
+
+	doubleTextTitle?: string;
+	doubleTextDescription?: string;
 }
 
 export function Content(props: ContentProps) {
 	return (
 		<section
-			className={`flex flex-col gap-2 lg:gap-8 items-center ${
+			className={`flex flex-col-reverse gap-2 lg:gap-8 items-center ${
 				props.reverse ? 'md:flex-row-reverse' : 'lg:flex-row'
 			}`}
 		>
@@ -32,17 +35,19 @@ export function Content(props: ContentProps) {
 				{props.actions}
 			</div>
 
-			<div className="flex-1 rounded-2xl border-2 border-border w-full">
-				<Image
-					src={props.image}
-					alt={`${props.title} image`}
-					width={1000}
-					height={600}
-					className={`rounded-2xl h-full w-full ${
-						props.imageCover ? 'object-cover' : 'object-contain'
-					}`}
-				/>
-			</div>
+			{!!props.image?.length ? (
+				<div className="flex-1 rounded-2xl border-2 border-border w-full">
+					<Image
+						src={props.image}
+						alt={`${props.title} image`}
+						width={1000}
+						height={600}
+						className={`rounded-2xl h-full w-full ${
+							props.imageCover ? 'object-cover' : 'object-contain'
+						}`}
+					/>
+				</div>
+			) : null}
 		</section>
 	);
 }
