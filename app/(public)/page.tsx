@@ -6,14 +6,26 @@ import { KeyPointList } from '@/components/marketing/key-point-list';
 import { MarketingSection } from '@/components/marketing/marketing-section';
 import { MarketingSlider } from '@/components/marketing/marketing-slider';
 import { MarqueeText } from '@/components/marketing/marquee-text';
+import { Pricing } from '@/components/marketing/pricing';
 import { Testimonials } from '@/components/marketing/testimonials';
 import { Button } from '@/components/ui/button';
 import { DUMMY_TESTIMONIALS } from '@/lib/dummy-data';
-import { ChartArea, Goal, Pointer } from 'lucide-react';
+import { ChartArea, Gift, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { formatDuration, intervalToDuration } from 'date-fns';
+import plans from '@/plans.json';
 
 export default function Home() {
+	let duration = intervalToDuration({
+		start: new Date(2022, 6, 2, 0, 0, 15),
+		end: new Date(),
+	});
+
+	const data = formatDuration(duration, {
+		delimiter: ', ',
+	});
+
 	return (
 		<main className="flex h-full flex-col ">
 			<MarketingSection className="pb-4 md:pb-8 pt-8 md:pt-16">
@@ -206,11 +218,36 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<MarketingSection disablePaddingTop>
+			<MarketingSection>
 				<Content
 					title="Enter an intro for your pricing plans"
 					description="Provide a brief description of the pricing plans available. This could include the features, benefits, or value of each plan."
 					imageCover
+					image="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
+				/>
+			</MarketingSection>
+
+			<MarketingSection>
+				<Pricing
+					title="Write a caption to sell your pricing plans"
+					caption="Pricing"
+					plans={Object.entries(plans).map((plan, index) => ({
+						features: plan[1].features.map((feature) => ({
+							title: feature,
+							active: true,
+						})),
+						name: plan[1].name,
+						popular: index === 1,
+						price: (
+							<p className="flex gap-2 text-xl items-end">
+								<span className="line-through text-xl text-muted-foreground">
+									£{(plan[1].price * 1.2).toFixed(0)}
+								</span>
+								<span className="text-4xl">£{plan[1].price}</span>{' '}
+								<span className="text-sm">GBP</span>
+							</p>
+						),
+					}))}
 				/>
 			</MarketingSection>
 		</main>
