@@ -52,8 +52,11 @@ export function Contact(props: ContactProps) {
 
 	// 	reset();
 	// };
+
+	const randomBackgroundImageIndex = Math.floor(Math.random() * 6) + 1;
+
 	return (
-		<section className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10 relative">
+		<section className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 relative">
 			<Form {...form}>
 				<form
 					style={{ height: '100%' }}
@@ -123,12 +126,11 @@ export function Contact(props: ContactProps) {
 				</form>
 			</Form>
 
-			<Image
-				src="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
-				alt="Contact form image"
-				width={500}
-				height={800}
-				className="h-full w-full object-contain rounded-lg border-2 border-border order-1 lg:order-2"
+			<div
+				className="lg:h-full w-full object-cover rounded-lg  h-60 order-1 lg:order-2 bg-cover bg-black opacity-85"
+				style={{
+					backgroundImage: `url('/images/auth/auth-layout-image-${randomBackgroundImageIndex}.webp')`,
+				}}
 			/>
 		</section>
 	);
