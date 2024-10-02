@@ -6,6 +6,12 @@ export const SettingsSchema = z.object({
 	role: z.enum(['ADMIN', 'USER']),
 });
 
+export const ContactSchema = z.object({
+	name: z.string(),
+	email: z.string().email(),
+	message: z.string().min(1, { message: 'Message is required' }),
+});
+
 export const TeamsSchema = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
 	image: z

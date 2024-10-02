@@ -1,6 +1,7 @@
-import PricingPlans from '@/components/billing/pricing-plans';
+import { Contact } from '@/components/marketing/contact';
 import { CallToAction } from '@/components/marketing/call-to-action';
 import { Content } from '@/components/marketing/content';
+import { FrequentlyAskedQuestions } from '@/components/marketing/frequently-asked-questions';
 import { Header } from '@/components/marketing/header';
 import { KeyPointList } from '@/components/marketing/key-point-list';
 import { MarketingSection } from '@/components/marketing/marketing-section';
@@ -11,12 +12,11 @@ import { Pricing } from '@/components/marketing/pricing';
 import { Testimonials } from '@/components/marketing/testimonials';
 import { Button } from '@/components/ui/button';
 import { DUMMY_FAQS, DUMMY_TESTIMONIALS } from '@/lib/dummy-data';
-import { ChartArea, Gift, Goal, Pointer } from 'lucide-react';
+import plans from '@/plans.json';
+import { formatDuration, intervalToDuration } from 'date-fns';
+import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { formatDuration, intervalToDuration } from 'date-fns';
-import plans from '@/plans.json';
-import { FrequentlyAskedQuestions } from '@/components/marketing/frequently-asked-questions';
 
 export default function Home() {
 	let duration = intervalToDuration({
@@ -262,6 +262,13 @@ export default function Home() {
 					title="Frequently asked questions"
 					description="Provide answers to common questions about your product or service. This can help address any concerns or uncertainties your visitors may have."
 					faqs={DUMMY_FAQS}
+				/>
+			</MarketingSection>
+
+			<MarketingSection>
+				<Contact
+					title="Contact us"
+					description="Get in touch with us for any queries or feedback."
 				/>
 			</MarketingSection>
 		</main>
