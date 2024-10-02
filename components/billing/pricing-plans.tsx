@@ -103,7 +103,7 @@ export default function PricingPlans(props: PricingPlansProps) {
 					planName={basic.name}
 					price={calcPrice(basic.price, isYearly)}
 					description="Essential features you need to get started"
-					features={basic.features}
+					features={basic.features.map((feature) => feature.feature)}
 					Button={
 						<Button
 							isLoading={price === 'basic' && isLoading}
@@ -129,7 +129,7 @@ export default function PricingPlans(props: PricingPlansProps) {
 					planName={pro.name}
 					price={calcPrice(pro.price, isYearly)}
 					description="Perfect for owners of small & medium businesses"
-					features={pro.features}
+					features={pro.features.map((feature) => feature.feature)}
 					Button={
 						<Button
 							isLoading={price === 'pro' && isLoading}
@@ -155,7 +155,7 @@ export default function PricingPlans(props: PricingPlansProps) {
 					planName={enterprise.name}
 					price={calcPrice(enterprise.price, isYearly)}
 					description="Dedicated support and infrastructure to fit your needs"
-					features={enterprise.features}
+					features={enterprise.features.map((feature) => feature.feature)}
 					Button={
 						<Button
 							isLoading={price === 'enterprise' && isLoading}

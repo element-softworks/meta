@@ -29,10 +29,17 @@ export function Testimonials(props: TestimonialsProps) {
 	const groupsArray = [group1, group2, group3];
 
 	return (
-		<section className="flex flex-col items-start md:items-center gap-4 md:gap-16">
-			<h2 className="w-full text-start md:text-center font-semibold text-2xl md:text-4xl lg:text-5xl max-w-[22ch]">
-				{props.title}
-			</h2>
+		<section className="flex flex-col items-start md:items-center gap-4 md:gap-16 text-start md:text-center">
+			<div>
+				<h2 className="w-full  font-semibold text-2xl md:text-4xl lg:text-5xl max-w-[22ch]">
+					{props.title}
+				</h2>
+				{!!props.description ? (
+					<p className="text-base  mt-4 md:text-lg font-normal text-muted-foreground max-w-[65ch]">
+						{props.description}
+					</p>
+				) : null}
+			</div>
 			<div className="grid grid-cols-1 gap-4 md:gap-6 md:grid-cols-3">
 				{groupsArray.map((group, index) => (
 					<div

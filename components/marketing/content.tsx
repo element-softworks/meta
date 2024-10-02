@@ -9,9 +9,6 @@ interface ContentProps {
 	imageCover?: boolean;
 	reverse?: boolean;
 	actions?: React.ReactNode;
-
-	doubleTextTitle?: string;
-	doubleTextDescription?: string;
 }
 
 export function Content(props: ContentProps) {

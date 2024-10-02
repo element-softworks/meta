@@ -20,6 +20,7 @@ import { useState } from 'react';
 import { DateRangePicker } from './date-range-picker';
 import { addDays, format, subYears } from 'date-fns';
 import { subDays, subWeeks, subMonths, startOfDay, endOfDay } from 'date-fns';
+import { custom } from 'zod';
 
 interface DateSelectorPicker {
 	id?: string;
@@ -99,8 +100,13 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 				break;
 		}
 
+		console.log(val, 'value cheee');
 		if (val === 'custom') {
-			setCustomPickerOpen(true);
+			if (customPickerOpen) {
+				setCustomPickerOpen(false);
+			} else {
+				setCustomPickerOpen(true);
+			}
 		} else {
 			setSelectOpen(false);
 			mutateParams({
@@ -139,7 +145,7 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 			</Dialog>
 			<Select
 				onOpenChange={(state) => {
-					if (selectedValue === 'custom') return;
+					// if (selectedValue === 'custom' && ) return;
 					setSelectOpen(state);
 				}}
 				open={selectOpen}

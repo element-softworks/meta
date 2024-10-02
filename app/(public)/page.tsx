@@ -6,6 +6,7 @@ import { KeyPointList } from '@/components/marketing/key-point-list';
 import { MarketingSection } from '@/components/marketing/marketing-section';
 import { MarketingSlider } from '@/components/marketing/marketing-slider';
 import { MarqueeText } from '@/components/marketing/marquee-text';
+import { ParallaxContent } from '@/components/marketing/parallax-content';
 import { Pricing } from '@/components/marketing/pricing';
 import { Testimonials } from '@/components/marketing/testimonials';
 import { Button } from '@/components/ui/button';
@@ -164,8 +165,8 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<MarketingSection>
-				<Content
+			<MarketingSection className="mt-60 md:mt-40">
+				<ParallaxContent
 					title="Enter a title for this section, such as 'Advanced Analytics'"
 					description="Provide a brief description of the content in this section. This could be a feature, benefit, or use case of your product or service."
 					image="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
@@ -174,7 +175,7 @@ export default function Home() {
 			</MarketingSection>
 
 			<MarketingSection disablePaddingTop>
-				<Content
+				<ParallaxContent
 					title="Enter a title for this section, such as 'User Management'"
 					description="Provide a brief description of the content in this section. This could be a feature, benefit, or use case of your product or service."
 					image="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
@@ -191,7 +192,7 @@ export default function Home() {
 			</MarketingSection>
 
 			<MarketingSection disablePaddingTop>
-				<Content
+				<ParallaxContent
 					title="Enter a title for this section, such as 'Invoice Management'"
 					description="Provide a brief description of the content in this section. This could be a feature, benefit, or use case of your product or service."
 					image="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
@@ -205,7 +206,11 @@ export default function Home() {
 			</MarketingSection>
 
 			<MarketingSection>
-				<Testimonials title="Loved by users worldwide" testimonials={DUMMY_TESTIMONIALS} />
+				<Testimonials
+					title="Loved by users worldwide"
+					description="These testimonials are fake, ensure to replace them with real testimonials from your users."
+					testimonials={DUMMY_TESTIMONIALS}
+				/>
 			</MarketingSection>
 
 			<MarketingSection fadeSides disablePaddingTop disablePaddingBottom>
@@ -227,14 +232,14 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<MarketingSection>
+			<MarketingSection disablePaddingTop>
 				<Pricing
 					title="Write a caption to sell your pricing plans"
 					caption="Pricing"
 					plans={Object.entries(plans).map((plan, index) => ({
 						features: plan[1].features.map((feature) => ({
-							title: feature,
-							active: true,
+							title: feature.feature,
+							active: feature.active,
 						})),
 						name: plan[1].name,
 						popular: index === 1,
@@ -243,7 +248,7 @@ export default function Home() {
 								<span className="line-through text-xl text-muted-foreground">
 									£{(plan[1].price * 1.2).toFixed(0)}
 								</span>
-								<span className="text-4xl">£{plan[1].price}</span>{' '}
+								<span className="text-4xl font-bold">£{plan[1].price}</span>{' '}
 								<span className="text-sm">GBP</span>
 							</p>
 						),

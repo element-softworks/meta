@@ -8,11 +8,12 @@ import {
 	intervalToDuration,
 	subSeconds,
 } from 'date-fns';
-import { Gift } from 'lucide-react';
+import { Check, Gift, X } from 'lucide-react';
 import { format } from 'path';
 import { useEffect, useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 
 interface PricingProps {
 	title: string;
@@ -45,24 +46,51 @@ export function Pricing(props: PricingProps) {
 				</p>
 			</div>
 
-			<div className="grid grid-cols-3 gap-6 w-full mt-8 md:mt-12">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10 w-full mt-8 md:mt-16">
 				{props.plans?.map((plan, index) => {
 					return (
 						<Card
 							key={index}
-							className={`${plan.popular && 'border-primary shadow-2xl '} relative`}
+							className={`${
+								plan.popular && 'border-primary shadow-2xl md:scale-105'
+							} relative`}
 						>
 							{plan.popular ? (
-								<Badge className="-top-3 absolute left-1/2 -translate-x-1/2">
+								<Badge className="-top-3  uppercase hover:bg-primary absolute left-1/2 -translate-x-1/2">
 									Popular
 								</Badge>
 							) : null}
-							<CardHeader>
+							<CardHeader className="pt-8 pl-8">
 								<CardTitle className="text-start">{plan.name}</CardTitle>
 							</CardHeader>
-							<CardContent>
-								<p>{plan.price}</p>
+							<CardContent className="p-4 md:p-8">
+								{plan.price}
+								<div className="mt-8 gap-2 flex flex-col">
+									{plan.features.map((feature, index) => {
+										return (
+											<div
+												key={index}
+												className={`flex text-start items-center gap-2 ${
+													feature.active
+														? 'text-primary'
+														: 'text-muted-foreground line-through'
+												}`}
+											>
+												{feature.active ? (
+													<Check size={18} />
+												) : (
+													<X size={18} />
+												)}
+												<p>{feature.title}</p>
+											</div>
+										);
+									})}
+								</div>
 							</CardContent>
+
+							<CardFooter className="p-4 md:p-8 pt-0">
+								<Button className="w-full">Get started with {plan.name}</Button>
+							</CardFooter>
 						</Card>
 					);
 				})}

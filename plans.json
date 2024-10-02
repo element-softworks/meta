@@ -5,7 +5,22 @@
 		"name": "Basic",
 		"price": 9.99,
 		"users": 1,
-		"features": ["1 user", "Basic support"]
+		"features": [
+			{ "feature": "NextJS Boilerplate", "active": true },
+			{ "feature": "user notifications system", "active": true },
+			{ "feature": "Dashboard analytics", "active": true },
+			{ "feature": "User session tracking", "active": true },
+			{ "feature": "OAuth Authentication", "active": true },
+			{ "feature": "Stunning landing page", "active": true },
+			{ "feature": "Integrated Contentful blog", "active": true },
+			{ "feature": "Dashboard admin panel", "active": true },
+			{ "feature": "Resend email integration", "active": true },
+			{ "feature": "Stripe one time and subscription payments", "active": true },
+			{ "feature": "1 user allowed in team", "active": true },
+			{ "feature": "Basic support", "active": true },
+			{ "feature": "Unlimited storage", "active": false },
+			{ "feature": "Weekly news updates", "active": false }
+		]
 	},
 
 	"pro": {
@@ -14,7 +29,22 @@
 		"name": "Pro",
 		"price": 24.99,
 		"users": 5,
-		"features": ["5 users", "Priority support"]
+		"features": [
+			{ "feature": "NextJS Boilerplate", "active": true },
+			{ "feature": "user notifications system", "active": true },
+			{ "feature": "Dashboard analytics", "active": true },
+			{ "feature": "User session tracking", "active": true },
+			{ "feature": "OAuth Authentication", "active": true },
+			{ "feature": "Stunning landing page", "active": true },
+			{ "feature": "Integrated Contentful blog", "active": true },
+			{ "feature": "Dashboard admin panel", "active": true },
+			{ "feature": "Resend email integration", "active": true },
+			{ "feature": "Stripe one time and subscription payments", "active": true },
+			{ "feature": "5 users allowed in team", "active": true },
+			{ "feature": "Priority support", "active": true },
+			{ "feature": "Unlimited storage", "active": false },
+			{ "feature": "Weekly news updates", "active": false }
+		]
 	},
 	"enterprise": {
 		"type": "subscription",
@@ -22,6 +52,21 @@
 		"name": "Enterprise",
 		"price": 49.99,
 		"users": 1000,
-		"features": ["Unlimited users", "24/7 support", "Unlimited storage"]
+		"features": [
+			{ "feature": "NextJS Boilerplate", "active": true },
+			{ "feature": "user notifications system", "active": true },
+			{ "feature": "Dashboard analytics", "active": true },
+			{ "feature": "User session tracking", "active": true },
+			{ "feature": "OAuth Authentication", "active": true },
+			{ "feature": "Stunning landing page", "active": true },
+			{ "feature": "Integrated Contentful blog", "active": true },
+			{ "feature": "Dashboard admin panel", "active": true },
+			{ "feature": "Resend email integration", "active": true },
+			{ "feature": "Stripe one time and subscription payments", "active": true },
+			{ "feature": "Unlimited users allowed in team", "active": true },
+			{ "feature": "24/7 support", "active": true },
+			{ "feature": "Unlimited storage", "active": true },
+			{ "feature": "Weekly news updates", "active": true }
+		]
 	}
 }
