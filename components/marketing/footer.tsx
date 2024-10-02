@@ -41,12 +41,12 @@ export function Footer() {
 					</div>
 				</Link>
 				<div className=" grid grid-cols-2 lg:grid-cols-3 gap-10 w-full">
-					{FOOTER_COLUMNS.map((column) => (
-						<div key={column.title}>
+					{FOOTER_COLUMNS.map((column, index) => (
+						<div key={index}>
 							<p className="font-semibold">{column.title}</p>
 							<div className="flex flex-col gap-1 mt-4">
-								{column.links.map((link) => (
-									<Link href={link.href}>
+								{column.links.map((link, index) => (
+									<Link key={index} href={link.href}>
 										<Button variant="link" className="p-0 h-fit">
 											{link.title}
 										</Button>
