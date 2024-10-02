@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Button } from '../ui/button';
+import { FrameIcon } from 'lucide-react';
 
 export function Footer() {
 	const FOOTER_COLUMNS = [
@@ -33,8 +34,12 @@ export function Footer() {
 	return (
 		<footer className="border-t border-border">
 			<div className="flex md:flex-row flex-col gap-10 md:gap-20 lg:gap-40 container px-4 pt-10 md:pt-20 pb-12">
-				<p className="font-semibold text-lg whitespace-nowrap">NextJS SaaS Boilerplate</p>
-
+				<Link href="/" aria-label="Go to homepage">
+					<div className=" flex items-center text-lg font-light z-[200] relative flex-nowrap">
+						<FrameIcon className="mr-2" size={30} />
+						<p className="whitespace-nowrap">NextJS SaaS Boilerplate</p>
+					</div>
+				</Link>
 				<div className=" grid grid-cols-2 lg:grid-cols-3 gap-10 w-full">
 					{FOOTER_COLUMNS.map((column) => (
 						<div key={column.title}>
