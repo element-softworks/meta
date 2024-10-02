@@ -10,12 +10,13 @@ import { ParallaxContent } from '@/components/marketing/parallax-content';
 import { Pricing } from '@/components/marketing/pricing';
 import { Testimonials } from '@/components/marketing/testimonials';
 import { Button } from '@/components/ui/button';
-import { DUMMY_TESTIMONIALS } from '@/lib/dummy-data';
+import { DUMMY_FAQS, DUMMY_TESTIMONIALS } from '@/lib/dummy-data';
 import { ChartArea, Gift, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatDuration, intervalToDuration } from 'date-fns';
 import plans from '@/plans.json';
+import { FrequentlyAskedQuestions } from '@/components/marketing/frequently-asked-questions';
 
 export default function Home() {
 	let duration = intervalToDuration({
@@ -213,16 +214,6 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<MarketingSection fadeSides disablePaddingTop disablePaddingBottom>
-				<MarqueeText text={['Start', 'Your', 'Journey', 'Today']} direction="left" />
-			</MarketingSection>
-			<MarketingSection>
-				<CallToAction
-					title="Call to action title"
-					description="Try and convince your visitors to take action. This could be signing up for a free trial, subscribing to a newsletter, or purchasing your product."
-				/>
-			</MarketingSection>
-
 			<MarketingSection>
 				<Content
 					title="Enter an intro for your pricing plans"
@@ -253,6 +244,24 @@ export default function Home() {
 							</p>
 						),
 					}))}
+				/>
+			</MarketingSection>
+
+			<MarketingSection fadeSides disablePaddingTop disablePaddingBottom>
+				<MarqueeText text={['Start', 'Your', 'Journey', 'Today']} direction="left" />
+			</MarketingSection>
+			<MarketingSection>
+				<CallToAction
+					title="Call to action title"
+					description="Try and convince your visitors to take action. This could be signing up for a free trial, subscribing to a newsletter, or purchasing your product."
+				/>
+			</MarketingSection>
+
+			<MarketingSection>
+				<FrequentlyAskedQuestions
+					title="Frequently asked questions"
+					description="Provide answers to common questions about your product or service. This can help address any concerns or uncertainties your visitors may have."
+					faqs={DUMMY_FAQS}
 				/>
 			</MarketingSection>
 		</main>

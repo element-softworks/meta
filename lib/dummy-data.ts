@@ -74,3 +74,70 @@ export const DUMMY_TESTIMONIALS = [
 		image: 'https://www.gravatar.com/avatar/94d093eda664addd6e450d7e98811bcad?s=32&d=identicon&r=PG',
 	},
 ];
+
+export const DUMMY_FAQS = [
+	{
+		question: 'What is the purpose of this product?',
+		answer: 'Provide a brief description of what your product does and how it can benefit the user.',
+	},
+	{
+		question: 'How can I get started?',
+		answer: 'Explain the steps required to begin using your product or service, such as signing up or creating an account.',
+	},
+	{
+		question: 'Is customer support available?',
+		answer: 'Describe the customer support options available to users, such as live chat, email support, or a knowledge base.',
+	},
+	{
+		question: 'What payment methods are accepted?',
+		answer: 'List the different payment methods your company accepts, such as credit cards, PayPal, or bank transfers.',
+	},
+	{
+		question: 'Do you offer a free trial?',
+		answer: 'Explain if a free trial is available, its duration, and what features users can access during the trial period.',
+	},
+	{
+		question: 'Can I upgrade or downgrade my subscription?',
+		answer: 'Detail the process for upgrading or downgrading a subscription plan and any implications regarding billing.',
+	},
+	{
+		question: 'Is there a mobile version available?',
+		answer: 'Indicate whether the product is available on mobile devices and where users can download the app if applicable.',
+	},
+	{
+		question: 'How secure is my data?',
+		answer: 'Provide information about the security measures your product has in place to protect user data.',
+	},
+	{
+		question: 'Are there any hidden fees?',
+		answer: 'Clarify if there are any additional costs beyond the stated subscription prices or one-time fees.',
+	},
+	{
+		question: 'Can I share my account with others?',
+		answer: 'Explain the terms of account sharing, including user limits or whether sharing is allowed on certain plans.',
+	},
+	{
+		question: 'How do I cancel my subscription?',
+		answer: 'Provide instructions on how users can cancel their subscriptions and any related policies, such as refund eligibility.',
+	},
+	{
+		question: 'What integrations does your product support?',
+		answer: 'List any third-party integrations that work with your product, such as popular tools or platforms.',
+	},
+	{
+		question: 'Do you offer discounts for long-term subscriptions?',
+		answer: 'Explain if any discounts are offered for yearly or multi-year plans compared to monthly billing.',
+	},
+	{
+		question: 'Can I customize the product for my needs?',
+		answer: 'Discuss any customization options available to users, whether through settings, plugins, or enterprise solutions.',
+	},
+	{
+		question: 'Is training available for new users?',
+		answer: 'Detail any training materials, onboarding sessions, or tutorials that help users get familiar with the product.',
+	},
+	{
+		question: 'What happens if I miss a payment?',
+		answer: 'Explain the company’s policy on missed payments, including any grace periods or service interruptions.',
+	},
+];
