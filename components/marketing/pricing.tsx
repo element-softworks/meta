@@ -46,7 +46,7 @@ export function Pricing(props: PricingProps) {
 				</p>
 			</div>
 
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10 w-full mt-8 md:mt-16">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10 w-full mt-4 md:mt-16">
 				{props.plans?.map((plan, index) => {
 					return (
 						<Card

@@ -36,7 +36,7 @@ export function Navbar(props: NavbarProps) {
 						? 'rgba(0, 0, 0, 0.05) 0px 1px 20px 0px'
 						: 'none',
 			}}
-			className={`py-2 md:py-6 px-4 md:px-6 md:h-24 border-b border-border z-40 transition-all ${
+			className={`py-2 md:py-4 px-4 md:px-6 md:h-20 border-b border-border z-40 transition-all ${
 				props.sticky && 'sticky top-0'
 			} `}
 		>
