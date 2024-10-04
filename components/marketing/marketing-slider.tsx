@@ -70,8 +70,8 @@ export function MarketingSlider(props: MarketingSliderProps) {
 										src={slide.image}
 										alt={slide.alt}
 										layout="responsive"
-										width={1200}
-										height={800}
+										width={0}
+										height={0}
 									/>
 								</div>
 							</CarouselItem>

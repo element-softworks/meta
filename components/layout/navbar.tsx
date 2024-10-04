@@ -1,6 +1,6 @@
 'use client';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { CreditCard, FrameIcon, Notebook } from 'lucide-react';
+import { CreditCard, FrameIcon, Notebook, Phone } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -10,7 +10,12 @@ import { Button } from '../ui/button';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
 
 export const NAVBAR_ITEMS = [
-	{ name: 'Pricing', href: '/pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
+	{ name: 'Pricing', href: '/#pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
+	{
+		name: 'Contact',
+		href: '/#contact',
+		icon: <Phone className="mr-2 h-4 w-4" />,
+	},
 	{ name: 'Docs', href: '/docs', icon: <Notebook className="mr-2 h-4 w-4" /> },
 ];
 
@@ -18,14 +23,13 @@ interface NavbarProps {
 	count?: number;
 	sticky?: boolean;
 	contained?: boolean;
+	disableBorderBottom?: boolean;
 }
 
 export function Navbar(props: NavbarProps) {
 	const user = useCurrentUser();
 
 	const [navOpen, setNavOpen] = useState(false);
-	const { setTheme, theme } = useTheme();
-	const isLightMode = theme === 'light';
 
 	const showDropShadow = useWindowScrolled();
 	return (
@@ -36,14 +40,20 @@ export function Navbar(props: NavbarProps) {
 						? 'rgba(0, 0, 0, 0.05) 0px 1px 20px 0px'
 						: 'none',
 			}}
-			className={`py-2 md:py-4 px-4 md:px-6 md:h-20 border-b border-border z-40 transition-all ${
+			className={`py-2 md:py-4 px-4 md:px-6 md:h-20 z-40 transition-all ${
 				props.sticky && 'sticky top-0'
-			} `}
+			} 
+			${
+				props.disableBorderBottom
+					? `${showDropShadow ? 'border-b border-border transition-all' : ''}`
+					: 'border-b border-border'
+			}
+			`}
 		>
 			{props.sticky && (
 				<div
 					id="overlap"
-					className={`absolute top-0 left-0 w-full h-full backdrop-blur-md transition-all duration-300 bg-[hsla(var(--background-navbar))]`}
+					className={`absolute top-0 left-0 w-full h-full backdrop-blur-md transition-all duration-300 bg-[hsla(var(--background))]`}
 				></div>
 			)}
 
@@ -69,15 +79,13 @@ export function Navbar(props: NavbarProps) {
 					<div className="flex ">
 						{NAVBAR_ITEMS.map((item, index) => {
 							return (
-								<Button
-									size="lg"
+								<Link
 									key={index}
-									asChild
-									variant="link"
 									className="px-4 text-md font-medium"
+									href={item.href}
 								>
-									<Link href={item.href}>{item.name}</Link>
-								</Button>
+									{item.name}
+								</Link>
 							);
 						})}
 					</div>

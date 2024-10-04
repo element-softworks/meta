@@ -181,7 +181,6 @@ export default function Home() {
 					description="Provide a brief description of the content in this section. This could be a feature, benefit, or use case of your product or service."
 					image="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/advanced-analytics.webp"
 					imageCover
-					reverse
 					actions={
 						<Link href="/docs">
 							<Button variant="outline" className="w-fit">
@@ -223,7 +222,7 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<MarketingSection disablePaddingTop>
+			<MarketingSection disablePaddingTop id="pricing">
 				<Pricing
 					title="Write a caption to sell your pricing plans"
 					caption="Pricing"
@@ -265,7 +264,7 @@ export default function Home() {
 				/>
 			</MarketingSection>
 
-			<MarketingSection>
+			<MarketingSection className="border-t-2" id="contact">
 				<Contact
 					title="Contact us"
 					description="Get in touch with us for any queries or feedback."

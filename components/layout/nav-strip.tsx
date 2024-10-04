@@ -34,9 +34,9 @@ export function NavStrip(props: NavStripProps) {
 	const showCrumbEllipsis = displayBreadcrumbs.length > 3;
 
 	return (
-		<nav className="border-b border-border py-2 px-4 md:px-6 w-full">
+		<nav className="border-b border-border py-2 px-4 lg:px-6 w-full">
 			<div className="flex items-center">
-				<Breadcrumb className="flex-1 ml-10 md:ml-0">
+				<Breadcrumb className="flex-1 ml-10 lg:ml-0">
 					<BreadcrumbList>
 						{displayBreadcrumbs.length > 3 ? (
 							<BreadcrumbItem>

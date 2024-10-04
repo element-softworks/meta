@@ -3,6 +3,7 @@
 import React from 'react';
 
 interface MarketingSectionProps {
+	id?: string;
 	children: React.ReactNode;
 	disablePaddingTop?: boolean;
 	disableContainer?: boolean;
@@ -14,8 +15,9 @@ interface MarketingSectionProps {
 export function MarketingSection(props: MarketingSectionProps) {
 	return (
 		<section
+			id={props.id}
 			className={`mx-auto text-center py-12 md:py-28 
-			${props.disablePaddingX ? '' : 'px-4'}
+			${props.disablePaddingX ? 'px-0' : ''}
 			${props.disableContainer ? '' : 'container'}
 			${props.disablePaddingTop ? '!pt-0' : ''} ${props.disablePaddingBottom ? '!pb-0' : ''}
 			${props.className}`}

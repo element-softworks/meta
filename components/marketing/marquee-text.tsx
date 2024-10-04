@@ -16,7 +16,7 @@ export function MarqueeText(props: MarqueeTextProps) {
 					<p
 						key={index}
 						className={`text-3xl md:text-4xl lg:text-6xl mx-4 md:mx-8 ${
-							isEven ? 'text-muted-foreground' : 'text-primary'
+							isEven ? 'text-muted-foreground' : ''
 						}`}
 					>
 						{text}

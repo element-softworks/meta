@@ -21,7 +21,7 @@ export function ParallaxContent(props: ParallaxContentProps) {
 		target: $scrollTarget,
 		offset: ['start end', 'end end'], // This offsets the scroll position
 	});
-	const isMobile = useBreakpoint('md');
+	const isMobile = useBreakpoint('lg');
 	const scrollInOut = useTransform(scrollYProgress, [0, 0.45, 0.55, 1], [200, 0, 0, -200]);
 	const opacityInOut = useTransform(scrollYProgress, [0, 0.45, 0.55, 1], [0, 1, 1, 0]);
 	const imageOpacity = useTransform(scrollYProgress, [0, 0.15, 0.8, 1], [0, 1, 1, 0]);
@@ -37,7 +37,7 @@ export function ParallaxContent(props: ParallaxContentProps) {
 				<div className="sticky top-1/2 -translate-y-1/2">
 					<div className="relative">
 						<section
-							className={`flex flex-col-reverse gap-2 lg:gap-8 items-center ${
+							className={`flex flex-col-reverse gap-2 sm:gap-8 items-center ${
 								props.reverse ? 'md:flex-row-reverse' : 'lg:flex-row'
 							}`}
 						>
@@ -58,7 +58,7 @@ export function ParallaxContent(props: ParallaxContentProps) {
 
 							<m.div
 								style={{ opacity: imageOpacity, y: imageScrollOut }}
-								className="flex-1 rounded-2xl border-2  border-border w-full"
+								className="flex-1 rounded-2xl border-2   border-border w-full"
 							>
 								<Image
 									src={props.image}

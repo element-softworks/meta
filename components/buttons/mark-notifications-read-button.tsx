@@ -8,6 +8,7 @@ import { markUserNotificationsRead } from '@/actions/mark-user-notifications-rea
 
 interface MarkNotificationsReadButtonProps {
 	notificationIds: string[];
+	disabled?: boolean;
 }
 
 type MarkNotificationsReadButtonRequest = {
@@ -31,8 +32,13 @@ export const MarkNotificationsReadButton = (props: MarkNotificationsReadButtonPr
 	};
 
 	return (
-		<div onClick={() => handleMarkNotificationsRead()} className="w-full">
-			<Button disabled={isLoading} isLoading={isLoading} className="w-full">
+		<div
+			onClick={() => {
+				!props.disabled && handleMarkNotificationsRead();
+			}}
+			className="w-full"
+		>
+			<Button disabled={isLoading || props.disabled} isLoading={isLoading} className="w-full">
 				<Check className="mr-2 h-4 w-4" /> Mark all as read
 			</Button>
 		</div>

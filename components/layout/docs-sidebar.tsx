@@ -54,7 +54,7 @@ export function DocsSidebar() {
 	const [navOpen, setNavOpen] = useState(false);
 	return (
 		<>
-			<div className="py-2 px-4 md:px-6 absolute">
+			<div className="py-2 px-4 lg:px-6 absolute">
 				<NavigationMobileDrawer
 					open={navOpen}
 					onOpenChange={(state) => {
@@ -63,14 +63,14 @@ export function DocsSidebar() {
 					drawerItems={SIDEBAR_ITEMS}
 				/>
 				<Button
-					className="p-0 mr-4 block md:hidden"
+					className="p-0 mr-4 block lg:hidden"
 					onClick={() => setNavOpen((prev) => !prev)}
 					variant="link"
 				>
 					{navOpen ? (
-						<XIcon className="md:hidden" size={30} />
+						<XIcon className="lg:hidden" size={30} />
 					) : (
-						<MenuIcon className="md:hidden" size={30} />
+						<MenuIcon className="lg:hidden" size={30} />
 					)}
 				</Button>
 			</div>

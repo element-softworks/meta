@@ -33,8 +33,8 @@ export function Footer() {
 	];
 	return (
 		<footer className="border-t border-border">
-			<div className="flex md:flex-row flex-col gap-10 md:gap-20 lg:gap-40 container px-4 pt-10 md:pt-20 pb-12">
-				<Link href="/" aria-label="Go to homepage">
+			<div className="flex md:flex-row flex-col gap-10 md:gap-20 lg:gap-40 container pt-10 md:pt-20 pb-12">
+				<Link href="/" aria-label="Go to homepage" className="">
 					<div className=" flex items-center text-lg font-light z-[200] relative flex-nowrap">
 						<FrameIcon className="mr-2" size={30} />
 						<p className="whitespace-nowrap">NextJS SaaS Boilerplate</p>
@@ -46,10 +46,8 @@ export function Footer() {
 							<p className="font-semibold">{column.title}</p>
 							<div className="flex flex-col gap-1 mt-4">
 								{column.links.map((link, index) => (
-									<Link key={index} href={link.href}>
-										<Button variant="link" className="p-0 h-fit">
-											{link.title}
-										</Button>
+									<Link key={index} href={link.href} className="text-sm">
+										{link.title}
 									</Link>
 								))}
 							</div>
@@ -57,7 +55,7 @@ export function Footer() {
 					))}
 				</div>
 			</div>
-			<div className="container px-4 pb-10 md:pb-20 pt-12 border-t border-border">
+			<div className="container pb-10 md:pb-20 pt-12 border-t border-border">
 				<div className="flex gap-0 lg:gap-10 lg:flex-row flex-col">
 					<p className="text-sm">
 						&copy; {new Date().getFullYear()} NextJS SaaS Boilerplate. All rights
@@ -65,17 +63,9 @@ export function Footer() {
 					</p>
 					<p className="text-sm flex-1">Company No. 123456789</p>
 
-					<div className="flex gap-6 lg:gap-10 mt-4 md:mt-0">
-						<Link href="/privacy-policy">
-							<Button className="px-0" variant="link">
-								Privacy Policy
-							</Button>
-						</Link>
-						<Link href="/terms-and-conditions">
-							<Button className="px-0" variant="link">
-								Terms & Conditions
-							</Button>
-						</Link>
+					<div className="flex gap-6 lg:gap-10 mt-4 md:mt-0 text-sm">
+						<Link href="/privacy-policy">Privacy Policy</Link>
+						<Link href="/terms-and-conditions">Terms & Conditions</Link>
 					</div>
 				</div>
 			</div>

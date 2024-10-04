@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import Link from 'next/link';
 
 interface PricingProps {
 	title: string;
@@ -46,13 +47,13 @@ export function Pricing(props: PricingProps) {
 				</p>
 			</div>
 
-			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10 w-full mt-4 md:mt-16">
+			<div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10 w-full mt-4 lg:mt-16">
 				{props.plans?.map((plan, index) => {
 					return (
 						<Card
 							key={index}
 							className={`${
-								plan.popular && 'border-primary shadow-2xl md:scale-105'
+								plan.popular && 'border-primary shadow-2xl lg:scale-105'
 							} relative`}
 						>
 							{plan.popular ? (
@@ -72,7 +73,7 @@ export function Pricing(props: PricingProps) {
 												key={index}
 												className={`flex text-start items-center gap-2 ${
 													feature.active
-														? 'text-primary'
+														? ''
 														: 'text-muted-foreground line-through'
 												}`}
 											>
@@ -89,7 +90,9 @@ export function Pricing(props: PricingProps) {
 							</CardContent>
 
 							<CardFooter className="p-4 md:p-8 pt-0">
-								<Button className="w-full">Get started with {plan.name}</Button>
+								<Link href="/auth/register" className="w-full">
+									<Button className="w-full">Get started with {plan.name}</Button>
+								</Link>
 							</CardFooter>
 						</Card>
 					);

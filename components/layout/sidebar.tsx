@@ -59,7 +59,7 @@ export function SidebarGroup(props: SidebarGroupProps) {
 			<Accordion
 				defaultChecked
 				className={`${
-					props.mobile && !props.hideOnMobile ? 'md:hidden block' : 'hidden md:block'
+					props.mobile && !props.hideOnMobile ? 'lg:hidden block' : 'hidden lg:block'
 				} `}
 				type="single"
 				defaultValue="item-1"
@@ -82,11 +82,11 @@ export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?
 	return (
 		<aside
 			style={{}}
-			className={`w-0 md:w-[270px]  border-border transition-all px-0 py-3 md:px-4 md:border-r`}
+			className={`w-0 lg:w-[270px]  border-border transition-all px-0 py-3 lg:px-4 lg:border-r`}
 		>
 			<div
 				className={`flex flex-col flex-1 ${
-					fixed && 'overflow-auto fixed top-24 left-0 w-0 md:w-[270px] px-0 py-6 md:p-4'
+					fixed && 'overflow-auto fixed top-24 left-0 w-0 lg:w-[270px] px-0 py-6 lg:p-4'
 				}`}
 			>
 				{children}

@@ -29,9 +29,9 @@ export function Testimonials(props: TestimonialsProps) {
 	const groupsArray = [group1, group2, group3];
 
 	return (
-		<section className="flex flex-col items-start md:items-center gap-4 md:gap-16 text-start md:text-center">
-			<div>
-				<h2 className="w-full  font-semibold text-2xl md:text-4xl lg:text-5xl max-w-[22ch]">
+		<section className="flex flex-col items-start  md:items-center gap-4 md:gap-16 text-start md:text-center">
+			<div className="flex md:items-center flex-col">
+				<h2 className="w-full font-semibold text-2xl md:text-4xl lg:text-5xl max-w-[22ch]">
 					{props.title}
 				</h2>
 				{!!props.description ? (

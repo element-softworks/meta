@@ -45,6 +45,7 @@ export const NotificationsContainer = async ({
 			</CardContent>
 			<CardFooter>
 				<MarkNotificationsReadButton
+					disabled={notificationResponse?.unreadCount === 0}
 					notificationIds={notificationResponse?.notifications?.map((n) => n.id) ?? []}
 				/>
 			</CardFooter>

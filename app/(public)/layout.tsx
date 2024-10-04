@@ -25,7 +25,7 @@ export default async function RootLayout({
 				<ThemeProvider>
 					<Toaster />
 					<div className={`flex flex-col min-h-screen mx-auto ${inter.className}`}>
-						<Navbar sticky contained />
+						<Navbar sticky contained disableBorderBottom />
 
 						<div className="flex flex-1 overflow-clip">
 							<main className="w-full flex-1 flex flex-col ">{children}</main>

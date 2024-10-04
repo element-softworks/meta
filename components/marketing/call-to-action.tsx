@@ -10,7 +10,7 @@ interface CallToActionProps {
 
 export function CallToAction(props: CallToActionProps) {
 	return (
-		<section className="flex flex-col items-start md:items-center gap-4 md:gap-8">
+		<section className="flex flex-col items-start md:items-center gap-4 md:gap-8 border-b-2 border-t-2 py-20 xl:py-32">
 			<h2 className="w-full text-start md:text-center font-semibold text-2xl md:text-4xl lg:text-5xl max-w-[22ch]">
 				{props.title}
 			</h2>

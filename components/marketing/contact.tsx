@@ -36,24 +36,25 @@ export function Contact(props: ContactProps) {
 	async function onSubmit(values: z.infer<typeof ContactSchema>) {
 		// await registerQuery(values);
 		console.log(values, 'form values');
+		if (!process.env.NEXT_PUBLIC_FORM_URL) {
+			throw new Error('Form URL is not defined, please define it in your .env file');
+		}
+
+		const response = await fetch(process.env.NEXT_PUBLIC_FORM_URL, {
+			method: 'POST',
+			body: JSON.stringify(values),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+
+		if (response.ok) {
+			// Handle successful response
+		} else {
+			console.log('error');
+		}
 		form.reset();
 	}
-
-	// const onSubmit: SubmitHandler<FormInputProps> = async (data) => {
-	// const response = await axios({
-	// 	method: 'POST',
-	// 	url: 'https://formbold.com/s/oPgOV',
-	// 	data: data,
-	// })
-	// 	.then((r) => {})
-	// 	.catch((r) => {
-	// 		console.log('error');
-	// 	});
-
-	// 	reset();
-	// };
-
-	const randomBackgroundImageIndex = Math.floor(Math.random() * 6) + 1;
 
 	return (
 		<section className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 relative">
@@ -127,9 +128,9 @@ export function Contact(props: ContactProps) {
 			</Form>
 
 			<div
-				className="lg:h-full w-full object-cover rounded-lg  h-60 order-1 lg:order-2 bg-cover bg-black opacity-85"
+				className="lg:h-full w-full object-cover rounded-lg  h-60 bg-bottom order-1 lg:order-2 bg-cover bg-black opacity-85"
 				style={{
-					backgroundImage: `url('/images/auth/auth-layout-image-${randomBackgroundImageIndex}.webp')`,
+					backgroundImage: `url('/images/auth/auth-layout-image-2.webp')`,
 				}}
 			/>
 		</section>
