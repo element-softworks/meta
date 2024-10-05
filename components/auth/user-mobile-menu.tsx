@@ -71,7 +71,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 	);
 
 	return (
-		<div className="block md:hidden">
+		<div className="block lg:hidden">
 			{/* Mobile menu */}
 			<DropdownMenu onOpenChange={(open) => props.onNavOpenChange(open)}>
 				<DropdownMenuTrigger asChild className="cursor-pointer">
@@ -81,9 +81,9 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 						variant="link"
 					>
 						{props.navOpen ? (
-							<XIcon className="md:hidden" size={30} />
+							<XIcon className="lg:hidden" size={30} />
 						) : (
-							<MenuIcon className="md:hidden" size={30} />
+							<MenuIcon className="lg:hidden" size={30} />
 						)}
 					</Button>
 				</DropdownMenuTrigger>
