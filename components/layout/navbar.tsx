@@ -1,6 +1,6 @@
 'use client';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import { CreditCard, FrameIcon, Notebook, Phone } from 'lucide-react';
+import { Book, CreditCard, FrameIcon, Notebook, Phone } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -8,6 +8,7 @@ import { UserMenu } from '../auth/user-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
 import { Button } from '../ui/button';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
+import { FaBlog } from 'react-icons/fa';
 
 export const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/#pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
@@ -16,6 +17,7 @@ export const NAVBAR_ITEMS = [
 		href: '/#contact',
 		icon: <Phone className="mr-2 h-4 w-4" />,
 	},
+	{ name: 'Blog', href: '/blog', icon: <Book className="mr-2 h-4 w-4" /> },
 	{ name: 'Docs', href: '/docs', icon: <Notebook className="mr-2 h-4 w-4" /> },
 ];
 
@@ -40,7 +42,7 @@ export function Navbar(props: NavbarProps) {
 						? 'rgba(0, 0, 0, 0.05) 0px 1px 20px 0px'
 						: 'none',
 			}}
-			className={`py-2 md:py-4 px-4 md:px-6 md:h-20 z-40 transition-all ${
+			className={`py-2 lg:py-4 px-4 lg:px-6 lg:h-20 z-40 transition-all ${
 				props.sticky && 'sticky top-0'
 			} 
 			${
@@ -65,7 +67,7 @@ export function Navbar(props: NavbarProps) {
 				<Link href="/" aria-label="Go to homepage">
 					<div className=" flex items-center text-lg font-light z-[200] relative">
 						<FrameIcon className="mr-2" size={30} />
-						<p className="hidden md:block">NextJS SaaS Boilerplate</p>
+						<p className="hidden lg:block">NextJS SaaS Boilerplate</p>
 					</div>
 				</Link>
 
@@ -75,7 +77,7 @@ export function Navbar(props: NavbarProps) {
 					onNavOpenChange={(state: boolean) => setNavOpen(state)}
 					count={props.count}
 				/>
-				<div className="md:flex items-center gap-10 hidden">
+				<div className="lg:flex items-center gap-10 hidden">
 					<div className="flex ">
 						{NAVBAR_ITEMS.map((item, index) => {
 							return (
