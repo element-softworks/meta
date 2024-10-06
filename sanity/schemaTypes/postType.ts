@@ -1,21 +1,6 @@
 import { DocumentTextIcon } from '@sanity/icons';
-import {
-	SanityAsset,
-	SanityImageObject,
-	SanityImageSource,
-} from '@sanity/image-url/lib/types/types';
 import { SanityImageAssetDocument } from 'next-sanity';
 import { defineArrayMember, defineField, defineType } from 'sanity';
-
-export interface PostProps {
-	title: string;
-	slug: string;
-	author: any;
-	mainImage: SanityImageAssetDocument;
-	categories: any[];
-	publishedAt: string;
-	body: any;
-}
 
 export const postType = defineType({
 	name: 'post',

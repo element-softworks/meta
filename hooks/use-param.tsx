@@ -38,14 +38,17 @@ export function useParam() {
 		router.push(pathname + '?' + createQueryString(param, value), { scroll });
 	};
 
-	const mutateParams = (params: { [key: string]: string }) => {
+	const mutateParams = (
+		params: { [key: string]: string },
+		{ scroll = true }: { scroll: boolean }
+	) => {
 		const newParams = new URLSearchParams(searchParams.toString());
 
 		for (const [key, value] of Object.entries(params)) {
 			newParams.set(key, value);
 		}
 
-		router.push(pathname + '?' + newParams.toString());
+		router.push(pathname + '?' + newParams.toString(), { scroll });
 	};
 
 	return { mutateParam, mutateParams };

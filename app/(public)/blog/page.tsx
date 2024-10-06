@@ -1,26 +1,42 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Post } from '@/sanity/sanity.types';
+import { ClientInfiniteScroll } from '@/components/ClientInfiniteScroll';
+import { Card } from '@/components/ui/card';
 import { getPosts } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
+import { Post } from '@/sanity/sanity.types';
+import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
-import { format } from 'date-fns';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { ClipLoader } from 'react-spinners';
 
-export default async function Blog() {
-	const posts = await getPosts();
+export const revalidate = 60;
 
-	console.log(posts, 'posts data');
+export default async function Blog({
+	searchParams,
+}: {
+	searchParams: { perPage: string; pageNum: string };
+}) {
+	const perPage = searchParams?.perPage ?? 12;
+	const pageNum = searchParams?.pageNum ?? 1;
+	const postsResponse = await getPosts(Number(pageNum), Number(perPage));
 
 	return (
-		<section className="flex h-full flex-col container gap-8 mt-20">
+		<section className="flex h-full flex-col container gap-8 my-20">
 			<h1 className="w-full text-start  font-semibold text-xl md:text-2xl lg:text-3xl max-w-[22ch]">
 				From the blog
 			</h1>
-			<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-				{posts?.map((post, index) => {
-					return <PostCard key={index} post={post} />;
-				})}
-			</div>
+			<ClientInfiniteScroll
+				increment={12}
+				perPage={Number(perPage)}
+				dataLength={postsResponse.posts?.length} //This is important field to render the next data
+				hasMore={(postsResponse.posts?.length ?? 0) < postsResponse.total}
+			>
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden">
+					{postsResponse?.posts.map((post, index) => {
+						return <PostCard key={index} post={post} />;
+					})}
+				</div>
+			</ClientInfiniteScroll>
 		</section>
 	);
 }
@@ -29,7 +45,7 @@ const PostCard = ({ post }: { post: Post }) => {
 	return (
 		<Card className="overflow-hidden transition-transform duration-300 hover:scale-105">
 			<Link href={`/blog/${post.slug?.current}`}>
-				<div className="relative h-44 w-full">
+				<div className="relative h-48 w-full">
 					{!!post?.mainImage && (
 						<Image
 							alt={post.mainImage?.alt ?? 'Blog image'}
@@ -40,7 +56,7 @@ const PostCard = ({ post }: { post: Post }) => {
 					)}
 				</div>
 
-				<div className="px-6 py-4 flex flex-col gap-2">
+				<div className="px-6 pt-4 pb-6 flex flex-col gap-2">
 					<p className="text-base font-semibold">{post.title}</p>
 					<p className="text-muted-foreground text-sm line-clamp-3">{post.excerpt}</p>
 
