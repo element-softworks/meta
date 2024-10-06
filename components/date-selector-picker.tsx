@@ -109,13 +109,16 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 			}
 		} else {
 			setSelectOpen(false);
-			mutateParams({
-				[`${!!props.id ? `${props.id}-` : ''}startDate`]:
-					startDate?.toISOString() ?? new Date(Date.now()).toISOString(),
-				[`${!!props.id ? `${props.id}-` : ''}endDate`]:
-					endDate?.toISOString() ?? new Date(Date.now()).toISOString(),
-				[`${!!props.id ? `${props.id}-` : ''}dateType`]: val,
-			});
+			mutateParams(
+				{
+					[`${!!props.id ? `${props.id}-` : ''}startDate`]:
+						startDate?.toISOString() ?? new Date(Date.now()).toISOString(),
+					[`${!!props.id ? `${props.id}-` : ''}endDate`]:
+						endDate?.toISOString() ?? new Date(Date.now()).toISOString(),
+					[`${!!props.id ? `${props.id}-` : ''}dateType`]: val,
+				},
+				{ scroll: false }
+			);
 		}
 	};
 

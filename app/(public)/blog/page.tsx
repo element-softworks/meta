@@ -1,3 +1,4 @@
+import { boilerplateConfig } from '@/boilerplate.config';
 import { ClientInfiniteScroll } from '@/components/ClientInfiniteScroll';
 import { Card } from '@/components/ui/card';
 import { getPosts } from '@/sanity/lib/client';
@@ -6,37 +7,56 @@ import { Post } from '@/sanity/sanity.types';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { ClipLoader } from 'react-spinners';
+import { Suspense } from 'react';
 
-export const revalidate = 60;
+//This component is SSR due to pagination needing dynamic params data
+
+export async function generateMetadata() {
+	return {
+		title: `Blog | ${boilerplateConfig.projectName}`,
+		description: 'Read the latest articles from our blog.',
+		openGraph: {
+			title: `Blog | ${boilerplateConfig.projectName}`,
+			description: 'Read the latest articles from our blog.',
+		},
+		twitter: {
+			title: `Blog | ${boilerplateConfig.projectName}`,
+			description: 'Read the latest articles from our blog.',
+		},
+		alternates: {
+			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/blog`,
+		},
+	};
+}
 
 export default async function Blog({
 	searchParams,
 }: {
-	searchParams: { perPage: string; pageNum: string };
+	searchParams: { perPage?: string; pageNum?: string };
 }) {
-	const perPage = searchParams?.perPage ?? 12;
-	const pageNum = searchParams?.pageNum ?? 1;
-	const postsResponse = await getPosts(Number(pageNum), Number(perPage));
+	const perPage = searchParams?.perPage ?? '12'; // Default to 12 if not specified
+	const pageNum = searchParams?.pageNum ?? '1'; // Default to 1 if not specified
+	const postsResponse = await getPosts(Number(pageNum), Number(perPage)); // Fetch posts
 
 	return (
 		<section className="flex h-full flex-col container gap-8 my-20">
-			<h1 className="w-full text-start  font-semibold text-xl md:text-2xl lg:text-3xl max-w-[22ch]">
+			<h1 className="w-full text-start font-semibold text-xl md:text-2xl lg:text-3xl max-w-[22ch]">
 				From the blog
 			</h1>
-			<ClientInfiniteScroll
-				increment={12}
-				perPage={Number(perPage)}
-				dataLength={postsResponse.posts?.length} //This is important field to render the next data
-				hasMore={(postsResponse.posts?.length ?? 0) < postsResponse.total}
-			>
-				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden">
-					{postsResponse?.posts.map((post, index) => {
-						return <PostCard key={index} post={post} />;
-					})}
-				</div>
-			</ClientInfiniteScroll>
+			<Suspense fallback={<p>Loading...</p>}>
+				<ClientInfiniteScroll
+					increment={12}
+					perPage={Number(perPage)}
+					dataLength={postsResponse.posts?.length}
+					hasMore={(postsResponse.posts?.length ?? 0) < postsResponse.total}
+				>
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden">
+						{postsResponse?.posts.map((post, index) => {
+							return <PostCard key={index} post={post} />;
+						})}
+					</div>
+				</ClientInfiniteScroll>
+			</Suspense>
 		</section>
 	);
 }

@@ -34,13 +34,16 @@ export function DateRangePicker(props: DateRangePickerProps) {
 	useEffect(() => {
 		props?.onDateChange?.();
 
-		mutateParams({
-			[`${!!props.id ? `${props.id}-` : ''}startDate`]:
-				date?.from?.toISOString() ?? new Date(Date.now()).toISOString(),
-			[`${!!props.id ? `${props.id}-` : ''}endDate`]:
-				date?.to?.toISOString() ?? new Date(Date.now()).toISOString(),
-			[`${!!props.id ? `${props.id}-` : ''}dateType`]: 'custom',
-		});
+		mutateParams(
+			{
+				[`${!!props.id ? `${props.id}-` : ''}startDate`]:
+					date?.from?.toISOString() ?? new Date(Date.now()).toISOString(),
+				[`${!!props.id ? `${props.id}-` : ''}endDate`]:
+					date?.to?.toISOString() ?? new Date(Date.now()).toISOString(),
+				[`${!!props.id ? `${props.id}-` : ''}dateType`]: 'custom',
+			},
+			{ scroll: false }
+		);
 	}, [date]);
 
 	if (props.embedded) {

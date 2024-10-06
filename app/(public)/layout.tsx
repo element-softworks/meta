@@ -27,7 +27,7 @@ export default async function RootLayout({
 					<div className={`flex flex-col min-h-screen mx-auto ${inter.className}`}>
 						<Navbar sticky contained disableBorderBottom />
 
-						<div className="flex flex-1 overflow-clip">
+						<div className="flex flex-1 relative">
 							<main className="w-full flex-1 flex flex-col ">{children}</main>
 						</div>
 					</div>

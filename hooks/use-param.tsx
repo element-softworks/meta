@@ -40,7 +40,7 @@ export function useParam() {
 
 	const mutateParams = (
 		params: { [key: string]: string },
-		{ scroll = true }: { scroll: boolean }
+		{ scroll = true }: { scroll?: boolean }
 	) => {
 		const newParams = new URLSearchParams(searchParams.toString());
 

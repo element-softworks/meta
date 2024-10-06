@@ -152,10 +152,13 @@ export function DataTable<TData, TValue>({
 	]);
 
 	useEffect(() => {
-		mutateParams({
-			[`${!!id ? `${id}-` : ''}pageNum`]: '1',
-			[`${!!id ? `${id}-` : ''}search`]: searchValue,
-		});
+		mutateParams(
+			{
+				[`${!!id ? `${id}-` : ''}pageNum`]: '1',
+				[`${!!id ? `${id}-` : ''}search`]: searchValue,
+			},
+			{ scroll: false }
+		);
 	}, [searchValue]);
 
 	const handleSort = (columnId: string, isDefaultDesc: boolean) => {
@@ -197,7 +200,7 @@ export function DataTable<TData, TValue>({
 							}`}
 							value={
 								typeof search === 'string'
-									? (table.getColumn(search)?.getFilterValue() as string) ?? ''
+									? ((table.getColumn(search)?.getFilterValue() as string) ?? '')
 									: searchValue
 							}
 							onChange={(event) => {
@@ -366,7 +369,7 @@ export function DataTable<TData, TValue>({
 											{(isLoading
 												? Array.from({
 														length: table.getAllColumns()?.length,
-												  }).map((r, i) => ({ id: i }))
+													}).map((r, i) => ({ id: i }))
 												: row?.getVisibleCells?.()
 											)?.map((cellData, index) => {
 												const cell = cellData as Cell<TData, unknown>;
@@ -422,10 +425,13 @@ export function DataTable<TData, TValue>({
 						<Select
 							defaultValue={String(perPage)}
 							onValueChange={(value: string) => {
-								mutateParams({
-									[`${!!id ? `${id}-` : ''}pageNum`]: '1',
-									[`${!!id ? `${id}-` : ''}perPage`]: value,
-								});
+								mutateParams(
+									{
+										[`${!!id ? `${id}-` : ''}pageNum`]: '1',
+										[`${!!id ? `${id}-` : ''}perPage`]: value,
+									},
+									{ scroll: false }
+								);
 							}}
 						>
 							<p className="text-sm">Per page</p>
