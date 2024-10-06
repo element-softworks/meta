@@ -50,7 +50,7 @@ export default async function Blog({
 					dataLength={postsResponse.posts?.length}
 					hasMore={(postsResponse.posts?.length ?? 0) < postsResponse.total}
 				>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 overflow-hidden">
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 						{postsResponse?.posts.map((post, index) => {
 							return <PostCard key={index} post={post} />;
 						})}
@@ -61,13 +61,14 @@ export default async function Blog({
 	);
 }
 
-const PostCard = ({ post }: { post: Post }) => {
+export const PostCard = ({ post }: { post: Post }) => {
 	return (
-		<Card className="overflow-hidden transition-transform duration-300 hover:scale-105">
+		<Card className="transition-transform duration-300 hover:scale-105">
 			<Link href={`/blog/${post.slug?.current}`}>
 				<div className="relative h-48 w-full">
 					{!!post?.mainImage && (
 						<Image
+							className="rounded-tr-md rounded-tl-md"
 							alt={post.mainImage?.alt ?? 'Blog image'}
 							src={urlFor(post.mainImage).width(600).url()}
 							layout="fill"
@@ -85,8 +86,8 @@ const PostCard = ({ post }: { post: Post }) => {
 							<div className="relative size-6 rounded-full">
 								<Image
 									className="rounded-full"
-									alt={post.mainImage?.alt ?? 'Blog image'}
-									src={urlFor(post.author.image).width(600).url()}
+									alt={post.mainImage?.alt ?? 'Author image'}
+									src={urlFor(post.author.image).width(100).url()}
 									layout="fill"
 									objectFit="cover"
 								/>

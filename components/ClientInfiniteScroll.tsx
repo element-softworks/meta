@@ -26,7 +26,7 @@ export function ClientInfiniteScroll(props: ClientInfiniteScrollProps) {
 
 	return (
 		<InfiniteScroll
-			className="!overflow-hidden"
+			className="!overflow-visible"
 			dataLength={props.dataLength}
 			next={() => {
 				handleNext();

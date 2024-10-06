@@ -1,12 +1,14 @@
 import { boilerplateConfig } from '@/boilerplate.config';
 import { Markdown } from '@/components/markdown';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
-import { getAllPostSlugs, getPostBySlug } from '@/sanity/lib/client';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { getAllPostSlugs, getPostBySlug, getPosts } from '@/sanity/lib/client';
 import { urlFor } from '@/sanity/lib/image';
+import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import { PostCard } from '../page';
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	const post = await getPostBySlug(params.slug);
@@ -38,6 +40,7 @@ export async function generateStaticParams() {
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
 	const post = await getPostBySlug(params.slug);
+	const morePosts = await getPosts(1, 6);
 
 	// Return 404 if no case study found
 	if (!post) {
@@ -45,9 +48,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 	}
 
 	return (
-		<section className="container pb-16 lg:pb-32">
-			<div className="grid grid-cols-12 gap-6 mt-12 ">
-				<Card className="col-span-12 md:col-span-8 lg:p-4">
+		<section className="container max-w-6xl pb-16 lg:pb-32">
+			<div className="grid grid-cols-12 gap-4 mt-12 ">
+				<Card className="col-span-12 lg:col-span-9 lg:p-4">
 					<CardHeader>
 						<h1 className="w-full text-start mb-4 font-semibold text-2xl md:text-3xl lg:text-4xl max-w-[22ch]">
 							{post.title}
@@ -74,16 +77,75 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 						<Markdown body={post.body!} />
 					</CardContent>
 				</Card>
-				<div className="col-span-12 md:col-span-4 block">
-					<Card className=" sticky top-[76px] lg:top-24 right-0 ml-auto">
-						<CardHeader></CardHeader>
-						<CardContent>
-							<CardDescription>Lets get you setup</CardDescription>
-							<Link href="/auth/register">
-								<Button className="w-full">Get Started</Button>
-							</Link>
-						</CardContent>
-					</Card>
+				<div className="col-span-12 lg:col-span-3 block">
+					<div className="flex flex-col sm:flex-row lg:flex-col gap-4 sticky top-[76px] lg:top-24 right-0 ">
+						<Card className="border-primary drop-shadow-xl w-full sm:w-1/2 lg:w-full">
+							<CardHeader>
+								<div className="-m-4">
+									<Image
+										className="rounded-tr-md rounded-tl-md"
+										alt="Call to action"
+										src="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/user-management.webp"
+										width={0}
+										height={0}
+										layout="responsive"
+										objectFit="cover"
+									/>
+								</div>
+							</CardHeader>
+							<CardContent className="flex flex-col gap-4 mt-4">
+								<CardDescription>
+									Sign up to fast track your newest SaaS idea into reality with a
+									robust, extensive, mature codebase created to the highest
+									standard.
+								</CardDescription>
+								<Link href="/auth/register">
+									<Button variant="secondary" className="w-full">
+										Get it now
+									</Button>
+								</Link>
+							</CardContent>
+						</Card>
+						<Card className="w-full sm:w-1/2 lg:w-full h-fit">
+							<CardHeader className="pb-1">
+								<CardTitle className="text-lg">Written by</CardTitle>
+							</CardHeader>
+							<CardContent className="flex flex-col gap-4">
+								<div className="flex flex-1 gap-2 items-center">
+									{!!post?.author?.image && (
+										<Image
+											className="rounded-full"
+											alt={post.mainImage?.alt ?? 'Author image'}
+											src={urlFor(post.author.image).width(100).url()}
+											width={35}
+											height={35}
+										/>
+									)}
+									<div>
+										<p className="text-sm font-semibold">
+											{post?.author?.name ?? ''}
+										</p>
+										<p className="text-sm text-muted-foreground">
+											{format(new Date(post._createdAt), 'dd/MM/yyyy')}
+										</p>
+									</div>
+								</div>
+							</CardContent>
+						</Card>
+					</div>
+				</div>
+			</div>
+
+			<div className="mt-12">
+				<h1 className="w-full text-start font-semibold text-xl md:text-2xl lg:text-3xl max-w-[22ch]">
+					More posts
+				</h1>
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+					{morePosts?.posts
+						?.filter((p) => p._id !== post._id)
+						?.map((post, index) => {
+							return <PostCard key={index} post={post} />;
+						})}
 				</div>
 			</div>
 		</section>

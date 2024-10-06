@@ -4,6 +4,7 @@ import { getImageDimensions } from '@sanity/asset-utils';
 import { link } from 'fs';
 import { PortableTextComponents } from 'next-sanity';
 import { PortableText } from 'next-sanity';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface MarkdownProps {
@@ -22,10 +23,12 @@ export function Markdown(props: MarkdownProps) {
 		console.log(value, 'value data');
 		const { width, height } = getImageDimensions(value);
 		return (
-			<img
+			<Image
 				src={urlFor(value.asset).width(700).url()}
 				alt={value.alt || ' '}
 				loading="lazy"
+				width={width}
+				height={height}
 				style={{
 					// Display alongside text if image appears inside a block text span
 					display: isInline ? 'inline-block' : 'block',
