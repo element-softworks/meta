@@ -11,7 +11,7 @@ import { useCurrentUser } from './use-current-user';
 
 interface UseStripePricingProps {
 	enabled: boolean;
-	price: 'basic' | 'pro' | 'enterprise' | null;
+	price: 'basic' | 'pro' | 'enterprise' | 'starter' | 'full access' | null;
 	stripeCustomerId: string;
 	teamId: string;
 }

@@ -13,7 +13,7 @@ import plans from '@/plans.json';
 import { CheckCircle2, X } from 'lucide-react';
 import { useState } from 'react';
 
-interface PricingPlansProps {
+interface PricingProps {
 	readOnly?: boolean;
 	teamId: string;
 	currentPlanId: string | undefined;
@@ -21,7 +21,7 @@ interface PricingPlansProps {
 }
 
 interface PricingCardProps {
-	type: 'year' | 'month';
+	type?: 'year' | 'month';
 	planName: string;
 	price: string;
 	description: string;
@@ -36,7 +36,8 @@ export function PricingCard(props: PricingCardProps) {
 				<p className="font-semibold text-muted-foreground">{props.planName}</p>
 
 				<CardTitle>
-					{props.price}/{props.type}
+					{props.price}
+					{!!props.type?.length ? `/${props.type}` : ''}
 				</CardTitle>
 				<CardDescription>{props.description}</CardDescription>
 			</CardHeader>
@@ -64,7 +65,7 @@ export function PricingCard(props: PricingCardProps) {
 	);
 }
 
-export default function PricingPlans(props: PricingPlansProps) {
+export function SubscriptionPricingPlans(props: PricingProps) {
 	const [price, setPrice] = useState<'basic' | 'pro' | 'enterprise' | null>(null);
 
 	const [isYearly, setIsYearly] = useState(false);
@@ -187,4 +188,97 @@ export default function PricingPlans(props: PricingPlansProps) {
 			</div>
 		</div>
 	);
+}
+
+export function OneTimePricingPlans(props: PricingProps) {
+	const [price, setPrice] = useState<'starter' | 'full access' | null>(null);
+
+	const [isYearly, setIsYearly] = useState(false);
+
+	const { isLoading } = useStripePricing({
+		enabled: !!price,
+		price,
+		stripeCustomerId: props.stripeCustomerId,
+		teamId: props.teamId,
+	});
+
+	const fullAccess = plans?.['full access'];
+	const starter = plans?.['starter'];
+
+	const calcPrice = (price: number, yearly: boolean) => {
+		const formattedPrice = yearly ? price * 12 : price;
+
+		return `£${formattedPrice.toFixed(2)}`;
+	};
+
+	return (
+		<div className="text-start lg:text-center">
+			<p className="text-xl md:text-3xl font-bold">Boilerplate pricing plans</p>
+			<p className="text-muted-foreground">Select a plan to upgrade your account</p>
+
+			<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6 lg:mt-10">
+				<PricingCard
+					planName={starter.name}
+					price={calcPrice(starter.price, isYearly)}
+					description="Perfect for owners of small & medium businesses"
+					features={starter.features}
+					Button={
+						<Button
+							isLoading={price === 'starter' && isLoading}
+							disabled={
+								props.currentPlanId === starter.stripePricingId ||
+								(price === 'starter' && isLoading) ||
+								props.readOnly
+							}
+							className="w-full"
+							onClick={() => {
+								setPrice('starter');
+							}}
+						>
+							{props.currentPlanId === starter.stripePricingId
+								? 'Current plan'
+								: 'Get started with Starter'}
+						</Button>
+					}
+				/>
+
+				<PricingCard
+					className="shadow-md border-primary"
+					planName={fullAccess.name}
+					price={calcPrice(fullAccess.price, isYearly)}
+					description="Dedicated support and infrastructure to fit your needs"
+					features={fullAccess.features}
+					Button={
+						<Button
+							isLoading={price === 'full access' && isLoading}
+							disabled={
+								props.currentPlanId === fullAccess.stripePricingId ||
+								(price === 'full access' && isLoading) ||
+								props.readOnly
+							}
+							className="w-full"
+							onClick={() => {
+								setPrice('full access');
+							}}
+						>
+							{props.currentPlanId === fullAccess.stripePricingId
+								? 'Current plan'
+								: 'Get started with Full Access'}
+						</Button>
+					}
+				/>
+			</div>
+		</div>
+	);
+}
+
+interface PricingPlansProps extends PricingProps {
+	type: 'one time' | 'subscription';
+}
+export default function PricingPlans(props: PricingPlansProps) {
+	if (props.type === 'subscription') {
+		return <SubscriptionPricingPlans {...props} />;
+	} else if (props.type === 'one time') {
+		return <OneTimePricingPlans {...props} />;
+	}
 }

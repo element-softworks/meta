@@ -3,6 +3,7 @@ import { getUserByEmail } from '@/data/user';
 import { db } from '@/db/drizzle/db';
 import { customer, customerInvoice, session, team } from '@/db/drizzle/schema';
 import { createNotification } from '@/lib/notifications';
+import { addYears } from 'date-fns';
 import { eq } from 'drizzle-orm';
 import { stat } from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
@@ -198,28 +199,52 @@ export async function POST(req: NextRequest, res: Response) {
 			})
 			.where(eq(customer.stripeCustomerId, customerResponse.id));
 
+		console.log(invoice, 'invoice datatatatata');
+		const [invoiceResponse] = await db
+			.select()
+			.from(customerInvoice)
+			.where(eq(customerInvoice.invoiceId, invoice.id));
+
 		try {
-			await db.insert(customerInvoice).values({
-				invoiceId: invoice.id ?? '',
-				teamId: teamResponse?.data?.team?.id ?? '',
-				amountPaid: invoice.amount_paid ?? '',
-				amountDue: invoice.amount_due ?? '',
-				total: invoice.total ?? '',
-				invoicePdf: invoice.invoice_pdf ?? '',
-				amountRemaining: invoice.amount_remaining ?? '',
-				currency: invoice.currency ?? '',
-				email: userResponse?.email ?? '',
-				status: status ?? 'failed',
-				stripeSubscriptionId: invoice.subscription?.toString() ?? '',
-				customerId: foundCustomer?.id ?? '',
-			});
-			await createNotification({
-				userId: customerResponse?.metadata?.userId ?? '',
-				message: `Your invoice for ${teamResponse?.data?.team?.name} has ${
-					status === 'succeeded' ? 'been paid' : 'failed'
-				}`,
-				title: `Invoice ${status}`,
-			});
+			if (!!invoiceResponse?.id?.length) {
+				await db
+					.update(customerInvoice)
+					.set({
+						amountPaid: invoice.amount_paid ?? '',
+						amountDue: invoice.amount_due ?? '',
+						total: invoice.total ?? '',
+						invoicePdf: invoice.invoice_pdf ?? '',
+						amountRemaining: invoice.amount_remaining ?? '',
+						currency: invoice.currency ?? '',
+						email: userResponse?.email ?? '',
+						status: status ?? 'failed',
+						stripeSubscriptionId: invoice.subscription?.toString() ?? '',
+						customerId: foundCustomer?.id ?? '',
+					})
+					.where(eq(customerInvoice.invoiceId, invoice.id));
+			} else {
+				await db.insert(customerInvoice).values({
+					invoiceId: invoice.id ?? '',
+					teamId: teamResponse?.data?.team?.id ?? '',
+					amountPaid: invoice.amount_paid ?? '',
+					amountDue: invoice.amount_due ?? '',
+					total: invoice.total ?? '',
+					invoicePdf: invoice.invoice_pdf ?? '',
+					amountRemaining: invoice.amount_remaining ?? '',
+					currency: invoice.currency ?? '',
+					email: userResponse?.email ?? '',
+					status: status ?? 'failed',
+					stripeSubscriptionId: invoice.subscription?.toString() ?? '',
+					customerId: foundCustomer?.id ?? '',
+				});
+				await createNotification({
+					userId: customerResponse?.metadata?.userId ?? '',
+					message: `Your invoice for ${teamResponse?.data?.team?.name} has ${
+						status === 'succeeded' ? 'been paid' : 'failed'
+					}`,
+					title: `Invoice ${status}`,
+				});
+			}
 		} catch (error) {
 			console.error('Error handling subscription event', error);
 			return NextResponse.json(
@@ -230,14 +255,74 @@ export async function POST(req: NextRequest, res: Response) {
 	};
 
 	const handleCheckoutSessionCompletedEvent = async (event: Stripe.Event) => {
-		const subscription = event.data.object as Stripe.Subscription;
-		const customer = await getCustomer(subscription.customer as string);
-		const team = await getTeamById(customer?.metadata?.teamId ?? '');
+		const payment = event.data.object as Stripe.Checkout.Session;
+		//This is where we handle the finalization of one time payments
+
+		const customerResponse = await getCustomer((payment?.customer as string) ?? '');
+		const userResponse = await getUserByEmail(customerResponse.email ?? '');
+		const teamResponse = await getTeamById(customerResponse?.metadata?.teamId ?? '');
+
+		console.log(customerResponse, 'customer response data');
+
+		if (payment.mode === 'payment' && payment.status === 'complete') {
+			//Create a new customer with a one time payment
+
+			let foundCustomer = await db.query.customer.findFirst({
+				where: eq(customer.stripeCustomerId, customerResponse.id),
+			});
+
+			if (!foundCustomer) {
+				const [newCustomer] = await db
+					.insert(customer)
+					.values({
+						type: 'payment',
+						cancelAtPeriodEnd: false,
+						email: userResponse?.email ?? '',
+						planId: customerResponse?.metadata?.priceId ?? '',
+						status: payment?.status === 'complete' ? 'active' : 'unpaid',
+						stripeCustomerId: payment.customer as string,
+						stripeSubscriptionId: '',
+						teamId: teamResponse?.data?.team?.id ?? '',
+						userId: userResponse?.id ?? '',
+						endDate: addYears(new Date(payment?.created * 1000), 999),
+					})
+					.returning();
+
+				foundCustomer = newCustomer;
+			} else {
+				await db
+					.update(customer)
+					.set({
+						type: 'payment',
+						cancelAtPeriodEnd: false,
+						email: userResponse?.email ?? '',
+						planId: customerResponse?.metadata?.priceId ?? '',
+						status: payment?.status === 'complete' ? 'active' : 'unpaid',
+						stripeCustomerId: payment.customer as string,
+						stripeSubscriptionId: '',
+						teamId: teamResponse?.data?.team?.id ?? '',
+						userId: userResponse?.id ?? '',
+						endDate: addYears(new Date(payment?.created * 1000), 999),
+					})
+					.where(eq(customer.stripeCustomerId, customerResponse.id));
+			}
+
+			// Update team
+			await db
+				.update(team)
+				.set({
+					stripeCustomerId: customerResponse.id,
+				})
+				.where(eq(team.id, teamResponse?.data?.team?.id!));
+		}
 	};
 
 	switch (event.type) {
 		//One time payment logic
 		case 'payment_intent.succeeded':
+			const paymentIntent = event.data.object as Stripe.PaymentIntent;
+			console.log(paymentIntent, 'payment intent response');
+
 			console.log('Payment intent succeeded');
 			break;
 		case 'charge.updated':
@@ -267,6 +352,9 @@ export async function POST(req: NextRequest, res: Response) {
 		case 'checkout.session.completed':
 			console.log('Checkout session completed');
 			await handleCheckoutSessionCompletedEvent(event);
+			break;
+		case 'charge.succeeded':
+			console.log('Charge data succeeded');
 			break;
 		default:
 			console.log(`Unhandled event type ${event.type}`);

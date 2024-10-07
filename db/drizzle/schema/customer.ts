@@ -26,7 +26,7 @@ export const customer = pgTable(
 		startDate: timestamp('startDate', { precision: 3, mode: 'date' })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
-		endDate: timestamp('endDate', { precision: 3, mode: 'date' }).notNull(),
+		endDate: timestamp('endDate', { precision: 3, mode: 'date' }),
 		planId: text('planId').notNull(),
 		email: text('email').notNull(),
 		status: text('status').notNull(),

@@ -28,8 +28,42 @@ export const createCheckoutSession = async ({
 	subscription: boolean;
 	stripeCustomerId: string;
 }) => {
+	let customer = null;
+
+	const sessionResponse = await getCookie('session');
+
 	if (subscription) {
 		//If you are a team admin, or a site admin, you can archive/restore a team
+
+		//If we have a stripeCustomerId, we are to retrieve the customer
+		if (!!stripeCustomerId?.length) {
+			try {
+				await handleUpgradeSubscription(
+					stripeCustomerId,
+					priceId,
+					sessionResponse?.value ?? ''
+				);
+				return { success: 'Subscription updated', updated: true };
+			} catch (err) {
+				console.error(`Error updating subscription: ${err}`);
+
+				return {
+					error: 'An error occurred while updating the subscription',
+				};
+			}
+		} else {
+			const newCustomer = await stripe.customers.create({
+				email: email,
+				metadata: {
+					userId: userId,
+					teamId: teamId,
+					email: email,
+					userSession: sessionResponse?.value ?? '',
+					priceId: priceId,
+				},
+			});
+			customer = newCustomer;
+		}
 		const isOwner = await isTeamOwnerServer(teamId, userId);
 
 		if (!isOwner) {
@@ -37,39 +71,6 @@ export const createCheckoutSession = async ({
 		}
 
 		try {
-			let customer = null;
-
-			const sessionResponse = await getCookie('session');
-
-			//If we have a stripeCustomerId, we are to retrieve the customer
-			if (!!stripeCustomerId?.length) {
-				try {
-					await handleUpgradeSubscription(
-						stripeCustomerId,
-						priceId,
-						sessionResponse?.value ?? ''
-					);
-					return { success: 'Subscription updated', updated: true };
-				} catch (err) {
-					console.error(`Error updating subscription: ${err}`);
-
-					return {
-						error: 'An error occurred while updating the subscription',
-					};
-				}
-			} else {
-				const newCustomer = await stripe.customers.create({
-					email: email,
-					metadata: {
-						userId: userId,
-						teamId: teamId,
-						email: email,
-						userSession: sessionResponse?.value ?? '',
-					},
-				});
-				customer = newCustomer;
-			}
-
 			const checkoutSession = await stripe.checkout.sessions.create({
 				customer: customer.id,
 				mode: 'subscription',
@@ -105,18 +106,54 @@ export const createCheckoutSession = async ({
 		}
 	} else {
 		//Handle payment session
-		//TODO: CREATE ONE TIME PAYMENTS HERE
+
 		const sessionResponse = await getCookie('session');
 
+		//If we have a stripeCustomerId, we are to retrieve the customer
+		if (!!stripeCustomerId?.length) {
+			try {
+				const response = await handleUpgradeOneTimePayment(
+					stripeCustomerId,
+					priceId,
+					sessionResponse?.value ?? ''
+				);
+				customer = response?.customer;
+			} catch (err) {
+				console.error(`Error updating subscription: ${err}`);
+
+				return {
+					error: 'An error occurred while updating the subscription',
+				};
+			}
+		} else {
+			const newCustomer = await stripe.customers.create({
+				email: email,
+				metadata: {
+					userId: userId,
+					teamId: teamId,
+					email: email,
+					userSession: sessionResponse?.value ?? '',
+					priceId: priceId,
+				},
+			});
+			customer = newCustomer;
+		}
+
+		console.log(customer, 'testing 3');
 		try {
 			const session = await stripe.checkout.sessions.create({
 				mode: 'payment',
+				invoice_creation: {
+					enabled: true,
+				},
+				customer: customer?.id ?? '',
 				payment_method_types: ['card'],
 				metadata: {
 					userId,
 					teamId,
 					email,
 					userSession: sessionResponse?.value ?? '',
+					priceId,
 				},
 				line_items: [
 					{
@@ -124,7 +161,6 @@ export const createCheckoutSession = async ({
 						quantity: 1,
 					},
 				],
-				customer_email: email,
 				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing/success`,
 				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing`,
 				allow_promotion_codes: true,
@@ -151,7 +187,7 @@ const handleUpgradeSubscription = async (
 ) => {
 	//If we have a stripeCustomerId, we are trying to upgrade / downgrade the subscription
 
-	if (stripeCustomerId) {
+	if (!!stripeCustomerId) {
 		const customerResponse = await db.query.customer.findFirst({
 			where: eq(customer.stripeCustomerId, stripeCustomerId),
 		});
@@ -209,6 +245,43 @@ const handleUpgradeSubscription = async (
 
 		return {
 			success: 'Subscription updated',
+		};
+	}
+};
+
+const handleUpgradeOneTimePayment = async (
+	stripeCustomerId: string,
+	priceId: string,
+	userSession: string
+) => {
+	if (!!stripeCustomerId) {
+		const customerResponse = await db.query.customer.findFirst({
+			where: eq(customer.stripeCustomerId, stripeCustomerId),
+		});
+
+		if (!customerResponse) {
+			return {
+				error: 'Customer not found',
+			};
+		}
+
+		console.log(customerResponse, 'testing 1');
+
+		const updatedCustomer = await stripe.customers.update(stripeCustomerId, {
+			metadata: {
+				userId: customerResponse?.userId,
+				teamId: customerResponse?.teamId,
+				email: customerResponse?.email,
+				userSession: userSession ?? '',
+				priceId: priceId,
+			},
+		});
+
+		console.log(customerResponse, 'testing 2');
+
+		return {
+			success: 'Customer updated',
+			customer: updatedCustomer,
 		};
 	}
 };

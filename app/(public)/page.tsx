@@ -226,23 +226,25 @@ export default function Home() {
 				<Pricing
 					title="Write a caption to sell your pricing plans"
 					caption="Pricing"
-					plans={Object.entries(plans).map((plan, index) => ({
-						features: plan[1].features.map((feature) => ({
-							title: feature.feature,
-							active: feature.active,
-						})),
-						name: plan[1].name,
-						popular: index === 1,
-						price: (
-							<p className="flex gap-2 text-xl items-end">
-								<span className="line-through text-xl text-muted-foreground">
-									£{(plan[1].price * 1.2).toFixed(0)}
-								</span>
-								<span className="text-4xl font-bold">£{plan[1].price}</span>{' '}
-								<span className="text-sm">GBP</span>
-							</p>
-						),
-					}))}
+					plans={Object.entries(plans)
+						?.filter((p) => p[1].type === 'subscription')
+						?.map((plan, index) => ({
+							features: plan[1].features.map((feature) => ({
+								title: feature.feature,
+								active: feature.active,
+							})),
+							name: plan[1].name,
+							popular: index === 1,
+							price: (
+								<p className="flex gap-2 text-xl items-end">
+									<span className="line-through text-xl text-muted-foreground">
+										£{(plan[1].price * 1.2).toFixed(0)}
+									</span>
+									<span className="text-4xl font-bold">£{plan[1].price}</span>{' '}
+									<span className="text-sm">GBP</span>
+								</p>
+							),
+						}))}
 				/>
 			</MarketingSection>
 

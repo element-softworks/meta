@@ -52,7 +52,7 @@ export default function CancelSubscriptionButton(props: CancelSubscriptionButton
 			<div className="flex flex-col gap-2 w-fit">
 				<p className="text-sm">
 					Subscription will terminate on{' '}
-					{format(new Date(props.customer?.endDate), 'MMM d, yyyy')}
+					{format(new Date(props.customer?.endDate ?? Date.now()), 'MMM d, yyyy')}
 				</p>
 				<Button
 					isLoading={isLoadingUncancel}

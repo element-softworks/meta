@@ -50,6 +50,7 @@ export default async function BillingPage({ params }: { params: { team: string }
 				) : null}
 
 				<PricingPlans
+					type="one time"
 					readOnly={!isOwner || !user?.currentTeam}
 					teamId={team.data?.team?.id ?? ''}
 					stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
