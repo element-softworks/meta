@@ -95,13 +95,7 @@ export type Post = {
 		alt?: string;
 		_type: 'image';
 	};
-	categories?: Array<{
-		_ref: string;
-		_type: 'reference';
-		_weak?: boolean;
-		_key: string;
-		[internalGroqTypeReferenceTo]?: 'category';
-	}>;
+
 	publishedAt?: string;
 	body?: Array<
 		| {
@@ -175,17 +169,6 @@ export type Author = {
 		_type: 'block';
 		_key: string;
 	}>;
-};
-
-export type Category = {
-	_id: string;
-	_type: 'category';
-	_createdAt: string;
-	_updatedAt: string;
-	_rev: string;
-	title?: string;
-	slug?: Slug;
-	description?: string;
 };
 
 export type Slug = {
@@ -293,7 +276,6 @@ export type AllSanitySchemaTypes =
 	| Geopoint
 	| Post
 	| Author
-	| Category
 	| Slug
 	| BlockContent
 	| SanityImageCrop

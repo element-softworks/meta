@@ -55,7 +55,7 @@ export function Navbar(props: NavbarProps) {
 			{props.sticky && (
 				<div
 					id="overlap"
-					className={`absolute top-0 left-0 w-full h-full backdrop-blur-md transition-all duration-300 bg-[hsla(var(--background))]`}
+					className={`absolute top-0 left-0 w-full h-full backdrop-blur-md transition-all duration-300 bg-[hsla(var(--nav-background))]`}
 				></div>
 			)}
 

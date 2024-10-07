@@ -1,5 +1,6 @@
 import { boilerplateConfig } from '@/boilerplate.config';
 import { Markdown } from '@/components/markdown';
+import { PostCard } from '@/components/post-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getAllPostSlugs, getPostBySlug, getPosts } from '@/sanity/lib/client';
@@ -8,7 +9,6 @@ import { format } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { PostCard } from '../page';
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	const post = await getPostBySlug(params.slug);
@@ -40,7 +40,7 @@ export async function generateStaticParams() {
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
 	const post = await getPostBySlug(params.slug);
-	const morePosts = await getPosts(1, 6);
+	const morePosts = await getPosts(1, 6, params.slug);
 
 	// Return 404 if no case study found
 	if (!post) {
@@ -85,7 +85,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 									<Image
 										className="rounded-tr-md rounded-tl-md"
 										alt="Call to action"
-										src="https://nextjs-saas-boilerplate.s3.us-east-2.amazonaws.com/user-management.webp"
+										src="https://img.recraft.ai/kb6NwyzRIScHK8TJaj5WnKtRarKUQmEtsrTesJxRnXw/rs:fit:1536:1024:0/q:95/g:no/plain/abs://prod/images/8cddd895-2fb9-413d-9736-7c0615202de4@png"
 										width={0}
 										height={0}
 										layout="responsive"
@@ -141,11 +141,9 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 					More posts
 				</h1>
 				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-					{morePosts?.posts
-						?.filter((p) => p._id !== post._id)
-						?.map((post, index) => {
-							return <PostCard key={index} post={post} />;
-						})}
+					{morePosts?.posts?.map((post, index) => {
+						return <PostCard key={index} post={post} />;
+					})}
 				</div>
 			</div>
 		</section>

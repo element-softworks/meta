@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/card';
 import { useStripePricing } from '@/hooks/use-stripe-pricing';
 import plans from '@/plans.json';
-import { CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, X } from 'lucide-react';
 import { useState } from 'react';
 
 interface PricingPlansProps {
@@ -25,7 +25,7 @@ interface PricingCardProps {
 	planName: string;
 	price: string;
 	description: string;
-	features: string[];
+	features: { feature: string; active: boolean }[];
 	Button: React.ReactNode;
 	className?: string;
 }
@@ -42,10 +42,19 @@ export function PricingCard(props: PricingCardProps) {
 			</CardHeader>
 			<CardContent className="my-6 flex flex-col gap-2">
 				{props.features?.map((feature, index) => {
+					if (!feature.active) {
+						return (
+							<div key={index} className="flex gap-2 items-center">
+								<X className="text-muted-foreground" size={18} />
+								<p>{feature.feature}</p>
+							</div>
+						);
+					}
+
 					return (
 						<div key={index} className="flex gap-2 items-center">
 							<CheckCircle2 className="text-successful" size={18} />
-							<p>{feature}</p>
+							<p>{feature.feature}</p>
 						</div>
 					);
 				})}
@@ -103,7 +112,7 @@ export default function PricingPlans(props: PricingPlansProps) {
 					planName={basic.name}
 					price={calcPrice(basic.price, isYearly)}
 					description="Essential features you need to get started"
-					features={basic.features.map((feature) => feature.feature)}
+					features={basic.features}
 					Button={
 						<Button
 							isLoading={price === 'basic' && isLoading}
@@ -129,7 +138,7 @@ export default function PricingPlans(props: PricingPlansProps) {
 					planName={pro.name}
 					price={calcPrice(pro.price, isYearly)}
 					description="Perfect for owners of small & medium businesses"
-					features={pro.features.map((feature) => feature.feature)}
+					features={pro.features}
 					Button={
 						<Button
 							isLoading={price === 'pro' && isLoading}
@@ -155,7 +164,7 @@ export default function PricingPlans(props: PricingPlansProps) {
 					planName={enterprise.name}
 					price={calcPrice(enterprise.price, isYearly)}
 					description="Dedicated support and infrastructure to fit your needs"
-					features={enterprise.features.map((feature) => feature.feature)}
+					features={enterprise.features}
 					Button={
 						<Button
 							isLoading={price === 'enterprise' && isLoading}
