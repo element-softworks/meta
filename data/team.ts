@@ -45,7 +45,7 @@ export const findTeamById = async (teamId: string) => {
 
 export const getTeamCustomerByTeamId = async (teamId: string) => {
 	const customerResponse = await db.query.customer.findFirst({
-		where: eq(customer.teamId, teamId),
+		where: and(eq(customer.teamId, teamId), eq(customer.status, 'active')),
 	});
 
 	return customerResponse;

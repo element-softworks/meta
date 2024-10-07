@@ -116,6 +116,14 @@ export async function POST(req: NextRequest, res: Response) {
 					})
 					.where(eq(customer.stripeCustomerId, subscriptionData.stripeCustomerId));
 
+				// Update team
+				await db
+					.update(team)
+					.set({
+						stripeCustomerId: '',
+					})
+					.where(eq(team.id, teamResponse?.data?.team?.id!));
+
 				await createNotification({
 					userId: customerResponse.metadata.userId,
 					message: `Your subscription to ${teamResponse?.data?.team?.name} has been deleted`,
