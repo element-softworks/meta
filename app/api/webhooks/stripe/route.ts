@@ -64,13 +64,26 @@ export async function POST(req: NextRequest, res: Response) {
 			endDate: endDate,
 		};
 
+		const foundCustomer = await db.query.customer.findFirst({
+			where: eq(customer.stripeCustomerId, customerResponse.id),
+		});
+
 		try {
 			if (type === 'created') {
 				// Create subscription
 
-				await db.insert(customer).values({
-					...subscriptionData,
-				});
+				if (!!foundCustomer) {
+					await db
+						.update(customer)
+						.set({
+							...subscriptionData,
+						})
+						.where(eq(customer.stripeCustomerId, customerResponse.id));
+				} else {
+					await db.insert(customer).values({
+						...subscriptionData,
+					});
+				}
 
 				await db
 					.update(team)
@@ -122,20 +135,41 @@ export async function POST(req: NextRequest, res: Response) {
 		const invoice = event.data.object as Stripe.Invoice;
 
 		const customerResponse = await getCustomer(invoice.customer as string);
-		const user = await getUserByEmail(customerResponse.email ?? '');
+		const userResponse = await getUserByEmail(customerResponse.email ?? '');
 		const teamResponse = await getTeamById(customerResponse?.metadata?.teamId ?? '');
 
-		const foundCustomer = await db.query.customer.findFirst({
+		let foundCustomer = await db.query.customer.findFirst({
 			where: eq(customer.stripeCustomerId, customerResponse.id),
 		});
 
-		if (!user) {
+		if (!userResponse) {
 			console.error('User not found');
 			return NextResponse.json({ error: 'User not found' }, { status: 404 });
 		}
 		if (!team) {
 			console.error('Team not found');
 			return NextResponse.json({ error: 'Team not found' }, { status: 404 });
+		}
+
+		if (!foundCustomer) {
+			const endDate = new Date(invoice?.period_end * 1000); //Convert unix timestamp to JS date
+
+			const [newCustomer] = await db
+				.insert(customer)
+				.values({
+					cancelAtPeriodEnd: false,
+					email: userResponse.email,
+					planId: '',
+					status: invoice.status as string,
+					stripeCustomerId: invoice.customer as string,
+					stripeSubscriptionId: '',
+					teamId: teamResponse?.data?.team?.id ?? '',
+					userId: userResponse.id,
+					endDate: endDate,
+				})
+				.returning();
+
+			foundCustomer = newCustomer;
 		}
 
 		if (status === 'succeeded') {
@@ -166,7 +200,7 @@ export async function POST(req: NextRequest, res: Response) {
 				invoicePdf: invoice.invoice_pdf ?? '',
 				amountRemaining: invoice.amount_remaining ?? '',
 				currency: invoice.currency ?? '',
-				email: user?.email ?? '',
+				email: userResponse?.email ?? '',
 				status: status ?? 'failed',
 				stripeSubscriptionId: invoice.subscription?.toString() ?? '',
 				customerId: foundCustomer?.id ?? '',
@@ -203,23 +237,28 @@ export async function POST(req: NextRequest, res: Response) {
 			break;
 		//Subscription logic
 		case 'customer.subscription.created':
+			console.log('Subscription created');
 			await handleSubscriptionEvent(event, 'created');
 			break;
 		case 'customer.subscription.updated':
+			console.log('Subscription updated');
 			await handleSubscriptionEvent(event, 'updated');
 			break;
 		case 'customer.subscription.deleted':
+			console.log('Subscription deleted');
 			await handleSubscriptionEvent(event, 'deleted');
 			break;
 		case 'invoice.payment_succeeded':
+			console.log('Invoice payment succeeded');
 			await handleInvoiceEvent(event, 'succeeded');
 			break;
 		case 'invoice.payment_failed':
+			console.log('Invoice payment failed');
 			await handleInvoiceEvent(event, 'failed');
 			break;
 		case 'checkout.session.completed':
-			await handleCheckoutSessionCompletedEvent(event);
 			console.log('Checkout session completed');
+			await handleCheckoutSessionCompletedEvent(event);
 			break;
 		default:
 			console.log(`Unhandled event type ${event.type}`);
