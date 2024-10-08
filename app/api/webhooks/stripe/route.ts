@@ -242,7 +242,7 @@ export async function POST(req: NextRequest, res: Response) {
 					message: `Your invoice for ${teamResponse?.data?.team?.name} has ${
 						status === 'succeeded' ? 'been paid' : 'failed'
 					}`,
-					title: `Invoice ${status}`,
+					title: `Invoice ${status === 'succeeded' ? 'paid' : 'failed'}`,
 				});
 			}
 		} catch (error) {
