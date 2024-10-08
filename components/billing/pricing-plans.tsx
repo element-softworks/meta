@@ -28,6 +28,7 @@ interface PricingCardProps {
 	features: { feature: string; active: boolean }[];
 	Button: React.ReactNode;
 	className?: string;
+	discount?: string | null;
 }
 export function PricingCard(props: PricingCardProps) {
 	return (
@@ -35,8 +36,14 @@ export function PricingCard(props: PricingCardProps) {
 			<CardHeader>
 				<p className="font-semibold text-muted-foreground">{props.planName}</p>
 
-				<CardTitle>
+				<CardTitle
+					className={`${!!props.discount?.length ? 'text-muted-foreground line-through text-base ' : ''}`}
+				>
 					{props.price}
+					{!!props.type?.length ? `/${props.type}` : ''}
+				</CardTitle>
+				<CardTitle className="text-2xl">
+					{props.discount}
 					{!!props.type?.length ? `/${props.type}` : ''}
 				</CardTitle>
 				<CardDescription>{props.description}</CardDescription>
@@ -211,6 +218,10 @@ export function OneTimePricingPlans(props: PricingProps) {
 		return `£${formattedPrice.toFixed(2)}`;
 	};
 
+	const currentPlan = Object.entries(plans).find(
+		(plan) => plan?.[1]?.stripePricingId === props.currentPlanId
+	)?.[1];
+
 	return (
 		<div className="text-start lg:text-center">
 			<p className="text-xl md:text-3xl font-bold">Boilerplate pricing plans</p>
@@ -228,7 +239,8 @@ export function OneTimePricingPlans(props: PricingProps) {
 							disabled={
 								props.currentPlanId === starter.stripePricingId ||
 								(price === 'starter' && isLoading) ||
-								props.readOnly
+								props.readOnly ||
+								Number(currentPlan?.price) > Number(starter.price)
 							}
 							className="w-full"
 							onClick={() => {
@@ -246,6 +258,7 @@ export function OneTimePricingPlans(props: PricingProps) {
 					className="shadow-md border-primary"
 					planName={fullAccess.name}
 					price={calcPrice(fullAccess.price, isYearly)}
+					discount={calcPrice(fullAccess.price - starter.price, isYearly)}
 					description="Dedicated support and infrastructure to fit your needs"
 					features={fullAccess.features}
 					Button={

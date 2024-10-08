@@ -1,3 +1,4 @@
+'use server';
 import { db } from '@/db/drizzle/db';
 import { customer, team, user } from '@/db/drizzle/schema';
 import { and, eq, exists, or } from 'drizzle-orm';

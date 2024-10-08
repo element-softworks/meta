@@ -3,7 +3,7 @@
 import { getCookie } from '@/data/cookies';
 import { isTeamOwnerServer } from '@/data/team';
 import { db } from '@/db/drizzle/db';
-import { customer, session } from '@/db/drizzle/schema';
+import { customer as DbCustomer } from '@/db/drizzle/schema';
 import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
 
@@ -28,9 +28,9 @@ export const createCheckoutSession = async ({
 	subscription: boolean;
 	stripeCustomerId: string;
 }) => {
-	let customer = null;
-
 	const sessionResponse = await getCookie('session');
+
+	let customer = null;
 
 	if (subscription) {
 		//If you are a team admin, or a site admin, you can archive/restore a team
@@ -84,7 +84,6 @@ export const createCheckoutSession = async ({
 				],
 				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing/success`,
 				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing`,
-				allow_promotion_codes: true,
 				metadata: {
 					userId: userId,
 					teamId: teamId,
@@ -108,15 +107,21 @@ export const createCheckoutSession = async ({
 		//Handle payment session
 
 		const sessionResponse = await getCookie('session');
-
+		let discount = null;
 		//If we have a stripeCustomerId, we are to retrieve the customer
 		if (!!stripeCustomerId?.length) {
+			const customerResponse = await db.query.customer.findFirst({
+				where: eq(DbCustomer.stripeCustomerId, stripeCustomerId),
+			});
+
 			try {
 				const response = await handleUpgradeOneTimePayment(
 					stripeCustomerId,
 					priceId,
+					customerResponse?.planId ?? '',
 					sessionResponse?.value ?? ''
 				);
+				discount = response?.discount;
 				customer = response?.customer;
 			} catch (err) {
 				console.error(`Error updating subscription: ${err}`);
@@ -143,9 +148,17 @@ export const createCheckoutSession = async ({
 		try {
 			const session = await stripe.checkout.sessions.create({
 				mode: 'payment',
+
 				invoice_creation: {
 					enabled: true,
 				},
+				discounts: !!discount?.id
+					? [
+							{
+								coupon: discount?.id,
+							},
+						]
+					: [],
 				customer: customer?.id ?? '',
 				payment_method_types: ['card'],
 				metadata: {
@@ -163,7 +176,6 @@ export const createCheckoutSession = async ({
 				],
 				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing/success`,
 				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing`,
-				allow_promotion_codes: true,
 			});
 
 			return {
@@ -189,7 +201,7 @@ const handleUpgradeSubscription = async (
 
 	if (!!stripeCustomerId) {
 		const customerResponse = await db.query.customer.findFirst({
-			where: eq(customer.stripeCustomerId, stripeCustomerId),
+			where: eq(DbCustomer.stripeCustomerId, stripeCustomerId),
 		});
 
 		if (!customerResponse) {
@@ -237,11 +249,11 @@ const handleUpgradeSubscription = async (
 		}
 
 		await db
-			.update(customer)
+			.update(DbCustomer)
 			.set({
 				stripeSubscriptionId: subscription.id,
 			})
-			.where(eq(customer.stripeCustomerId, stripeCustomerId));
+			.where(eq(DbCustomer.stripeCustomerId, stripeCustomerId));
 
 		return {
 			success: 'Subscription updated',
@@ -252,11 +264,12 @@ const handleUpgradeSubscription = async (
 const handleUpgradeOneTimePayment = async (
 	stripeCustomerId: string,
 	priceId: string,
+	existingPriceId: string,
 	userSession: string
 ) => {
 	if (!!stripeCustomerId) {
 		const customerResponse = await db.query.customer.findFirst({
-			where: eq(customer.stripeCustomerId, stripeCustomerId),
+			where: eq(DbCustomer.stripeCustomerId, stripeCustomerId),
 		});
 
 		if (!customerResponse) {
@@ -265,7 +278,13 @@ const handleUpgradeOneTimePayment = async (
 			};
 		}
 
-		console.log(customerResponse, 'testing 1');
+		const foundPrice = await stripe.prices.retrieve(existingPriceId);
+
+		const coupon = await stripe.coupons.create({
+			amount_off: foundPrice?.unit_amount ?? 0,
+			currency: foundPrice?.currency,
+			duration: 'once',
+		});
 
 		const updatedCustomer = await stripe.customers.update(stripeCustomerId, {
 			metadata: {
@@ -277,11 +296,10 @@ const handleUpgradeOneTimePayment = async (
 			},
 		});
 
-		console.log(customerResponse, 'testing 2');
-
 		return {
 			success: 'Customer updated',
 			customer: updatedCustomer,
+			discount: coupon,
 		};
 	}
 };

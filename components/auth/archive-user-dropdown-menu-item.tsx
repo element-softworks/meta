@@ -2,14 +2,14 @@
 import { ExtendedUser } from '@/next-auth';
 
 import { adminArchiveUser } from '@/actions/admin-archive-user';
+import { User } from '@/db/drizzle/schema/user';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { useState } from 'react';
 import { TableUser } from '../tables/users-table';
-import { Button, ButtonProps } from '../ui/button';
-import { DialogWrapper } from './dialog-wrapper';
+import { ButtonProps } from '../ui/button';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
-import { User } from '@/db/drizzle/schema/user';
+import { DialogWrapper } from './dialog-wrapper';
 
 interface ArchiveUserDropdownMenuItemProps {
 	user: User | null | TableUser;

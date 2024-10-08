@@ -1,7 +1,5 @@
 'use client';
 import { Separator } from '@/components/ui/separator';
-import { useMutation } from '@/hooks/use-mutation';
-import { useEffect } from 'react';
 
 export default async function DashboardPage({ searchParams }: any) {
 	return (

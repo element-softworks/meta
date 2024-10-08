@@ -9,18 +9,19 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { setCookie } from '@/data/cookies';
-import { ExtendedUser } from '@/next-auth';
+import { getTeamCustomerByTeamId } from '@/data/team';
+import { Customer } from '@/db/drizzle/schema/customer';
+import { useCurrentUser } from '@/hooks/use-current-user';
+import plans from '@/plans.json';
 import { ChartNoAxesGanttIcon, Plus } from 'lucide-react';
+import { useSession } from 'next-auth/react';
 import { useTheme } from 'next-themes';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { useSession } from 'next-auth/react';
-import { useCurrentUser } from '@/hooks/use-current-user';
-import { Button } from '../ui/button';
-import Link from 'next/link';
 import { Badge } from '../ui/badge';
-import plans from '@/plans.json';
+import { Button } from '../ui/button';
 
 interface TeamSelectMenuProps {
 	enableBadge: boolean;
@@ -31,27 +32,39 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 	const { setTheme, theme } = useTheme();
 	const { update } = useSession();
 
-	const router = useRouter();
-	const isLightMode = theme === 'light';
-
+	const [currentPlanType, setCurrentPlanType] = useState<Customer | null>(null);
 	const updateTeam = currentUser?.teams
-		? currentUser?.teams?.find((team) => team.id === currentUser?.currentTeam) ??
-		  currentUser?.teams[0]
+		? (currentUser?.teams?.find((team) => team.id === currentUser?.currentTeam) ??
+			currentUser?.teams[0])
 		: null;
 
 	//set the current team to either the first team or the team stored in cookies
 	const [selectedTeam, setSelectedTeam] = useState(updateTeam);
+
+	useEffect(() => {
+		(async () => {
+			const data = await getTeamCustomerByTeamId(selectedTeam?.id ?? '');
+			if (data) {
+				setCurrentPlanType(data);
+			}
+		})();
+	}, [selectedTeam]);
+
+	const router = useRouter();
+
 	useEffect(() => {
 		setSelectedTeam(updateTeam);
 	}, [currentUser]);
 
-	const pricingPlans = JSON.parse(JSON.stringify(plans));
+	const currentPlan = Object.entries(plans).find(
+		(plan) => plan?.[1]?.stripePricingId === currentPlanType?.planId ?? ''
+	)?.[1];
 
 	if (!currentUser) return null;
 
 	return (
 		<>
-			{/* <Badge>{selectedTeam?.stripePaymentId}</Badge> */}
+			{!!currentPlan ? <Badge className="mr-2">{currentPlan?.name} plan</Badge> : null}
 			<Select
 				open={selectOpen}
 				onOpenChange={(state) => setSelectOpen(state)}

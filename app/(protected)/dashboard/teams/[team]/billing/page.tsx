@@ -57,7 +57,7 @@ export default async function BillingPage({ params }: { params: { team: string }
 					currentPlanId={currentTeamPlan?.stripePricingId}
 				/>
 
-				{teamHasPlan ? (
+				{teamHasPlan && currentTeamPlan?.type === 'subscription' ? (
 					<div className="flex flex-col gap-4 h-full">
 						<div className="mt-auto">
 							<CancelSubscriptionButton

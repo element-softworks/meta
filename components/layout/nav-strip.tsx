@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { TeamSelectMenu } from '../auth/team-select-menu';
+import { Badge } from '../ui/badge';
 
 interface NavStripProps {
 	user: ExtendedUser | undefined;
@@ -32,7 +33,6 @@ export function NavStrip(props: NavStripProps) {
 	const firstCrumb = displayBreadcrumbs[0];
 	const lastTwoBreadCrumbs = displayBreadcrumbs.slice(displayBreadcrumbs.length > 3 ? -2 : -3);
 	const showCrumbEllipsis = displayBreadcrumbs.length > 3;
-
 	return (
 		<nav className="border-b border-border py-2 px-4 lg:px-6 w-full">
 			<div className="flex items-center">
@@ -77,7 +77,7 @@ export function NavStrip(props: NavStripProps) {
 													? previousCrumb?.slice(
 															0,
 															previousCrumb?.length - 1
-													  )
+														)
 													: path}
 											</p> // Show previous crumb if current is UUID
 										) : (
@@ -86,7 +86,7 @@ export function NavStrip(props: NavStripProps) {
 													? previousCrumb?.slice(
 															0,
 															previousCrumb?.length - 1
-													  )
+														)
 													: path}
 											</Link>
 										)}
@@ -96,6 +96,7 @@ export function NavStrip(props: NavStripProps) {
 						})}
 					</BreadcrumbList>
 				</Breadcrumb>
+
 				<TeamSelectMenu enableBadge />
 			</div>
 		</nav>
