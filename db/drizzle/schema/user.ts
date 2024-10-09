@@ -27,6 +27,9 @@ export const user = pgTable(
 		updatedAt: timestamp('updatedAt', { precision: 3, mode: 'date' }).default(
 			sql`CURRENT_TIMESTAMP`
 		),
+		lastLogin: timestamp('lastLogin', { precision: 3, mode: 'date' }).default(
+			sql`CURRENT_TIMESTAMP`
+		),
 		notificationsEnabled: boolean('notificationsEnabled').default(true).notNull(),
 	},
 	(table) => {

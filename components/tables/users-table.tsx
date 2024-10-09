@@ -2,7 +2,7 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { MoreHorizontal } from 'lucide-react';
+import { Check, MoreHorizontal, X } from 'lucide-react';
 import { DataTable } from '../data-table';
 
 import { Button } from '@/components/ui/button';
@@ -19,23 +19,26 @@ import Link from 'next/link';
 import { ArchiveUserDropdownMenuItem } from '../auth/archive-user-dropdown-menu-item';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
+import { Account } from '@/db/drizzle/schema/account';
 import { User } from '@/db/drizzle/schema/user';
+import { Badge } from '../ui/badge';
 
 export type TableUser = {
 	id: string;
 	name: string;
 	email: string;
-	role: 'Admin' | 'User';
+	role: 'ADMIN' | 'USER';
 	isTwoFactorEnabled: 'Enabled' | 'Disabled';
 	emailVerified: string;
-
+	provider: string;
 	createdAt: Date;
 	image: string;
 	isArchived?: boolean;
+	lastLogin: Date | null;
 };
 
 interface UsersTableProps {
-	users: User[] | undefined;
+	users: { user: User; provider: Account | null }[] | undefined;
 	totalPages: number | undefined;
 	isLoading: boolean;
 }
@@ -65,20 +68,66 @@ export function UsersTable(props: UsersTableProps) {
 			header: 'Email',
 		},
 		{
-			accessorKey: 'emailVerified',
-			header: 'Email Verified',
+			accessorKey: 'provider',
+			header: 'Provider',
+			enableSorting: true,
+			sortDescFirst: true,
+			cell: ({ row }) => {
+				const user = row.original;
+				let logo = '';
+
+				if (user.provider === 'google') {
+					logo =
+						'https://cdn4.iconfinder.com/data/icons/logos-brands-7/512/google_logo-google_icongoogle-512.png';
+				} else if (user.provider === 'github') {
+					logo = 'https://cdn-icons-png.flaticon.com/512/25/25231.png';
+				}
+
+				return (
+					<div className="flex gap-1 items-center">
+						{!!logo ? (
+							<Image width={25} height={25} src={logo} alt="provider logo" />
+						) : (
+							<p className="">{user.provider}</p>
+						)}
+					</div>
+				);
+			},
 		},
+
 		{
 			accessorKey: 'isTwoFactorEnabled',
 			header: '2FA',
 			cell: ({ row }) => {
 				const user = row.original;
-				return user.isTwoFactorEnabled;
+				return user?.isTwoFactorEnabled === 'Enabled' ? (
+					<Check className="text-successful" />
+				) : (
+					<X className="text-destructive" />
+				);
 			},
 		},
 		{
 			accessorKey: 'role',
 			header: 'Role',
+			cell: ({ row }) => {
+				const user = row.original;
+				return <Badge>{user.role}</Badge>;
+			},
+		},
+		{
+			accessorKey: 'emailVerified',
+			header: 'Email Verified',
+		},
+		{
+			accessorKey: 'lastLogin',
+			header: 'Last login',
+			cell: ({ row }) => {
+				const user = row.original;
+				return !!user?.lastLogin
+					? format(new Date(user.lastLogin), 'MMM dd, yyyy')
+					: 'Never';
+			},
 		},
 		{
 			accessorKey: 'createdAt',
@@ -129,18 +178,20 @@ export function UsersTable(props: UsersTableProps) {
 		},
 	];
 
-	const rows: TableUser[] | undefined = props.users?.map((user) => ({
-		id: user.id,
-		name: user.name ?? 'User',
-		email: user.email,
-		role: user.role === 'ADMIN' ? 'Admin' : 'User',
-		isTwoFactorEnabled: user.isTwoFactorEnabled ? 'Enabled' : 'Disabled',
-		emailVerified: !!user.emailVerified
-			? format(new Date(user.emailVerified), 'MMM dd, yyyy')
+	const rows: TableUser[] | undefined = props.users?.map((response) => ({
+		id: response.user.id,
+		name: response.user.name ?? 'User',
+		email: response.user.email,
+		role: response.user.role,
+		isTwoFactorEnabled: response.user.isTwoFactorEnabled ? 'Enabled' : 'Disabled',
+		emailVerified: !!response.user.emailVerified
+			? format(new Date(response.user.emailVerified), 'MMM dd, yyyy')
 			: 'Not verified',
-		createdAt: user.createdAt,
-		image: user.image ?? '',
-		isArchived: user.isArchived,
+		createdAt: response.user.createdAt,
+		lastLogin: response.user.lastLogin,
+		image: response.user.image ?? '',
+		isArchived: response.user.isArchived,
+		provider: response?.provider?.provider ?? 'Credentials',
 	}));
 
 	return (

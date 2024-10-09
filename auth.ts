@@ -15,6 +15,7 @@ import { getAccountByUserId } from './data/account';
 import { getUsersTeams } from './data/team';
 import { team } from './db/drizzle/schema/team';
 import { get } from 'http';
+import { user as dbUser } from './db/drizzle/schema/user';
 
 export const {
 	handlers,
@@ -80,6 +81,16 @@ export const {
 	callbacks: {
 		signIn: async ({ user, account }) => {
 			const existingUser = await getUserById(user?.id ?? '');
+
+			//Set the users last login date
+			if (!!existingUser?.id) {
+				await db
+					.update(dbUser)
+					.set({
+						lastLogin: new Date(),
+					})
+					.where(eq(dbUser.id, existingUser?.id));
+			}
 
 			//If the user isnt in a team, create a team and put them into it
 			const userInTeam = await db

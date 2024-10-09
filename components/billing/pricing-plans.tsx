@@ -42,10 +42,7 @@ export function PricingCard(props: PricingCardProps) {
 					{props.price}
 					{!!props.type?.length ? `/${props.type}` : ''}
 				</CardTitle>
-				<CardTitle className="text-2xl">
-					{props.discount}
-					{!!props.type?.length ? `/${props.type}` : ''}
-				</CardTitle>
+				<CardTitle className="text-2xl">{props.discount}</CardTitle>
 				<CardDescription>{props.description}</CardDescription>
 			</CardHeader>
 			<CardContent className="my-6 flex flex-col gap-2">

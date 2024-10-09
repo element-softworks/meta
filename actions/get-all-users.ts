@@ -1,6 +1,6 @@
 'use server';
 import { db } from '@/db/drizzle/db';
-import { user } from '@/db/drizzle/schema';
+import { account, user } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
@@ -54,7 +54,12 @@ export const getAllUsers = async ({
 		}
 
 		const usersResponse = await db
-			.select()
+			.select({
+				user: {
+					...user,
+				},
+				provider: account,
+			})
 			.from(user)
 			.limit(perPage)
 			.offset((pageNum - 1) * perPage)
@@ -68,6 +73,7 @@ export const getAllUsers = async ({
 					)
 				)
 			)
+			.leftJoin(account, eq(user.id, account.userId))
 			.orderBy(filters.createdAt === 'asc' ? asc(user.createdAt) : desc(user.createdAt));
 
 		const [userResponseCount] = await db
@@ -83,6 +89,7 @@ export const getAllUsers = async ({
 
 		const totalPages = Math.ceil(userResponseCount.count / perPage);
 
+		console.log(usersResponse, 'usersresponse');
 		return {
 			success: 'Users retrieved successfully.',
 			users: usersResponse,
