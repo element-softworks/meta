@@ -113,6 +113,69 @@
       "when": 1728503176281,
       "tag": "0015_oval_morlun",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1728589577689,
+      "tag": "0016_last_sabretooth",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1728589764547,
+      "tag": "0017_long_energizer",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1728591059419,
+      "tag": "0018_giant_baron_strucker",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1728591160112,
+      "tag": "0019_flat_jane_foster",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1728591338574,
+      "tag": "0020_slimy_mikhail_rasputin",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1728591371775,
+      "tag": "0021_spicy_warbound",
+      "breakpoints": true
+    },
+    {
+      "idx": 22,
+      "version": "7",
+      "when": 1728591654899,
+      "tag": "0022_high_bloodstorm",
+      "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "7",
+      "when": 1728591715721,
+      "tag": "0023_melodic_jetstream",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1728591987902,
+      "tag": "0024_wide_runaways",
+      "breakpoints": true
     }
   ]
 }

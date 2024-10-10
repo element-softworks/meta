@@ -1,0 +1,1 @@
+ALTER TABLE "Bug" ADD COLUMN "title" text NOT NULL;

@@ -2,6 +2,7 @@
 
 import {
 	Banknote,
+	BugPlay,
 	ChartBar,
 	ChartPie,
 	CreditCard,
@@ -76,6 +77,12 @@ export function useSidebarItems() {
 					text: 'Analytics',
 					link: '/dashboard/admin/analytics',
 					icon: <ChartPie size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Reported bugs',
+					link: '/dashboard/admin/bugs',
+					icon: <BugPlay size={20} />,
 					visible: true,
 				},
 			],

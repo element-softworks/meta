@@ -12,6 +12,12 @@ export const ContactSchema = z.object({
 	message: z.string().min(1, { message: 'Message is required' }),
 });
 
+export const ReportBugSchema = z.object({
+	title: z.string().min(1, { message: 'Title is required' }),
+	description: z.string().min(1, { message: 'Description is required' }),
+	status: z.enum(['OPEN', 'CLOSED', 'IN_PROGRESS']),
+});
+
 export const TeamsSchema = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
 	image: z

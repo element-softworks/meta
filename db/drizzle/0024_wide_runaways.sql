@@ -1,0 +1,1 @@
+ALTER TABLE "Bug" ALTER COLUMN "status" SET DATA TYPE text;

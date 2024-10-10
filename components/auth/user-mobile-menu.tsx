@@ -31,6 +31,7 @@ import { LogoutButton } from './logout-button';
 import { NAVBAR_ITEMS } from '../layout/navbar';
 import { LoginButton } from './login-button';
 import { NotificationsIcon } from '../notifications-icon';
+import { ReportBugDialog } from '../dialogs/report-bug-dialog';
 
 interface UserMobileMenuProps {
 	user: ExtendedUser | undefined;
@@ -154,6 +155,9 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 							</LogoutButton>
 						</>
 					)}
+					<DropdownMenuSeparator />
+
+					<ReportBugDialog />
 				</DropdownMenuContent>
 			</DropdownMenu>
 		</div>

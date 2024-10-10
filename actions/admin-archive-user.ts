@@ -4,7 +4,7 @@ import { TableUser } from '@/components/tables/users-table';
 import { setCookie } from '@/data/cookies';
 import { db } from '@/db/drizzle/db';
 import { user } from '@/db/drizzle/schema';
-import { User, userRole } from '@/db/drizzle/schema/user';
+import { User } from '@/db/drizzle/schema/user';
 import { currentUser } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';

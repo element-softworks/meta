@@ -3,6 +3,7 @@ import {
 	foreignKey,
 	index,
 	integer,
+	pgEnum,
 	pgTable,
 	primaryKey,
 	text,

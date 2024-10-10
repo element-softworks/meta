@@ -3,6 +3,7 @@
 import { ExtendedUser } from '@/next-auth';
 import {
 	Bell,
+	Bug,
 	CreditCard,
 	LayoutDashboard,
 	LogOut,
@@ -26,6 +27,7 @@ import {
 } from '../ui/dropdown-menu';
 import { LogoutButton } from './logout-button';
 import { NotificationsIcon } from '../notifications-icon';
+import { ReportBugDialog } from '../dialogs/report-bug-dialog';
 
 interface UserMenuProps {
 	user: ExtendedUser | undefined;
@@ -134,6 +136,10 @@ export function UserMenu(props: UserMenuProps) {
 						<span>Log out</span>
 					</DropdownMenuItem>
 				</LogoutButton>
+
+				<DropdownMenuSeparator />
+
+				<ReportBugDialog />
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);
