@@ -48,8 +48,8 @@ export function TeamsTable(props: TeamsTableProps) {
 	const { isLoading = false } = props;
 	const columns: ColumnDef<TeamsTable>[] = [
 		{
-			accessorKey: 'name',
-			header: 'Name',
+			accessorKey: 'team',
+			header: 'Team',
 			cell: ({ row }) => {
 				const teamResponse = row.original;
 				return (
@@ -97,15 +97,19 @@ export function TeamsTable(props: TeamsTableProps) {
 			header: 'Members',
 			cell: ({ row }) => {
 				const teamResponse = row.original;
+
+				console.log(teamResponse, 'teamResponse');
 				return (
-					<AvatarGroup
-						avatars={
-							teamResponse?.team?.users?.map?.((member) => ({
-								alt: member?.name ?? '',
-								src: member?.image ?? '',
-							})) ?? []
-						}
-					/>
+					<div>
+						<AvatarGroup
+							avatars={
+								teamResponse?.team?.users?.map?.((member) => ({
+									alt: member?.name ?? '',
+									src: member?.image ?? '',
+								})) ?? []
+							}
+						/>
+					</div>
 				);
 			},
 		},
