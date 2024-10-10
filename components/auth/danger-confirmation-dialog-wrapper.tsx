@@ -58,7 +58,11 @@ export function DangerConfirmationDialogWrapper(props: DangerConfirmationDialogW
 				<DialogHeader>
 					<DialogTitle>{props.dialog.title}</DialogTitle>
 					<DialogDescription>{props.dialog.description}</DialogDescription>
-					<DialogDescription>Type "{confirmationCode}" to confirm</DialogDescription>
+					<DialogDescription>
+						Type {'"'}
+						{confirmationCode}
+						{'"'} to confirm
+					</DialogDescription>
 
 					<Input value={input} onChange={(e) => setInput(e.target.value)} />
 				</DialogHeader>
