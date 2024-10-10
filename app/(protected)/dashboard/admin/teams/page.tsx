@@ -1,11 +1,11 @@
 import { TeamsTable } from '@/components/tables/teams-table';
 import TeamsTableContainer from '@/components/tables/teams-table-container';
-import { UsersTable } from '@/components/tables/users-table';
-import UsersTableContainer from '@/components/tables/users-table-container';
 import { Separator } from '@/components/ui/separator';
+import { currentUser } from '@/lib/auth';
 import { Suspense } from 'react';
 
 export default async function AdminTeamsPage({ searchParams }: { searchParams: any }) {
+	const user = await currentUser();
 	return (
 		<main className="flex flex-col  gap-4">
 			<div className="">
@@ -15,8 +15,17 @@ export default async function AdminTeamsPage({ searchParams }: { searchParams: a
 
 			<Separator />
 
-			<Suspense fallback={<TeamsTable teams={[]} totalPages={1} isLoading={true} />}>
-				<TeamsTableContainer searchParams={searchParams} />
+			<Suspense
+				fallback={
+					<TeamsTable
+						admin={user?.role === 'ADMIN'}
+						teams={[]}
+						totalPages={1}
+						isLoading={true}
+					/>
+				}
+			>
+				<TeamsTableContainer searchParams={searchParams} admin={user?.role === 'ADMIN'} />
 			</Suspense>
 		</main>
 	);

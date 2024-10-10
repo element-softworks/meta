@@ -5,6 +5,7 @@ import { TeamsTable } from './teams-table';
 
 interface TeamsTableContainerProps {
 	searchParams: any;
+	admin: boolean;
 }
 export default async function TeamsTableContainer(props: TeamsTableContainerProps) {
 	// Get the users data and pass filters inside
@@ -23,6 +24,7 @@ export default async function TeamsTableContainer(props: TeamsTableContainerProp
 	//Render the users table
 	return (
 		<TeamsTable
+			admin={props.admin}
 			teams={teamsResponse.teams ?? []}
 			totalPages={teamsResponse?.totalPages ?? 1}
 			isLoading={false}

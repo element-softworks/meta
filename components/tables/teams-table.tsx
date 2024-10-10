@@ -36,6 +36,7 @@ export type TeamsTable = {
 };
 
 interface TeamsTableProps {
+	admin: boolean;
 	teams: TeamsTable[];
 	totalPages: number | undefined;
 	isLoading: boolean;
@@ -167,7 +168,7 @@ export function TeamsTable(props: TeamsTableProps) {
 								</DropdownMenuItem>
 							</Link>
 
-							<ArchiveTeamDropdownMenuItem team={team?.team} />
+							<ArchiveTeamDropdownMenuItem visible={props.admin} team={team?.team} />
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);

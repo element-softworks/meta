@@ -12,9 +12,11 @@ import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
 import { ButtonProps } from '../ui/button';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
+import { DangerConfirmationDialogWrapper } from '../auth/danger-confirmation-dialog-wrapper';
 
 interface ArchiveTeamDropdownMenuItemProps {
-	team: (Team & { members: (TeamMember & { user: User })[] }) | null;
+	team: Team;
+	visible: boolean;
 }
 
 export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemProps) {
@@ -23,10 +25,7 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 	const { update } = useSession();
 	const currentUser = useCurrentUser();
 
-	const { query: ArchiveTeamQuery, isLoading } = useMutation<
-		(Team & { members: (TeamMember & { user: User })[] }) | null,
-		{}
-	>({
+	const { query: ArchiveTeamQuery, isLoading } = useMutation<Team | null, {}>({
 		queryFn: async (team) => await adminArchiveTeam(team!),
 		onCompleted: () => {
 			update();
@@ -40,7 +39,6 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 	};
 
 	//If you are a team admin, or a site admin, you can archive/restore a team
-	const isTeamAdmin = isTeamAuth(props.team?.members ?? [], currentUser?.id ?? '');
 
 	const isArchived = !!props.team?.isArchived ?? false;
 
@@ -49,15 +47,16 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 		? `Restoring ${props.team?.name ?? 'this team'}
 		will make it visible in the system again`
 		: `Archiving ${props.team?.name ?? 'this team'}
-		will hide it from the system. This action can only be undone by a team administrator`;
+		will hide it from the system. This action can only be undone by a site administrator`;
 	const buttonProps: ButtonProps = isArchived
 		? { variant: 'successful' }
 		: { variant: 'destructive' };
 
-	if (!isTeamAdmin && !(currentUser?.role === 'ADMIN')) return null;
+	if (!props.visible) return null;
 
 	return (
-		<DialogWrapper
+		<DangerConfirmationDialogWrapper
+			code={props?.team?.name?.toLowerCase()}
 			isLoading={isLoading}
 			onOpenChange={(state) => setDialogOpen(state)}
 			open={dialogOpen}
