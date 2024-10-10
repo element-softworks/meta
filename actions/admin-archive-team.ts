@@ -6,6 +6,8 @@ import { Team } from '@/db/drizzle/schema/team';
 import { currentUser } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
+import { cancelSubscription } from './cancelSubscription';
+import { uncancelSubscription } from './uncancelSubscription';
 
 export const adminArchiveTeam = async (archivingTeam: Team) => {
 	const editingUser = await currentUser();
@@ -18,12 +20,33 @@ export const adminArchiveTeam = async (archivingTeam: Team) => {
 	}
 
 	// Archive the user
-	const archivedTeam = await db
+	const [archivedTeam] = await db
 		.update(team)
 		.set({
 			isArchived: archivingTeam?.isArchived ? false : true,
 		})
-		.where(eq(team.id, archivingTeam?.id));
+		.where(eq(team.id, archivingTeam?.id))
+		.returning({
+			isArchived: team.isArchived,
+			stripeCustomerId: team.stripeCustomerId,
+			id: team.id,
+		});
+
+	if (!!archivedTeam?.stripeCustomerId?.length) {
+		if (archivedTeam?.isArchived) {
+			await cancelSubscription(
+				archivedTeam?.stripeCustomerId,
+				archivedTeam?.id,
+				editingUser?.id ?? ''
+			);
+		} else {
+			await uncancelSubscription(
+				archivedTeam?.stripeCustomerId,
+				archivedTeam?.id,
+				editingUser?.id ?? ''
+			);
+		}
+	}
 
 	if (!archivedTeam) {
 		return { error: `Failed to ${archivingTeam?.isArchived ? 'restore' : 'archive'} team` };

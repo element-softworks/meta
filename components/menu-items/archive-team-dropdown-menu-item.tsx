@@ -45,9 +45,9 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 	const title = isArchived ? 'Restore' : 'Archive';
 	const description = isArchived
 		? `Restoring ${props.team?.name ?? 'this team'}
-		will make it visible in the system again`
+		will make it visible in the system again. Any subscriptions will resume at the end of the billing period.`
 		: `Archiving ${props.team?.name ?? 'this team'}
-		will hide it from the system. This action can only be undone by a site administrator`;
+		will hide it from the system. This action can only be undone by a site administrator. Any subscriptions will terminate at the end of the billing period.`;
 	const buttonProps: ButtonProps = isArchived
 		? { variant: 'successful' }
 		: { variant: 'destructive' };

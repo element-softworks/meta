@@ -52,7 +52,7 @@ export default async function DashboardPage({
 			</div>
 			<Separator />
 			<InviteUserToTeamDialog
-				visible={isTeamAdmin}
+				visible={isTeamAdmin || isAdmin}
 				teamId={teamResponse?.data?.team.id ?? ''}
 			/>
 			<Suspense fallback={<TeamsMemberTable totalPages={1} isLoading={true} />}>

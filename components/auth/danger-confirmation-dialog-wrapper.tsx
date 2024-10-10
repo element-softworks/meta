@@ -64,7 +64,11 @@ export function DangerConfirmationDialogWrapper(props: DangerConfirmationDialogW
 						{'"'} to confirm
 					</DialogDescription>
 
-					<Input value={input} onChange={(e) => setInput(e.target.value)} />
+					<Input
+						className="!mt-6"
+						value={input}
+						onChange={(e) => setInput(e.target.value)}
+					/>
 				</DialogHeader>
 				{props.children}
 
