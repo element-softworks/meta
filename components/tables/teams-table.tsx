@@ -23,6 +23,7 @@ import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import Link from 'next/link';
 import { ArchiveTeamDropdownMenuItem } from '../menu-items/archive-team-dropdown-menu-item';
+import { AvatarGroup } from '../avatar-group';
 
 export type TeamsTable = {
 	team: Team & {
@@ -32,6 +33,7 @@ export type TeamsTable = {
 			name: string;
 			image: string;
 		};
+		users: User[];
 	};
 };
 
@@ -90,6 +92,24 @@ export function TeamsTable(props: TeamsTableProps) {
 				);
 			},
 		},
+		{
+			accessorKey: 'members',
+			header: 'Members',
+			cell: ({ row }) => {
+				const teamResponse = row.original;
+				return (
+					<AvatarGroup
+						avatars={
+							teamResponse?.team?.users?.map?.((member) => ({
+								alt: member?.name ?? '',
+								src: member?.image ?? '',
+							})) ?? []
+						}
+					/>
+				);
+			},
+		},
+
 		{
 			accessorKey: 'archived',
 			header: 'Archived',
