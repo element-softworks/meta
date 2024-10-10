@@ -13,7 +13,7 @@ export const adminArchiveTeam = async (archivingTeam: Team) => {
 	//If you are a team admin, or a site admin, you can archive/restore a team
 	const isOwner = await isTeamOwnerServer(archivingTeam?.id, editingUser?.id ?? '');
 
-	if (!isOwner) {
+	if (!isOwner && !(editingUser?.role === 'ADMIN')) {
 		return { error: 'Unauthorized. Only the team owner can archive the team' };
 	}
 

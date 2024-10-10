@@ -2,21 +2,28 @@ import { ArchiveTeamDialog } from '@/components/dialogs/archive-team-dialog';
 import { TeamsForm } from '@/components/forms/teams-form';
 import { Separator } from '@/components/ui/separator';
 import { getTeamById } from '@/data/team';
+import { currentUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
 export default async function DashboardPage({ params }: { params: { team: string } }) {
+	const user = await currentUser();
 	const teamResponse = await getTeamById(params.team);
+	const isAdmin = user?.role === 'ADMIN';
 
 	const isTeamAdmin =
 		teamResponse?.data?.currentMember?.role === 'ADMIN' ||
 		teamResponse?.data?.currentMember?.role === 'OWNER';
 	const isOwner = teamResponse?.data?.currentMember?.role === 'OWNER';
 
-	if (
-		!teamResponse?.data?.currentMember ||
-		(teamResponse?.data?.team?.isArchived && !isTeamAdmin)
-	) {
-		return redirect('/dashboard/teams');
+	const isInTeam = !!teamResponse?.data?.currentMember;
+
+	if (!isAdmin) {
+		if (
+			!teamResponse?.data?.currentMember ||
+			(teamResponse?.data?.team?.isArchived && !isTeamAdmin)
+		) {
+			return redirect('/dashboard/teams');
+		}
 	}
 
 	return (

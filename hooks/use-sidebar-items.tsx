@@ -6,9 +6,11 @@ import {
 	ChartPie,
 	CreditCard,
 	DollarSign,
+	Flag,
 	LayoutDashboard,
 	PiggyBank,
 	Users,
+	Users2,
 } from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
 import { FaMoneyBill } from 'react-icons/fa';
@@ -61,7 +63,13 @@ export function useSidebarItems() {
 				{
 					text: 'Users',
 					link: '/dashboard/admin/users',
-					icon: <CreditCard size={20} />,
+					icon: <Users size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Teams',
+					link: '/dashboard/admin/teams',
+					icon: <Flag size={20} />,
 					visible: true,
 				},
 				{

@@ -5,6 +5,7 @@ import TeamMembersTableContainer from '@/components/tables/team-members-table-co
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { getTeamById } from '@/data/team';
+import { currentUser } from '@/lib/auth';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
@@ -16,18 +17,24 @@ export default async function DashboardPage({
 	params: { team: string };
 	searchParams: any;
 }) {
+	const user = await currentUser();
 	const teamResponse = await getTeamById(params.team);
+	const isAdmin = user?.role === 'ADMIN';
 
 	const isTeamAdmin =
 		teamResponse?.data?.currentMember?.role === 'ADMIN' ||
 		teamResponse?.data?.currentMember?.role === 'OWNER';
 	const isOwner = teamResponse?.data?.currentMember?.role === 'OWNER';
 
-	if (
-		!teamResponse?.data?.currentMember ||
-		(teamResponse?.data?.team?.isArchived && !isTeamAdmin)
-	) {
-		return redirect('/dashboard/teams');
+	const isInTeam = !!teamResponse?.data?.currentMember;
+
+	if (!isAdmin) {
+		if (
+			!teamResponse?.data?.currentMember ||
+			(teamResponse?.data?.team?.isArchived && !isTeamAdmin)
+		) {
+			return redirect('/dashboard/teams');
+		}
 	}
 
 	return (
@@ -37,7 +44,7 @@ export default async function DashboardPage({
 					<p className="text-xl font-bold">{teamResponse?.data?.team.name}</p>
 					<p className="text-muted-foreground text-sm">View team details below</p>
 				</div>
-				{isTeamAdmin ? (
+				{isTeamAdmin || isAdmin ? (
 					<Link href={`/dashboard/teams/${params.team}/edit`}>
 						<Button className="w-fit">Edit settings</Button>
 					</Link>
@@ -52,7 +59,7 @@ export default async function DashboardPage({
 				<TeamMembersTableContainer teamId={params.team} searchParams={searchParams} />
 			</Suspense>
 
-			{isOwner ? null : (
+			{isOwner || !isInTeam ? null : (
 				<div className="mt-auto">
 					<UserLeaveTeamDialog teamId={teamResponse?.data?.team.id ?? ''} />
 				</div>

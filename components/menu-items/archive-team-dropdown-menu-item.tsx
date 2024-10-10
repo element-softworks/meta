@@ -54,7 +54,7 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 		? { variant: 'successful' }
 		: { variant: 'destructive' };
 
-	if (!isTeamAdmin) return null;
+	if (!isTeamAdmin && !(currentUser?.role === 'ADMIN')) return null;
 
 	return (
 		<DialogWrapper

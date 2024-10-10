@@ -63,6 +63,7 @@ export function UsersTable(props: UsersTableProps) {
 				);
 			},
 		},
+
 		{
 			accessorKey: 'email',
 			header: 'Email',
