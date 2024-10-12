@@ -34,7 +34,7 @@ export function AvatarGroup(props: AvatarGroupProps) {
 						}}
 					>
 						{avatar?.src && (
-							<AvatarImage
+							<Image
 								referrerPolicy="no-referrer"
 								width={35}
 								height={35}

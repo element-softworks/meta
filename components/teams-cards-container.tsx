@@ -9,6 +9,7 @@ import { CardWrapper } from './card-wrapper';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
+import { ShowArchivedButton } from './show-archived-button';
 
 interface TeamsCardsContainerProps {
 	searchParams: any;

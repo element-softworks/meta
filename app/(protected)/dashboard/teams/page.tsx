@@ -1,3 +1,4 @@
+import { ShowArchivedButton } from '@/components/show-archived-button';
 import TeamsCardsContainer from '@/components/teams-cards-container';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -18,6 +19,8 @@ export default async function DashboardPage({ searchParams }: any) {
 				</Link>
 			</div>
 			<Separator />
+
+			<ShowArchivedButton id="teams" />
 
 			<TeamsCardsContainer userId={user?.id ?? ''} searchParams={searchParams} />
 		</main>

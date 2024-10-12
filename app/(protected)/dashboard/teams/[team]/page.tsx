@@ -1,3 +1,4 @@
+import Banner from '@/components/banner';
 import { InviteUserToTeamDialog } from '@/components/dialogs/invite-user-to-team-dialog';
 import { UserLeaveTeamDialog } from '@/components/dialogs/user-leave-team-dialog';
 import { TeamsMemberTable } from '@/components/tables/team-members-table';
@@ -39,6 +40,12 @@ export default async function DashboardPage({
 
 	return (
 		<main className="flex flex-col  gap-4 h-full">
+			<Banner
+				variant="destructive"
+				message={teamResponse?.data?.team.isArchived ? 'This team is archived.' : ''}
+				description="You will not be able to interact with this team. If you believe this is a mistake, please contact the team owner and request for the team to be unarchived."
+			/>
+
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
 					<p className="text-xl font-bold">{teamResponse?.data?.team.name}</p>

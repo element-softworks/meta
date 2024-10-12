@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
 import { Button, ButtonProps } from '../ui/button';
 import { Team } from '@/db/drizzle/schema/team';
+import { DangerConfirmationDialogWrapper } from '../auth/danger-confirmation-dialog-wrapper';
 
 interface ArchiveTeamDialogProps {
 	team: Team | undefined;
@@ -49,7 +50,27 @@ export function ArchiveTeamDialog(props: ArchiveTeamDialogProps) {
 	if (!props.isTeamAdmin) return null;
 
 	return (
-		<DialogWrapper
+		// <DialogWrapper
+		// 	isLoading={isLoading}
+		// 	onOpenChange={(state) => setDialogOpen(state)}
+		// 	open={dialogOpen}
+		// 	onSubmit={() => handleArchiveTeam()}
+		// 	button={
+		// 		<Button
+		// 			variant={isArchived ? 'successful' : 'destructive'}
+		// 			onClick={() => setDialogOpen((prev) => !prev)}
+		// 		>
+		// 			{isArchived ? 'Restore' : 'Archive'} team
+		// 		</Button>
+		// 	}
+		// 	dialog={{
+		// 		title,
+		// 		description,
+		// 		buttonProps,
+		// 	}}
+		// />
+		<DangerConfirmationDialogWrapper
+			code={props?.team?.name?.toLowerCase()}
 			isLoading={isLoading}
 			onOpenChange={(state) => setDialogOpen(state)}
 			open={dialogOpen}

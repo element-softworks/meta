@@ -88,7 +88,7 @@ export const BugsInfiniteScroll = (props: BugsInfiniteScrollProps) => {
 							>
 								{bug.description}
 							</CardDescription>
-							{readMore === index ? (
+							{readMore === index && !!bug?.images?.length ? (
 								<div className="flex flex-col gap-4 mt-4">
 									<p className="text-muted-foreground">Images:</p>
 									{bug?.images?.map?.((image, index) => {

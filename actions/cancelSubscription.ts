@@ -1,5 +1,7 @@
 'use server';
 
+import { getTeamById } from '@/data/team';
+import { getUserById } from '@/data/user';
 import { revalidatePath } from 'next/cache';
 import Stripe from 'stripe';
 
@@ -20,6 +22,17 @@ export const cancelSubscription = async (customerId: string, teamId: string, use
 
 	if (!userId) {
 		return { error: 'User ID is required' };
+	}
+
+	const user = await getUserById(userId);
+	const teamResponse = await getTeamById(teamId);
+
+	if (!teamResponse) {
+		return { error: 'Team not found' };
+	}
+
+	if (teamResponse.data?.currentMember?.role !== 'OWNER' && user?.role !== 'ADMIN') {
+		return { error: 'You must be team owner to cancel billing' };
 	}
 
 	try {

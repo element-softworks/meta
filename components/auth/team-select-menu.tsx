@@ -64,7 +64,9 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 
 	return (
 		<>
-			{!!currentPlan ? <Badge className="mr-2">{currentPlan?.name} plan</Badge> : null}
+			{!!currentPlan ? (
+				<Badge className="mr-2 hidden sm:block">{currentPlan?.name} plan</Badge>
+			) : null}
 			<Select
 				open={selectOpen}
 				onOpenChange={(state) => setSelectOpen(state)}

@@ -49,15 +49,16 @@ export default async function BillingPage({ params }: { params: { team: string }
 					)
 				) : null}
 
-				<PricingPlans
-					type="subscription"
-					readOnly={!isOwner || !user?.currentTeam}
-					teamId={team.data?.team?.id ?? ''}
-					stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
-					currentPlanId={currentTeamPlan?.stripePricingId}
-				/>
-
-				{teamHasPlan && currentTeamPlan?.type === 'subscription' ? (
+				<div className="mb-4">
+					<PricingPlans
+						type="subscription"
+						readOnly={!isOwner || !user?.currentTeam}
+						teamId={team.data?.team?.id ?? ''}
+						stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
+						currentPlanId={currentTeamPlan?.stripePricingId}
+					/>
+				</div>
+				{teamHasPlan && currentTeamPlan?.type === 'subscription' && isOwner ? (
 					<div className="flex flex-col gap-4 h-full">
 						<div className="mt-auto">
 							<CancelSubscriptionButton
