@@ -3,6 +3,7 @@ import { addUserToTeam, getTeamById } from '@/data/team';
 import { getUserByEmail } from '@/data/user';
 import { db } from '@/db/drizzle/db';
 import { teamMember, user } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { sendConciergeEmail } from '@/lib/mail';
 import { createNotification } from '@/lib/notifications';
 import { generateConciergeToken } from '@/lib/tokens';
@@ -16,7 +17,7 @@ export const inviteUsersToTeam = async (
 	teamId: string
 ) => {
 	const validatedFields = InviteTeamUserSchema.safeParse(values);
-
+	const adminUser = await currentUser();
 	if (!validatedFields.success) {
 		return { error: 'There was a problem registering, please try again later' };
 	}

@@ -1,3 +1,4 @@
+import { ReportBugDialog } from '@/components/dialogs/report-bug-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -42,12 +43,66 @@ export default async function DashboardPage() {
 				</div>
 			</div>
 
-			<div className="grid grid-cols-12">
+			<div className="grid grid-cols-12 gap-4">
+				<div className="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 h-fit">
+					<Card className="flex flex-col">
+						<CardHeader>
+							<CardTitle>Team members</CardTitle>
+							<CardDescription>View and manage team members</CardDescription>
+						</CardHeader>
+
+						<CardFooter className="mt-auto">
+							<Link
+								className="w-full"
+								href={`/dashboard/teams/${team.data?.team?.id}`}
+							>
+								<Button variant="secondary" className="w-full">
+									Manage members
+								</Button>
+							</Link>
+						</CardFooter>
+					</Card>
+
+					<Card className="flex flex-col">
+						<CardHeader>
+							<CardTitle>Team invoices</CardTitle>
+							<CardDescription>View and manage team invoices</CardDescription>
+						</CardHeader>
+
+						<CardFooter className="mt-auto">
+							<Link
+								className="w-full"
+								href={`/dashboard/teams/${team.data?.team?.id}/invoices`}
+							>
+								<Button variant="secondary" className="w-full">
+									Manage invoices
+								</Button>
+							</Link>
+						</CardFooter>
+					</Card>
+
+					<Card className="flex flex-col">
+						<CardHeader>
+							<CardTitle>Report an issue</CardTitle>
+							<CardDescription>Found a bug? Report it</CardDescription>
+						</CardHeader>
+
+						<CardFooter className="mt-auto">
+							<ReportBugDialog
+								button={
+									<Button variant="secondary" className="w-full">
+										Report issue
+									</Button>
+								}
+							/>
+						</CardFooter>
+					</Card>
+				</div>
 				<Card className="col-span-12 lg:col-span-4">
 					<CardHeader>
 						<div className="flex gap-4">
 							<CardTitle className="flex-1">Active plan</CardTitle>
-							<Badge color="primary">{plan?.name}</Badge>
+							<Badge color="primary">{!!plan?.name ? plan.name : 'No plan'}</Badge>
 						</div>
 						<CardDescription>Manage/view your teams plan details</CardDescription>
 					</CardHeader>
@@ -55,7 +110,9 @@ export default async function DashboardPage() {
 					<CardContent>
 						<div className="flex gap-2 items-center">
 							<div className="flex-1">
-								<p className="text-lg font-semibold">Plan details</p>
+								{!!plan?.name?.length ? (
+									<p className="text-lg font-semibold">Plan details</p>
+								) : null}
 								<div className="">
 									{plan?.features.map((feature, index) => {
 										if (!feature?.active) return null;
@@ -77,7 +134,9 @@ export default async function DashboardPage() {
 							className="w-full"
 							href={`/dashboard/teams/${team.data?.team?.id}/billing`}
 						>
-							<Button className="w-full">Manage plan</Button>
+							<Button className="w-full">
+								{!!plan?.name?.length ? 'Manage plan' : 'Subscribe to a plan'}
+							</Button>
 						</Link>
 					</CardFooter>
 				</Card>

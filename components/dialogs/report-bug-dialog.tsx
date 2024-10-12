@@ -7,7 +7,9 @@ import { ReportBugForm } from '../forms/report-bug-form';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
 import { Bug } from 'lucide-react';
 
-interface ReportBugDialogProps {}
+interface ReportBugDialogProps {
+	button?: React.ReactNode;
+}
 export function ReportBugDialog(props: ReportBugDialogProps) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -19,17 +21,30 @@ export function ReportBugDialog(props: ReportBugDialogProps) {
 			onOpenChange={(state) => setDialogOpen(state)}
 			open={dialogOpen}
 			button={
-				<DropdownMenuItem
-					onClick={(e) => {
-						e.stopPropagation();
-						e.preventDefault();
-						setDialogOpen((prev) => !prev);
-					}}
-					className="cursor-pointer w-full"
-				>
-					<Bug className="mr-2 h-4 w-4" />
-					<span>Report a bug</span>
-				</DropdownMenuItem>
+				!!props.button ? (
+					<div
+						className="w-full"
+						onClick={(e) => {
+							e.stopPropagation();
+							e.preventDefault();
+							setDialogOpen((prev) => !prev);
+						}}
+					>
+						{props.button}
+					</div>
+				) : (
+					<DropdownMenuItem
+						onClick={(e) => {
+							e.stopPropagation();
+							e.preventDefault();
+							setDialogOpen((prev) => !prev);
+						}}
+						className="cursor-pointer w-full"
+					>
+						<Bug className="mr-2 h-4 w-4" />
+						<span>Report a bug</span>
+					</DropdownMenuItem>
+				)
 			}
 			disableActions
 			dialog={{
