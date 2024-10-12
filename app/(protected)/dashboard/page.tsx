@@ -35,7 +35,10 @@ export default async function DashboardPage() {
 
 			<div className="flex gap-2 items-center">
 				<div className="flex-1">
-					<p className="text-xl font-bold">{team?.data?.team?.name}'s dashboard</p>
+					<p className="text-xl font-bold">
+						{team?.data?.team?.name}
+						{"'"}s dashboard
+					</p>
 				</div>
 			</div>
 
