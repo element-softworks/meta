@@ -35,7 +35,7 @@ export function ReportBugDialog(props: ReportBugDialogProps) {
 			dialog={{
 				title: 'Report a bug',
 				description:
-					'Write a detailed description of the bug/issue you encountered with replication steps if possible.',
+					'Write a detailed description of the bug/issue you encountered with replication steps if possible. Include any screenshots or images that may help us understand the issue better.',
 			}}
 		>
 			<ReportBugForm onSubmit={() => setDialogOpen(false)} />

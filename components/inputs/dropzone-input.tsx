@@ -96,7 +96,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 																	height={75}
 																/>
 															);
-													  })
+														})
 													: null}
 												<p
 													className={`text-center px-2 ${
@@ -111,7 +111,9 @@ export function DropzoneInput(props: DropzoneInputProps) {
 												</p>
 											</div>
 										</section>
-										<div className="flex gap-2 flex-wrap">
+										<div
+											className={`flex gap-2 flex-wrap ${!!((files?.length ?? 0) > 1) ? 'mt-4' : ''}`}
+										>
 											{(files?.length ?? 0) > 1
 												? files?.map?.((file, index) => {
 														const objectUrl =
@@ -128,7 +130,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 																height={100}
 															/>
 														);
-												  })
+													})
 												: null}
 										</div>
 									</>

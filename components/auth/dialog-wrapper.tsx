@@ -48,7 +48,7 @@ export function DialogWrapper(props: DialogWrapperProps) {
 				{props.button}
 			</div>
 
-			<DialogContent className={`${width} max-w-[90%]`}>
+			<DialogContent className={`${width} max-w-[90%] max-h-[90%] overflow-auto`}>
 				<DialogHeader>
 					<DialogTitle>{props.dialog.title}</DialogTitle>
 					<DialogDescription>{props.dialog.description}</DialogDescription>

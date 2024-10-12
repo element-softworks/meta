@@ -82,7 +82,6 @@ export const config = {
 						height: 'var(--radix-accordion-content-height)',
 					},
 				},
-
 				'accordion-up': {
 					from: {
 						height: 'var(--radix-accordion-content-height)',
@@ -91,8 +90,18 @@ export const config = {
 						height: '0',
 					},
 				},
+
+				glow: {
+					from: {
+						filter: 'hue-rotate(-10deg)',
+					},
+					to: {
+						filter: 'hue-rotate(30deg)',
+					},
+				},
 			},
 			animation: {
+				glow: 'glow 3s linear infinite',
 				marquee2: 'marquee2 25s linear infinite',
 				marquee: 'marquee 25s linear infinite',
 				'accordion-down': 'accordion-down 0.2s ease-out',

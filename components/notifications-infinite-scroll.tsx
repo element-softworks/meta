@@ -7,6 +7,7 @@ import { ClipLoader } from 'react-spinners';
 import { EmailNotificationsToggleButton } from './buttons/email-notifications-toggle-button';
 import { MarkNotificationReadIcon } from './buttons/mark-notification-read-icon';
 import { GetUserNotificationsResponse } from '@/actions/get-user-notifications';
+import { StatusIcon } from './status-icon';
 
 interface NotificationsInfiniteScrollProps {
 	notifications: GetUserNotificationsResponse | null;
@@ -49,11 +50,9 @@ export const NotificationsInfiniteScroll = (props: NotificationsInfiniteScrollPr
 						key={index}
 						className="mb-4  pb-4 last:mb-0 last:pb-0 flex gap-4 flex-col sm:flex-row"
 					>
-						<div className="flex-1 items-center flex gap-2 flex-wrap">
-							<span
-								className={`flex h-3 w-3 self-start translate-y-1 rounded-full transition-all ${
-									!!notification?.readAt ? 'bg-green-500' : 'bg-sky-500'
-								} `}
+						<div className="flex-1 items-center flex gap-2 flex-wrap pl-3">
+							<StatusIcon
+								status={!!notification?.readAt ? 'successful' : 'neutral'}
 							/>
 							<div className="space-y-1">
 								<p className="text-sm font-medium leading-none">

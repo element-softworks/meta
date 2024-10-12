@@ -16,6 +16,28 @@ export const ReportBugSchema = z.object({
 	title: z.string().min(1, { message: 'Title is required' }),
 	description: z.string().min(1, { message: 'Description is required' }),
 	status: z.enum(['OPEN', 'CLOSED', 'IN_PROGRESS']),
+	images: z.array(
+		z
+			.unknown()
+			.transform((value) => {
+				return value as FileList;
+			})
+			.refine(
+				(data) => {
+					const fileSize = data?.[0]?.size;
+
+					//1Mb = 1000000 bytes
+					if (fileSize > 4000000) {
+						return false;
+					}
+					return true;
+				},
+				{
+					message: "File size can't exceed 4MB",
+					path: ['image'],
+				}
+			)
+	),
 });
 
 export const TeamsSchema = z.object({

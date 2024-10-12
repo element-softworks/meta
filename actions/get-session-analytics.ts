@@ -3,7 +3,6 @@ import { session } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import { addDays, differenceInHours, format, startOfDay } from 'date-fns';
 import { between, sql } from 'drizzle-orm';
-import { unique } from 'drizzle-orm/pg-core';
 
 export const getSessionAnalytics = async (startDate: string, endDate: string) => {
 	const dateDifferenceInHours = differenceInHours(new Date(endDate), new Date(startDate));

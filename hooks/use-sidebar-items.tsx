@@ -62,6 +62,12 @@ export function useSidebarItems() {
 			visible: user?.role === 'ADMIN',
 			items: [
 				{
+					text: 'Analytics',
+					link: '/dashboard/admin/analytics',
+					icon: <ChartPie size={20} />,
+					visible: true,
+				},
+				{
 					text: 'Users',
 					link: '/dashboard/admin/users',
 					icon: <Users size={20} />,
@@ -71,12 +77,6 @@ export function useSidebarItems() {
 					text: 'Teams',
 					link: '/dashboard/admin/teams',
 					icon: <Flag size={20} />,
-					visible: true,
-				},
-				{
-					text: 'Analytics',
-					link: '/dashboard/admin/analytics',
-					icon: <ChartPie size={20} />,
 					visible: true,
 				},
 				{

@@ -1,20 +1,19 @@
 'use client';
 
-import { teamCreate } from '@/actions/team-create';
-import { Team } from '@/db/drizzle/schema/team';
+import { reportBug } from '@/actions/report-bug';
 import { useMutation } from '@/hooks/use-mutation';
-import { ReportBugSchema, TeamsSchema } from '@/schemas';
+import { ReportBugSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { FormInput } from '../auth/form-input';
+import { DropzoneInput } from '../inputs/dropzone-input';
 import { Button } from '../ui/button';
 import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { Textarea } from '../ui/textarea';
-import { reportBug } from '@/actions/report-bug';
 
 type ReportBugFormInputProps = z.infer<typeof ReportBugSchema>;
 
@@ -23,22 +22,17 @@ interface ReportBugFormProps {
 }
 
 export function ReportBugForm(props: ReportBugFormProps) {
-	const { update } = useSession();
-	const router = useRouter();
-
 	const form = useForm<ReportBugFormInputProps>({
 		resolver: zodResolver(ReportBugSchema),
 		defaultValues: {
 			title: '',
 			description: '',
 			status: 'OPEN',
+			images: [],
 		},
 	});
 
-	const { query: createTeamQuery, isLoading: isCreating } = useMutation<
-		ReportBugFormInputProps,
-		{}
-	>({
+	const { query: createTeamQuery, isLoading: isCreating } = useMutation<FormData, {}>({
 		queryFn: async (values) => await reportBug(values!),
 		onCompleted: async (data) => {
 			form.reset();
@@ -47,7 +41,18 @@ export function ReportBugForm(props: ReportBugFormProps) {
 	});
 
 	async function onSubmit(values: ReportBugFormInputProps) {
-		createTeamQuery(values);
+		const formData = new FormData();
+
+		console.log(values, 'values data');
+
+		values?.images?.forEach((image, index) => {
+			formData.append(`images.${index}`, image as any);
+		});
+
+		formData.append('title', values.title);
+		formData.append('description', values.description);
+		formData.append('status', values.status);
+		createTeamQuery(formData);
 	}
 
 	return (
@@ -75,6 +80,8 @@ export function ReportBugForm(props: ReportBugFormProps) {
 								/>
 							)}
 						/>
+
+						<DropzoneInput multiple label="Images" name="images" />
 
 						<Button
 							type="submit"
