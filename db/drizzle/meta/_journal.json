@@ -197,6 +197,13 @@
       "when": 1728818211667,
       "tag": "0027_aspiring_wiccan",
       "breakpoints": true
+    },
+    {
+      "idx": 28,
+      "version": "7",
+      "when": 1728841776833,
+      "tag": "0028_simple_zeigeist",
+      "breakpoints": true
     }
   ]
 }
