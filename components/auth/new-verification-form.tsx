@@ -58,9 +58,11 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 				</div>
 			)}
 
-			<Button isLoading={false} className="w-full mt-2">
-				<Link href="/auth/login">Back to login</Link>
-			</Button>
+			<Link href="/auth/login">
+				<Button isLoading={false} className="w-full mt-2">
+					Back to login
+				</Button>
+			</Link>
 
 			<div className="relative mt-2">
 				<div className="absolute inset-0 flex items-center">

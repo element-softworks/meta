@@ -79,7 +79,7 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 
 					//Set the cookie for the default team
 					await setCookie({
-						name: `${currentUser?.email}-current-team`,
+						name: `${currentUser?.id}-current-team`,
 						value: team?.id ?? '',
 					});
 					update();

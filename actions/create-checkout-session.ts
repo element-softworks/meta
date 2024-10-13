@@ -1,7 +1,7 @@
 'use server';
 
 import { getCookie } from '@/data/cookies';
-import { isTeamOwnerServer } from '@/data/team';
+import { getTeamById, isTeamOwnerServer } from '@/data/team';
 import { db } from '@/db/drizzle/db';
 import { customer as DbCustomer } from '@/db/drizzle/schema';
 import { eq } from 'drizzle-orm';
@@ -29,6 +29,18 @@ export const createCheckoutSession = async ({
 	stripeCustomerId: string;
 }) => {
 	const sessionResponse = await getCookie('session');
+	const team = await getTeamById(teamId);
+
+	if (!team?.data?.team) {
+		return {
+			error: 'Team not found',
+		};
+	}
+	if (team?.data?.team?.isArchived) {
+		return {
+			error: 'Team is archived, please restore the team to manage billing',
+		};
+	}
 
 	let customer = null;
 

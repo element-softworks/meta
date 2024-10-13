@@ -1,21 +1,19 @@
-import { boilerplateConfig } from '@/boilerplate.config';
 import { ClientInfiniteScroll } from '@/components/ClientInfiniteScroll';
 import { PostCard } from '@/components/post-card';
 import { getPosts } from '@/sanity/lib/client';
-import { Suspense } from 'react';
 
 //This component is SSR due to pagination needing dynamic params data
 
 export async function generateMetadata() {
 	return {
-		title: `Blog | ${boilerplateConfig.projectName}`,
+		title: `Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
 		description: 'Read the latest articles from our blog.',
 		openGraph: {
-			title: `Blog | ${boilerplateConfig.projectName}`,
+			title: `Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
 			description: 'Read the latest articles from our blog.',
 		},
 		twitter: {
-			title: `Blog | ${boilerplateConfig.projectName}`,
+			title: `Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
 			description: 'Read the latest articles from our blog.',
 		},
 		alternates: {
@@ -34,24 +32,22 @@ export default async function Blog({
 	const postsResponse = await getPosts(Number(pageNum), Number(perPage)); // Fetch posts
 
 	return (
-		<section className="flex h-full flex-col container gap-8 my-20">
+		<section className="flex h-full flex-col container gap-8 my-10 lg:my-20">
 			<h1 className="w-full text-start font-semibold text-xl md:text-2xl lg:text-3xl max-w-[22ch]">
 				From the blog
 			</h1>
-			<Suspense fallback={<p>Loading...</p>}>
-				<ClientInfiniteScroll
-					increment={12}
-					perPage={Number(perPage)}
-					dataLength={postsResponse.posts?.length}
-					hasMore={(postsResponse.posts?.length ?? 0) < postsResponse.total}
-				>
-					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-						{postsResponse?.posts.map((post, index) => {
-							return <PostCard key={index} post={post} />;
-						})}
-					</div>
-				</ClientInfiniteScroll>
-			</Suspense>
+			<ClientInfiniteScroll
+				increment={12}
+				perPage={Number(perPage)}
+				dataLength={postsResponse.posts?.length}
+				hasMore={(postsResponse.posts?.length ?? 0) < postsResponse.total}
+			>
+				<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+					{postsResponse?.posts.map((post, index) => {
+						return <PostCard key={index} post={post} />;
+					})}
+				</div>
+			</ClientInfiniteScroll>
 		</section>
 	);
 }

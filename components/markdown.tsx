@@ -25,7 +25,7 @@ export function Markdown(props: MarkdownProps) {
 		return (
 			<Image
 				src={urlFor(value.asset).width(700).url()}
-				alt={value.alt || ' '}
+				alt={value.alt || 'Image from CMS'}
 				loading="lazy"
 				width={width}
 				height={height}

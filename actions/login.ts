@@ -13,7 +13,8 @@ import { getTwoFactorTokenByEmail } from '@/data/two-factor-token';
 import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation';
 import { db } from '@/db/drizzle/db';
 import { eq } from 'drizzle-orm';
-import { twoFactorConfirmation, twoFactorToken } from '@/db/drizzle/schema';
+import { teamMember, twoFactorConfirmation, twoFactorToken } from '@/db/drizzle/schema';
+import { getIsUserInTeam } from '@/data/team';
 
 export const login = async (
 	values: z.infer<typeof LoginSchema>,
@@ -29,6 +30,11 @@ export const login = async (
 	const { email, password, code } = validatedFields.data;
 
 	const existingUser = await getUserByEmail(email);
+
+	const [isUserInTeam] = await db
+		.select()
+		.from(teamMember)
+		.where(eq(teamMember.userId, existingUser?.id ?? ''));
 
 	if (!existingUser || !existingUser.email || !existingUser.password) {
 		return { error: 'Invalid credentials, check your email and password and try again.' };
@@ -100,7 +106,7 @@ export const login = async (
 		await signIn('credentials', {
 			email,
 			password,
-			redirectTo: callbackUrl ?? DEFAULT_LOGIN_REDIRECT,
+			redirectTo: !isUserInTeam ? '/setup' : (callbackUrl ?? DEFAULT_LOGIN_REDIRECT),
 		});
 		// return { success: 'Logged in successfully.' };
 	} catch (error) {

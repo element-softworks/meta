@@ -14,7 +14,6 @@ import { getCookie, setCookie } from './data/cookies';
 import { getAccountByUserId } from './data/account';
 import { getUsersTeams } from './data/team';
 import { team } from './db/drizzle/schema/team';
-import { get } from 'http';
 import { user as dbUser } from './db/drizzle/schema/user';
 
 export const {
@@ -27,6 +26,7 @@ export const {
 	pages: {
 		signIn: '/auth/login',
 		signOut: '/auth/logout',
+		newUser: '/setup',
 		error: '/auth/error',
 	},
 	adapter: DrizzleAdapter(db, {
@@ -92,39 +92,43 @@ export const {
 					.where(eq(dbUser.id, existingUser?.id));
 			}
 
-			//If the user isnt in a team, create a team and put them into it
-			const userInTeam = await db
-				.select()
-				.from(teamMember)
-				.where(eq(teamMember.userId, user?.id!));
+			// //If the user isnt in a team, create a team and put them into it
+			// const userInTeam = await db
+			// 	.select()
+			// 	.from(teamMember)
+			// 	.where(eq(teamMember.userId, user?.id!));
 
-			if (!userInTeam.length) {
-				const [newTeam] = await db
-					.insert(team)
-					.values({
-						name: `${existingUser?.name}'s Team`,
-						updatedAt: new Date(),
-						createdBy: user?.id!,
-					})
-					.returning({ id: team.id });
+			// if (!userInTeam.length && !!existingUser?.id) {
+			// 	const [newTeam] = await db
+			// 		.insert(team)
+			// 		.values({
+			// 			name: `${existingUser?.name}'s Team`,
+			// 			updatedAt: new Date(),
+			// 			createdBy: user?.id!,
+			// 		})
+			// 		.returning({ id: team.id });
 
-				await db.insert(teamMember).values({
-					userId: user?.id!,
-					teamId: newTeam.id,
-					role: 'OWNER',
-					updatedAt: new Date(),
-				});
+			// 	console.log(existingUser, 'existing user data');
 
-				//Set the current team cookie to the new team
-				setCookie({
-					name: `${user?.email}-current-team`,
-					value: newTeam.id,
-				});
-			}
+			// 	console.log(newTeam.id, user.id, 'new team id');
+			// 	//Create new team member
+			// 	await db.insert(teamMember).values({
+			// 		role: 'OWNER',
+			// 		teamId: newTeam.id,
+			// 		userId: existingUser?.id ?? '',
+			// 		updatedAt: new Date(),
+			// 	});
+
+			// 	//Set the current team cookie to the new team
+			// 	setCookie({
+			// 		name: `${existingUser?.email}-current-team`,
+			// 		value: newTeam.id,
+			// 	});
+			// }
 
 			//Update the session with the user's email
 			const sessionResponse = await getCookie('session');
-			if (!!sessionResponse?.value?.length) {
+			if (!!sessionResponse?.value?.length && !!existingUser?.email) {
 				await db
 					.update(session)
 					.set({ email: existingUser?.email })
@@ -199,7 +203,9 @@ export const {
 		jwt: async ({ token, session }) => {
 			if (!token.sub) return token;
 
-			const teamCookie = await getCookie(`${token.email}-current-team`);
+			console.log(token.sub, 'token sub');
+
+			const teamCookie = await getCookie(`${token.sub}-current-team`);
 			const existingUser = await getUserById(token.sub);
 			const [teamResponse] = await db
 				.select()

@@ -8,6 +8,7 @@ interface BannerProps {
 	description?: string;
 	variant?: 'destructive' | 'successful' | 'info';
 	showOnce?: boolean;
+	id: string;
 }
 
 export default function Banner({
@@ -15,6 +16,7 @@ export default function Banner({
 	variant = 'info',
 	description,
 	showOnce = true,
+	id,
 }: BannerProps) {
 	const variantClasses = {
 		destructive: 'bg-destructive',
@@ -23,9 +25,7 @@ export default function Banner({
 	};
 
 	const [alreadyDeclined, setAlreadyDeclined] = useState(
-		typeof window !== 'undefined' &&
-			!!localStorage.getItem(`banner-${message}`)?.length &&
-			showOnce
+		typeof window !== 'undefined' && !!localStorage.getItem(`banner-${id}`)?.length && showOnce
 	);
 
 	const [open, setOpen] = useState(true);
@@ -33,14 +33,14 @@ export default function Banner({
 
 	return (
 		<div
-			className={`fixed bottom-0 z-40 left-1/2 rounded-tr-md transition-all rounded-tl-md duration-300 -translate-x-1/2 p-6 px-4 w-[90%] md:w-fit lg:px-10
+			className={`fixed bottom-0 z-[1000] left-1/2 rounded-tr-md transition-all rounded-tl-md duration-300 -translate-x-1/2 p-6 px-4 w-[90%] md:w-fit lg:px-10
         ${variantClasses[variant]}
         ${open ? 'bottom-0 opacity-100' : '-bottom-20 opacity-0'}
         `}
 		>
 			<X
 				onClick={() => {
-					localStorage.setItem(`banner-${message}`, 'true');
+					localStorage.setItem(`banner-${id}`, 'true');
 					setOpen(false);
 				}}
 				className="absolute cursor-pointer text-destructive-foreground top-2 right-2"

@@ -41,6 +41,7 @@ export default async function DashboardPage({
 	return (
 		<main className="flex flex-col  gap-4 h-full">
 			<Banner
+				id={teamResponse?.data?.team?.id ?? ''}
 				variant="destructive"
 				message={teamResponse?.data?.team.isArchived ? 'This team is archived.' : ''}
 				description="You will not be able to interact with this team. Only the team owner can urarchive a team. If you believe this is a mistake, please contact the team owner."

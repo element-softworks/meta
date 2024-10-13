@@ -21,7 +21,7 @@ export function SelectTeamButton(props: SelectTeamButtonProps) {
 			onClick={async () => {
 				if (props.disabled) return;
 				await setCookie({
-					name: `${user?.email}-current-team`,
+					name: `${user?.id}-current-team`,
 					value: props.teamId ?? '',
 				});
 				update();

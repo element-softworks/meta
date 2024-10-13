@@ -14,14 +14,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 	const post = await getPostBySlug(params.slug);
 
 	return {
-		title: `${post.title} Blog | ${boilerplateConfig.projectName}`,
+		title: `${post.title} Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
 		description: `${post.excerpt}`,
 		openGraph: {
-			title: `${post.title} Blog | ${boilerplateConfig.projectName}`,
+			title: `${post.title} Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
 			description: `${post.excerpt}`,
 		},
 		twitter: {
-			title: `${post.title} Blog | ${boilerplateConfig.projectName}`,
+			title: `${post.title} Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
 			description: `${post.excerpt}`,
 		},
 		alternates: {
@@ -63,7 +63,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 							<div className="relative h-auto w-full">
 								{!!post?.mainImage && (
 									<Image
-										className="rounded-none"
+										className="rounded-none aspect-video"
 										alt={post.mainImage?.alt ?? 'Blog image'}
 										src={urlFor(post.mainImage).width(600).url()}
 										layout="responsive"
@@ -83,7 +83,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 							<CardHeader>
 								<div className="-m-4">
 									<Image
-										className="rounded-tr-md rounded-tl-md"
+										className="rounded-tr-md rounded-tl-md aspect-video object-cover"
 										alt="Call to action"
 										src="https://img.recraft.ai/kb6NwyzRIScHK8TJaj5WnKtRarKUQmEtsrTesJxRnXw/rs:fit:1536:1024:0/q:95/g:no/plain/abs://prod/images/8cddd895-2fb9-413d-9736-7c0615202de4@png"
 										width={0}

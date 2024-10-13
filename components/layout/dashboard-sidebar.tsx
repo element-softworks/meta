@@ -5,11 +5,22 @@ import { NavigationMobileDrawer } from './navigation-mobile-drawer';
 import { Button } from '../ui/button';
 import { MenuIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 export function DashboardSidebar() {
 	const SIDEBAR_ITEMS = useSidebarItems();
 	const [navOpen, setNavOpen] = useState(false);
 	const drawerItems = useSidebarItems();
+
+	const router = useRouter();
+
+	const currentUser = useCurrentUser();
+
+	console.log(currentUser, 'current user');
+	if (!currentUser?.currentTeam) {
+		router.push('/setup');
+	}
 
 	return (
 		<>

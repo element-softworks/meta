@@ -75,7 +75,7 @@ export const teamCreate = async (formData: FormData) => {
 
 	//Set the current team cookie to the new team
 	setCookie({
-		name: `${user?.email}-current-team`,
+		name: `${user?.id}-current-team`,
 		value: newTeam.id,
 	});
 

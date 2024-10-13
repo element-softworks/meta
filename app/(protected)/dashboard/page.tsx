@@ -44,60 +44,6 @@ export default async function DashboardPage() {
 			</div>
 
 			<div className="grid grid-cols-12 gap-4">
-				<div className="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 h-fit">
-					<Card className="flex flex-col">
-						<CardHeader>
-							<CardTitle>Team members</CardTitle>
-							<CardDescription>View and manage team members</CardDescription>
-						</CardHeader>
-
-						<CardFooter className="mt-auto">
-							<Link
-								className="w-full"
-								href={`/dashboard/teams/${team.data?.team?.id}`}
-							>
-								<Button variant="secondary" className="w-full">
-									Manage members
-								</Button>
-							</Link>
-						</CardFooter>
-					</Card>
-
-					<Card className="flex flex-col">
-						<CardHeader>
-							<CardTitle>Team invoices</CardTitle>
-							<CardDescription>View and manage team invoices</CardDescription>
-						</CardHeader>
-
-						<CardFooter className="mt-auto">
-							<Link
-								className="w-full"
-								href={`/dashboard/teams/${team.data?.team?.id}/invoices`}
-							>
-								<Button variant="secondary" className="w-full">
-									Manage invoices
-								</Button>
-							</Link>
-						</CardFooter>
-					</Card>
-
-					<Card className="flex flex-col">
-						<CardHeader>
-							<CardTitle>Report an issue</CardTitle>
-							<CardDescription>Found a bug? Report it</CardDescription>
-						</CardHeader>
-
-						<CardFooter className="mt-auto">
-							<ReportBugDialog
-								button={
-									<Button variant="secondary" className="w-full">
-										Report issue
-									</Button>
-								}
-							/>
-						</CardFooter>
-					</Card>
-				</div>
 				<Card className="col-span-12 lg:col-span-4">
 					<CardHeader>
 						<div className="flex gap-4">
@@ -140,6 +86,60 @@ export default async function DashboardPage() {
 						</Link>
 					</CardFooter>
 				</Card>
+				<div className="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 h-fit">
+					<Card className="flex flex-col">
+						<CardHeader>
+							<CardTitle>Team details</CardTitle>
+							<CardDescription>View and manage team</CardDescription>
+						</CardHeader>
+
+						<CardFooter className="mt-auto">
+							<Link
+								className="w-full"
+								href={`/dashboard/teams/${team.data?.team?.id}`}
+							>
+								<Button variant="secondary" className="w-full">
+									View team details
+								</Button>
+							</Link>
+						</CardFooter>
+					</Card>
+
+					<Card className="flex flex-col">
+						<CardHeader>
+							<CardTitle>Team invoices</CardTitle>
+							<CardDescription>View and manage team invoices</CardDescription>
+						</CardHeader>
+
+						<CardFooter className="mt-auto">
+							<Link
+								className="w-full"
+								href={`/dashboard/teams/${team.data?.team?.id}/invoices`}
+							>
+								<Button variant="secondary" className="w-full">
+									Manage invoices
+								</Button>
+							</Link>
+						</CardFooter>
+					</Card>
+
+					<Card className="flex flex-col">
+						<CardHeader>
+							<CardTitle>Report an issue</CardTitle>
+							<CardDescription>Found a bug? Report it</CardDescription>
+						</CardHeader>
+
+						<CardFooter className="mt-auto">
+							<ReportBugDialog
+								button={
+									<Button variant="secondary" className="w-full">
+										Report issue
+									</Button>
+								}
+							/>
+						</CardFooter>
+					</Card>
+				</div>
 			</div>
 		</main>
 	);
