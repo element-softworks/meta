@@ -1,7 +1,7 @@
 export const plans = {
 	basic: {
 		type: 'subscription',
-		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_SUB_ONE,
+		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_SUB_ONE ?? 'not set',
 		name: 'Basic',
 		price: 9.99,
 		users: 1,
@@ -25,7 +25,7 @@ export const plans = {
 
 	pro: {
 		type: 'subscription',
-		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_SUB_TWO,
+		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_SUB_TWO ?? 'not set',
 		name: 'Pro',
 		price: 24.99,
 		users: 5,
@@ -49,7 +49,7 @@ export const plans = {
 
 	enterprise: {
 		type: 'subscription',
-		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_SUB_THREE,
+		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_SUB_THREE ?? 'not set',
 		name: 'Enterprise',
 		price: 49.99,
 		users: 1000,
@@ -73,7 +73,7 @@ export const plans = {
 
 	starter: {
 		type: 'one-time',
-		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_ONE_TIME_ONE,
+		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_ONE_TIME_ONE ?? 'not set',
 		name: 'Starter',
 		price: 38.97,
 		features: [
@@ -94,7 +94,7 @@ export const plans = {
 
 	['full access']: {
 		type: 'one-time',
-		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_ONE_TIME_TWO,
+		stripePricingId: process.env.NEXT_PUBLIC_STRIPE_ONE_TIME_TWO ?? 'not set',
 		name: 'Full access',
 		price: 49.99,
 		features: [
