@@ -255,7 +255,11 @@ export function OneTimePricingPlans(props: PricingProps) {
 					className="shadow-md border-primary"
 					planName={fullAccess.name}
 					price={calcPrice(fullAccess.price, isYearly)}
-					discount={calcPrice(fullAccess.price - starter.price, isYearly)}
+					discount={
+						!!currentPlan
+							? calcPrice(fullAccess.price - currentPlan.price, isYearly)
+							: undefined
+					}
 					description="Dedicated support and infrastructure to fit your needs"
 					features={fullAccess.features}
 					Button={
