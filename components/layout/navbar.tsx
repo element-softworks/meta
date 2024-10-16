@@ -1,14 +1,11 @@
 'use client';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { Book, CreditCard, FrameIcon, Notebook, Phone } from 'lucide-react';
-import { useTheme } from 'next-themes';
 import Link from 'next/link';
 import { useState } from 'react';
 import { UserMenu } from '../auth/user-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
-import { Button } from '../ui/button';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
-import { FaBlog } from 'react-icons/fa';
 
 export const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/#pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },

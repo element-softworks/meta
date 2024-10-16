@@ -14,14 +14,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 	const post = await getPostBySlug(params.slug);
 
 	return {
-		title: `${post.title} Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
+		title: `${post.title} Blog | NextJS SaaS Boilerplate`,
 		description: `${post.excerpt}`,
 		openGraph: {
-			title: `${post.title} Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
+			title: `${post.title} Blog | NextJS SaaS Boilerplate`,
 			description: `${post.excerpt}`,
 		},
 		twitter: {
-			title: `${post.title} Blog | ${process.env.NEXT_PUBLIC_PROJECT_NAME}`,
+			title: `${post.title} Blog | NextJS SaaS Boilerplate`,
 			description: `${post.excerpt}`,
 		},
 		alternates: {
