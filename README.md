@@ -54,12 +54,27 @@ into .env as # GITHUB_CLIENT_ID=, GITHUB_CLIENT_SECRET=
 ensure the providers you have provided keys for are enabled and that the UI is displaying then in social.tsx
 
 STRIPE PAYMENTS SETUP
-Go to stripe and create an account, setup your payment details. Search product catelogue in the search bar and create a new product and then save product. Add all the prices you need, if you want one time payments or subscriptions, make sure to select the correct boxes.
+Go to stripe and create an account, setup your payment details. Copy secret key from the stripe dashboard homepage and pase into STRIPE_SECRET_KEY env. Then add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as the publishable key code. If localhost, press the developer toggle and copy the same test codes. You will be able to test payments using card details 424242424242 and then put any date in the future.
 
-Setup plan ids in stripe and add to plans.json. On stripe dashboard search for webhooks, create webhook. Go to api/webhooks/stripe.ts and copy paste the ids into the webhooks search bar e.g customer.subscription.created add all of the webhooks IDS inside of the api routes webhook.ts file. Press continue and then all your public path to the stripe api route, e.g for me
-https://www.nextjs-saas-boilerplate.org/api/webhooks/stripe. Copy this secret into your deployed STRIPE_WEBHOOK_SECRET
+Search product catelogue in the search bar and create a new product and then save product. Add all the prices you need, if you want one time payments or subscriptions, make sure to select the correct boxes. Find and copy your priceIds into plans.json file. If you want one time payments, paste them into the one time fields, if you want subscriptions, paste it into the subscription docs. If you want one time payments, follow the next steps to set the components to render one time rather than subscription models. Go to app/(public)/page.tsx and change the word subscription to one-time (SEE IMAGE 7). Go to app/(protected)/dashboard/teams/[team]/billing/page.tsx and change the wording subscription to one-time (IMAGE 8)
+
+On stripe dashboard search for webhooks, create webhook. Add the following endpoint triggers
+payment_intent.succeeded
+customer.subscription.created
+customer.subscription.updated
+customer.subscription.deleted
+invoice.payment_succeeded
+invoice.payment_failed
+checkout.session.completed
+
+Press continue and then add your public path to the stripe api route, e.g for me
+https://saasphere.dev/api/webhooks/stripe. Copy this secret into your deployed STRIPE_WEBHOOK_SECRET
 
 To test stripe payments locally, you must download the stripe CLI
 Install stripe with brew install stripe/stripe-cli/stripe and run stripe login, login then run stripe listen --forward-to http://localhost:3000/api/webhooks/stripe Copy the signing secret and paste it in the STRIPE_SIGNING_SECRET env.
 
-STRIPE, BLOG, FORMBOLD
+FORMBOLD SETUP
+Formbold will connect to the landing pages contact form to forward you emails. Go to https://formbold.com, create an account, create a form, go to the integration tab and paste the code into NEXT_PUBLIC_FORM_URL,
+
+BLOG SETUP
+Go to https://www.sanity.io/ create an account, create a new project from scratch, copy and paste project ID into NEXT_PUBLIC_SANITY_PROJECT_ID,go to the datasets tab and create a dataset, put this name into NEXT_PUBLIC_SANITY_DATASET, go to /studio on the boilerplate. follow the steps on the screen to verify CORS. You can now add posts through the CMS interface
