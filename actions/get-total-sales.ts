@@ -3,7 +3,7 @@
 import { db } from '@/db/drizzle/db';
 import { customer, customerInvoice } from '@/db/drizzle/schema';
 import { and, between, eq, sql } from 'drizzle-orm';
-import plans from '@/plans.json';
+import plans from '@/plans';
 import { addMilliseconds, differenceInMilliseconds, minutesToMilliseconds } from 'date-fns';
 
 export const getTotalSales = async (startDate: string, endDate: string) => {

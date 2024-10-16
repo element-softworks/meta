@@ -12,7 +12,7 @@ import { Pricing } from '@/components/marketing/pricing';
 import { Testimonials } from '@/components/marketing/testimonials';
 import { Button } from '@/components/ui/button';
 import { DUMMY_FAQS, DUMMY_TESTIMONIALS } from '@/lib/dummy-data';
-import plans from '@/plans.json';
+import plans from '@/plans';
 import { formatDuration, intervalToDuration } from 'date-fns';
 import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';

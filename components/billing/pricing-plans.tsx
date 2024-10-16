@@ -9,7 +9,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card';
 import { useStripePricing } from '@/hooks/use-stripe-pricing';
-import plans from '@/plans.json';
+import plans from '@/plans';
 import { CheckCircle2, X } from 'lucide-react';
 import { useState } from 'react';
 

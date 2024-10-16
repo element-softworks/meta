@@ -2,7 +2,7 @@
 
 import { createCheckoutSession } from '@/actions/create-checkout-session';
 import { toast } from '@/components/ui/use-toast';
-import plans from '@/plans.json';
+import plans from '@/plans';
 import { loadStripe } from '@stripe/stripe-js';
 import { revalidatePath } from 'next/cache';
 import { useRouter } from 'next/navigation';

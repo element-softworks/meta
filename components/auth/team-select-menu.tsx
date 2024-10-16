@@ -12,7 +12,7 @@ import { setCookie } from '@/data/cookies';
 import { getTeamCustomerByTeamId } from '@/data/team';
 import { Customer } from '@/db/drizzle/schema/customer';
 import { useCurrentUser } from '@/hooks/use-current-user';
-import plans from '@/plans.json';
+import plans from '@/plans';
 import { ChartNoAxesGanttIcon, Plus } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useTheme } from 'next-themes';

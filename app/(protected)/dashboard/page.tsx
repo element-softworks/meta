@@ -12,7 +12,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { getTeamById } from '@/data/team';
 import { currentUser } from '@/lib/auth';
-import plans from '@/plans.json';
+import plans from '@/plans';
 import Link from 'next/link';
 
 export default async function DashboardPage() {

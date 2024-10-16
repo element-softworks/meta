@@ -3,7 +3,7 @@
 import { db } from '@/db/drizzle/db';
 import { customer } from '@/db/drizzle/schema';
 import { and, between, eq, sql } from 'drizzle-orm';
-import plans from '@/plans.json';
+import plans from '@/plans';
 
 export const getRevenueAnalytics = async () => {
 	//we only return subscription customers here for monthly recurring revenue

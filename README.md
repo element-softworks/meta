@@ -58,7 +58,14 @@ ensure the providers you have provided keys for are enabled and that the UI is d
 STRIPE PAYMENTS SETUP
 Go to stripe and create an account, setup your payment details. Copy secret key from the stripe dashboard homepage and pase into STRIPE_SECRET_KEY env. Then add NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as the publishable key code. If localhost, press the developer toggle and copy the same test codes. You will be able to test payments using card details 424242424242 and then put any date in the future.
 
-Search product catelogue in the search bar and create a new product and then save product. Add all the prices you need, if you want one time payments or subscriptions, make sure to select the correct boxes. Find and copy your priceIds into plans.json file. If you want one time payments, paste them into the one time fields, if you want subscriptions, paste it into the subscription docs. If you want one time payments, follow the next steps to set the components to render one time rather than subscription models. Go to app/(public)/page.tsx and change the word subscription to one-time (SEE IMAGE 7). Go to app/(protected)/dashboard/teams/[team]/billing/page.tsx and change the wording subscription to one-time (IMAGE 8)
+Search product catelogue in the search bar and create a new product and then save product. Add all the prices you need, if you want one time payments or subscriptions, make sure to select the correct boxes. Find and copy your priceIds into env file into the correct slots.
+NEXT_PUBLIC_STRIPE_SUB_ONE=
+NEXT_PUBLIC_STRIPE_SUB_TWO=
+NEXT_PUBLIC_STRIPE_SUB_THREE=
+NEXT_PUBLIC_STRIPE_ONE_TIME_ONE=
+NEXT_PUBLIC_STRIPE_ONE_TIME_TWO=
+If you need to add more payments, go to plans.ts file
+If you want one time payments, paste them into the one time fields, if you want subscriptions, paste it into the subscription docs. If you want one time payments, follow the next steps to set the components to render one time rather than subscription models. Go to app/(public)/page.tsx and change the word subscription to one-time (SEE IMAGE 7). Go to app/(protected)/dashboard/teams/[team]/billing/page.tsx and change the wording subscription to one-time (IMAGE 8)
 
 On stripe dashboard search for webhooks, create webhook. Add the following endpoint triggers
 payment_intent.succeeded

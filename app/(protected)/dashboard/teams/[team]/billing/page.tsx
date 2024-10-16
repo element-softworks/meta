@@ -3,7 +3,7 @@ import PricingPlans from '@/components/billing/pricing-plans';
 import { Separator } from '@/components/ui/separator';
 import { getTeamById, getTeamCustomerByTeamId } from '@/data/team';
 import { currentUser } from '@/lib/auth';
-import plans from '@/plans.json';
+import plans from '@/plans';
 import { Suspense } from 'react';
 
 if (!process.env.STRIPE_WEBHOOK_SECRET) {
@@ -51,7 +51,7 @@ export default async function BillingPage({ params }: { params: { team: string }
 
 				<div className="mb-4">
 					<PricingPlans
-						type="subscription"
+						type="one time"
 						readOnly={!isOwner || !user?.currentTeam}
 						teamId={team.data?.team?.id ?? ''}
 						stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
