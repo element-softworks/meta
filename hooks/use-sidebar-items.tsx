@@ -9,6 +9,7 @@ import {
 	DollarSign,
 	Flag,
 	LayoutDashboard,
+	Pen,
 	PiggyBank,
 	Users,
 	Users2,
@@ -27,6 +28,12 @@ export function useSidebarItems() {
 					text: 'Dashboard',
 					link: '/dashboard',
 					icon: <LayoutDashboard size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Coach',
+					link: '/dashboard/coaches',
+					icon: <Pen size={20} />,
 					visible: true,
 				},
 				{

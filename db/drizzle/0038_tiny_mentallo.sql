@@ -1,0 +1,1 @@
+ALTER TABLE "coachApplicationApplication" RENAME TO "coachApplication";

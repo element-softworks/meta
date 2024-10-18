@@ -1,0 +1,1 @@
+ALTER TABLE "timeframeDay" ADD COLUMN "day" integer NOT NULL;
