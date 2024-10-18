@@ -57,7 +57,7 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 	}, [currentUser]);
 
 	const currentPlan = Object.entries(plans).find(
-		(plan) => plan?.[1]?.stripePricingId === currentPlanType?.planId ?? ''
+		(plan) => plan?.[1]?.stripePricingId === currentPlanType?.planId
 	)?.[1];
 
 	if (!currentUser) return null;
