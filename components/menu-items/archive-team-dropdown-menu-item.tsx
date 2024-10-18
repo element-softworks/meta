@@ -40,8 +40,7 @@ export function ArchiveTeamDropdownMenuItem(props: ArchiveTeamDropdownMenuItemPr
 
 	//If you are a team admin, or a site admin, you can archive/restore a team
 
-	const isArchived = !!props.team?.isArchived ?? false;
-
+	const isArchived = !!props.team?.isArchived;
 	const title = isArchived ? 'Restore' : 'Archive';
 	const description = isArchived
 		? `Restoring ${props.team?.name ?? 'this team'}
