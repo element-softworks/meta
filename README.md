@@ -7,7 +7,7 @@ add AUTH_TRUST_HOST as your root domain e.g https://saasphere.dev
 add NEXTAUTH_URL as the same root domain
 
 Database envs setup
-NextJS SaaS Boilerplate uses postgres, so get any Postgres connection string from any provider and paste it into AUTH_DRIZZLE_URL= env.
+Coaching Hours uses postgres, so get any Postgres connection string from any provider and paste it into AUTH_DRIZZLE_URL= env.
 https://neon.tech/ provides free databases up to a certain limit which are good for testing environments, however I suggest a more contained environment such as Railway for production as speed will be quicker. To setup a Neon database sign up to the platform fill in the setup form with the closest region to you (IMAGE 1). Copy your connection string and paste it into the AUTH_DRIZZLE_URL env place (IMAGE 2). Ensure you have "?sslmode=require" at the end of the connection string.
 
 Run npx drizzle-kit generate inside console

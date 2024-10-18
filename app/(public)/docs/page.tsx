@@ -41,7 +41,7 @@ export default function Docs() {
 					</DocumentationTypography>
 					<Image
 						src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png"
-						alt="NextJS SaaS Boilerplate"
+						alt="Coaching Hours"
 						width={1000}
 						height={1000}
 						className="object-cover w-full h-[400px] mt-4"

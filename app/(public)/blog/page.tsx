@@ -6,14 +6,14 @@ import { getPosts } from '@/sanity/lib/client';
 
 export async function generateMetadata() {
 	return {
-		title: `Blog | NextJS SaaS Boilerplate`,
+		title: `Blog | Coaching Hours`,
 		description: 'Read the latest articles from our blog.',
 		openGraph: {
-			title: `Blog | NextJS SaaS Boilerplate`,
+			title: `Blog | Coaching Hours`,
 			description: 'Read the latest articles from our blog.',
 		},
 		twitter: {
-			title: `Blog | NextJS SaaS Boilerplate`,
+			title: `Blog | Coaching Hours`,
 			description: 'Read the latest articles from our blog.',
 		},
 		alternates: {

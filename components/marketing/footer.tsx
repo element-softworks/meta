@@ -37,7 +37,7 @@ export function Footer() {
 				<Link href="/" aria-label="Go to homepage" className="">
 					<div className=" flex items-center text-lg font-light z-[200] relative flex-nowrap">
 						<FrameIcon className="mr-2" size={30} />
-						<p className="whitespace-nowrap">NextJS SaaS Boilerplate</p>
+						<p className="whitespace-nowrap">Coaching Hours</p>
 					</div>
 				</Link>
 				<div className=" grid grid-cols-2 lg:grid-cols-3 gap-10 w-full">
@@ -58,8 +58,7 @@ export function Footer() {
 			<div className="container pb-10 md:pb-20 pt-12 border-t border-border">
 				<div className="flex gap-0 lg:gap-10 lg:flex-row flex-col">
 					<p className="text-sm">
-						&copy; {new Date().getFullYear()} NextJS SaaS Boilerplate. All rights
-						reserved
+						&copy; {new Date().getFullYear()} Coaching Hours. All rights reserved
 					</p>
 					<p className="text-sm flex-1">Company No. 123456789</p>
 

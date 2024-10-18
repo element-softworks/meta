@@ -10,7 +10,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-	title: 'NextJS SaaS Boilerplate',
+	title: 'Coaching Hours',
 	description: 'This is a boilerplate for building SaaS applications with NextJS.',
 };
 

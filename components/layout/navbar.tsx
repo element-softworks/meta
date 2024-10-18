@@ -64,7 +64,7 @@ export function Navbar(props: NavbarProps) {
 				<Link href="/" aria-label="Go to homepage">
 					<div className=" flex items-center text-lg font-light z-[200] relative">
 						<FrameIcon className="mr-2" size={30} />
-						<p className="hidden lg:block">NextJS SaaS Boilerplate</p>
+						<p className="hidden lg:block">Coaching Hours</p>
 					</div>
 				</Link>
 

@@ -37,7 +37,7 @@ export async function createPaymentIntent({ amount }: { amount: number }) {
 			automatic_payment_methods: {
 				enabled: true,
 			},
-			description: 'Payment for Nextjs SaaS Boilerplate',
+			description: 'Payment for Coaching Hours',
 			metadata: {
 				userId: user?.id ?? '',
 				teamId: user?.currentTeam ?? '',

@@ -28,7 +28,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 						className="z-20 absolute md:flex items-center text-lg font-light hidden top-4 md:top-8 left-4 md:left-8"
 					>
 						<FrameIcon className="mr-2" size={30} />
-						<p className="hidden md:block">NextJS SaaS Boilerplate</p>
+						<p className="hidden md:block">Coaching Hours</p>
 					</Link>
 					<div className="z-10 relative md:flex items-center justify-center flex-1 hidden">
 						<div className="text-start">
