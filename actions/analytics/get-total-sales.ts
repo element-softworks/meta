@@ -56,7 +56,7 @@ export const getTotalSales = async (startDate: string, endDate: string) => {
 
 	return {
 		sales: ((invoicesResponse?.total ?? 0) / 100).toFixed(2),
-		salesDifference: ((salesDifference ?? 0) / 100 ?? 0).toFixed(2),
+		salesDifference: ((salesDifference ?? 0) / 100).toFixed(2),
 		salesDifferencePercentage:
 			salesDifferencePercentage === 'Infinity' ? 0 : salesDifferencePercentage,
 	};
