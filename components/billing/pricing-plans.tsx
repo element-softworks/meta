@@ -287,12 +287,12 @@ export function OneTimePricingPlans(props: PricingProps) {
 }
 
 interface PricingPlansProps extends PricingProps {
-	type: 'one time' | 'subscription';
+	type: 'one-time' | 'subscription';
 }
 export default function PricingPlans(props: PricingPlansProps) {
 	if (props.type === 'subscription') {
 		return <SubscriptionPricingPlans {...props} />;
-	} else if (props.type === 'one time') {
+	} else if (props.type === 'one-time') {
 		return <OneTimePricingPlans {...props} />;
 	}
 }

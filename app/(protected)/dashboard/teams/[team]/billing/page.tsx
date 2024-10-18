@@ -51,7 +51,7 @@ export default async function BillingPage({ params }: { params: { team: string }
 
 				<div className="mb-4">
 					<PricingPlans
-						type="one time"
+						type="one-time"
 						readOnly={!isOwner || !user?.currentTeam}
 						teamId={team.data?.team?.id ?? ''}
 						stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
