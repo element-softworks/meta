@@ -4,6 +4,7 @@ import { userNotification } from './userNotification';
 import { twoFactorConfirmation } from './twoFactorConfirmation';
 import { teamMember } from './teamMember';
 import { account } from './account';
+import { coach } from './booking-system/coach';
 export const userRole = pgEnum('UserRole', ['ADMIN', 'USER']);
 
 export const user = pgTable(
@@ -44,7 +45,7 @@ export const user = pgTable(
 	}
 );
 
-export const userRelations = relations(user, ({ many }) => ({
+export const userRelations = relations(user, ({ many, one }) => ({
 	userNotifications: many(userNotification),
 	twoFactorConfirmations: many(twoFactorConfirmation),
 	teamMembers: many(teamMember),

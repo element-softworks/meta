@@ -1,0 +1,1 @@
+ALTER TABLE "Coach" ADD COLUMN "scheduleId" text NOT NULL;

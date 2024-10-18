@@ -12,3 +12,12 @@ export { twoFactorToken } from './twoFactorToken';
 export { user, userRelations, userRole } from './user';
 export { userNotification, userNotificationRelations } from './userNotification';
 export { verificationToken } from './verificationToken';
+export { coach, coachRelations } from './booking-system/coach';
+export {
+	coachApplication,
+	coachApplicationRelations,
+	applicationStatus,
+} from './booking-system/coachApplication';
+export { coachSchedule, coachScheduleRelations } from './booking-system/coachSchedule';
+export { timeframe, timeframeRelations } from './booking-system/timeframe';
+export { timeframeDay, timeframeDayRelations } from './booking-system/timeframeDay';
