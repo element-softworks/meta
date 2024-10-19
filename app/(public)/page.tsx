@@ -125,7 +125,7 @@ export default function Home() {
 					subtitle="Provide a brief description here. Summarize the value or key benefits of your product in a few sentences."
 					keyPoints={[
 						{
-							icon: <Pointer className="size-8 md:size-20" />, // Replace with a relevant Lucide icon, e.g., Target, Rocket, ShieldCheck
+							icon: <Pointer className="min-w-10 min-h-10  text-primary" />, // Replace with a relevant Lucide icon, e.g., Target, Rocket, ShieldCheck
 							point: (
 								<p className="text-start text-base md:text-xl">
 									Provide a concise description of your first key benefit here.
@@ -135,8 +135,9 @@ export default function Home() {
 								</p>
 							),
 						},
+
 						{
-							icon: <Goal className="size-8 md:size-20" />, // Replace with another relevant Lucide icon
+							icon: <Goal className="min-w-10 min-h-10  text-primary" />, // Replace with another relevant Lucide icon
 							point: (
 								<p className="text-start text-base md:text-xl">
 									Provide a description for your second key point. This should
@@ -150,7 +151,7 @@ export default function Home() {
 							),
 						},
 						{
-							icon: <ChartArea className="size-8 md:size-20" />, // Replace with a different relevant Lucide icon
+							icon: <ChartArea className="min-w-10 min-h-10  text-primary" />, // Replace with a different relevant Lucide icon
 							point: (
 								<p className="text-start text-base md:text-xl">
 									Describe the final key benefit or unique selling proposition

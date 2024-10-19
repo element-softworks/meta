@@ -33,7 +33,7 @@ export function DashboardSidebar() {
 					drawerItems={drawerItems}
 				/>
 				<Button
-					className="p-0 mr-4 block lg:hidden"
+					className="p-0 mr-4 block lg:hidden dark:text-white text-black"
 					onClick={() => setNavOpen((prev) => !prev)}
 					variant="link"
 				>

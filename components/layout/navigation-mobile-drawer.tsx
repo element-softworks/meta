@@ -3,7 +3,7 @@
 import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { useEffect } from 'react';
-import { SidebarGroup, SidebarItem } from './sidebar';
+import { SideBarItem, SidebarGroup, SidebarItem } from './sidebar';
 
 interface NavigationMobileDrawerProps {
 	open: boolean;
@@ -15,6 +15,7 @@ interface NavigationMobileDrawerProps {
 			text: string;
 			link: string;
 			icon: React.ReactNode;
+			nested?: SideBarItem;
 		}[];
 	}[];
 }

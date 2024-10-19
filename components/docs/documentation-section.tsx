@@ -6,7 +6,7 @@ interface DocsProps {
 }
 export function DocumentationSection(props: DocsProps) {
 	return (
-		<section className="pb-10 border-b border-border" id={props.id}>
+		<section className="pb-20 border-b border-border docs-section" id={props.id}>
 			{props.children}
 		</section>
 	);

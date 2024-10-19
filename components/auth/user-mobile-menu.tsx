@@ -77,6 +77,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 			<DropdownMenu onOpenChange={(open) => props.onNavOpenChange(open)}>
 				<DropdownMenuTrigger asChild className="cursor-pointer">
 					<Button
+						className="dark:text-white text-black"
 						aria-label="Open user menu"
 						onClick={() => props.onNavOpenChange(!props.navOpen)}
 						variant="link"
