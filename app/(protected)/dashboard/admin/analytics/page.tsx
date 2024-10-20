@@ -3,6 +3,21 @@ import { SessionsAnalytics } from '@/components/analytics/sessions-analytics';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
+export async function generateMetadata() {
+	return {
+		title: `Analytics | Admin | Dashboard | NextJS SaaS Boilerplate`,
+		description: 'View and analyze your dashboard analytics on NextJS SaaS Boilerplate.',
+		openGraph: {
+			title: `Analytics | Admin |  Dashboard | NextJS SaaS Boilerplate`,
+			description: 'View and analyze your dashboard analytics on NextJS SaaS Boilerplate.',
+		},
+		twitter: {
+			title: `Analytics | Admin |  Dashboard | NextJS SaaS Boilerplate`,
+			description: 'View and analyze your dashboard analytics on NextJS SaaS Boilerplate.',
+		},
+	};
+}
+
 export default async function AdminAnalyticsPage({ searchParams }: { searchParams: any }) {
 	return (
 		<main className="flex flex-col  gap-4">

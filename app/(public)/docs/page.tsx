@@ -1,9 +1,29 @@
-'use client';
 import { CodeBlock } from '@/components/code-block';
 import Image from 'next/image';
 import { Documentation } from '@/components/docs/documentation';
 import { DocumentationSection } from '@/components/docs/documentation-section';
 import { DocumentationTypography } from '@/components/docs/documentation-typography';
+
+export async function generateMetadata() {
+	return {
+		title: `Documentation | NextJS SaaS Boilerplate`,
+		description:
+			'View the documentation for NextJS SaaS Boilerplate. Learn how to get started, configure, and customize the boilerplate project.',
+		openGraph: {
+			title: `Documentation | NextJS SaaS Boilerplate`,
+			description:
+				'View the documentation for NextJS SaaS Boilerplate. Learn how to get started, configure, and customize the boilerplate project.',
+		},
+		twitter: {
+			title: `Documentation | NextJS SaaS Boilerplate`,
+			description:
+				'View the documentation for NextJS SaaS Boilerplate. Learn how to get started, configure, and customize the boilerplate project.',
+		},
+		alternates: {
+			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/docs`,
+		},
+	};
+}
 
 export default function Docs() {
 	return (

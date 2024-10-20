@@ -1,7 +1,22 @@
 import { TeamsForm } from '@/components/forms/teams-form';
 import { Separator } from '@/components/ui/separator';
 
-export default async function DashboardPage() {
+export async function generateMetadata() {
+	return {
+		title: `Setup | NextJS SaaS Boilerplate`,
+		description: 'Setup your team on NextJS SaaS Boilerplate.',
+		openGraph: {
+			title: `Setup | NextJS SaaS Boilerplate`,
+			description: 'Setup your team on NextJS SaaS Boilerplate.',
+		},
+		twitter: {
+			title: `Setup | NextJS SaaS Boilerplate`,
+			description: 'Setup your team on NextJS SaaS Boilerplate.',
+		},
+	};
+}
+
+export default async function SetupPage() {
 	return (
 		<main className="flex flex-col gap-4 max-w-4xl w-full">
 			<div className="">

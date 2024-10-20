@@ -1,7 +1,24 @@
-import { LoginForm } from '@/components/auth/login-form';
 import { Social } from '@/components/auth/social';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+
+export async function generateMetadata() {
+	return {
+		title: `Error | Login | NextJS SaaS Boilerplate`,
+		description: 'Failed logging in to your account on NextJS SaaS Boilerplate.',
+		openGraph: {
+			title: `Error | Login | NextJS SaaS Boilerplate`,
+			description: 'Failed logging in to your account on NextJS SaaS Boilerplate.',
+		},
+		twitter: {
+			title: `Error | Login | NextJS SaaS Boilerplate`,
+			description: 'Failed logging in to your account on NextJS SaaS Boilerplate.',
+		},
+		alternates: {
+			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/auth/error`,
+		},
+	};
+}
 
 export default function AuthErrorPage() {
 	return (

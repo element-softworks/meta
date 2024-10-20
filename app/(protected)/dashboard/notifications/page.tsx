@@ -1,7 +1,22 @@
 import { NotificationsContainer } from '@/components/notifications-container';
 import { Separator } from '@/components/ui/separator';
 
-export default async function DashboardPage({ searchParams }: any) {
+export async function generateMetadata() {
+	return {
+		title: `Notifications | Dashboard | NextJS SaaS Boilerplate`,
+		description: 'Manage notifications for NextJS SaaS Boilerplate.',
+		openGraph: {
+			title: `Notifications | Dashboard | NextJS SaaS Boilerplate`,
+			description: 'Manage notifications for NextJS SaaS Boilerplate.',
+		},
+		twitter: {
+			title: `Notifications | Dashboard | NextJS SaaS Boilerplate`,
+			description: 'Manage notifications for NextJS SaaS Boilerplate.',
+		},
+	};
+}
+
+export default async function NotificationsPage({ searchParams }: any) {
 	return (
 		<main className="flex flex-col  gap-4 max-w-2xl">
 			<div className="flex gap-2 items-center">

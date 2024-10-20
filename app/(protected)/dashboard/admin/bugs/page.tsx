@@ -1,6 +1,21 @@
 import { BugsContainer } from '@/components/bugs-container';
 import { Separator } from '@/components/ui/separator';
 
+export async function generateMetadata() {
+	return {
+		title: `Bugs | Admin |  Dashboard | NextJS SaaS Boilerplate`,
+		description: 'View and manage bugs for NextJS SaaS Boilerplate.',
+		openGraph: {
+			title: `Bugs | Admin |  Dashboard | NextJS SaaS Boilerplate`,
+			description: 'View and manage bugs for NextJS SaaS Boilerplate.',
+		},
+		twitter: {
+			title: `Bugs | Admin |  Dashboard | NextJS SaaS Boilerplate`,
+			description: 'View and manage bugs for NextJS SaaS Boilerplate.',
+		},
+	};
+}
+
 export default async function AdminTeamsPage({ searchParams }: { searchParams: any }) {
 	return (
 		<main className="flex flex-col  gap-4">

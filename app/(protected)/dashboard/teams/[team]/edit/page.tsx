@@ -5,6 +5,22 @@ import { getTeamById } from '@/data/team';
 import { currentUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
+export async function generateMetadata({ params }: any) {
+	const teamResponse = await getTeamById(params.team);
+	return {
+		title: `Edit | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+		description: `Edit team ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		openGraph: {
+			title: `Edit | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: `Edit team ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		},
+		twitter: {
+			title: `Edit | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: `Edit team ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate`,
+		},
+	};
+}
+
 export default async function DashboardPage({ params }: { params: { team: string } }) {
 	const user = await currentUser();
 	const teamResponse = await getTeamById(params.team);

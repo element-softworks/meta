@@ -12,6 +12,22 @@ if (!process.env.STRIPE_WEBHOOK_SECRET) {
 	);
 }
 
+export async function generateMetadata({ params }: any) {
+	const teamResponse = await getTeamById(params.team);
+	return {
+		title: `Billing | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+		description: `Billing for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		openGraph: {
+			title: `Billing | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: `Billing for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		},
+		twitter: {
+			title: `Billing | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: `Billing for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		},
+	};
+}
+
 export default async function BillingPage({ params }: { params: { team: string } }) {
 	const user = await currentUser();
 	const team = await getTeamById(params.team ?? '');

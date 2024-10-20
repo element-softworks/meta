@@ -4,6 +4,21 @@ import { Separator } from '@/components/ui/separator';
 import { currentUser } from '@/lib/auth';
 import { Suspense } from 'react';
 
+export async function generateMetadata() {
+	return {
+		title: `Teams | Admin | Dashboard | NextJS SaaS Boilerplate`,
+		description: 'View and manage platform teams here',
+		openGraph: {
+			title: `Teams | Admin | Dashboard | NextJS SaaS Boilerplate`,
+			description: 'View and manage platform teams here',
+		},
+		twitter: {
+			title: `Teams | Admin | Dashboard | NextJS SaaS Boilerplate`,
+			description: 'View and manage platform teams here',
+		},
+	};
+}
+
 export default async function AdminTeamsPage({ searchParams }: { searchParams: any }) {
 	const user = await currentUser();
 	return (

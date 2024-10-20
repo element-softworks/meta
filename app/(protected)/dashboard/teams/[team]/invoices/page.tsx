@@ -1,7 +1,24 @@
 import { CenteredLoader } from '@/components/layout/centered-loader';
 import InvoicesTableContainer from '@/components/tables/invoices-table-container';
 import { Separator } from '@/components/ui/separator';
+import { getTeamById } from '@/data/team';
 import { Suspense } from 'react';
+
+export async function generateMetadata({ params }: any) {
+	const teamResponse = await getTeamById(params.team);
+	return {
+		title: `Invoices | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+		description: `Invoices for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		openGraph: {
+			title: `Invoices | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: `Invoices for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		},
+		twitter: {
+			title: `Invoices | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: `Invoices for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		},
+	};
+}
 
 export default async function BillingPage({
 	params,

@@ -1,8 +1,28 @@
-'use client';
 import { CodeBlock } from '@/components/code-block';
 import { Documentation } from '@/components/docs/documentation';
 import { DocumentationSection } from '@/components/docs/documentation-section';
 import { DocumentationTypography } from '@/components/docs/documentation-typography';
+
+export async function generateMetadata() {
+	return {
+		title: `Creating Docs | Documentation | NextJS SaaS Boilerplate`,
+		description:
+			'View the documentation for creating docs inside of NextJS SaaS Boilerplate. Learn how to write documentation for your SaaS project.',
+		openGraph: {
+			title: `Creating Docs | Documentation | NextJS SaaS Boilerplate`,
+			description:
+				'View the documentation for creating docs inside of NextJS SaaS Boilerplate. Learn how to write documentation for your SaaS project.',
+		},
+		twitter: {
+			title: `Creating Docs | Documentation | NextJS SaaS Boilerplate`,
+			description:
+				'View the documentation for creating docs inside of NextJS SaaS Boilerplate. Learn how to write documentation for your SaaS project.',
+		},
+		alternates: {
+			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/docs/creating-docs`,
+		},
+	};
+}
 
 export default function Docs() {
 	return (
@@ -23,7 +43,10 @@ export default function Docs() {
 					<CodeBlock language="javascript" code={documentationOverviewCode} />
 					<DocumentationTypography variant="p">
 						Advanced details on code blocks can be found{' '}
-						<a className="text-blue-500 font-bold" href="#code-blocks">
+						<a
+							className="text-primary font-semibold underline hover:no-underline"
+							href="#code-blocks"
+						>
 							here
 						</a>
 						.

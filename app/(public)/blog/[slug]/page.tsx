@@ -1,4 +1,3 @@
-import { boilerplateConfig } from '@/boilerplate.config';
 import { Markdown } from '@/components/markdown';
 import { PostCard } from '@/components/post-card';
 import { Button } from '@/components/ui/button';

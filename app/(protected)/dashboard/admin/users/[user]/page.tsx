@@ -3,6 +3,23 @@ import { ResetPasswordAdminButton } from '@/components/auth/reset-password-admin
 import { SettingsForm } from '@/components/auth/settings-form';
 import { Separator } from '@/components/ui/separator';
 import { getUserById } from '@/data/user';
+import { desc } from 'drizzle-orm';
+
+export async function generateMetadata({ params }: { params: { user: string } }) {
+	const user = await getUserById(params.user);
+	return {
+		title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
+		description: `${user?.name ?? 'Users'} account settings for NextJS SaaS Boilerplate.`,
+		openGraph: {
+			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
+			description: `${user?.name ?? 'Users'} account settings for NextJS SaaS Boilerplate.`,
+		},
+		twitter: {
+			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
+			description: `${user?.name ?? 'Users'} account settings for NextJS SaaS Boilerplate.`,
+		},
+	};
+}
 
 export default async function AdminUserPage({ params }: { params: { user: string } }) {
 	const user = await getUserById(params.user);

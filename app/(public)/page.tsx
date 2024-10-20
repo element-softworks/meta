@@ -1,5 +1,5 @@
-import { Contact } from '@/components/marketing/contact';
 import { CallToAction } from '@/components/marketing/call-to-action';
+import { Contact } from '@/components/marketing/contact';
 import { Content } from '@/components/marketing/content';
 import { FrequentlyAskedQuestions } from '@/components/marketing/frequently-asked-questions';
 import { Header } from '@/components/marketing/header';
@@ -13,21 +13,32 @@ import { Testimonials } from '@/components/marketing/testimonials';
 import { Button } from '@/components/ui/button';
 import { DUMMY_FAQS, DUMMY_TESTIMONIALS } from '@/lib/dummy-data';
 import plans from '@/plans';
-import { formatDuration, intervalToDuration } from 'date-fns';
 import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+	return {
+		title: `NextJS SaaS Boilerplate`,
+		description:
+			'NextJS SaaS Boilerplate is a modern boilerplate for building SaaS applications quickly.',
+		openGraph: {
+			title: `NextJS SaaS Boilerplate`,
+			description:
+				'NextJS SaaS Boilerplate is a modern boilerplate for building SaaS applications quickly.',
+		},
+		twitter: {
+			title: `NextJS SaaS Boilerplate`,
+			description:
+				'NextJS SaaS Boilerplate is a modern boilerplate for building SaaS applications quickly.',
+		},
+		alternates: {
+			canonical: `${process.env.NEXT_PUBLIC_APP_URL}`,
+		},
+	};
+}
+
 export default function Home() {
-	let duration = intervalToDuration({
-		start: new Date(2022, 6, 2, 0, 0, 15),
-		end: new Date(),
-	});
-
-	const data = formatDuration(duration, {
-		delimiter: ', ',
-	});
-
 	return (
 		<main className="flex h-full flex-col ">
 			<MarketingSection className="pb-4 md:pb-8 pt-8 md:pt-16">

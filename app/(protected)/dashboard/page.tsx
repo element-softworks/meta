@@ -15,6 +15,21 @@ import { currentUser } from '@/lib/auth';
 import plans from '@/plans';
 import Link from 'next/link';
 
+export async function generateMetadata() {
+	return {
+		title: `Dashboard | NextJS SaaS Boilerplate`,
+		description: 'Dashboard for NextJS SaaS Boilerplate.',
+		openGraph: {
+			title: `Dashboard | NextJS SaaS Boilerplate`,
+			description: 'Dashboard for NextJS SaaS Boilerplate.',
+		},
+		twitter: {
+			title: `Dashboard | NextJS SaaS Boilerplate`,
+			description: 'Dashboard for NextJS SaaS Boilerplate.',
+		},
+	};
+}
+
 export default async function DashboardPage() {
 	const user = await currentUser();
 	const team = await getTeamById(user?.currentTeam ?? '');

@@ -11,7 +11,23 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 
-export default async function DashboardPage({
+export async function generateMetadata({ params }: any) {
+	const teamResponse = await getTeamById(params.team);
+	return {
+		title: `${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+		description: 'Team for NextJS SaaS Boilerplate.',
+		openGraph: {
+			title: `${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: 'Team for NextJS SaaS Boilerplate.',
+		},
+		twitter: {
+			title: `${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: 'Team overview for NextJS SaaS Boilerplate.',
+		},
+	};
+}
+
+export default async function TeamPage({
 	params,
 	searchParams,
 }: {
