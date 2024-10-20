@@ -1,1 +1,0 @@
-ALTER TABLE "Bug" RENAME COLUMN "status" TO "bugStatus";

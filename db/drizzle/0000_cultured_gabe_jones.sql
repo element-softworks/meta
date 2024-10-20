@@ -1,3 +1,15 @@
+DO $$ BEGIN
+ CREATE TYPE "public"."TeamRole" AS ENUM('OWNER', 'ADMIN', 'USER');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."UserRole" AS ENUM('ADMIN', 'USER');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Account" (
 	"type" text NOT NULL,
 	"provider" text NOT NULL,
@@ -12,6 +24,15 @@ CREATE TABLE IF NOT EXISTS "Account" (
 	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"userId" text NOT NULL,
 	CONSTRAINT "Account_pkey" PRIMARY KEY("provider","providerAccountId")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Bug" (
+	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"images" text[] DEFAULT '{}'::text[] NOT NULL,
+	"status" text DEFAULT 'OPEN' NOT NULL,
+	"title" text NOT NULL,
+	"comment" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ConciergeToken" (
@@ -31,11 +52,12 @@ CREATE TABLE IF NOT EXISTS "Customer" (
 	"stripeCustomerId" text NOT NULL,
 	"stripeSubscriptionId" text NOT NULL,
 	"startDate" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"endDate" timestamp (3) NOT NULL,
+	"endDate" timestamp (3),
 	"planId" text NOT NULL,
 	"email" text NOT NULL,
 	"status" text NOT NULL,
-	"cancelAtPeriodEnd" boolean NOT NULL
+	"cancelAtPeriodEnd" boolean NOT NULL,
+	"type" text DEFAULT 'subscription' NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "CustomerInvoice" (
@@ -60,6 +82,23 @@ CREATE TABLE IF NOT EXISTS "PasswordResetToken" (
 	"email" text NOT NULL,
 	"token" text NOT NULL,
 	"expiresAt" timestamp (3) NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Session" (
+	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"endsAt" timestamp (3),
+	"ipAddress" text,
+	"isBot" boolean,
+	"userAgent" text,
+	"browser" text,
+	"engine" text,
+	"os" text,
+	"device" text,
+	"cpu" text,
+	"email" text,
+	"deviceType" text,
+	"converted" boolean
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Team" (
@@ -107,6 +146,7 @@ CREATE TABLE IF NOT EXISTS "User" (
 	"isArchived" boolean DEFAULT false NOT NULL,
 	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"updatedAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP,
+	"lastLogin" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	"notificationsEnabled" boolean DEFAULT true NOT NULL
 );
 --> statement-breakpoint

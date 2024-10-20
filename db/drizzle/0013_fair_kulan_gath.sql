@@ -1,1 +1,0 @@
-ALTER TABLE "Customer" ALTER COLUMN "endDate" DROP NOT NULL;

@@ -1,1 +1,0 @@
-ALTER TABLE "Bug" ADD COLUMN "bugStatus" "BugStatus" DEFAULT 'OPEN' NOT NULL;
