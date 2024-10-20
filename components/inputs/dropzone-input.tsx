@@ -70,7 +70,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 												className={`group border-2 flex-col gap-2 h-60 border-dashed flex items-center justify-center transition cursor-pointer ${
 													!!error
 														? 'border-destructive'
-														: 'hover:border-primary hover:bg-primary-foreground'
+														: 'hover:border-primary hover:bg-card'
 												}`}
 											>
 												<input
