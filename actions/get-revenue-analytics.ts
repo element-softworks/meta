@@ -59,12 +59,17 @@ export const getRevenueAnalytics = async () => {
 	const totalCustomersDifferencePercentage =
 		(totalCustomersDifference / previousMonthRevenue.length) * 100;
 
+	console.log(totalRevenueDifferencePercentage, 'difference');
 	return {
 		totalCustomers: customers.length,
 		previousTotalCustomers: previousMonthRevenue.length,
-		customersPercentage: totalCustomersDifferencePercentage.toFixed(2) ?? 0,
-		revenue: totalRevenue.toFixed(2) ?? 0,
-		difference: totalRevenueDifference.toFixed(2) ?? 0,
-		percentage: totalRevenueDifferencePercentage.toFixed(2) ?? 0,
+		customersPercentage: isNaN(totalCustomersDifferencePercentage)
+			? 0
+			: (totalCustomersDifferencePercentage.toFixed(2) ?? 0),
+		revenue: isNaN(totalRevenue) ? 0 : (totalRevenue.toFixed(2) ?? 0),
+		difference: isNaN(totalCustomersDifference) ? 0 : (totalRevenueDifference.toFixed(2) ?? 0),
+		percentage: isNaN(totalCustomersDifferencePercentage)
+			? 0
+			: (totalRevenueDifferencePercentage.toFixed(2) ?? 0),
 	};
 };

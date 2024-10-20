@@ -30,8 +30,11 @@ export const getUniqueSessionsCount = async (startDate: string, endDate: string)
 				((Number(sessionsResponse.unique) - Number(previousSessionsResponse.unique)) /
 					Number(previousSessionsResponse.unique)) *
 				100
-		  ).toFixed(2)
+			).toFixed(2)
 		: 0;
 
-	return { sessions: sessionsResponse, percentageDifference };
+	return {
+		sessions: sessionsResponse,
+		percentageDifference: percentageDifference === 'Infinity' ? 0 : percentageDifference,
+	};
 };
