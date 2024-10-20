@@ -21,7 +21,6 @@ export default async function TeamsTableContainer(props: TeamsTableContainerProp
 		},
 	})) as { teams: TeamsTable[]; totalPages: number };
 
-	//Render the users table
 	return (
 		<TeamsTable
 			admin={props.admin}

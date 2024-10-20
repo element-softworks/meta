@@ -13,13 +13,11 @@ import {
 	DropdownMenuLabel,
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '../ui/badge';
 import { toast } from '../ui/use-toast';
 import { Team } from '@/db/drizzle/schema/team';
 import { User } from '@/db/drizzle/schema/user';
 import { Avatar } from '../ui/avatar';
 import Image from 'next/image';
-import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import Link from 'next/link';
 import { ArchiveTeamDropdownMenuItem } from '../menu-items/archive-team-dropdown-menu-item';

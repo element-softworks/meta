@@ -21,6 +21,7 @@ import Image from 'next/image';
 import { RemoveUserFromTeamDropdownMenuItem } from '../menu-items/remove-user-from-team-dropdown-menu-item';
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
+import { Badge } from '../ui/badge';
 
 export type TableTeamsMember = {
 	id: string;
@@ -40,6 +41,7 @@ interface TeamsMemberTableProps {
 }
 
 export function TeamsMemberTable(props: TeamsMemberTableProps) {
+	console.log(props.teamMembers, 'team members');
 	const { isLoading = false } = props;
 	const columns: ColumnDef<TeamMemberResponse[0]['member'] | undefined>[] = [
 		{
@@ -80,7 +82,7 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 
 				const role = member?.role?.toLocaleLowerCase();
 				const uppercaseRole = role && role?.charAt?.(0)?.toUpperCase?.() + role?.slice?.(1);
-				return uppercaseRole;
+				return <Badge>{uppercaseRole}</Badge>;
 			},
 		},
 		{
@@ -147,10 +149,8 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 
 	return (
 		<DataTable
-			title="Team Members"
-			description="View and manage your team members"
 			perPageSelectEnabled={true}
-			archivedFilterEnabled={true}
+			archivedFilterEnabled={false}
 			isLoading={isLoading}
 			rowSelectionEnabled={false}
 			stickyHeader

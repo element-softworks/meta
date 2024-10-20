@@ -13,8 +13,8 @@ export function LogoutButton(props: LogoutButtonProps) {
 	const router = useRouter();
 
 	const onClick = async () => {
+		await signOut();
 		await setCookie({ name: 'session', value: '', maxAge: 0 });
-		signOut();
 	};
 
 	return (

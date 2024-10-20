@@ -28,9 +28,10 @@ export function TwoFactorCheckInput(props: TwoFactorCheckInputProps) {
 			render={({ field }) => (
 				<FormItem className="flex items-center gap-4 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
 					<div className="flex-1">
-						<FormLabel>Two factor authentication</FormLabel>
+						<FormLabel>Email two factor authentication</FormLabel>
 						<FormDescription>
-							Enable two factor authentication for your account
+							Enable two factor authentication for your account, you will receive an
+							email upon login with a code to enter.
 						</FormDescription>
 					</div>
 					<FormControl>

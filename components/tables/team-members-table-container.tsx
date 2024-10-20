@@ -24,7 +24,6 @@ export default async function TeamMembersTableContainer(props: TeamMembersTableC
 		},
 	});
 
-	//Render the users table
 	return (
 		<TeamsMemberTable
 			teamMembers={teamResponse?.team ?? []}

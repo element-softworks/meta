@@ -9,7 +9,7 @@ import { CardWrapper } from './general/card-wrapper';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { ShowArchivedButton } from './general/show-archived-button';
+import Image from 'next/image';
 
 interface TeamsCardsContainerProps {
 	searchParams: any;
@@ -40,16 +40,30 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 				const teamMembersLength = teamData?.team?.members?.length;
 				return (
 					<CardWrapper
+						startAdornment={
+							teamData?.team?.image ? (
+								<Image
+									className="rounded-full"
+									referrerPolicy="no-referrer"
+									width={35}
+									height={35}
+									src={teamData?.team?.image ?? ''}
+									alt="user avatar"
+								/>
+							) : null
+						}
 						key={index}
 						title={teamData?.team?.name}
 						description={`This team contains ${teamMembersLength} member${
 							teamMembersLength === 1 ? '' : 's'
 						}`}
 					>
-						<Badge className="absolute top-6 right-6">{currentUserRole?.role}</Badge>
+						<Badge className="absolute top-0 right-0 rounded-none md:rounded-lg rounded-bl-lg md:top-4 md:right-4">
+							{currentUserRole?.role}
+						</Badge>
 						<div className="flex gap-4 md:gap-4 flex-wrap justify-between">
 							<div>
-								<p className="text-sm font-semibold ">Members</p>
+								<p className="text-sm font-semibold mb-2">Members</p>
 								<AvatarGroup
 									avatars={
 										teamData?.team?.members?.map?.((member) => ({
@@ -60,7 +74,7 @@ export default async function TeamsCardsContainer(props: TeamsCardsContainerProp
 								/>
 							</div>
 							<div>
-								<p className="text-sm font-semibold">Team owner</p>
+								<p className="text-sm font-semibold mb-2">Team owner</p>
 								<div className="flex gap-2 items-center">
 									<Avatar key={index} className="relative size-[32px]">
 										{teamOwner?.details?.image && (

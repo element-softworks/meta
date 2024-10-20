@@ -10,6 +10,9 @@ import { currentUser } from '@/lib/auth';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { InvitedTeamsMemberTable } from '@/components/tables/invited-team-members-table';
+import InvitedTeamMembersTableContainer from '@/components/tables/invited-team-members-table-container';
 
 export async function generateMetadata({ params }: any) {
 	const teamResponse = await getTeamById(params.team);
@@ -79,9 +82,36 @@ export default async function TeamPage({
 				visible={isTeamAdmin || isAdmin}
 				teamId={teamResponse?.data?.team.id ?? ''}
 			/>
-			<Suspense fallback={<TeamsMemberTable totalPages={1} isLoading={true} />}>
-				<TeamMembersTableContainer teamId={params.team} searchParams={searchParams} />
-			</Suspense>
+			<div className="pt-4 pb-2">
+				<p className="text-md font-semibold">Team members</p>
+				<p className="text-xs text-muted-foreground">
+					View your teams members and pending invited members
+				</p>
+			</div>
+			<Tabs defaultValue="Team members">
+				<TabsList>
+					<TabsTrigger value="Team members">Team members</TabsTrigger>
+					<TabsTrigger value="Invited members">Invited members</TabsTrigger>
+				</TabsList>
+				<TabsContent value="Team members" className="flex flex-col gap-4 mt-4">
+					<Suspense fallback={<TeamsMemberTable totalPages={1} isLoading={true} />}>
+						<TeamMembersTableContainer
+							teamId={params.team}
+							searchParams={searchParams}
+						/>
+					</Suspense>
+				</TabsContent>
+				<TabsContent value="Invited members" className="flex flex-col gap-4">
+					<Suspense
+						fallback={<InvitedTeamsMemberTable totalPages={1} isLoading={true} />}
+					>
+						<InvitedTeamMembersTableContainer
+							teamId={params.team}
+							searchParams={searchParams}
+						/>
+					</Suspense>
+				</TabsContent>
+			</Tabs>
 
 			{isOwner || !isInTeam ? null : (
 				<div className="mt-auto">

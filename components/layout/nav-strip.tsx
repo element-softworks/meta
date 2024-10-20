@@ -11,7 +11,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
 import { TeamSelectMenu } from '../auth/team-select-menu';
-import { Badge } from '../ui/badge';
 
 interface NavStripProps {
 	user: ExtendedUser | undefined;
@@ -32,42 +31,37 @@ export function NavStrip(props: NavStripProps) {
 
 	const firstCrumb = displayBreadcrumbs[0];
 	const lastTwoBreadCrumbs = displayBreadcrumbs.slice(displayBreadcrumbs.length > 3 ? -2 : -3);
-	const showCrumbEllipsis = displayBreadcrumbs.length > 3;
+
+	console.log(lastTwoBreadCrumbs, 'last two');
 	return (
 		<nav className="border-b border-border py-2 px-4 lg:px-6 w-full">
 			<div className="flex items-center">
 				<Breadcrumb className="flex-1 ml-10 lg:ml-0">
 					<BreadcrumbList>
 						{displayBreadcrumbs.length > 3 ? (
-							<BreadcrumbItem>
-								<Link href={`/${firstCrumb}`}>{firstCrumb}</Link>
-							</BreadcrumbItem>
+							<>
+								<BreadcrumbItem>
+									<Link href={`/${firstCrumb}`}>{firstCrumb}</Link>
+								</BreadcrumbItem>
+								<BreadcrumbSeparator />
+								<BreadcrumbItem>
+									<BreadcrumbEllipsis />
+								</BreadcrumbItem>
+							</>
 						) : null}
+
 						{lastTwoBreadCrumbs.map((path, index) => {
 							const isActive = index === lastTwoBreadCrumbs.length - 1;
-
-							// Check if the current path is a UUID
 							const isUUID = UUID_REGEX.test(path);
-
-							// Construct the path URL including all original segments
 							const pathUrl = allSegments
 								.slice(0, allSegments.indexOf(path) + 1)
 								.join('/');
 
-							// Find the singular version of the previous crumb
-							const previousCrumb = lastTwoBreadCrumbs[index - 1];
+							const previousCrumb =
+								displayBreadcrumbs[displayBreadcrumbs.indexOf(path) - 1];
 
 							return (
 								<React.Fragment key={index}>
-									{index === 0 && showCrumbEllipsis ? (
-										<>
-											<BreadcrumbSeparator />
-											<BreadcrumbItem>
-												<BreadcrumbEllipsis />
-											</BreadcrumbItem>
-										</>
-									) : null}
-
 									{index !== 0 ? <BreadcrumbSeparator /> : null}
 
 									<BreadcrumbItem className={`${isActive ? 'font-bold' : ''}`}>
@@ -79,7 +73,7 @@ export function NavStrip(props: NavStripProps) {
 															previousCrumb?.length - 1
 														)
 													: path}
-											</p> // Show previous crumb if current is UUID
+											</p>
 										) : (
 											<Link href={`/${pathUrl}`}>
 												{isUUID

@@ -20,7 +20,11 @@ export function InviteUserToTeamDialog(props: InviteUserToTeamDialogProps) {
 			isLoading={false}
 			onOpenChange={(state) => setDialogOpen(state)}
 			open={dialogOpen}
-			button={<Button onClick={() => setDialogOpen((prev) => !prev)}>Invite users</Button>}
+			button={
+				<Button className="w-fit" onClick={() => setDialogOpen((prev) => !prev)}>
+					Invite users
+				</Button>
+			}
 			disableActions
 			dialog={{
 				title: 'Invite users',
