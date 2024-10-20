@@ -1,6 +1,6 @@
-import { getConversionRate } from '@/actions/get-conversion-rate';
+import { getConversionRate } from '@/actions/analytics/get-conversion-rate';
 import { Handshake, Percent } from 'lucide-react';
-import { DataCard } from '../../data-card';
+import { DataCard } from '../../general/data-card';
 
 interface ConversionRateDataCardProps {}
 

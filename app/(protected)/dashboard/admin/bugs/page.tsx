@@ -1,4 +1,4 @@
-import { BugsContainer } from '@/components/bugs-container';
+import { BugsContainer } from '@/components/infinite-scrolls/bugs-container';
 import { Separator } from '@/components/ui/separator';
 
 export async function generateMetadata() {

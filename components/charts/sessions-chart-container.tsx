@@ -1,6 +1,6 @@
 'use server';
 
-import { getSessionAnalytics } from '@/actions/get-session-analytics';
+import { getSessionAnalytics } from '@/actions/analytics/get-session-analytics';
 import { ChartConfig } from '@/components/ui/chart';
 import { addDays, addMonths, addWeeks, endOfDay, format } from 'date-fns';
 import { SessionsChart } from './sessions-chart';

@@ -37,8 +37,8 @@ import { useParam } from '@/hooks/use-param';
 import { ArrowDown, ArrowLeft, ArrowUp } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useEffect, useState } from 'react';
-import { Checkbox } from './ui/checkbox';
-import { Input } from './ui/input';
+import { Checkbox } from '../ui/checkbox';
+import { Input } from '../ui/input';
 import {
 	Select,
 	SelectContent,
@@ -47,7 +47,7 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
-} from './ui/select';
+} from '../ui/select';
 import { SelectSeparator } from '@radix-ui/react-select';
 
 interface DataTableProps<TData, TValue> {

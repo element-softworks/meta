@@ -1,4 +1,4 @@
-import { getUserNotificationsCount } from '@/actions/get-user-notifications-count';
+import { getUserNotificationsCount } from '@/actions/account/get-user-notifications-count';
 import { auth } from '@/auth';
 import { DashboardSidebar } from '@/components/layout/dashboard-sidebar';
 import { NavStrip } from '@/components/layout/nav-strip';

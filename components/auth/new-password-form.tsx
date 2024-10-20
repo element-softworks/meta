@@ -1,6 +1,6 @@
 'use client';
 
-import { newPasswordFinish } from '@/actions/new-password-finish';
+import { newPasswordFinish } from '@/actions/account/new-password-finish';
 import { useMutation } from '@/hooks/use-mutation';
 import { NewPasswordSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';

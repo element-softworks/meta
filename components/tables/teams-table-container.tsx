@@ -1,6 +1,6 @@
 'use server';
 
-import { getTeams } from '@/actions/get-teams';
+import { getTeams } from '@/actions/team/get-teams';
 import { TeamsTable } from './teams-table';
 
 interface TeamsTableContainerProps {

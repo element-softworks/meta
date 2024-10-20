@@ -1,4 +1,4 @@
-import { NotificationsContainer } from '@/components/notifications-container';
+import { NotificationsContainer } from '@/components/infinite-scrolls/notifications-container';
 import { Separator } from '@/components/ui/separator';
 
 export async function generateMetadata() {

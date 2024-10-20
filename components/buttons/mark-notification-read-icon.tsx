@@ -1,6 +1,6 @@
 'use client';
 
-import { markUserNotificationsRead } from '@/actions/mark-user-notifications-read';
+import { markUserNotificationsRead } from '@/actions/account/mark-user-notifications-read';
 import { useMutation } from '@/hooks/use-mutation';
 import { Button } from '../ui/button';
 import { Check } from 'lucide-react';

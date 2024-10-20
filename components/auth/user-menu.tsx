@@ -26,7 +26,7 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { LogoutButton } from './logout-button';
-import { NotificationsIcon } from '../notifications-icon';
+import { NotificationsIcon } from '../general/notifications-icon';
 import { ReportBugDialog } from '../dialogs/report-bug-dialog';
 
 interface UserMenuProps {

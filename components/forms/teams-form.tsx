@@ -1,7 +1,7 @@
 'use client';
 
-import { teamCreate } from '@/actions/team-create';
-import { teamUpdate } from '@/actions/team-update';
+import { teamCreate } from '@/actions/team/team-create';
+import { teamUpdate } from '@/actions/team/team-update';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { TeamsSchema } from '@/schemas';

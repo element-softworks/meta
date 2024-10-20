@@ -8,7 +8,7 @@ import { s3Path } from '@/lib/s3';
 import { TeamsSchema } from '@/schemas';
 import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
-import { uploadFileToS3 } from './upload-file-to-s3';
+import { uploadFileToS3 } from '../system/upload-file-to-s3';
 export const teamCreate = async (formData: FormData) => {
 	const uuid = uuidv4();
 	const user = await currentUser();

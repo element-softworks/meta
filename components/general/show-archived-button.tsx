@@ -1,7 +1,7 @@
 'use client';
 
 import { useParam } from '@/hooks/use-param';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { useSearchParams } from 'next/navigation';
 
 interface ShowArchivedButtonProps {

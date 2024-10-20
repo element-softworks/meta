@@ -1,7 +1,7 @@
 'use client';
 
-import { TeamMemberResponse } from '@/actions/get-team-with-members';
-import { removeUserFromTeam } from '@/actions/remove-user-from-team';
+import { TeamMemberResponse } from '@/actions/team/get-team-with-members';
+import { removeUserFromTeam } from '@/actions/team/remove-user-from-team';
 import { Team } from '@/db/drizzle/schema/team';
 import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { useCurrentUser } from '@/hooks/use-current-user';

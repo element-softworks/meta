@@ -1,4 +1,4 @@
-import { CodeBlock } from '@/components/code-block';
+import { CodeBlock } from '@/components/docs/code-block';
 import { Documentation } from '@/components/docs/documentation';
 import { DocumentationSection } from '@/components/docs/documentation-section';
 import { DocumentationTypography } from '@/components/docs/documentation-typography';

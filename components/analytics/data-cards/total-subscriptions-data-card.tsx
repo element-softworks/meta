@@ -1,7 +1,7 @@
-import { getRevenueAnalytics } from '@/actions/get-revenue-analytics';
-import { AnalyticsIcon } from '@/app/analytics-icon';
+import { getRevenueAnalytics } from '@/actions/analytics/get-revenue-analytics';
+import { AnalyticsIcon } from '@/components/analytics/analytics-icon';
 import { UserRoundPlus } from 'lucide-react';
-import { DataCard } from '../../data-card';
+import { DataCard } from '../../general/data-card';
 import { CardDescription } from '../../ui/card';
 
 interface TotalSubscriptionsDataCardProps {}

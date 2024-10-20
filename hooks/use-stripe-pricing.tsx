@@ -1,6 +1,6 @@
 'use client';
 
-import { createCheckoutSession } from '@/actions/create-checkout-session';
+import { createCheckoutSession } from '@/actions/payment/create-checkout-session';
 import { toast } from '@/components/ui/use-toast';
 import plans from '@/plans';
 import { loadStripe } from '@stripe/stripe-js';

@@ -1,6 +1,6 @@
 'use client';
 
-import { adminArchiveTeam } from '@/actions/admin-archive-team';
+import { adminArchiveTeam } from '@/actions/team/admin-archive-team';
 import { Team } from '@/db/drizzle/schema/team';
 import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { useCurrentUser } from '@/hooks/use-current-user';

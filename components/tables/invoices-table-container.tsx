@@ -1,6 +1,6 @@
 'use server';
 
-import { getTeamInvoices } from '@/actions/get-team-invoices';
+import { getTeamInvoices } from '@/actions/payment/get-team-invoices';
 import { InvoicesTable } from './invoices-table';
 
 interface InvoicesTableContainerProps {

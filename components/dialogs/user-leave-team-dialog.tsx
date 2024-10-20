@@ -1,6 +1,6 @@
 'use client';
 
-import { userLeaveTeam } from '@/actions/user-leave-team';
+import { userLeaveTeam } from '@/actions/team/user-leave-team';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { User } from 'next-auth';

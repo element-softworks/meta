@@ -1,6 +1,6 @@
 'use client';
 
-import { trackSessions } from '@/actions/track-sessions';
+import { trackSessions } from '@/actions/analytics/track-sessions';
 import { useEffect, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 

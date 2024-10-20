@@ -1,7 +1,7 @@
 'use client';
 import { ExtendedUser } from '@/next-auth';
 
-import { adminArchiveUser } from '@/actions/admin-archive-user';
+import { adminArchiveUser } from '@/actions/account/admin-archive-user';
 import { User } from '@/db/drizzle/schema/user';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';

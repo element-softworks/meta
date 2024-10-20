@@ -3,7 +3,7 @@ import { team, user } from '@/db/drizzle/schema';
 import { Team } from '@/db/drizzle/schema/team';
 import { User } from '@/db/drizzle/schema/user';
 import { and, eq, inArray } from 'drizzle-orm';
-import { teamMember } from './../db/drizzle/schema';
+import { teamMember } from '../../db/drizzle/schema';
 
 interface GetUserTeamProps {
 	userId: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { updateUserSettings } from '@/actions/update-user-settings';
+import { updateUserSettings } from '@/actions/account/update-user-settings';
 import { User } from '@/db/drizzle/schema/user';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';

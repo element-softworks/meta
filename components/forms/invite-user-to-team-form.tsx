@@ -1,6 +1,6 @@
 'use client';
 
-import { uploadUserAvatar } from '@/actions/upload-user-avatar';
+import { uploadUserAvatar } from '@/actions/system/upload-user-avatar';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { InviteTeamUserSchema, UploadUserAvatarSchema } from '@/schemas';
@@ -14,7 +14,7 @@ import { Input } from '../ui/input';
 import { FormInput } from '../auth/form-input';
 import { watch } from 'fs';
 import { InviteUsersInput } from '../inputs/invite-users-input';
-import { inviteUsersToTeam } from '@/actions/invite-users-to-team';
+import { inviteUsersToTeam } from '@/actions/team/invite-users-to-team';
 
 interface InviteUserToTeamFormProps {
 	teamId: string;

@@ -7,8 +7,8 @@ import Image from 'next/image';
 import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ClipLoader } from 'react-spinners';
-import { Button } from './ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Button } from '../ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 
 import {
 	Select,
@@ -20,9 +20,9 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { useMutation } from '@/hooks/use-mutation';
-import { updateBugStatus } from '@/actions/update-bug-status';
-import { StatusIcon } from './status-icon';
-import { Badge } from './ui/badge';
+import { updateBugStatus } from '@/actions/system/update-bug-status';
+import { StatusIcon } from '../general/status-icon';
+import { Badge } from '../ui/badge';
 interface BugsInfiniteScrollProps {
 	bugs: Bug[] | null;
 	total: number;

@@ -6,6 +6,8 @@
 
 export const publicRoutes = [
 	'/',
+	'/privacy-policy',
+	'/terms-of-service',
 	'/auth/new-verification',
 	'/auth/new-password',
 	'/api/webhooks/stripe',

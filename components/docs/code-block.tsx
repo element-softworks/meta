@@ -1,8 +1,8 @@
 'use client';
 
 import { CodeBlock as Block } from 'react-code-block';
-import { Button } from './ui/button';
-import { toast } from './ui/use-toast';
+import { Button } from '../ui/button';
+import { toast } from '../ui/use-toast';
 import { useEffect, useState } from 'react';
 import { Check, Clipboard } from 'lucide-react';
 
@@ -35,8 +35,8 @@ export function CodeBlock(props: CodeBlockProps) {
 								isLineHighlighted
 									? 'bg-violet-500/20'
 									: !!props.lines?.length
-									? 'opacity-60'
-									: ''
+										? 'opacity-60'
+										: ''
 							}`}
 						>
 							{props.enableLineNumbers && (

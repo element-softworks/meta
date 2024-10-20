@@ -6,8 +6,8 @@ import { Team } from '@/db/drizzle/schema/team';
 import { currentUser } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { cancelSubscription } from './cancelSubscription';
-import { uncancelSubscription } from './uncancelSubscription';
+import { cancelSubscription } from '../payment/cancelSubscription';
+import { uncancelSubscription } from '../payment/uncancelSubscription';
 
 export const adminArchiveTeam = async (archivingTeam: Team) => {
 	const editingUser = await currentUser();

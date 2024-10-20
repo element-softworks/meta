@@ -8,7 +8,7 @@ import { TeamsSchema } from '@/schemas';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { v4 as uuidv4 } from 'uuid';
-import { uploadFileToS3 } from './upload-file-to-s3';
+import { uploadFileToS3 } from '../system/upload-file-to-s3';
 export const teamUpdate = async (formData: FormData, teamId: string) => {
 	const uuid = uuidv4();
 

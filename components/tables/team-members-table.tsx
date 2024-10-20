@@ -2,9 +2,9 @@
 
 import { ColumnDef } from '@tanstack/react-table';
 import { MoreHorizontal } from 'lucide-react';
-import { DataTable } from '../data-table';
+import { DataTable } from '../general/data-table';
 
-import { TeamMemberResponse } from '@/actions/get-team-with-members';
+import { TeamMemberResponse } from '@/actions/team/get-team-with-members';
 import { Button } from '@/components/ui/button';
 import {
 	DropdownMenu,

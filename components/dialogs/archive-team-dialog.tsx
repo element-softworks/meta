@@ -1,6 +1,6 @@
 'use client';
 
-import { adminArchiveTeam } from '@/actions/admin-archive-team';
+import { adminArchiveTeam } from '@/actions/team/admin-archive-team';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { useSession } from 'next-auth/react';

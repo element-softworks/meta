@@ -1,6 +1,6 @@
 'use client';
 
-import { resetPasswordLoggedin } from '@/actions/reset-password-loggedin';
+import { resetPasswordLoggedin } from '@/actions/account/reset-password-loggedin';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';

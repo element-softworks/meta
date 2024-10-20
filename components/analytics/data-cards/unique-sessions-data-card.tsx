@@ -1,7 +1,7 @@
-import { getUniqueSessionsCount } from '@/actions/get-unique-sessions-count';
-import { AnalyticsIcon } from '@/app/analytics-icon';
+import { getUniqueSessionsCount } from '@/actions/analytics/get-unique-sessions-count';
+import { AnalyticsIcon } from '@/components/analytics/analytics-icon';
 import { subDays } from 'date-fns';
-import { DataCard } from '../../data-card';
+import { DataCard } from '../../general/data-card';
 import { CardDescription } from '../../ui/card';
 
 interface UniqueSessionsDataCardProps {

@@ -1,5 +1,5 @@
-import { ClientInfiniteScroll } from '@/components/ClientInfiniteScroll';
-import { PostCard } from '@/components/post-card';
+import { ClientInfiniteScroll } from '@/components/general/ClientInfiniteScroll';
+import { PostCard } from '@/components/general/post-card';
 import { getPosts } from '@/sanity/lib/client';
 
 //This component is SSR due to pagination needing dynamic params data

@@ -1,6 +1,6 @@
 'use client';
 
-import { reportBug } from '@/actions/report-bug';
+import { reportBug } from '@/actions/system/report-bug';
 import { useMutation } from '@/hooks/use-mutation';
 import { ReportBugSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';

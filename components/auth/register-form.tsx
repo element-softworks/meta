@@ -1,6 +1,6 @@
 'use client';
 
-import { register } from '@/actions/register';
+import { register } from '@/actions/auth/register';
 import { useMutation } from '@/hooks/use-mutation';
 import { RegisterSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';

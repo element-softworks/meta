@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Check, MoreHorizontal, X } from 'lucide-react';
-import { DataTable } from '../data-table';
+import { DataTable } from '../general/data-table';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -23,7 +23,7 @@ import { TeamMember } from '@/db/drizzle/schema/teamMember';
 import { DropdownMenuSeparator } from '@radix-ui/react-dropdown-menu';
 import Link from 'next/link';
 import { ArchiveTeamDropdownMenuItem } from '../menu-items/archive-team-dropdown-menu-item';
-import { AvatarGroup } from '../avatar-group';
+import { AvatarGroup } from '../general/avatar-group';
 
 export type TeamsTable = {
 	team: Team & {

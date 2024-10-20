@@ -1,4 +1,4 @@
-import { CodeBlock } from '@/components/code-block';
+import { CodeBlock } from '@/components/docs/code-block';
 import Image from 'next/image';
 import { Documentation } from '@/components/docs/documentation';
 import { DocumentationSection } from '@/components/docs/documentation-section';

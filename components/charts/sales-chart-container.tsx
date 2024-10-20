@@ -1,6 +1,6 @@
 'use server';
 
-import { getSaleAnalytics } from '@/actions/get-sale-analytics';
+import { getSaleAnalytics } from '@/actions/analytics/get-sale-analytics';
 import { ChartConfig } from '@/components/ui/chart';
 import { addMonths, endOfDay, subMonths } from 'date-fns';
 import { SalesChart } from './sales-chart';

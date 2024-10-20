@@ -4,10 +4,10 @@ import { useParam } from '@/hooks/use-param';
 import { ExtendedUser } from '@/next-auth';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { ClipLoader } from 'react-spinners';
-import { EmailNotificationsToggleButton } from './buttons/email-notifications-toggle-button';
-import { MarkNotificationReadIcon } from './buttons/mark-notification-read-icon';
-import { GetUserNotificationsResponse } from '@/actions/get-user-notifications';
-import { StatusIcon } from './status-icon';
+import { EmailNotificationsToggleButton } from '../buttons/email-notifications-toggle-button';
+import { MarkNotificationReadIcon } from '../buttons/mark-notification-read-icon';
+import { GetUserNotificationsResponse } from '@/actions/account/get-user-notifications';
+import { StatusIcon } from '../general/status-icon';
 
 interface NotificationsInfiniteScrollProps {
 	notifications: GetUserNotificationsResponse | null;

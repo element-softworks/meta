@@ -1,4 +1,4 @@
-import { ShowArchivedButton } from '@/components/show-archived-button';
+import { ShowArchivedButton } from '@/components/general/show-archived-button';
 import TeamsCardsContainer from '@/components/teams-cards-container';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';

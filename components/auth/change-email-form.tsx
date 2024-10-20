@@ -1,6 +1,6 @@
 'use client';
 
-import { emailChangeStart } from '@/actions/change-email-start';
+import { emailChangeStart } from '@/actions/account/change-email-start';
 import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
 import { ChangeEmailSchema } from '@/schemas';

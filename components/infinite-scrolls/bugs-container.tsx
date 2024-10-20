@@ -1,9 +1,9 @@
 'use server';
 
-import { getBugs } from '@/actions/get-bugs';
+import { getBugs } from '@/actions/system/get-bugs';
 import { currentUser } from '@/lib/auth';
 import { BugsInfiniteScroll } from './bugs-infinite-scroll';
-import { Card, CardDescription, CardTitle } from './ui/card';
+import { Card, CardDescription, CardTitle } from '../ui/card';
 
 export const BugsContainer = async ({ searchParams }: { searchParams: { perPage: string } }) => {
 	const user = await currentUser();

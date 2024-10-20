@@ -1,6 +1,6 @@
 'use server';
 
-import { getTeamWithMembers } from '@/actions/get-team-with-members';
+import { getTeamWithMembers } from '@/actions/team/get-team-with-members';
 import { TeamsMemberTable } from './team-members-table';
 
 interface TeamMembersTableContainerProps {

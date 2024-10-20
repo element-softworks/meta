@@ -1,15 +1,15 @@
 'use server';
 
-import { getUsersTeams } from '@/actions/get-users-teams';
+import { getUsersTeams } from '@/actions/team/get-users-teams';
 import { currentUser } from '@/lib/auth';
 import Link from 'next/link';
-import { AvatarGroup } from './avatar-group';
+import { AvatarGroup } from './general/avatar-group';
 import { SelectTeamButton } from './buttons/select-team-button';
-import { CardWrapper } from './card-wrapper';
+import { CardWrapper } from './general/card-wrapper';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { ShowArchivedButton } from './show-archived-button';
+import { ShowArchivedButton } from './general/show-archived-button';
 
 interface TeamsCardsContainerProps {
 	searchParams: any;

@@ -1,6 +1,6 @@
 'use client';
 
-import { newPasswordStart } from '@/actions/new-password-start';
+import { newPasswordStart } from '@/actions/account/new-password-start';
 import { useMutation } from '@/hooks/use-mutation';
 import { ResetSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';

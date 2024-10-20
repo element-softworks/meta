@@ -1,4 +1,4 @@
-import { getUserNotificationsCount } from '@/actions/get-user-notifications-count';
+import { getUserNotificationsCount } from '@/actions/account/get-user-notifications-count';
 import { auth } from '@/auth';
 import { Navbar } from '@/components/layout/navbar';
 import { SessionTrackerProvider } from '@/components/session-provider';

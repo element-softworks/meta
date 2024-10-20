@@ -1,5 +1,5 @@
 'use server';
-import { userNotification } from './../db/drizzle/schema';
+import { userNotification } from '../../db/drizzle/schema';
 import { db } from '@/db/drizzle/db';
 import { inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';

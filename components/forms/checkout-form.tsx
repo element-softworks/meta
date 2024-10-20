@@ -1,5 +1,5 @@
 'use client';
-import { createPaymentIntent } from '@/actions/create-payment-intent';
+import { createPaymentIntent } from '@/actions/payment/create-payment-intent';
 import { useMutation } from '@/hooks/use-mutation';
 import convertToSubCurrency from '@/lib/convertToSubCurrency';
 import { CardElement, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';

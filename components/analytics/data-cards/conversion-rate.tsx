@@ -1,9 +1,9 @@
-import { getRevenueAnalytics } from '@/actions/get-revenue-analytics';
-import { AnalyticsIcon } from '@/app/analytics-icon';
+import { getRevenueAnalytics } from '@/actions/analytics/get-revenue-analytics';
+import { AnalyticsIcon } from '@/components/analytics/analytics-icon';
 import { BadgeCent, Landmark } from 'lucide-react';
-import { DataCard } from '../../data-card';
+import { DataCard } from '../../general/data-card';
 import { CardDescription } from '../../ui/card';
-import { getTotalSales } from '@/actions/get-total-sales';
+import { getTotalSales } from '@/actions/analytics/get-total-sales';
 import { startOfYear, subMonths } from 'date-fns';
 
 interface SalesDataCardProps {}

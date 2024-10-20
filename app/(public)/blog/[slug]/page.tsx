@@ -1,5 +1,5 @@
-import { Markdown } from '@/components/markdown';
-import { PostCard } from '@/components/post-card';
+import { Markdown } from '@/components/general/markdown';
+import { PostCard } from '@/components/general/post-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { getAllPostSlugs, getPostBySlug, getPosts } from '@/sanity/lib/client';

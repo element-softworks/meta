@@ -1,6 +1,6 @@
 'use server';
 
-import { getUserNotifications } from '@/actions/get-user-notifications';
+import { getUserNotifications } from '@/actions/account/get-user-notifications';
 import {
 	Card,
 	CardContent,
@@ -10,7 +10,7 @@ import {
 	CardTitle,
 } from '@/components/ui/card';
 import { currentUser } from '@/lib/auth';
-import { MarkNotificationsReadButton } from './buttons/mark-notifications-read-button';
+import { MarkNotificationsReadButton } from '../buttons/mark-notifications-read-button';
 import { NotificationsInfiniteScroll } from './notifications-infinite-scroll';
 
 export const NotificationsContainer = async ({

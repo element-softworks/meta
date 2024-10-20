@@ -1,6 +1,6 @@
 'use client';
 
-import { login } from '@/actions/login';
+import { login } from '@/actions/auth/login';
 import { useMutation } from '@/hooks/use-mutation';
 import { LoginSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';

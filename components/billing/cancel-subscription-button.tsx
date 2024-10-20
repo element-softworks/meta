@@ -1,6 +1,6 @@
 'use client';
-import { cancelSubscription } from '@/actions/cancelSubscription';
-import { uncancelSubscription } from '@/actions/uncancelSubscription';
+import { cancelSubscription } from '@/actions/payment/cancelSubscription';
+import { uncancelSubscription } from '@/actions/payment/uncancelSubscription';
 import { Button } from '@/components/ui/button';
 import { Customer } from '@/db/drizzle/schema/customer';
 import { useMutation } from '@/hooks/use-mutation';

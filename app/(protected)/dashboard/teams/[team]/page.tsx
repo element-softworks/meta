@@ -1,4 +1,4 @@
-import Banner from '@/components/banner';
+import Banner from '@/components/general/banner';
 import { InviteUserToTeamDialog } from '@/components/dialogs/invite-user-to-team-dialog';
 import { UserLeaveTeamDialog } from '@/components/dialogs/user-leave-team-dialog';
 import { TeamsMemberTable } from '@/components/tables/team-members-table';

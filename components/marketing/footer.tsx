@@ -65,7 +65,7 @@ export function Footer() {
 
 					<div className="flex gap-6 lg:gap-10 mt-4 md:mt-0 text-sm">
 						<Link href="/privacy-policy">Privacy Policy</Link>
-						<Link href="/terms-and-conditions">Terms & Conditions</Link>
+						<Link href="/terms-of-service">Terms of Service</Link>
 					</div>
 				</div>
 			</div>
