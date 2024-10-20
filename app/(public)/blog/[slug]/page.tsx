@@ -64,7 +64,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
 									<Image
 										className="rounded-none aspect-video"
 										alt={post.mainImage?.alt ?? 'Blog image'}
-										src={urlFor(post.mainImage).width(600).url()}
+										src={urlFor(post.mainImage).width(800).url()}
 										layout="responsive"
 										width={600}
 										height={0}
