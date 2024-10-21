@@ -18,7 +18,8 @@ export const coach = pgTable('Coach', {
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
 	archivedAt: timestamp('archivedAt', { precision: 3, mode: 'date' }),
-	cooldown: integer('cooldown').notNull().default(15),
+	cooldown: integer('cooldown').notNull().default(15), //15 minutes between bookings
+	bookingInAdvance: integer('bookingInAdvance').notNull().default(28), // 4 weeks in advance bookings
 });
 
 export const coachRelations = relations(coach, ({ one, many }) => ({

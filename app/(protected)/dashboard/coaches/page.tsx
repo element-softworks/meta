@@ -1,9 +1,11 @@
 'use client';
 import { createCoach } from '@/actions/booking-system/create-coach';
+import { createCoachBooking } from '@/actions/booking-system/create-coach-booking';
 import { reviewCoachApplication } from '@/actions/booking-system/review-coach-application';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { currentUser } from '@/lib/auth';
+import { addDays, addHours, addMinutes } from 'date-fns';
 import Link from 'next/link';
 
 export default async function DashboardPage({ searchParams }: any) {
@@ -11,81 +13,53 @@ export default async function DashboardPage({ searchParams }: any) {
 		timeframeDays: [
 			{
 				day: 0,
-				timeframes: [
-					{
-						startDate: '09:00',
-						endDate: '17:00',
-					},
-					{
-						startDate: '19:00',
-						endDate: '22:00',
-					},
-					{
-						startDate: '01:00',
-						endDate: '02:00',
-					},
-					{
-						startDate: '03:00',
-						endDate: '04:00',
-					},
-				],
+				startDate: 9,
+				endDate: 17,
 			},
 			{
 				day: 1,
-				timeframes: [
-					{
-						startDate: '09:00',
-						endDate: '17:00',
-					},
-					{
-						startDate: '19:00',
-						endDate: '22:00',
-					},
-				],
+				startDate: 9,
+				endDate: 17,
 			},
 			{
 				day: 2,
-				timeframes: [
-					{
-						startDate: '09:00',
-						endDate: '17:00',
-					},
-				],
+				startDate: 9,
+				endDate: 17,
 			},
 			{
 				day: 3,
-				timeframes: [
-					{
-						startDate: '09:00',
-						endDate: '17:00',
-					},
-				],
+				startDate: 9,
+				endDate: 17,
 			},
 			{
 				day: 4,
-				timeframes: [
-					{
-						startDate: '09:00',
-						endDate: '17:00',
-					},
-				],
+				startDate: 9,
+				endDate: 17,
 			},
 			{
 				day: 5,
-				timeframes: [],
+				startDate: 10,
+				endDate: 15,
+			},
+			{
+				day: 5,
+				startDate: 18,
+				endDate: 20,
 			},
 			{
 				day: 6,
-				timeframes: [
-					{
-						startDate: '13:00',
-						endDate: '16:00',
-					},
-					{
-						startDate: '14:00',
-						endDate: '17:00',
-					},
-				],
+				startDate: 11,
+				endDate: 14,
+			},
+			{
+				day: 6,
+				startDate: 17,
+				endDate: 19,
+			},
+			{
+				day: 6,
+				startDate: 21,
+				endDate: 23,
 			},
 		],
 	};
@@ -109,9 +83,25 @@ export default async function DashboardPage({ searchParams }: any) {
 
 			<Button
 				onClick={async () =>
+					await createCoachBooking(
+						{
+							bookingType: 'BOOKING',
+							startDate: addMinutes(addDays(new Date(), 14), 100),
+							endDate: addDays(new Date(), 15),
+						},
+						'cfe8be4e-fb40-4345-aac7-1676da712274'
+					)
+				}
+				className="w-fit"
+			>
+				Book coach time
+			</Button>
+
+			<Button
+				onClick={async () =>
 					await reviewCoachApplication(
 						{ status: 'APPROVED' },
-						'60a1264a-60ff-4c3e-a6b0-901482326d03'
+						'd037ab85-e0e0-4369-ad52-f9981e2971d7'
 					)
 				}
 				className="w-fit"
