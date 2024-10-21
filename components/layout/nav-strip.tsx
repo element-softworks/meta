@@ -32,7 +32,6 @@ export function NavStrip(props: NavStripProps) {
 	const firstCrumb = displayBreadcrumbs[0];
 	const lastTwoBreadCrumbs = displayBreadcrumbs.slice(displayBreadcrumbs.length > 3 ? -2 : -3);
 
-	console.log(lastTwoBreadCrumbs, 'last two');
 	return (
 		<nav className="border-b border-border py-2 px-4 lg:px-6 w-full">
 			<div className="flex items-center">

@@ -22,6 +22,8 @@ import { RemoveUserFromTeamDropdownMenuItem } from '../menu-items/remove-user-fr
 import { Avatar } from '../ui/avatar';
 import { toast } from '../ui/use-toast';
 import { Badge } from '../ui/badge';
+import { EditTeamUserRoleDropdownMenuItem } from '../menu-items/edit-team-user-role-dropdown-menu-item';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 export type TableTeamsMember = {
 	id: string;
@@ -41,7 +43,6 @@ interface TeamsMemberTableProps {
 }
 
 export function TeamsMemberTable(props: TeamsMemberTableProps) {
-	console.log(props.teamMembers, 'team members');
 	const { isLoading = false } = props;
 	const columns: ColumnDef<TeamMemberResponse[0]['member'] | undefined>[] = [
 		{
@@ -101,7 +102,7 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 			cell: ({ row }) => {
 				const member = row.original;
 				return (
-					<DropdownMenu>
+					<DropdownMenu modal={false}>
 						<DropdownMenuTrigger asChild>
 							<Button variant="ghost" className="h-8 w-8 p-0">
 								<span className="sr-only">Open menu</span>
@@ -124,6 +125,12 @@ export function TeamsMemberTable(props: TeamsMemberTableProps) {
 
 							<DropdownMenuSeparator />
 
+							<EditTeamUserRoleDropdownMenuItem
+								teamId={member?.teamId ?? ''}
+								userId={member?.userId ?? ''}
+								teamMembers={props.teamMembers ?? []}
+								teamMember={member as TeamMember}
+							/>
 							<RemoveUserFromTeamDropdownMenuItem
 								teamMembers={props.teamMembers ?? []}
 								teamId={member?.teamId ?? ''}

@@ -2,17 +2,17 @@
 
 import { InviteTeamUserSingleSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { XIcon } from 'lucide-react';
 import { useFieldArray, useForm, useFormContext } from 'react-hook-form';
 import * as z from 'zod';
+import { FormInput } from '../auth/form-input';
 import { InviteTeamUsersFormInputProps } from '../forms/invite-user-to-team-form';
+import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { Card, CardContent } from '../ui/card';
 import { Form, FormControl, FormField, FormItem, FormLabel } from '../ui/form';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { FormInput } from '../auth/form-input';
-import { Badge } from '../ui/badge';
-import { Card, CardContent } from '../ui/card';
-import { XIcon } from 'lucide-react';
 
 interface InviteUsersInputProps {
 	name: string;
