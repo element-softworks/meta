@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import Image from 'next/image';
 
 interface TeamSelectMenuProps {
 	enableBadge: boolean;
@@ -88,20 +89,6 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 				}}
 			>
 				<SelectTrigger className="w-[53px] md:w-[180px]">
-					{!!currentUser?.teams?.length ? (
-						<Avatar className="size-7">
-							{selectedTeam?.image && (
-								<AvatarImage
-									width={35}
-									height={35}
-									src={selectedTeam?.image ?? ''}
-									alt="user avatar"
-								/>
-							)}
-							<AvatarFallback>{selectedTeam?.name?.slice(0, 2)}</AvatarFallback>
-						</Avatar>
-					) : null}
-
 					<SelectValue placeholder="Select a team" />
 				</SelectTrigger>
 				<SelectContent>
@@ -109,7 +96,24 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 						?.filter((team) => !team?.isArchived)
 						?.map?.((team) => (
 							<SelectItem className="cursor-pointer" key={team.id} value={team.id}>
-								{team.name}
+								<div className="flex flex-row gap-2 items-center">
+									{!!currentUser?.teams?.length ? (
+										<Avatar className="size-7">
+											{team?.image && (
+												<AvatarImage
+													width={35}
+													height={35}
+													src={team?.image ?? ''}
+													alt="Team image"
+												/>
+											)}
+											<AvatarFallback>
+												{selectedTeam?.name?.slice(0, 2)}
+											</AvatarFallback>
+										</Avatar>
+									) : null}
+									{team.name}
+								</div>
 							</SelectItem>
 						))}
 					<SelectSeparator />
