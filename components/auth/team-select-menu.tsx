@@ -47,6 +47,8 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 			const data = await getTeamCustomerByTeamId(selectedTeam?.id ?? '');
 			if (data) {
 				setCurrentPlanType(data);
+			} else {
+				setCurrentPlanType(null);
 			}
 		})();
 	}, [selectedTeam]);
