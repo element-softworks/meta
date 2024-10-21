@@ -22,6 +22,7 @@ import { LoginSchema } from '@/schemas';
 
 interface FormInputProps {
 	visible?: boolean;
+	disabled?: boolean;
 	name: string;
 	label?: string;
 	description?: string;
@@ -42,6 +43,7 @@ export function FormInput(props: FormInputProps) {
 
 	return (
 		<FormField
+			disabled={props.disabled}
 			control={control}
 			name={props.name}
 			render={(inputProps) => (

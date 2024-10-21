@@ -9,6 +9,7 @@ interface PasswordInputProps {
 	name: string;
 	visible?: boolean;
 	label?: string;
+	disabled?: boolean;
 	placeholder?: string;
 }
 export function PasswordInput(props: PasswordInputProps) {
@@ -37,19 +38,22 @@ export function PasswordInput(props: PasswordInputProps) {
 
 	return (
 		<FormInput
+			disabled={props.disabled}
 			name={props.name}
 			label={props.label}
 			render={({ field }) => (
 				<div className="relative">
 					<Input
 						{...field}
-						disabled={props.isLoading}
+						disabled={props.isLoading || props.disabled}
 						type={showPassword ? 'text' : 'password'}
-						placeholder={props.placeholder ?? showPassword ? 'password' : '********'}
+						placeholder={(props.placeholder ?? showPassword) ? 'password' : '********'}
 						autoComplete="on"
 					/>
 
 					<Button
+						isLoading={props.isLoading}
+						disabled={props.isLoading || props.disabled}
 						type="button"
 						variant="ghost"
 						size="icon"

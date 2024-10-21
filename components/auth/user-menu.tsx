@@ -101,14 +101,12 @@ export function UserMenu(props: UserMenuProps) {
 								Settings
 							</DropdownMenuItem>
 						</Link>
-						{!props.user?.isOAuth ? (
-							<Link href="/dashboard/security">
-								<DropdownMenuItem className="cursor-pointer">
-									<ShieldCheck className="mr-2 h-4 w-4" />
-									Security
-								</DropdownMenuItem>
-							</Link>
-						) : null}
+						<Link href="/dashboard/security">
+							<DropdownMenuItem className="cursor-pointer">
+								<ShieldCheck className="mr-2 h-4 w-4" />
+								Security
+							</DropdownMenuItem>
+						</Link>
 
 						<Link href={`/dashboard/teams/${props.user.currentTeam}/billing`}>
 							<DropdownMenuItem className="cursor-pointer">
