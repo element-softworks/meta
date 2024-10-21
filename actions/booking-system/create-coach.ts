@@ -1,24 +1,23 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import {
-	coach,
-	coachApplication,
-	coachSchedule,
-	timeframe,
-	timeframeDay,
-} from '@/db/drizzle/schema';
+import { coach, coachApplication, coachSchedule, timeframeDay } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import { CreateCoachSchema } from '@/schemas/booking-system';
 import * as z from 'zod';
 /**
  *
+ * Creates a new coach.
+ * @param {z.infer<typeof CreateCoachSchema>} values - The values containing the coach details.
+ * @param {string} values.timeframeDays - The timeframe days for the coach schedule.
+ * @param {number} values.timeframeDays.day - The day of the week for the timeframe day.
+ * @param {number} values.timeframeDays.startDate - The start time for the timeframe day.
+ * @param {number} values.timeframeDays.endDate - The end time for the timeframe day.
  * @returns {Promise<{ success?: string, error?: string }>} A promise that resolves to an object indicating the success
  *  or failure of the operation. If successful, an object containing a success message is returned;
  */
 
 export async function createCoach(values: z.infer<typeof CreateCoachSchema>) {
-	console.log('values data', values?.timeframeDays?.find((v) => v.day === 0)?.timeframes);
 	const validatedFields = CreateCoachSchema.safeParse(values);
 
 	if (!validatedFields.success) {
@@ -26,12 +25,6 @@ export async function createCoach(values: z.infer<typeof CreateCoachSchema>) {
 			error: 'An error occurred creating the coach, please try again later.',
 		};
 	}
-
-	console.log(
-		'validatedFields timeframes',
-		validatedFields.data?.timeframeDays?.[0],
-		validatedFields.data?.timeframeDays?.[1]
-	);
 
 	const user = await currentUser();
 
@@ -49,17 +42,15 @@ export async function createCoach(values: z.infer<typeof CreateCoachSchema>) {
 				})
 				.returning({ id: coach.id });
 
-			const [createdCoach] = await trx
-				.insert(coachApplication)
-				.values({
-					coachId: intertedCoach?.id!,
-				})
-				.returning({ id: coachApplication.id });
+			await trx.insert(coachApplication).values({
+				coachId: intertedCoach?.id!,
+			});
+
 			// Insert coach schedule record
 			const [insertedschedule] = await trx
 				.insert(coachSchedule)
 				.values({
-					coachId: createdCoach.id!,
+					coachId: intertedCoach.id!,
 				})
 				.returning({ id: coachSchedule.id });
 
@@ -67,39 +58,12 @@ export async function createCoach(values: z.infer<typeof CreateCoachSchema>) {
 			const scheduleId = insertedschedule.id;
 
 			// Insert the timeframe days into the timeframeDay table
-			const createdTimeframeDays = await trx
-				.insert(timeframeDay)
-				.values(
-					values?.timeframeDays?.map((day) => {
-						return {
-							coachScheduleId: scheduleId,
-							day: day.day,
-						};
-					})
-				)
-				.returning({ id: timeframeDay.id, day: timeframeDay.day });
+			const timeframeDays = values.timeframeDays.map((timeframeDay) => ({
+				...timeframeDay,
+				coachScheduleId: scheduleId,
+			}));
 
-			// Insert timeframes for each timeframe day
-			// Flattening timeframes and associating them with the correct timeframeDayId
-			const timeframesData = values?.timeframeDays?.flatMap((day, index) =>
-				day?.timeframes?.map((timeframe) => ({
-					day: createdTimeframeDays[index].day,
-					timeframeDayId: createdTimeframeDays[index].id, // Associate with correct day
-					startDate: timeframe.startDate,
-					endDate: timeframe.endDate,
-				}))
-			);
-
-			// Insert the timeframes
-			await trx.insert(timeframe).values(
-				timeframesData?.map((timeframe) => {
-					return {
-						timeframeDayId: timeframe?.timeframeDayId ?? '',
-						startDate: timeframe?.startDate ?? '',
-						endDate: timeframe?.endDate ?? '',
-					};
-				})
-			);
+			await trx.insert(timeframeDay).values(timeframeDays);
 		});
 	} catch (error) {
 		return {

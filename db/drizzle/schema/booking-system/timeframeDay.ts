@@ -1,7 +1,6 @@
 import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { coachSchedule } from './coachSchedule';
-import { timeframe } from './timeframe';
 
 export const timeframeDay = pgTable('timeframeDay', {
 	id: text('id')
@@ -13,10 +12,11 @@ export const timeframeDay = pgTable('timeframeDay', {
 	createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
+	startDate: integer('startDate').notNull(),
+	endDate: integer('endDate').notNull(),
 });
 
 export const timeframeDayRelations = relations(timeframeDay, ({ one, many }) => ({
-	timeframes: many(timeframe),
 	coachSchedule: one(coachSchedule, {
 		fields: [timeframeDay.coachScheduleId],
 		references: [coachSchedule.id],
