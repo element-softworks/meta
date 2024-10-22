@@ -3,7 +3,7 @@ import { pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { user } from '../user';
 import { coach } from './coach';
 
-export const bookingType = pgEnum('BookingType', ['BOOKING', 'BLOCKED']);
+export const bookingType = pgEnum('BookingType', ['BOOKING', 'BLOCKED', 'CANCELLED']);
 
 export const coachBooking = pgTable('coachBooking', {
 	id: text('id')

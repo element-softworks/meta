@@ -23,9 +23,9 @@ export function Social(props: SocialProps) {
 	if (props.disabled) return null;
 
 	return (
-		<div className={`${props.className} flex flex-col w-full gap-y-2 items-center`}>
+		<div className={`${props.className} flex flex-col w-fit gap-y-2 items-center`}>
 			<Button
-				className="w-full"
+				className="w-full bg-transparent"
 				variant="outline"
 				size="lg"
 				onClick={() => onClick('google')}

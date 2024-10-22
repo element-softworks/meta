@@ -27,7 +27,7 @@ export function Footer() {
 		},
 	];
 	return (
-		<footer className="border-t border-border">
+		<footer className="border-t border-border bg-primary-foreground">
 			<div className="flex md:flex-row flex-col gap-10 md:gap-20 lg:gap-40 container pt-10 md:pt-20 pb-12">
 				<Link href="/" aria-label="Go to homepage" className="">
 					<div className=" flex items-center text-lg font-light z-[200] relative flex-nowrap">

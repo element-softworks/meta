@@ -148,6 +148,27 @@
       "when": 1729495966014,
       "tag": "0044_slimy_vector",
       "breakpoints": true
+    },
+    {
+      "idx": 45,
+      "version": "7",
+      "when": 1729517114472,
+      "tag": "0045_round_scourge",
+      "breakpoints": true
+    },
+    {
+      "idx": 46,
+      "version": "7",
+      "when": 1729582175711,
+      "tag": "0046_lucky_sabra",
+      "breakpoints": true
+    },
+    {
+      "idx": 47,
+      "version": "7",
+      "when": 1729582642226,
+      "tag": "0047_secret_vin_gonzales",
+      "breakpoints": true
     }
   ]
 }

@@ -8,8 +8,18 @@ export const CreateCoachSchema = z.object({
 	timeframeDays: z.array(
 		z.object({
 			day: z.number().int().min(0).max(6), // Must be a number between 0 and 6
-			startDate: z.number().int().min(0).max(23), // Must be a number between 0 and 23
-			endDate: z.number().int().min(0).max(23), // Must be a number between 0 and 23
+			startHour: z.number().min(0).max(23), // Must be a number between 0 and 23
+			endHour: z.number().min(0).max(23), // Must be a number between 0 and 23
+		})
+	),
+});
+
+export const UpdateCoachScheduleSchema = z.object({
+	timeframeDays: z.array(
+		z.object({
+			day: z.number().int().min(0).max(6), // Must be a number between 0 and 6
+			startHour: z.number().min(0).max(23), // Must be a number between 0 and 23
+			endHour: z.number().min(0).max(23), // Must be a number between 0 and 23
 		})
 	),
 });
