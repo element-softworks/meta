@@ -23,7 +23,6 @@ export async function reviewCoachApplication(
 	values: z.infer<typeof ReviewCoachApplicationSchema>,
 	applicationId: string
 ) {
-	console.log(applicationId, 'app id');
 	const validatedFields = ReviewCoachApplicationSchema.safeParse(values);
 
 	if (!validatedFields.success) {
@@ -61,7 +60,6 @@ export async function reviewCoachApplication(
 		return { error: 'Coach not found' };
 	}
 
-	console.log('testing 1');
 	try {
 		await db.transaction(async (trx) => {
 			await trx
