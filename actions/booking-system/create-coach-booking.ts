@@ -2,9 +2,10 @@
 
 import { db } from '@/db/drizzle/db';
 import { coach, coachBooking } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { CoachBookingSchema } from '@/schemas/booking-system';
 import { addDays, addMinutes, isAfter, isBefore, subMinutes } from 'date-fns';
-import { eq } from 'drizzle-orm';
+import { and, eq, not } from 'drizzle-orm';
 import * as z from 'zod';
 
 /**
@@ -23,6 +24,14 @@ export const createCoachBooking = async (
 	values: z.infer<typeof CoachBookingSchema>,
 	coachId: string
 ) => {
+	const user = await currentUser();
+
+	if (!user) {
+		return {
+			error: 'Not authorized',
+		};
+	}
+
 	const validatedFields = CoachBookingSchema.safeParse(values);
 
 	if (!validatedFields.success) {
@@ -33,6 +42,20 @@ export const createCoachBooking = async (
 
 	//Get the coach
 	const [currentCoach] = await db.select().from(coach).where(eq(coach.id, coachId));
+
+	//Check if the coach exists
+	if (!currentCoach) {
+		return {
+			error: 'Coach not found.',
+		};
+	}
+
+	//Check if the coach is verified
+	if (!currentCoach.verified) {
+		return {
+			error: 'Coach not verified. Please wait to be verified.',
+		};
+	}
 
 	//Check if the booking is past the coaches booking in advance limit
 	const bookingInAdvance = currentCoach.bookingInAdvance;
@@ -67,16 +90,28 @@ export const createCoachBooking = async (
 		const currentBookings = await db
 			.select()
 			.from(coachBooking)
-			.where(eq(coachBooking.coachId, coachId));
+			.where(
+				and(
+					eq(coachBooking.coachId, coachId),
+					not(eq(coachBooking.bookingType, 'CANCELLED'))
+				)
+			);
 
 		const isAvailable = currentBookings.every((booking) => {
 			const bookingStartDate = new Date(booking.startDate);
 			const bookingEndDate = new Date(booking.endDate);
 			const coachCooldown = currentCoach.cooldown; // cooldown in minutes
 
-			// Add cooldown to both ends: before the start and after the end
-			const startWithCooldown = subMinutes(bookingStartDate, coachCooldown);
-			const endWithCooldown = addMinutes(bookingEndDate, coachCooldown);
+			// Add cooldown to both ends: before the start and after the end but only if its not a blocked booking
+			const startWithCooldown =
+				booking.bookingType !== 'BLOCKED'
+					? subMinutes(bookingStartDate, coachCooldown)
+					: bookingStartDate;
+
+			const endWithCooldown =
+				booking.bookingType !== 'BLOCKED'
+					? addMinutes(bookingEndDate, coachCooldown)
+					: bookingEndDate;
 
 			// Check if the new booking is outside the cooldown window (both before and after)
 			return (
@@ -104,10 +139,11 @@ export const createCoachBooking = async (
 			startDate: values.startDate,
 			endDate: values.endDate,
 			bookingType: values.bookingType,
+			createdById: user.id,
 		});
 
 		return {
-			success: 'Coach booking created successfully',
+			success: `The coach ${values.bookingType === 'BOOKING' ? 'booking' : 'blocking'} time was successfully created.`,
 		};
 	} catch (error) {
 		return {

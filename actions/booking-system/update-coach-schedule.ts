@@ -1,14 +1,14 @@
 'use server';
-
 import { db } from '@/db/drizzle/db';
-import { coach, coachApplication, coachSchedule, timeframeDay } from '@/db/drizzle/schema';
+import { coach, timeframeDay } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { CreateCoachSchema } from '@/schemas/booking-system';
+import { CreateCoachSchema, UpdateCoachScheduleSchema } from '@/schemas/booking-system';
 import { eq } from 'drizzle-orm';
 import * as z from 'zod';
+import { coachSchedule } from './../../db/drizzle/schema/booking-system/coachSchedule';
 /**
  *
- * Creates a new coach.
+ * updates a coach.
  * @param {z.infer<typeof CreateCoachSchema>} values - The values containing the coach details.
  * @param {string} values.timeframeDays - The timeframe days for the coach schedule.
  * @param {number} values.timeframeDays.day - The day of the week for the timeframe day.
@@ -18,18 +18,22 @@ import * as z from 'zod';
  *  or failure of the operation. If successful, an object containing a success message is returned;
  */
 
-export async function createCoach(values: z.infer<typeof CreateCoachSchema>) {
+export async function updateCoachSchedule(
+	values: z.infer<typeof UpdateCoachScheduleSchema>,
+	coachId: string
+) {
 	const userData = await currentUser();
 
 	if (!userData) {
 		return { error: 'User not found' };
 	}
 
-	const validatedFields = CreateCoachSchema.safeParse(values);
+	const validatedFields = UpdateCoachScheduleSchema.safeParse(values);
 
+	//Coach only updates if the user is authentication, the coach is found, the coach is associated with the user, or the user is an admin, and the coach schedule is found
 	if (!validatedFields.success) {
 		return {
-			error: 'An error occurred creating the coach, please try again later.',
+			error: 'An error occurred updating the coach, please try again later.',
 		};
 	}
 
@@ -39,41 +43,33 @@ export async function createCoach(values: z.infer<typeof CreateCoachSchema>) {
 		return { error: 'User not found' };
 	}
 
-	const [foundCoach] = await db.select().from(coach).where(eq(coach.userId, user.id!));
+	const [foundCoach] = await db.select().from(coach).where(eq(coach.id, coachId!));
 
-	if (foundCoach) {
-		return { error: 'User is already a coach.' };
+	if (!foundCoach) {
+		return { error: 'No coach found with that ID' };
 	}
 
-	//Create a new coach and trigger a coach application within a transaction
+	if (foundCoach.userId !== user.id && user.role !== 'ADMIN') {
+		return { error: 'You are not authorized to update this coach' };
+	}
+
+	const [foundCoachSchedule] = await db
+		.select()
+		.from(coachSchedule)
+		.where(eq(coachSchedule.coachId, foundCoach.id));
+
+	if (!foundCoachSchedule) {
+		return { error: 'No coach schedule found with that ID' };
+	}
+
+	//Delete the existing timeframe days for the coach schedule and insert the new ones, all within a transaction to ensure data integrity
 	try {
 		await db.transaction(async (trx) => {
-			const [intertedCoach] = await trx
-				.insert(coach)
-				.values({
-					userId: user?.id!,
-				})
-				.returning({ id: coach.id });
-
-			await trx.insert(coachApplication).values({
-				coachId: intertedCoach?.id!,
-			});
-
-			// Insert coach schedule record
-			const [insertedschedule] = await trx
-				.insert(coachSchedule)
-				.values({
-					coachId: intertedCoach.id!,
-				})
-				.returning({ id: coachSchedule.id, coachId: coachSchedule.coachId });
-
 			await trx
-				.update(coach)
-				.set({ scheduleId: insertedschedule.id })
-				.where(eq(coach.id, insertedschedule.coachId));
+				.delete(timeframeDay)
+				.where(eq(timeframeDay.coachScheduleId, foundCoachSchedule.id!));
 
-			// Insert timeframe days for the coach schedule
-			const scheduleId = insertedschedule.id;
+			const scheduleId = foundCoachSchedule.id;
 
 			// Filter out timeframes within days that overlap with each other
 			const allowedTimeframes: {
@@ -114,11 +110,11 @@ export async function createCoach(values: z.infer<typeof CreateCoachSchema>) {
 			await trx.insert(timeframeDay).values(timeframeDays);
 		});
 	} catch (error) {
-		console.log(error, 'error creating coach');
+		console.error(error);
 		return {
-			error: 'An error occurred creating the coach and coach application, please try again later.',
+			error: 'An error occurred updating the coach schedule, please try again later.',
 		};
 	}
 
-	return { success: 'Coach created successfully' };
+	return { success: 'Coach schedule updated successfully' };
 }

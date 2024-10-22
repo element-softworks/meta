@@ -23,8 +23,7 @@ export async function reviewCoachApplication(
 	values: z.infer<typeof ReviewCoachApplicationSchema>,
 	applicationId: string
 ) {
-	console.log('testing 3');
-
+	console.log(applicationId, 'app id');
 	const validatedFields = ReviewCoachApplicationSchema.safeParse(values);
 
 	if (!validatedFields.success) {
@@ -32,16 +31,17 @@ export async function reviewCoachApplication(
 			error: 'An error occurred reviewing this coaches application, please try again later.',
 		};
 	}
-	console.log('testing 2');
 
 	const reviewer = await currentUser();
+
+	if (!reviewer) {
+		return { error: 'User not found' };
+	}
 
 	const [coachApplicationResponse] = await db
 		.select()
 		.from(coachApplication)
 		.where(eq(coachApplication.id, applicationId));
-
-	console.log('testing 5', coachApplicationResponse);
 
 	if (!coachApplicationResponse) {
 		return { error: 'Coach application not found' };

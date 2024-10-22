@@ -78,10 +78,10 @@ export function LoginForm() {
 	return (
 		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
 			<div className="mb-4 ">
-				<h1 className="text-2xl font-semibold tracking-tight">
-					{showTwoFactor ? 'Enter 2FA code' : 'Login to your account'}
+				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
+					{showTwoFactor ? 'Enter 2FA code' : 'Login'}
 				</h1>
-				<p className="text-sm text-muted-foreground">
+				<p className="text-lg font-normal mt-1">
 					{showTwoFactor
 						? 'Enter the two factor code sent to your email address'
 						: 'Enter your email and password to login to your account'}
@@ -119,7 +119,12 @@ export function LoginForm() {
 									name="password"
 									label="Password"
 								/>
-								<Button size="sm" variant="link" asChild className="px-0">
+								<Button
+									size="sm"
+									variant="link"
+									asChild
+									className="px-0 text-muted-foreground font-light text-xs"
+								>
 									<Link href="/auth/reset">Forgot password?</Link>
 								</Button>
 							</div>
@@ -127,28 +132,25 @@ export function LoginForm() {
 					)}
 
 					<div>
-						<Button isLoading={isLoading} className="w-full" type="submit">
-							{showTwoFactor ? 'Confirm 2FA code' : 'Login with email'}
+						<Button isLoading={isLoading} className="w-fit" type="submit">
+							{showTwoFactor ? 'Confirm 2FA code' : 'login with email'}
 						</Button>
 					</div>
 				</form>
 			</Form>
 
-			<div className="relative mt-2">
-				<div className="absolute inset-0 flex items-center">
-					<span className="w-full border-t"></span>
-				</div>
-				<div className="relative flex justify-center text-xs uppercase">
-					<span className="bg-background px-2 text-muted-foreground">
-						Or continue with
-					</span>
-				</div>
+			<div className="relative flex text-sm items-start mt-4">
+				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
+				<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
+					or continue with
+				</span>
+				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 			</div>
 			<Social className="mt-2" />
 
-			<p className="px-8 text-center text-sm text-muted-foreground">
+			<p className=" text-sm font-normal text-muted-foreground">
 				{"Don't"} have an account yet?{' '}
-				<Button asChild variant="link" className="px-0 text-muted-foreground">
+				<Button asChild variant="link" className="px-0 ">
 					<Link href="/auth/register">Register now</Link>
 				</Button>
 			</p>

@@ -21,6 +21,26 @@ export const config = {
 			},
 		},
 		extend: {
+			fontFamily: {
+				display: 'var(--font-fredoka)',
+				body: 'var(--font-open-sans)',
+			},
+			backgroundImage: {
+				'brand-gradient':
+					'linear-gradient(to right, hsla(246, 79%, 51%, 1), hsla(24, 82%, 87%, 1))',
+			},
+			fontWeight: {
+				thin: '100',
+				extralight: '200',
+				light: '300',
+				normal: '400', // Open Sans
+				medium: '500', // Fredoka
+				semibold: '600', // Fredoka
+				bold: '700', // Fredoka
+				extrabold: '800', // Fredoka
+				black: '900', // Fredoka
+			},
+
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
