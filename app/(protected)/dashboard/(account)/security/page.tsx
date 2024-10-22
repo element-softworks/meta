@@ -1,6 +1,10 @@
 import { ChangeEmailForm } from '@/components/auth/change-email-form';
 import { ResetPasswordForm } from '@/components/auth/reset-password-form';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
+import { getAccountByUserId } from '@/data/account';
+import { currentUser } from '@/lib/auth';
+import { AlertCircle, Info } from 'lucide-react';
 
 export async function generateMetadata() {
 	return {
@@ -18,6 +22,8 @@ export async function generateMetadata() {
 }
 
 export default async function SecurityPage() {
+	const user = await currentUser();
+	const account = await getAccountByUserId(user?.id ?? '');
 	return (
 		<main className="flex flex-col max-w-2xl gap-4">
 			<div className="">
@@ -28,6 +34,15 @@ export default async function SecurityPage() {
 			</div>
 
 			<Separator />
+
+			<Alert className="mb-6">
+				<Info className="h-4 w-4" />
+				<AlertTitle>Note</AlertTitle>
+				<AlertDescription>
+					As you've signed in with {account?.provider} there's no option to edit your
+					email, password, or 2FA. Please login to {account?.provider} to manage this
+				</AlertDescription>
+			</Alert>
 			<div className="flex flex-col gap-2">
 				<ChangeEmailForm />
 			</div>

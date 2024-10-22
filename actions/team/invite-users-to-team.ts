@@ -42,7 +42,7 @@ export const inviteUsersToTeam = async (
 		return { error: 'Team not found' };
 	}
 
-	if (teamResponse.data?.currentMember?.role === 'USER') {
+	if (teamResponse.data?.currentMember?.role === 'USER' && adminUser?.role !== 'ADMIN') {
 		return { error: 'You must be an admin to invite users to the team' };
 	}
 

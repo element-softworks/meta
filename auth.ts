@@ -92,40 +92,6 @@ export const {
 					.where(eq(dbUser.id, existingUser?.id));
 			}
 
-			// //If the user isnt in a team, create a team and put them into it
-			// const userInTeam = await db
-			// 	.select()
-			// 	.from(teamMember)
-			// 	.where(eq(teamMember.userId, user?.id!));
-
-			// if (!userInTeam.length && !!existingUser?.id) {
-			// 	const [newTeam] = await db
-			// 		.insert(team)
-			// 		.values({
-			// 			name: `${existingUser?.name}'s Team`,
-			// 			updatedAt: new Date(),
-			// 			createdBy: user?.id!,
-			// 		})
-			// 		.returning({ id: team.id });
-
-			// 	console.log(existingUser, 'existing user data');
-
-			// 	console.log(newTeam.id, user.id, 'new team id');
-			// 	//Create new team member
-			// 	await db.insert(teamMember).values({
-			// 		role: 'OWNER',
-			// 		teamId: newTeam.id,
-			// 		userId: existingUser?.id ?? '',
-			// 		updatedAt: new Date(),
-			// 	});
-
-			// 	//Set the current team cookie to the new team
-			// 	setCookie({
-			// 		name: `${existingUser?.email}-current-team`,
-			// 		value: newTeam.id,
-			// 	});
-			// }
-
 			//Update the session with the user's email
 			const sessionResponse = await getCookie('session');
 			if (!!sessionResponse?.value?.length && !!existingUser?.email) {

@@ -11,14 +11,16 @@ import { User } from 'next-auth';
 import { useState } from 'react';
 import { DialogWrapper } from '../auth/dialog-wrapper';
 import { DropdownMenuItem } from '../ui/dropdown-menu';
+import { ChangeTeamRoleForm } from '../forms/change-team-role-form';
 
-interface RemoveUserFromTeamDropdownMenuItemProps {
+interface EditTeamUserRoleDropdownMenuItemProps {
 	teamId: string;
 	userId: string;
 	teamMembers: TeamMemberResponse;
+	teamMember: TeamMember;
 }
 
-export function RemoveUserFromTeamDropdownMenuItem(props: RemoveUserFromTeamDropdownMenuItemProps) {
+export function EditTeamUserRoleDropdownMenuItem(props: EditTeamUserRoleDropdownMenuItemProps) {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const currentUser = useCurrentUser();
@@ -42,12 +44,10 @@ export function RemoveUserFromTeamDropdownMenuItem(props: RemoveUserFromTeamDrop
 		currentUser?.id ?? ''
 	);
 
-	if (!isTeamAdmin && currentUser?.role !== 'ADMIN') return null;
-
 	const teamOwner = props?.teamMembers?.find((t) => t?.member?.role === 'OWNER');
 	if (!isTeamAdmin && currentUser?.role !== 'ADMIN') return null;
 
-	if (teamOwner?.member?.userId === props.userId) return null;
+	if (teamOwner?.member?.userId === props.teamMember.userId) return null;
 
 	return (
 		<DialogWrapper
@@ -55,6 +55,7 @@ export function RemoveUserFromTeamDropdownMenuItem(props: RemoveUserFromTeamDrop
 			onOpenChange={(state) => setDialogOpen(state)}
 			open={dialogOpen}
 			onSubmit={() => handleRemoveUserFromTeam()}
+			disableActions
 			button={
 				<DropdownMenuItem
 					onClick={(e) => {
@@ -63,16 +64,22 @@ export function RemoveUserFromTeamDropdownMenuItem(props: RemoveUserFromTeamDrop
 					}}
 					className="cursor-pointer"
 				>
-					Remove user
+					Edit role
 				</DropdownMenuItem>
 			}
 			dialog={{
-				title: 'Remove user from team',
-				description: 'Are you sure you want to remove this user from the team?',
-				buttonProps: {
-					variant: 'destructive',
-				},
+				title: 'Edit role',
+				description: 'Are you sure you want to edit this users role?',
 			}}
-		/>
+		>
+			<ChangeTeamRoleForm
+				onCancel={() => setDialogOpen(false)}
+				member={props.teamMember}
+				isOwner={
+					props?.teamMembers?.find((t) => t?.member?.userId === currentUser?.id)?.member
+						?.role === 'OWNER' || currentUser?.role === 'ADMIN'
+				}
+			/>
+		</DialogWrapper>
 	);
 }

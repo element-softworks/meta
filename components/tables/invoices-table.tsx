@@ -87,6 +87,18 @@ export function InvoicesTable(props: InvoicesTableProps) {
 								</a>
 							) : null}
 
+							{!!invoice?.invoicePdf ? (
+								<a
+									href={`${invoice?.invoicePdf?.split('/pdf')[0]}`}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<DropdownMenuItem className="cursor-pointer">
+										View invoice
+									</DropdownMenuItem>
+								</a>
+							) : null}
+
 							<DropdownMenuItem
 								className="cursor-pointer"
 								onClick={() => {

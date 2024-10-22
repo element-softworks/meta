@@ -40,6 +40,10 @@ export const ReportBugSchema = z.object({
 	),
 });
 
+export const ChangeTeamRoleSchema = z.object({
+	role: z.enum(['ADMIN', 'USER', 'OWNER']),
+});
+
 export const TeamsSchema = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
 	image: z

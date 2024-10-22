@@ -7,6 +7,7 @@ interface CardWrapperProps {
 	title?: string | React.ReactNode;
 	description?: string | React.ReactNode;
 	footer?: string | React.ReactNode;
+	startAdornment?: React.ReactNode;
 }
 export function CardWrapper(props: CardWrapperProps) {
 	const showCardHeader = props.title || props.description;
@@ -14,10 +15,15 @@ export function CardWrapper(props: CardWrapperProps) {
 		<Card className={`w-full relative`}>
 			{showCardHeader ? (
 				<CardHeader>
-					{props.title ? <CardTitle>{props.title}</CardTitle> : null}
-					{props.description ? (
-						<CardDescription>{props.description}</CardDescription>
-					) : null}
+					<div className="flex flex-row items-center gap-3">
+						{props.startAdornment ? props.startAdornment : null}
+						<div>
+							{props.title ? <CardTitle>{props.title}</CardTitle> : null}
+							{props.description ? (
+								<CardDescription>{props.description}</CardDescription>
+							) : null}
+						</div>
+					</div>
 				</CardHeader>
 			) : null}
 			<CardContent>{props.children}</CardContent>

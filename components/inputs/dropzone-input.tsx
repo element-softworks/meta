@@ -80,7 +80,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 														},
 													})}
 												/>
-												{(files?.length ?? 0) === 1
+												{!props.multiple && (files?.length ?? 0) === 1
 													? files?.map?.((file, index) => {
 															const objectUrl =
 																typeof file === 'string'
@@ -112,9 +112,9 @@ export function DropzoneInput(props: DropzoneInputProps) {
 											</div>
 										</section>
 										<div
-											className={`flex gap-2 flex-wrap ${!!((files?.length ?? 0) > 1) ? 'mt-4' : ''}`}
+											className={`flex gap-2 flex-wrap ${!!((files?.length ?? 0) > 0) ? 'mt-4' : ''}`}
 										>
-											{(files?.length ?? 0) > 1
+											{props.multiple && (files?.length ?? 0) > 0
 												? files?.map?.((file, index) => {
 														const objectUrl =
 															typeof file === 'string'

@@ -3,7 +3,7 @@
 import { db } from '@/db/drizzle/db';
 import { team, teamMember, user } from '@/db/drizzle/schema';
 import { User } from '@/db/drizzle/schema/user';
-import { and, asc, desc, eq, or, sql } from 'drizzle-orm';
+import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
 interface GetTeamWithMembersProps {
 	teamId: string;
@@ -41,13 +41,27 @@ export const getTeamWithMembers = async (req: GetTeamWithMembersProps) => {
 		.limit(req.perPage)
 		.offset((req.pageNum - 1) * req.perPage);
 
-	if (!team) {
-	}
+	const [countData] = await db
+		.select({ count: count() })
+		.from(teamMember)
+		.where(
+			and(
+				eq(teamMember.teamId, req.teamId),
+				eq(user.isArchived, req.showArchived === 'true'),
+				or(
+					sql`lower(${user.name}) like ${`%${req.search.toLowerCase()}%`}`,
+					sql`lower(${user.email}) like ${`%${req.search.toLowerCase()}%`}`
+				)
+			)
+		)
+		.leftJoin(user, eq(user.id, teamMember.userId));
+
+	const totalPages = Math.ceil(countData.count / req.perPage);
 
 	return {
 		success: 'Teams retrieved successfully.',
 		team: teamMembersResponse as TeamMemberResponse,
-		totalPages: 1,
+		totalPages: totalPages ?? 1,
 	};
 };
 
