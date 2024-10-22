@@ -4,7 +4,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { getAccountByUserId } from '@/data/account';
 import { currentUser } from '@/lib/auth';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Info } from 'lucide-react';
 
 export async function generateMetadata() {
 	return {
@@ -36,7 +36,7 @@ export default async function SecurityPage() {
 			<Separator />
 
 			<Alert className="mb-6">
-				<AlertCircle className="h-4 w-4" />
+				<Info className="h-4 w-4" />
 				<AlertTitle>Note</AlertTitle>
 				<AlertDescription>
 					As you've signed in with {account?.provider} there's no option to edit your
