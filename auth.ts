@@ -15,6 +15,7 @@ import { getAccountByUserId } from './data/account';
 import { getUsersTeams } from './data/team';
 import { team } from './db/drizzle/schema/team';
 import { user as dbUser } from './db/drizzle/schema/user';
+import { revalidatePath } from 'next/cache';
 
 export const {
 	handlers,
@@ -67,6 +68,9 @@ export const {
 	],
 	events: {
 		//https://authjs.dev/reference/core search for "events"
+		async signOut() {
+			await setCookie({ name: 'session', value: '', maxAge: 0 });
+		},
 
 		async linkAccount({ user: userData }) {
 			await db
