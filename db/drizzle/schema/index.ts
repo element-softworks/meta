@@ -1,4 +1,13 @@
 export { account, accountRelations } from './account';
+export { coach, coachRelations } from './booking-system/coach';
+export {
+	applicationStatus,
+	coachApplication,
+	coachApplicationRelations,
+} from './booking-system/coachApplication';
+export { bookingType, coachBooking, coachBookingRelations } from './booking-system/coachBooking';
+export { coachSchedule, coachScheduleRelations } from './booking-system/coachSchedule';
+export { timeframeDay, timeframeDayRelations } from './booking-system/timeframeDay';
 export { bug } from './bug';
 export { conciergeToken } from './conciergeToken';
 export { customer, customerRelations } from './customer';

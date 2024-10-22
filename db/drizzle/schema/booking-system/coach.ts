@@ -1,16 +1,16 @@
 import { InferSelectModel, relations, sql } from 'drizzle-orm';
-import { integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp, index, foreignKey } from 'drizzle-orm/pg-core';
 import { user } from '../user';
+import { coachSchedule } from './coachSchedule';
 
 export const coach = pgTable('Coach', {
 	id: text('id')
 		.primaryKey()
 		.notNull()
 		.default(sql`gen_random_uuid()`),
-	userId: text('userId').notNull(),
-	user: text('user').notNull(),
+	userId: text('userId').notNull().unique(),
+	scheduleId: text('scheduleId'),
 	verified: timestamp('verified', { precision: 3, mode: 'date' }),
-	verifiedBy: text('verifiedBy'),
 	createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
@@ -18,7 +18,8 @@ export const coach = pgTable('Coach', {
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
 	archivedAt: timestamp('archivedAt', { precision: 3, mode: 'date' }),
-	cooldown: integer('cooldown').notNull().default(15),
+	cooldown: integer('cooldown').notNull().default(15), //15 minutes between bookings
+	bookingInAdvance: integer('bookingInAdvance').notNull().default(28), // 4 weeks in advance bookings
 });
 
 export const coachRelations = relations(coach, ({ one, many }) => ({
@@ -26,9 +27,10 @@ export const coachRelations = relations(coach, ({ one, many }) => ({
 		fields: [coach.userId],
 		references: [user.id],
 	}),
-	verifiedBy: one(user, {
-		fields: [coach.verifiedBy],
-		references: [user.id],
+
+	schedule: one(coachSchedule, {
+		fields: [coach.scheduleId],
+		references: [coachSchedule.id],
 	}),
 }));
 

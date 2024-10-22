@@ -30,28 +30,44 @@ body,
 	}
 
 	a {
-		@apply hover:text-primary transition-all;
+		@apply text-primary hover:text-primary/60 transition-all;
 	}
+}
+
+/* Ensure the correct font-family is applied for different font weights */
+.font-thin,
+.font-extralight,
+.font-light,
+.font-normal {
+	@apply font-body;
+}
+
+.font-medium,
+.font-semibold,
+.font-bold,
+.font-extrabold,
+.font-black {
+	@apply font-display;
 }
 
 @layer base {
 	:root {
-		--nav-background: 0, 0%, 100%, 0.8;
-		--background: 0 0% 100%;
+		--nav-background: 25, 100%, 96%, 0.8;
+		--background: 25 100% 96%;
 		--foreground: 20 14.3% 4.1%;
 		--card: 0 0% 100%;
 		--card-foreground: 20 14.3% 4.1%;
 		--popover: 0 0% 100%;
 		--popover-foreground: 20 14.3% 4.1%;
-		--primary: 24 9.8% 10%;
-		--primary-foreground: 60 9.1% 97.8%;
+		--primary: 246 79% 51%;
+		--primary-foreground: 0 0% 100%;
 		--secondary: 60 4.8% 95.9%;
 		--secondary-foreground: 24 9.8% 10%;
 		--muted: 60 4.8% 95.9%;
 		--muted-foreground: 25 5.3% 44.7%;
 		--accent: 60 4.8% 95.9%;
 		--accent-foreground: 24 9.8% 10%;
-		--destructive: 0 84.2% 60.2%;
+		--destructive: 0 72% 51%;
 		--destructive-foreground: 60 9.1% 97.8%;
 		--border: 20 5.9% 90%;
 		--input: 20 5.9% 90%;
