@@ -5,13 +5,18 @@ import { coach, coachSchedule, timeframeDay, user } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
+/**
+ *
+ * @param coachId
+ * @returns coach, coachSchedule, the user associated with the coach, and the coach schedule with timeframe days
+ */
+
 export const getScheduleByCoach = async (coachId: string) => {
 	const foundUser = await currentUser();
 
 	if (!foundUser) {
 		return { error: 'Not authorized' };
 	}
-
 	try {
 		// Fetch the coach and user
 		const [foundCoach] = await db
@@ -33,8 +38,6 @@ export const getScheduleByCoach = async (coachId: string) => {
 			.from(coachSchedule)
 			.where(eq(coachSchedule.coachId, foundCoach.coach.id))
 			.leftJoin(timeframeDay, eq(timeframeDay.coachScheduleId, coachSchedule.id));
-
-		console.log(coachScheduleWithTimeframes, 'found coach schedule with timeframe days');
 
 		if (!coachScheduleWithTimeframes.length) {
 			return { error: 'No coach schedule found' };
