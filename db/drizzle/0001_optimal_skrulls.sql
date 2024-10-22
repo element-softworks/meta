@@ -1,0 +1,1 @@
+ALTER TABLE "TeamMember" RENAME COLUMN "role" TO "TeamRole";

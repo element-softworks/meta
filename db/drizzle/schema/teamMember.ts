@@ -7,7 +7,7 @@ export const teamMember = pgTable(
 	{
 		teamId: text('teamId').notNull(),
 		userId: text('userId').notNull(),
-		role: teamRole('role').default('USER').notNull(),
+		role: teamRole('TeamRole').default('USER').notNull(),
 		createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
