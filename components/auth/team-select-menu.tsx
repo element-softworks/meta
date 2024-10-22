@@ -114,7 +114,7 @@ export function TeamSelectMenu(props: TeamSelectMenuProps) {
 											</AvatarFallback>
 										</Avatar>
 									) : null}
-									{team.name}
+									<p className="line-clamp-1">{team.name}</p>
 								</div>
 							</SelectItem>
 						))}

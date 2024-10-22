@@ -45,7 +45,10 @@ export const ChangeTeamRoleSchema = z.object({
 });
 
 export const TeamsSchema = z.object({
-	name: z.string().min(1, { message: 'Name is required' }),
+	name: z
+		.string()
+		.min(1, { message: 'Name is required' })
+		.max(35, { message: 'Name is too long' }),
 	image: z
 		.unknown()
 		.transform((value) => {

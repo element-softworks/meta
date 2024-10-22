@@ -8,8 +8,7 @@ export default function LogoutPage() {
 	useEffect(() => {
 		(async () => {
 			await setCookie({ name: 'session', value: '', maxAge: 0 });
-
-			await signOut();
+			await signOut({ redirect: true });
 		})();
 	}, []);
 

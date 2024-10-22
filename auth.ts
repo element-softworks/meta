@@ -24,8 +24,8 @@ export const {
 	unstable_update: update,
 } = NextAuth({
 	pages: {
-		signIn: '/auth/login',
-		signOut: '/auth/logout',
+		signIn: '/dashboard',
+		signOut: '/',
 		newUser: '/setup',
 		error: '/auth/error',
 	},
