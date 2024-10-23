@@ -24,39 +24,103 @@ export const VerifyEmailEmailTemplate = (props: VerifyEmailEmailTemplateProps) =
 	return (
 		<Html>
 			<Head />
-			<Preview>{props.type === 'change' ? 'Change' : 'Verify'} your email address</Preview>
+			<Preview>
+				{props.type === 'change' ? 'Confirm Email Change' : 'Verify Your Email Address'}
+			</Preview>
 			<Tailwind>
-				<Body className="">
-					<Container className="bg-neutral-100 border border-neutral-200 rounded-md">
-						<Section className="bg-neutral-200 ">
+				<Body className="bg-neutral-100">
+					<Container className="max-w-lg mx-auto bg-white border border-neutral-200 rounded-md shadow-md">
+						<Section className="bg-neutral-200 p-4 rounded-t-md text-center">
 							<Img
-								className="py-2 px-6"
+								className="mx-auto py-2"
 								src={`https://www.fmt.se/wp-content/uploads/2023/02/logo-placeholder-image.png`}
 								width="75"
 								height="75"
 								alt="logo"
 							/>
-						</Section>
-						<Section className="p-6 ">
-							<Text className="text-black text-2xl font-bold">
-								Verify your email {props.type === 'change' ? 'change' : 'address'}
+							<Text className="text-lg font-bold">
+								{props.type === 'change'
+									? 'Confirm Your Email Change'
+									: 'Verify Your Email Address'}
 							</Text>
-							<Text className="text-black">
-								Hi {props.userFirstname}, you recently requested to{' '}
-								{props.type === 'change' ? 'change' : 'verify'} your email address.
-								Click the link below to complete the process:
+						</Section>
+						<Section className="p-6">
+							<Text className="text-black text-xl font-semibold">
+								Hi {props.userFirstname || 'there'},
+							</Text>
+							<Text className="text-black mt-2">
+								{props.type === 'change'
+									? 'You recently requested to change the email address associated with your account.'
+									: 'Thanks for signing up! Please verify your email address to complete the setup of your account.'}
 							</Text>
 							<Button
-								className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
+								className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-md my-4"
 								href={props.verifyEmailLink}
 							>
-								{props.type === 'change' ? 'change' : 'verify'} email
+								{props.type === 'change' ? 'Confirm Email Change' : 'Verify Email'}
 							</Button>
-							<Text className="text-black">
-								If you didn&apos;t request this, just ignore and delete this
-								message.
+							<Text className="text-gray-700 mb-4">
+								If you did not request this, you can safely ignore this email.
 							</Text>
-							<Text className="text-black font-bold">Thank you!</Text>
+							<Text className="text-black font-semibold">Thank you!</Text>
+						</Section>
+						<Section className="bg-neutral-100 p-4 rounded-b-md text-center">
+							<Text className="text-gray-600 text-sm">
+								Need help?{' '}
+								<Link
+									href="https://your-website.com/support"
+									className="text-blue-600 underline"
+								>
+									Contact our support team
+								</Link>
+								.
+							</Text>
+							<Text className="text-gray-600 mt-2 text-sm">
+								Follow us on{' '}
+								<Link
+									href="https://facebook.com"
+									className="text-blue-600 underline"
+								>
+									Facebook
+								</Link>
+								,{' '}
+								<Link
+									href="https://twitter.com"
+									className="text-blue-600 underline"
+								>
+									Twitter
+								</Link>
+								, and{' '}
+								<Link
+									href="https://linkedin.com"
+									className="text-blue-600 underline"
+								>
+									LinkedIn
+								</Link>
+								.
+							</Text>
+						</Section>
+						<Section className="text-gray-500 text-xs text-center p-4">
+							<Text className="mb-2">
+								This is an automated message. If you did not request this, please
+								disregard it.
+							</Text>
+							<Text>
+								© 2024 Your Company, Inc. |{' '}
+								<Link
+									href={`${process.env.NEXT_PUBLIC_APP_URL}/privacy-policy`}
+									className="text-blue-600 underline"
+								>
+									Privacy Policy
+								</Link>{' '}
+								|{' '}
+								<Link
+									href={`${process.env.NEXT_PUBLIC_APP_URL}/terms-of-services`}
+									className="text-blue-600 underline"
+								>
+									Terms of Service
+								</Link>
+							</Text>
 						</Section>
 					</Container>
 				</Body>

@@ -20,6 +20,7 @@ export const sendTwoFactorTokenEmail = async (twoFactorToken: TwoFactorToken) =>
 			to: twoFactorToken.email,
 			subject: 'Your two-factor authentication code',
 			react: TokenEmailTemplate({
+				username: twoFactorToken.email,
 				confirmationCode: twoFactorToken.token,
 				codeDuration: '5 minutes',
 			}),
