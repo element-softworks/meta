@@ -55,7 +55,7 @@ export const TokenEmailTemplate = (props: TokenEmailTemplateProps) => {
 							</Text>
 							<Button
 								className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-md"
-								href="https://your-website.com/security"
+								href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard/security`}
 							>
 								Secure My Account
 							</Button>
