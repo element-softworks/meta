@@ -34,6 +34,7 @@
 		"@sanity/icons": "^3.4.0",
 		"@sanity/image-url": "^1.0.2",
 		"@sanity/vision": "^3.59.1",
+		"@sanity/webhook": "^4.0.4",
 		"@stripe/react-stripe-js": "^2.8.0",
 		"@stripe/stripe-js": "^4.4.0",
 		"@tanstack/react-table": "^8.20.5",
