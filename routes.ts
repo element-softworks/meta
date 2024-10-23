@@ -11,6 +11,7 @@ export const publicRoutes = [
 	'/auth/new-verification',
 	'/auth/new-password',
 	'/api/webhooks/stripe',
+	'/api/revalidate',
 ];
 export const fuzzyPublicRoutes = ['/docs', '/blog']; //Anything prefixed with the string in the array will be considered public
 
