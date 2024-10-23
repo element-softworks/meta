@@ -100,7 +100,6 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 				break;
 		}
 
-		console.log(val, 'value cheee');
 		if (val === 'custom') {
 			if (customPickerOpen) {
 				setCustomPickerOpen(false);
@@ -148,7 +147,6 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 			</Dialog>
 			<Select
 				onOpenChange={(state) => {
-					// if (selectedValue === 'custom' && ) return;
 					setSelectOpen(state);
 				}}
 				open={selectOpen}
@@ -174,7 +172,12 @@ export function DateSelectorPicker(props: DateSelectorPicker) {
 								<SelectItem value="year">Last year</SelectItem>
 							</>
 						)}
-						<SelectItem onClick={() => setCustomPickerOpen(true)} value="custom">
+						<SelectItem
+							onClick={(e) => {
+								setCustomPickerOpen(true);
+							}}
+							value="custom"
+						>
 							{customText}
 						</SelectItem>
 					</SelectGroup>
