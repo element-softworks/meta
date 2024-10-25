@@ -2,8 +2,11 @@ import * as z from 'zod';
 
 export const SettingsSchema = z.object({
 	name: z.optional(z.string().min(1, { message: 'Name is required' })),
-	isTwoFactorEnabled: z.optional(z.boolean()),
 	role: z.enum(['ADMIN', 'USER']),
+});
+
+export const TwoFactorSchema = z.object({
+	isTwoFactorEnabled: z.optional(z.boolean()),
 });
 
 export const ContactSchema = z.object({

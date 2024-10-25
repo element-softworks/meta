@@ -13,6 +13,8 @@ interface TwoFactorCheckInputProps {
 	visible?: boolean;
 	name: string;
 	isLoading: boolean;
+	disabled?: boolean;
+	onChange: (value: boolean) => void;
 }
 export function TwoFactorCheckInput(props: TwoFactorCheckInputProps) {
 	const { visible = true } = props;
@@ -23,6 +25,7 @@ export function TwoFactorCheckInput(props: TwoFactorCheckInputProps) {
 	}
 	return (
 		<FormField
+			disabled={props.isLoading || props.disabled}
 			control={form.control}
 			name={props.name}
 			render={({ field }) => (
@@ -38,8 +41,11 @@ export function TwoFactorCheckInput(props: TwoFactorCheckInputProps) {
 						<Switch
 							id="2fa-enabled"
 							checked={field.value}
-							onCheckedChange={field.onChange}
-							disabled={props.isLoading}
+							onCheckedChange={(value) => {
+								field.onChange(value);
+								props.onChange(value);
+							}}
+							disabled={props.isLoading || props.disabled}
 						/>
 					</FormControl>
 

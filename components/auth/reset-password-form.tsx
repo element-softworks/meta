@@ -70,7 +70,7 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 						<PasswordInput
 							isLoading={isLoading}
 							name="newPassword"
-							label="Current password"
+							label="New password"
 							disabled={!!user?.isOAuth}
 						/>
 

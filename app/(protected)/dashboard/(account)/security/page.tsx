@@ -1,3 +1,4 @@
+import { TwoFactorForm } from '@/components/auth/2fa-form';
 import { ChangeEmailForm } from '@/components/auth/change-email-form';
 import { ResetPasswordForm } from '@/components/auth/reset-password-form';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -46,6 +47,7 @@ export default async function SecurityPage() {
 			<div className="flex flex-col gap-2">
 				<ChangeEmailForm />
 			</div>
+			<TwoFactorForm />
 
 			<ResetPasswordForm />
 		</main>

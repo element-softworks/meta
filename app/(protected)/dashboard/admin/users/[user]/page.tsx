@@ -1,3 +1,4 @@
+import { TwoFactorForm } from '@/components/auth/2fa-form';
 import { ArchiveUserButton } from '@/components/auth/archive-user-button';
 import { FormInput } from '@/components/auth/form-input';
 import { ResetPasswordAdminButton } from '@/components/auth/reset-password-admin-button';
@@ -48,6 +49,13 @@ export default async function AdminUserPage({ params }: { params: { user: string
 			<div className="flex flex-col gap-2">
 				<SettingsForm adminMode={true} editingUser={user} />
 			</div>
+
+			{!user?.isOAuth ? (
+				<>
+					<Separator />
+					<TwoFactorForm adminMode={true} editingUser={user} />
+				</>
+			) : null}
 
 			{!user?.isOAuth ? (
 				<>

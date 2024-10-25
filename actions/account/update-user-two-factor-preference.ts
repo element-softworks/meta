@@ -4,12 +4,12 @@ import { getUserById } from '@/data/user';
 import { db } from '@/db/drizzle/db';
 import { user } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
-import { SettingsSchema } from '@/schemas';
+import { SettingsSchema, TwoFactorSchema } from '@/schemas';
 import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import z from 'zod';
-export const updateUserSettings = async (
-	values: z.infer<typeof SettingsSchema>,
+export const updateUserTwoFactorPreferences = async (
+	values: z.infer<typeof TwoFactorSchema>,
 	userId?: string
 ) => {
 	const userResponse = await currentUser();
@@ -32,29 +32,20 @@ export const updateUserSettings = async (
 		return { error: 'Unauthorized' };
 	}
 
-	if (userResponse.role !== 'ADMIN') {
-		values.role = dbUser.role;
-	}
-
 	//As an oauth user, we can't update email and password and have no two factor authentication on app
 	const [updatedUser] = await db
 		.update(user)
 		.set({
-			name: values.name,
-			role: values.role,
-			email: undefined,
-			password: undefined,
-			emailVerified: undefined,
+			isTwoFactorEnabled: values.isTwoFactorEnabled,
 		})
 		.where(eq(user.id, isAdminMode ? userId! : userResponse.id!))
 		.returning({
 			id: user.id,
-			name: user.name,
-			role: user.role,
+			isTwoFactorEnabled: user.isTwoFactorEnabled,
 		});
 
 	update({ user: updatedUser });
 	revalidatePath(`/dashboard/admin/users/${updatedUser.id}`);
 
-	return { success: 'Settings updated', user: updatedUser };
+	return { success: 'Two factor preferences updated', user: updatedUser };
 };

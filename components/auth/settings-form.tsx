@@ -39,7 +39,6 @@ export function SettingsForm(props: SettingsFormProps) {
 		defaultValues: {
 			name: formUser?.name ?? undefined,
 			role: formUser?.role ?? 'USER',
-			isTwoFactorEnabled: formUser?.isTwoFactorEnabled ?? undefined,
 		},
 	});
 
@@ -52,14 +51,12 @@ export function SettingsForm(props: SettingsFormProps) {
 			//If we are updating our own settings, update the session, if not, update the form
 			if (props.adminMode) {
 				form.reset({
-					isTwoFactorEnabled: data?.user?.isTwoFactorEnabled ?? undefined,
 					role: data?.user?.role,
 					name: data?.user?.name ?? undefined,
 				});
 			} else {
 				const response = await update((prev: ExtendedUser) => ({ ...prev, ...data }));
 				form.reset({
-					isTwoFactorEnabled: response?.user?.isTwoFactorEnabled ?? undefined,
 					role: response?.user?.role,
 					name: response?.user?.name ?? undefined,
 				});
@@ -81,12 +78,6 @@ export function SettingsForm(props: SettingsFormProps) {
 							name="name"
 							label="Name"
 							render={({ field }) => <Input {...field} disabled={isLoading} />}
-						/>
-
-						<TwoFactorCheckInput
-							visible={!formUser?.isOAuth}
-							name="isTwoFactorEnabled"
-							isLoading={isLoading}
 						/>
 
 						<FormInput
