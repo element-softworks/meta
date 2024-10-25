@@ -4,6 +4,7 @@ import { Team } from '@/db/drizzle/schema/team';
 import { User } from '@/db/drizzle/schema/user';
 import { and, eq, inArray } from 'drizzle-orm';
 import { teamMember } from '../../db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 
 interface GetUserTeamProps {
 	userId: string;
@@ -15,6 +16,12 @@ interface GetUserTeamProps {
 
 export const getUsersTeams = async (req: GetUserTeamProps) => {
 	// Query for the user's teams (with pagination)
+
+	const adminUser = await currentUser();
+
+	if (!adminUser) {
+		return { error: 'User not found' };
+	}
 
 	const userTeamIds = await db
 		.select({ id: teamMember.teamId })

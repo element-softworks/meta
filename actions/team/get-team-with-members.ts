@@ -3,6 +3,7 @@
 import { db } from '@/db/drizzle/db';
 import { team, teamMember, user } from '@/db/drizzle/schema';
 import { User } from '@/db/drizzle/schema/user';
+import { currentUser } from '@/lib/auth';
 import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
 interface GetTeamWithMembersProps {
@@ -19,6 +20,11 @@ interface GetTeamWithMembersProps {
 export const getTeamWithMembers = async (req: GetTeamWithMembersProps) => {
 	if (!req.teamId?.length) {
 		return { error: 'Team ID not provided' };
+	}
+
+	const authUser = await currentUser();
+	if (!authUser) {
+		return { error: 'User not found' };
 	}
 
 	const teamMembersResponse = await db

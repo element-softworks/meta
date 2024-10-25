@@ -100,7 +100,6 @@ export function DocsSidebar() {
 				<NavigationMobileDrawer
 					open={navOpen}
 					onOpenChange={(state) => {
-						console.log(state, 'open state');
 						setNavOpen(state);
 					}}
 					drawerItems={SIDEBAR_ITEMS}
@@ -124,7 +123,6 @@ export function DocsSidebar() {
 							{group.items.map((item, index) => {
 								if (!item.visible) return null;
 
-								console.log(item, 'item data');
 								return (
 									<SidebarItem
 										key={index}

@@ -58,7 +58,6 @@ export const BugsInfiniteScroll = (props: BugsInfiniteScrollProps) => {
 	const [slidesOpen, setSlidesOpen] = useState(false);
 	const [slides, setSlides] = useState<{ src: string }[]>([]);
 
-	console.log(slidesOpen, slides, slideIndex);
 	return (
 		<InfiniteScroll
 			dataLength={props.bugs?.length ?? 0} //This is important field to render the next data

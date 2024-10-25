@@ -2,6 +2,7 @@
 
 import { db } from '@/db/drizzle/db';
 import { team, teamMember, user } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
 interface GetTeamsProps {
@@ -14,6 +15,10 @@ interface GetTeamsProps {
 }
 
 export const getTeams = async (props: GetTeamsProps) => {
+	const authUser = await currentUser();
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
 	const teamsResponse = await db
 		.select({
 			team: {

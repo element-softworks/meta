@@ -3,9 +3,16 @@
 import { db } from '@/db/drizzle/db';
 import { userNotification } from '@/db/drizzle/schema';
 import { UserNotification } from '@/db/drizzle/schema/userNotification';
+import { currentUser } from '@/lib/auth';
 import { and, count, desc, eq, isNull } from 'drizzle-orm';
 
 export const getUserNotifications = async (userId: string, perPage: number, pageNum: number) => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+
 	try {
 		const [notificationsCount] = await db
 			.select({ count: count() })

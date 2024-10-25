@@ -43,8 +43,6 @@ export function ReportBugForm(props: ReportBugFormProps) {
 	async function onSubmit(values: ReportBugFormInputProps) {
 		const formData = new FormData();
 
-		console.log(values, 'values data');
-
 		values?.images?.forEach((image, index) => {
 			formData.append(`images.${index}`, image as any);
 		});

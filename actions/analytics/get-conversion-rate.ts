@@ -2,9 +2,20 @@
 
 import { db } from '@/db/drizzle/db';
 import { session } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { and, count, countDistinct, eq } from 'drizzle-orm';
 
 export const getConversionRate = async () => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+
+	if (authUser?.role !== 'ADMIN') {
+		return { error: 'Not authorized' };
+	}
+
 	const [convertedCount] = await db
 		.select({
 			count: countDistinct(session.ipAddress), // Count distinct IP addresses

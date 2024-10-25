@@ -10,6 +10,10 @@ import { revalidatePath } from 'next/cache';
 export const userLeaveTeam = async (teamId: string) => {
 	const user = await currentUser();
 
+	if (!user) {
+		return { error: 'User not found' };
+	}
+
 	// Find the team
 	const team = await findTeamById(teamId);
 

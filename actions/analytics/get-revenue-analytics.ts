@@ -4,8 +4,19 @@ import { db } from '@/db/drizzle/db';
 import { customer } from '@/db/drizzle/schema';
 import { and, between, eq, sql } from 'drizzle-orm';
 import plans from '@/plans';
+import { currentUser } from '@/lib/auth';
 
 export const getRevenueAnalytics = async () => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+
+	if (authUser?.role !== 'ADMIN') {
+		return { error: 'Not authorized' };
+	}
+
 	//we only return subscription customers here for monthly recurring revenue
 	const customers = await db
 		.select({
@@ -59,7 +70,6 @@ export const getRevenueAnalytics = async () => {
 	const totalCustomersDifferencePercentage =
 		(totalCustomersDifference / previousMonthRevenue.length) * 100;
 
-	console.log(totalRevenueDifferencePercentage, 'difference');
 	return {
 		totalCustomers: customers.length,
 		previousTotalCustomers: previousMonthRevenue.length,

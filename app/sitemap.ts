@@ -3,8 +3,6 @@ import { getAllPostSlugs } from '@/sanity/lib/client';
 export default async function generateSitemaps() {
 	const posts = await getAllPostSlugs();
 
-	console.log(posts, 'posts data');
-
 	return [
 		...posts?.map?.((post) => ({
 			url: `${process.env.NEXT_PUBLIC_APP_URL}/blog/${post}`,

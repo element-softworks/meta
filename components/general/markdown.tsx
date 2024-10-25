@@ -20,7 +20,6 @@ export function Markdown(props: MarkdownProps) {
 		value: { alt: string; asset: { _ref: string } };
 		isInline: boolean;
 	}) => {
-		console.log(value, 'value data');
 		const { width, height } = getImageDimensions(value);
 		return (
 			<Image

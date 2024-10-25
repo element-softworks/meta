@@ -199,7 +199,6 @@ export async function POST(req: NextRequest, res: Response) {
 			})
 			.where(eq(customer.stripeCustomerId, customerResponse.id));
 
-		console.log(invoice, 'invoice datatatatata');
 		const [invoiceResponse] = await db
 			.select()
 			.from(customerInvoice)
@@ -261,8 +260,6 @@ export async function POST(req: NextRequest, res: Response) {
 		const customerResponse = await getCustomer((payment?.customer as string) ?? '');
 		const userResponse = await getUserByEmail(customerResponse.email ?? '');
 		const teamResponse = await getTeamById(customerResponse?.metadata?.teamId ?? '');
-
-		console.log(customerResponse, 'customer response data');
 
 		if (payment.mode === 'payment' && payment.status === 'complete') {
 			//Create a new customer with a one time payment

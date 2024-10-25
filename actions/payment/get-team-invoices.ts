@@ -2,6 +2,7 @@
 
 import { db } from '@/db/drizzle/db';
 import { customerInvoice } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
 interface GetTeamInvoicesProps {
@@ -14,6 +15,12 @@ interface GetTeamInvoicesProps {
 	};
 }
 export const getTeamInvoices = async (props: GetTeamInvoicesProps) => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+
 	const invoicesResponse = await db
 		.select()
 		.from(customerInvoice)

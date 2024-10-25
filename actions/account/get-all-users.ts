@@ -89,7 +89,6 @@ export const getAllUsers = async ({
 
 		const totalPages = Math.ceil(userResponseCount.count / perPage);
 
-		console.log(usersResponse, 'usersresponse');
 		return {
 			success: 'Users retrieved successfully.',
 			users: usersResponse,

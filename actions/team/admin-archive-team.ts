@@ -12,6 +12,10 @@ import { uncancelSubscription } from '../payment/uncancelSubscription';
 export const adminArchiveTeam = async (archivingTeam: Team) => {
 	const editingUser = await currentUser();
 
+	if (!editingUser) {
+		return { error: 'User not found' };
+	}
+
 	//If you are a team admin, or a site admin, you can archive/restore a team
 	const isOwner = await isTeamOwnerServer(archivingTeam?.id, editingUser?.id ?? '');
 

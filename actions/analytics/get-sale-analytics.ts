@@ -7,12 +7,15 @@ import { between, sql } from 'drizzle-orm';
 export const getSaleAnalytics = async (startDate: string, endDate: string) => {
 	const dateDifferenceInHours = differenceInHours(new Date(endDate), new Date(startDate));
 
-	const adminUser = await currentUser();
+	const authUser = await currentUser();
 
-	if (adminUser?.role !== 'ADMIN') {
-		return { error: 'You are not authorized to view this page' };
+	if (!authUser) {
+		return { error: 'User not found' };
 	}
 
+	if (authUser?.role !== 'ADMIN') {
+		return { error: 'Not authorized' };
+	}
 	let customerInvoiceResponse: { time: string; amount: number }[] | undefined = [];
 
 	if (dateDifferenceInHours <= 24) {

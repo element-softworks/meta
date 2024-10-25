@@ -1,12 +1,21 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import { customer, customerInvoice } from '@/db/drizzle/schema';
+import { customerInvoice } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
+import { addMilliseconds, differenceInMilliseconds } from 'date-fns';
 import { and, between, eq, sql } from 'drizzle-orm';
-import plans from '@/plans';
-import { addMilliseconds, differenceInMilliseconds, minutesToMilliseconds } from 'date-fns';
 
 export const getTotalSales = async (startDate: string, endDate: string) => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+
+	if (authUser?.role !== 'ADMIN') {
+		return { error: 'Not authorized' };
+	}
 	//we only return subscription customers here for monthly recurring revenue
 
 	const differenceInMs = differenceInMilliseconds(new Date(endDate), new Date(startDate));

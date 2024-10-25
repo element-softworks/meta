@@ -14,7 +14,6 @@ import { getTwoFactorConfirmationByUserId } from '@/data/two-factor-confirmation
 import { db } from '@/db/drizzle/db';
 import { eq } from 'drizzle-orm';
 import { teamMember, twoFactorConfirmation, twoFactorToken } from '@/db/drizzle/schema';
-import { getIsUserInTeam } from '@/data/team';
 
 export const login = async (
 	values: z.infer<typeof LoginSchema>,

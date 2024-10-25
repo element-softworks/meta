@@ -2,6 +2,7 @@
 
 import { db } from '@/db/drizzle/db';
 import { conciergeToken, team } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { and, count, eq, or, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
@@ -15,8 +16,10 @@ export async function getTeamInvitedUsers(
 		return { error: 'Team ID is required' };
 	}
 
-	console.log(perPage, pageNum, search, 'dadadadadadadada');
-
+	const authUser = await currentUser();
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
 	const [foundTeam] = await db.select().from(team).where(eq(team.id, teamId));
 
 	if (!foundTeam) {

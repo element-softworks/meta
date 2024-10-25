@@ -15,14 +15,18 @@ import {
 import { and, between, count, eq, sql } from 'drizzle-orm';
 
 export const getSubscriptionAnalytics = async (startDate: string, endDate: string) => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+
+	if (authUser?.role !== 'ADMIN') {
+		return { error: 'Not authorized' };
+	}
+
 	const dateDifferenceInDays = differenceInDays(new Date(endDate), new Date(startDate));
 	const dateDifferenceInHours = differenceInHours(new Date(endDate), new Date(startDate));
-
-	const adminUser = await currentUser();
-
-	if (adminUser?.role !== 'ADMIN') {
-		return { error: 'You are not authorized to view this page' };
-	}
 
 	let paymentResponse: { time: string; count: number }[] | undefined = [];
 

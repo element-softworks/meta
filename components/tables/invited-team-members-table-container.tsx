@@ -19,8 +19,6 @@ export default async function InvitedTeamMembersTableContainer(
 		props.searchParams?.['invited-team-members-search'] ?? ''
 	);
 
-	console.log('teamResponse', teamResponse);
-
 	return (
 		<InvitedTeamsMemberTable
 			teamMembers={teamResponse?.data ?? []}

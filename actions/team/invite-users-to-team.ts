@@ -18,6 +18,11 @@ export const inviteUsersToTeam = async (
 ) => {
 	const validatedFields = InviteTeamUserSchema.safeParse(values);
 	const adminUser = await currentUser();
+
+	if (!adminUser) {
+		return { error: 'User not found' };
+	}
+
 	if (!validatedFields.success) {
 		return { error: 'There was a problem registering, please try again later' };
 	}

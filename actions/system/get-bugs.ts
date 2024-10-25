@@ -2,9 +2,18 @@
 
 import { db } from '@/db/drizzle/db';
 import { bug } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { count, desc, eq } from 'drizzle-orm';
 
 export const getBugs = async (perPage: number, pageNum: number) => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+	if (authUser?.role !== 'ADMIN') {
+		return { error: 'Not authorized' };
+	}
 	const bugsResponse = await db
 		.select()
 		.from(bug)

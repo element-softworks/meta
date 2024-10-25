@@ -96,7 +96,6 @@ export function TeamsTable(props: TeamsTableProps) {
 			cell: ({ row }) => {
 				const teamResponse = row.original;
 
-				console.log(teamResponse, 'teamResponse');
 				return (
 					<div>
 						<AvatarGroup

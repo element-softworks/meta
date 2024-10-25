@@ -1,7 +1,8 @@
 'use server';
 import { userNotification } from '../../db/drizzle/schema';
 import { db } from '@/db/drizzle/db';
-import { inArray } from 'drizzle-orm';
+import { currentUser } from '@/lib/auth';
+import { eq, inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export const markUserNotificationsRead = async ({
@@ -11,6 +12,11 @@ export const markUserNotificationsRead = async ({
 	notificationIds?: string[];
 	all?: boolean;
 }) => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
 	try {
 		await db
 			.update(userNotification)
@@ -19,7 +25,7 @@ export const markUserNotificationsRead = async ({
 			})
 			.where(
 				all
-					? undefined
+					? eq(userNotification.userId, authUser.id!)
 					: inArray(userNotification.id, notificationIds?.map((id) => id) ?? [])
 			);
 

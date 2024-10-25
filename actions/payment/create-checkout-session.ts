@@ -4,6 +4,7 @@ import { getCookie } from '@/data/cookies';
 import { getTeamById, isTeamOwnerServer } from '@/data/team';
 import { db } from '@/db/drizzle/db';
 import { customer as DbCustomer } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 import Stripe from 'stripe';
 
@@ -28,6 +29,12 @@ export const createCheckoutSession = async ({
 	subscription: boolean;
 	stripeCustomerId: string;
 }) => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+
 	const sessionResponse = await getCookie('session');
 	const team = await getTeamById(teamId);
 
@@ -156,7 +163,6 @@ export const createCheckoutSession = async ({
 			customer = newCustomer;
 		}
 
-		console.log(customer, 'testing 3');
 		try {
 			const session = await stripe.checkout.sessions.create({
 				mode: 'payment',

@@ -5,9 +5,8 @@ import { bug } from '@/db/drizzle/schema';
 import { s3Path } from '@/lib/s3';
 import { ReportBugSchema } from '@/schemas';
 import { revalidatePath } from 'next/cache';
-import { form } from 'sanity/structure';
-import { uploadFileToS3 } from './upload-file-to-s3';
 import { v4 as uuidv4 } from 'uuid';
+import { uploadFileToS3 } from './upload-file-to-s3';
 
 export const reportBug = async (formData: FormData) => {
 	let images = [];

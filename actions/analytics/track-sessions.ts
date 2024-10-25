@@ -1,12 +1,9 @@
 'use server';
 
-import { getCookie, setCookie } from '@/data/cookies';
-import { getUsersTeams } from '@/data/team';
-import { getUserByEmail } from '@/data/user';
+import { getCookie } from '@/data/cookies';
 import { db } from '@/db/drizzle/db';
-import { session, team, teamMember, user } from '@/db/drizzle/schema';
-import { Team } from '@/db/drizzle/schema/team';
-import { addDays, addHours, addMinutes } from 'date-fns';
+import { session } from '@/db/drizzle/schema';
+import { addHours } from 'date-fns';
 import { eq } from 'drizzle-orm';
 import { cookies, headers } from 'next/headers';
 import { userAgent } from 'next/server';

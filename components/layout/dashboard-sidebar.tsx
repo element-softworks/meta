@@ -17,7 +17,6 @@ export function DashboardSidebar() {
 
 	const currentUser = useCurrentUser();
 
-	console.log(currentUser, 'current user');
 	if (!currentUser?.currentTeam) {
 		router.push('/setup');
 	}

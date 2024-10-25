@@ -173,8 +173,6 @@ export const {
 		jwt: async ({ token, session }) => {
 			if (!token.sub) return token;
 
-			console.log(token.sub, 'token sub');
-
 			const teamCookie = await getCookie(`${token.sub}-current-team`);
 			const existingUser = await getUserById(token.sub);
 			const [teamResponse] = await db

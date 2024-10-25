@@ -2,10 +2,21 @@
 
 import { db } from '@/db/drizzle/db';
 import { session } from '@/db/drizzle/schema';
+import { currentUser } from '@/lib/auth';
 import { addMilliseconds, differenceInMilliseconds } from 'date-fns';
-import { and, between, count, eq, gte, lte, sql } from 'drizzle-orm';
+import { and, between, sql } from 'drizzle-orm';
 
 export const getUniqueSessionsCount = async (startDate: string, endDate: string) => {
+	const authUser = await currentUser();
+
+	if (!authUser) {
+		return { error: 'User not found' };
+	}
+
+	if (authUser?.role !== 'ADMIN') {
+		return { error: 'Not authorized' };
+	}
+
 	const [sessionsResponse] = await db
 		.select({ unique: sql<string>`COUNT(DISTINCT ${session.ipAddress})` })
 		.from(session)
