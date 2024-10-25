@@ -6,6 +6,7 @@
 
 export const publicRoutes = [
 	'/',
+	'/sitemap.xml',
 	'/privacy-policy',
 	'/terms-of-service',
 	'/auth/new-verification',
