@@ -4,6 +4,7 @@ import { Drawer, DrawerContent } from '@/components/ui/drawer';
 import { useBreakpoint } from '@/hooks/useBreakpoint';
 import { useEffect } from 'react';
 import { SideBarItem, SidebarGroup, SidebarItem } from './sidebar';
+import { DialogTitle } from '@radix-ui/react-dialog';
 
 interface NavigationMobileDrawerProps {
 	open: boolean;
@@ -26,7 +27,7 @@ export function NavigationMobileDrawer(props: NavigationMobileDrawerProps) {
 	useEffect(() => {
 		if (isMobile) return;
 		onOpenChange(false);
-	}, [isMobile, onOpenChange]);
+	}, [isMobile]);
 
 	return (
 		<Drawer
@@ -38,6 +39,7 @@ export function NavigationMobileDrawer(props: NavigationMobileDrawerProps) {
 				disableDropper
 				className="w-[360px] max-w-[80%] h-full rounded-tl-none rounded-bl-none p-6"
 			>
+				<DialogTitle className="text-2xl font-bold">Docs</DialogTitle>
 				{props.drawerItems?.map((group, index) => {
 					return (
 						<SidebarGroup mobile key={index} text={group.name} visible={group.visible}>

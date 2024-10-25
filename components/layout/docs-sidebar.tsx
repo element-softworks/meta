@@ -5,18 +5,20 @@ import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
 import { NavigationMobileDrawer } from './navigation-mobile-drawer';
 import { usePathname, useRouter } from 'next/navigation';
+import { useBreakpoint } from '@/hooks/useBreakpoint';
 
 export function DocsSidebar() {
 	const nextPathname = usePathname();
+	const isMobile = useBreakpoint('lg');
 
 	const pathname = typeof window !== 'undefined' && window.location; // Initialize the router
 	const router = useRouter();
 	const [currentSection, setCurrentSection] = useState('');
 	// Function to handle the scroll detection and update current section
 	const handleScroll = () => {
+		if (isMobile) return;
 		setCurrentSection((pathname as any)?.hash);
 
-		console.log('hand scroll');
 		const sections = document.querySelectorAll('.docs-section'); // Select section headers
 
 		sections.forEach((section) => {
@@ -30,6 +32,7 @@ export function DocsSidebar() {
 	};
 
 	useEffect(() => {
+		if (isMobile) return;
 		handleScroll();
 
 		window.addEventListener('scroll', handleScroll);
@@ -97,6 +100,7 @@ export function DocsSidebar() {
 				<NavigationMobileDrawer
 					open={navOpen}
 					onOpenChange={(state) => {
+						console.log(state, 'open state');
 						setNavOpen(state);
 					}}
 					drawerItems={SIDEBAR_ITEMS}
