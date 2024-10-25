@@ -9,7 +9,7 @@ export const getInvoices = async () => {
 	const authUser = await currentUser();
 
 	if (!authUser) {
-		return { error: 'User not found' };
+		return [];
 	}
 
 	const invoicesResponse = await db

@@ -10,6 +10,10 @@ export const BugsContainer = async ({ searchParams }: { searchParams: { perPage:
 
 	const bugsResponse = await getBugs(parseInt(searchParams?.perPage ?? 10), 1);
 
+	if (bugsResponse.error) {
+		return <div>{bugsResponse.error}</div>;
+	}
+
 	return (
 		<div className="">
 			<div className="grid grid-cols-1 sm:grid-cols-3 max-w-2xl gap-2 sm:gap-4">

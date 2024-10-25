@@ -10,7 +10,7 @@ export const getUserNotifications = async (userId: string, perPage: number, page
 	const authUser = await currentUser();
 
 	if (!authUser) {
-		return { error: 'User not found' };
+		return null;
 	}
 
 	try {
@@ -47,4 +47,5 @@ export type GetUserNotificationsResponse = {
 	notifications: UserNotification[];
 	total: number;
 	unreadCount: number;
+	error?: string;
 };

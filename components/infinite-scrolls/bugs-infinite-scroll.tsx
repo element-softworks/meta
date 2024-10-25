@@ -29,8 +29,8 @@ import Lightbox from 'yet-another-react-lightbox';
 import 'yet-another-react-lightbox/styles.css';
 
 interface BugsInfiniteScrollProps {
-	bugs: Bug[] | null;
-	total: number;
+	bugs: Bug[] | undefined;
+	total: number | undefined;
 	user: ExtendedUser | undefined;
 	perPage: number;
 }
