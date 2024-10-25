@@ -57,13 +57,11 @@ export default async function BillingPage({ params }: { params: { team: string }
 			<Separator />
 
 			<Suspense fallback={<>...</>}>
-				{!isOwner && !teamHasPlan ? (
-					!user?.currentTeam ? (
-						<p>You must create a team to setup billing</p>
-					) : (
-						<p>You must be the team owner to setup/manage billing</p>
-					)
+				{!teamHasPlan && !user?.currentTeam ? (
+					<p>You must create a team to setup billing</p>
 				) : null}
+
+				{!isOwner ? <p>You must be the team owner to setup/manage billing</p> : null}
 
 				<div className="mb-4">
 					<PricingPlans
