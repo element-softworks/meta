@@ -6,6 +6,7 @@
 
 export const publicRoutes = [
 	'/',
+	'/favicon.ico',
 	'/sitemap.xml',
 	'/privacy-policy',
 	'/terms-of-service',
