@@ -2,7 +2,9 @@
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { Book, CreditCard, FrameIcon, Notebook, Phone } from 'lucide-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { NotificationsMenu } from '../auth/notifications-menu';
 import { UserMenu } from '../auth/user-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
@@ -94,7 +96,9 @@ export function Navbar(props: NavbarProps) {
 					</div>
 
 					<div className="flex gap-2">
-						<NotificationsMenu user={user} count={props.count} />
+						<Suspense fallback={<div>Loading...</div>}>
+							<NotificationsMenu user={user} />
+						</Suspense>
 						<UserMenu user={user} count={props.count} />
 					</div>
 				</div>

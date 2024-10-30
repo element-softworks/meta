@@ -19,25 +19,28 @@ import { Separator } from '../ui/separator';
 
 interface NotificationsMenuProps {
 	user: ExtendedUser | undefined;
-	count?: number;
 }
 export function NotificationsMenu(props: NotificationsMenuProps) {
 	const { update, data } = useSession();
+	const [open, setOpen] = useState(false);
 
 	const [onScreenNotifications, setOnScreenNotifications] = useState(4);
 
+	const [unreadCount, setUnreadCount] = useState<number | undefined>();
 	const [notificationResponse, setNotificationResponse] =
 		useState<GetUserNotificationsResponse | null>(null);
 
 	useEffect(() => {
 		(async () => {
-			const response = await getUserNotifications(props.user?.id ?? '', 100, 1, true);
+			const response = await getUserNotifications(data?.user?.id ?? '', 100, 1, true);
+			setUnreadCount(response?.unreadCount);
+			if (!!notificationResponse?.notifications?.length) return;
 			setNotificationResponse(response);
 		})();
-	}, []);
+	}, [data?.user, open, onScreenNotifications]);
 
 	useEffect(() => {
-		if (!notificationResponse) return;
+		if (!notificationResponse || !open) return;
 		(async () => {
 			await markUserNotificationsRead({
 				notificationIds:
@@ -54,7 +57,7 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 		return null;
 	}
 	return (
-		<DropdownMenu>
+		<DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
 				{/* <Tooltip text="Notifications" className="-bottom-10"> */}
 				<Button variant="ghost">
@@ -62,7 +65,7 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 						<BellDotIcon className="h-5 w-5" />
 						<NotificationsIcon
 							className="-top-1.5 left-2 absolute"
-							count={props.count}
+							count={unreadCount}
 						/>
 					</div>
 				</Button>
