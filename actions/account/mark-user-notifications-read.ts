@@ -8,9 +8,11 @@ import { revalidatePath } from 'next/cache';
 export const markUserNotificationsRead = async ({
 	notificationIds,
 	all,
+	disableRevalidation,
 }: {
 	notificationIds?: string[];
 	all?: boolean;
+	disableRevalidation?: boolean;
 }) => {
 	const authUser = await currentUser();
 
@@ -29,7 +31,7 @@ export const markUserNotificationsRead = async ({
 					: inArray(userNotification.id, notificationIds?.map((id) => id) ?? [])
 			);
 
-		revalidatePath('/');
+		!disableRevalidation && revalidatePath('/dashboard/notifications');
 	} catch (error) {
 		console.error(error);
 		return { error: 'An error occurred while marking notifications as read' };

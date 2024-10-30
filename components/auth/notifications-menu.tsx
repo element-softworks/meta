@@ -45,6 +45,7 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 					notificationResponse?.notifications?.map((notif, index) =>
 						onScreenNotifications > index ? notif.id : ''
 					) ?? [],
+				disableRevalidation: true,
 			});
 
 			await update();
@@ -53,8 +54,8 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 
 	return (
 		<DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
-			<DropdownMenuTrigger asChild className="cursor-pointer">
-				{/* <Tooltip text="Notifications" className="-bottom-10"> */}
+			{/* <Tooltip text="Notifications" className="-bottom-10"> */}
+			<DropdownMenuTrigger>
 				<Button variant="ghost">
 					<div className="relative">
 						<BellDotIcon className="h-5 w-5" />
@@ -64,8 +65,8 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 						/>
 					</div>
 				</Button>
-				{/* </Tooltip> */}
 			</DropdownMenuTrigger>
+			{/* </Tooltip> */}
 			<DropdownMenuContent
 				className="w-80 max-h-[400px] overflow-auto mr-2 px-4"
 				onScroll={(e) => {
