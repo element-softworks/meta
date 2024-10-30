@@ -17,9 +17,7 @@ import { Button } from '../ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
 import { Separator } from '../ui/separator';
 
-interface NotificationsMenuProps {
-	user: ExtendedUser | undefined;
-}
+interface NotificationsMenuProps {}
 export function NotificationsMenu(props: NotificationsMenuProps) {
 	const { update, data } = useSession();
 	const [open, setOpen] = useState(false);
@@ -53,9 +51,6 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 		})();
 	}, [onScreenNotifications, notificationResponse]);
 
-	if (!props.user) {
-		return null;
-	}
 	return (
 		<DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
 			<DropdownMenuTrigger asChild className="cursor-pointer">

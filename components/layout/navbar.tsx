@@ -96,9 +96,7 @@ export function Navbar(props: NavbarProps) {
 					</div>
 
 					<div className="flex gap-2">
-						<Suspense fallback={<div>Loading...</div>}>
-							<NotificationsMenu user={user} />
-						</Suspense>
+						<NotificationsMenu />
 						<UserMenu user={user} count={props.count} />
 					</div>
 				</div>
