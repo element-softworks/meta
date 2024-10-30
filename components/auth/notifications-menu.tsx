@@ -22,10 +22,6 @@ interface NotificationsMenuProps {
 	count?: number;
 }
 export function NotificationsMenu(props: NotificationsMenuProps) {
-	if (!props.user) {
-		return null;
-	}
-
 	const { update, data } = useSession();
 
 	const [onScreenNotifications, setOnScreenNotifications] = useState(4);
@@ -54,6 +50,9 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 		})();
 	}, [onScreenNotifications, notificationResponse]);
 
+	if (!props.user) {
+		return null;
+	}
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
