@@ -10,7 +10,7 @@ interface TooltipProps {
 export default function Tooltip(props: TooltipProps) {
 	const [show, setShow] = useState(false);
 	return (
-		<div className={`relative`}>
+		<div className={`relative w-full sm:w-fit`}>
 			{!!props.text && (
 				<div
 					className={`opacity-0 cursor-default bg-primary rounded-md transition-all absolute ${
