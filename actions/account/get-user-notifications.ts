@@ -6,7 +6,12 @@ import { UserNotification } from '@/db/drizzle/schema/userNotification';
 import { currentUser } from '@/lib/auth';
 import { and, count, desc, eq, isNull } from 'drizzle-orm';
 
-export const getUserNotifications = async (userId: string, perPage: number, pageNum: number) => {
+export const getUserNotifications = async (
+	userId: string,
+	perPage: number,
+	pageNum: number,
+	unreadOnly?: boolean
+) => {
 	const authUser = await currentUser();
 
 	if (!authUser) {
@@ -17,12 +22,22 @@ export const getUserNotifications = async (userId: string, perPage: number, page
 		const [notificationsCount] = await db
 			.select({ count: count() })
 			.from(userNotification)
-			.where(eq(userNotification.userId, userId));
+			.where(
+				and(
+					eq(userNotification.userId, userId),
+					unreadOnly ? isNull(userNotification.readAt) : undefined
+				)
+			);
 
 		const notificationsResponse = await db
 			.select()
 			.from(userNotification)
-			.where(eq(userNotification.userId, userId))
+			.where(
+				and(
+					eq(userNotification.userId, userId),
+					unreadOnly ? isNull(userNotification.readAt) : undefined
+				)
+			)
 			.orderBy(desc(userNotification.createdAt))
 			.limit(perPage)
 			.offset(perPage * (pageNum - 1));

@@ -14,7 +14,7 @@ interface DataCardProps {
 
 export function DataCard(props: DataCardProps) {
 	return (
-		<Tooltip text={props.tooltip} className="bottom-[135px]">
+		<Tooltip text={props.tooltip} className="bottom-[135px] ">
 			<Card className={`w-full sm:w-fit`}>
 				<CardHeader className="flex flex-row gap-10">
 					<div className="flex-1">

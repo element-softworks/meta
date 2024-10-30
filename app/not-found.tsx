@@ -2,6 +2,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { SessionProvider } from 'next-auth/react';
 import Link from 'next/link';
+import { Suspense } from 'react';
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {

@@ -1,14 +1,7 @@
 'use server';
 
 import { getUserNotifications } from '@/actions/account/get-user-notifications';
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardFooter,
-	CardHeader,
-	CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 import { currentUser } from '@/lib/auth';

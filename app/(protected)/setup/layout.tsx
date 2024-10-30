@@ -4,6 +4,7 @@ import { Navbar } from '@/components/layout/navbar';
 import { SessionTrackerProvider } from '@/components/session-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { SessionProvider } from 'next-auth/react';
+import { Suspense } from 'react';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
 	const session = await auth();

@@ -29,7 +29,7 @@ export const markUserNotificationsRead = async ({
 					: inArray(userNotification.id, notificationIds?.map((id) => id) ?? [])
 			);
 
-		revalidatePath('/dashboard/notifications');
+		revalidatePath('/');
 	} catch (error) {
 		console.error(error);
 		return { error: 'An error occurred while marking notifications as read' };

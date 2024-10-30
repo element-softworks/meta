@@ -6,6 +6,8 @@ import { useState } from 'react';
 import { UserMenu } from '../auth/user-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
+import { NotificationsMenu } from '../auth/notifications-menu';
+import { useSearchParams } from 'next/navigation';
 
 export const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/#pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
@@ -31,6 +33,8 @@ export function Navbar(props: NavbarProps) {
 	const [navOpen, setNavOpen] = useState(false);
 
 	const showDropShadow = useWindowScrolled();
+
+	const searchParams = useSearchParams();
 	return (
 		<nav
 			style={{
@@ -89,7 +93,8 @@ export function Navbar(props: NavbarProps) {
 						})}
 					</div>
 
-					<div className="flex">
+					<div className="flex gap-2">
+						<NotificationsMenu user={user} count={props.count} />
 						<UserMenu user={user} count={props.count} />
 					</div>
 				</div>

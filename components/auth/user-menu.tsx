@@ -61,7 +61,6 @@ export function UserMenu(props: UserMenuProps) {
 							)}
 							<AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
 						</Avatar>
-						<NotificationsIcon className="top-0 left-9 absolute" count={props.count} />
 
 						<p className="font-normal ml-2">Account</p>
 					</div>
