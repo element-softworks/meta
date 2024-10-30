@@ -49,7 +49,7 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 
 			await update();
 		})();
-	}, [onScreenNotifications, notificationResponse]);
+	}, [onScreenNotifications, notificationResponse, open]);
 
 	return (
 		<DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
