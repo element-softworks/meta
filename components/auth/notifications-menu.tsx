@@ -52,6 +52,7 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 		})();
 	}, [onScreenNotifications, notificationResponse, open]);
 
+	if (!data?.user) return null;
 	return (
 		<DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
 			{/* <Tooltip text="Notifications" className="-bottom-10"> */}
