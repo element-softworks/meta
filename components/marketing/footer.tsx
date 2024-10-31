@@ -8,17 +8,12 @@ export function Footer() {
 	const FOOTER_COLUMNS = [
 		{
 			title: 'Company',
-			links: [
-				{ title: 'About', href: '/about' },
-				{ title: 'Contact', href: '/contact' },
-				{ title: 'Careers', href: '/careers' },
-			],
+			links: [{ title: 'Contact', href: '/#contact' }],
 		},
 		{
 			title: 'Product',
 			links: [
-				{ title: 'Features', href: '/features' },
-				{ title: 'Pricing', href: '/pricing' },
+				{ title: 'Pricing', href: '/#pricing' },
 				{ title: 'Documentation', href: '/docs' },
 			],
 		},

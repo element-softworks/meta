@@ -54,7 +54,7 @@ export default function Home() {
 									Get started
 								</Button>
 							</Link>
-							<Link className="flex-1 sm:!flex-none" href="/pricing">
+							<Link className="flex-1 sm:!flex-none" href="/#pricing">
 								<Button className="w-full sm:w-fit" variant="outline" size="lg">
 									See pricing
 								</Button>
