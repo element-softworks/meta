@@ -8,6 +8,7 @@ export const publicRoutes = [
 	'/',
 	'/favicon.ico',
 	'/sitemap.xml',
+	'/robots.txt',
 	'/privacy-policy',
 	'/terms-of-service',
 	'/auth/new-verification',
