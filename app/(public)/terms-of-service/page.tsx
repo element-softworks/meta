@@ -28,10 +28,11 @@ export default function Terms() {
 					<strong>Effective Date:</strong> [Insert Date]
 				</p>
 				<p>
-					Welcome to [Your Company Name]! These Terms of Service ("Terms") govern your use
-					of our software-as-a-service (SaaS) application ("Service") provided through the
-					[Next.js] platform, including any related websites, mobile applications, or
-					services operated by [Your Company Name] ("we", "us", "our").
+					Welcome to [Your Company Name]! These Terms of Service ({'"'}Terms{'"'}) govern
+					your use of our software-as-a-service (SaaS) application ({'"'}Service{'"'})
+					provided through the [Next.js] platform, including any related websites, mobile
+					applications, or services operated by [Your Company Name] ({'"'}we{'"'}, {'"'}us
+					{'"'}, {'"'}our{'"'}).
 				</p>
 				<p>
 					By accessing or using our Service, you agree to these Terms. If you do not
@@ -75,7 +76,8 @@ export default function Terms() {
 					<li>Using the Service for any unlawful, harmful, or fraudulent purposes.</li>
 					<li>Interfering with the operation or security of the Service.</li>
 					<li>
-						Accessing or attempting to access another user's account without permission.
+						Accessing or attempting to access another user{"'"}s account without
+						permission.
 					</li>
 					<li>Uploading or transmitting any viruses, malware, or harmful code.</li>
 					<li>
@@ -94,8 +96,9 @@ export default function Terms() {
 				<h3>a. Your Responsibilities</h3>
 				<p>
 					Our Service may allow you to submit, post, or share content, including but not
-					limited to text, images, and other materials ("User Content"). You are solely
-					responsible for the content you submit, and you represent and warrant that:
+					limited to text, images, and other materials {'"'}User Content{'"'}. You are
+					solely responsible for the content you submit, and you represent and warrant
+					that:
 				</p>
 				<ul>
 					<li>You have all necessary rights to submit the content.</li>
@@ -175,10 +178,11 @@ export default function Terms() {
 				<h2>6. Disclaimers and Limitation of Liability</h2>
 				<h3>a. Disclaimers</h3>
 				<p>
-					The Service is provided "as is" and "as available" without any warranties,
-					express or implied, including but not limited to warranties of merchantability,
-					fitness for a particular purpose, or non-infringement. We do not warrant that
-					the Service will be error-free, secure, or available at all times.
+					The Service is provided {'"'}as is{'"'} and {'"'}as available{'"'} without any
+					warranties, express or implied, including but not limited to warranties of
+					merchantability, fitness for a particular purpose, or non-infringement. We do
+					not warrant that the Service will be error-free, secure, or available at all
+					times.
 				</p>
 				<h3>b. Limitation of Liability</h3>
 				<p>
@@ -199,10 +203,10 @@ export default function Terms() {
 				<h2>8. Changes to These Terms</h2>
 				<p>
 					We may update these Terms from time to time by posting the updated version on
-					our website or within the Service. The "Effective Date" at the top of this page
-					will indicate when the Terms were last revised. Your continued use of the
-					Service after any changes to the Terms will constitute your acceptance of the
-					updated terms.
+					our website or within the Service. The {'"'}Effective Date{'"'} at the top of
+					this page will indicate when the Terms were last revised. Your continued use of
+					the Service after any changes to the Terms will constitute your acceptance of
+					the updated terms.
 				</p>
 				<h2>9. Governing Law and Dispute Resolution</h2>
 				<p>

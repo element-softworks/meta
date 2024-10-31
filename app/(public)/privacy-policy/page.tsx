@@ -28,11 +28,11 @@ export default function Privacy() {
 					<strong>Effective Date:</strong> [Insert Date]
 				</p>
 				<p>
-					This Privacy Policy explains how [Your Company Name] ("we", "us", or "our")
-					collects, uses, and shares information about you when you use our
-					software-as-a-service (SaaS) application (the &ldquo;Service&rdquo;) built on
-					the [Next.js] platform, including any related websites, mobile applications, or
-					services.
+					This Privacy Policy explains how [Your Company Name] ({'"'}we{'"'}, {'"'}us{'"'}
+					, or {'"'}our{'"'}) collects, uses, and shares information about you when you
+					use our software-as-a-service (SaaS) application (the &ldquo;Service&rdquo;)
+					built on the [Next.js] platform, including any related websites, mobile
+					applications, or services.
 				</p>
 				<p>
 					By using the Service, you agree to the collection and use of your personal
@@ -163,7 +163,7 @@ export default function Privacy() {
 					other countries, which may have different data protection laws than those in
 					your country.
 				</p>
-				<h2>7. Children's Privacy</h2>
+				<h2>7. Children{"'"}s Privacy</h2>
 				<p>
 					Our Service is not intended for individuals under the age of 18. We do not
 					knowingly collect or solicit personal information from minors. If we discover
@@ -174,9 +174,9 @@ export default function Privacy() {
 				<p>
 					We may update this Privacy Policy from time to time in response to changing
 					legal, technical, or business developments. When we update our Privacy Policy,
-					we will post the updated version with a new "Effective Date" at the top of this
-					policy. Your continued use of the Service after any changes to this policy will
-					indicate your acceptance of the updated terms.
+					we will post the updated version with a new {'"'}Effective Date{'"'} at the top
+					of this policy. Your continued use of the Service after any changes to this
+					policy will indicate your acceptance of the updated terms.
 				</p>
 				<h2>9. Contact Us</h2>
 				<p>
