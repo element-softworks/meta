@@ -1,8 +1,5 @@
-'use client';
-
-import { Goal } from 'lucide-react';
-import { Button } from '../ui/button';
 import { LoginButton } from '../auth/login-button';
+import { Button } from '../ui/button';
 
 interface KeyPointListProps {
 	title: string;
