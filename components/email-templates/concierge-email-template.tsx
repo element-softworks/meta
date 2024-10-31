@@ -45,8 +45,8 @@ export const ConciergeEmailTemplate = (props: ConciergeEmailTemplateProps) => {
 								Hi {props.name || props.email || 'there'},
 							</Text>
 							<Text className="text-black mt-2">
-								We're thrilled to have you on board! Click the link below to set up
-								your account and get started right away:
+								We{"'"}re thrilled to have you on board! Click the link below to set
+								up your account and get started right away:
 							</Text>
 							<Button
 								className="bg-blue-600 text-white font-semibold py-2 px-6 rounded-md my-4"
@@ -100,8 +100,8 @@ export const ConciergeEmailTemplate = (props: ConciergeEmailTemplateProps) => {
 						</Section>
 						<Section className="text-gray-500 text-xs text-center p-4">
 							<Text className="mb-2">
-								This is an automated message from our system. If you didn't expect
-								this, you can ignore it.
+								This is an automated message from our system. If you didn{"'"}t
+								expect this, you can ignore it.
 							</Text>
 							<Text>
 								© 2024 Your Company, Inc. |{' '}
