@@ -41,8 +41,9 @@ export default async function SecurityPage() {
 					<Info className="h-4 w-4" />
 					<AlertTitle>Note</AlertTitle>
 					<AlertDescription>
-						As you've signed in with {account?.provider} there's no option to edit your
-						email, password, or 2FA. Please login to {account?.provider} to manage this
+						As you{"'"}ve signed in with {account?.provider} there{"'"}s no option to
+						edit your email, password, or 2FA. Please login to {account?.provider} to
+						manage this
 					</AlertDescription>
 				</Alert>
 			) : null}
