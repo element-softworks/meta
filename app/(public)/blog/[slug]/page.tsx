@@ -12,6 +12,11 @@ import { notFound } from 'next/navigation';
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	const post = await getPostBySlug(params.slug);
 
+	// Return 404 if no case study found
+	if (!post) {
+		notFound();
+	}
+
 	return {
 		title: `${post.title} Blog | NextJS SaaS Boilerplate`,
 		description: `${post.excerpt}`,
