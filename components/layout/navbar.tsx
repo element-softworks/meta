@@ -3,13 +3,11 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { Book, CreditCard, FrameIcon, Notebook, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { Suspense, useState } from 'react';
+import { useState } from 'react';
 import { NotificationsMenu } from '../auth/notifications-menu';
 import { UserMenu } from '../auth/user-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
-import { NotificationsMenu } from '../auth/notifications-menu';
-import { useSearchParams } from 'next/navigation';
 
 export const NAVBAR_ITEMS = [
 	{ name: 'Pricing', href: '/#pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
