@@ -93,8 +93,8 @@ export const NotificationEmailTemplate = (props: NotificationEmailTemplateProps)
 						</Section>
 						<Section className="text-gray-500 text-xs text-center p-4">
 							<Text className="mb-2">
-								This is an automated message from our system. If you didn't expect
-								this, you can ignore it.
+								This is an automated message from our system. If you didn{"'"}t
+								expect this, you can ignore it.
 							</Text>
 							<Text>
 								© 2024 Your Company, Inc. |{' '}
