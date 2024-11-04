@@ -89,7 +89,7 @@ export default async function DashboardPage() {
 						</div>
 					</CardContent>
 					<CardFooter>
-						<Link className="w-full" href={`/dashboard/users/${user?.id}/billing`}>
+						<Link className="w-full" href={`/dashboard/${user?.id}/billing`}>
 							<Button className="w-full">
 								{!!plan?.name?.length ? 'Manage plan' : 'Subscribe to a plan'}
 							</Button>
@@ -104,7 +104,7 @@ export default async function DashboardPage() {
 						</CardHeader>
 
 						<CardFooter className="mt-auto">
-							<Link className="w-full" href={`/dashboard/users/${user?.id}/invoices`}>
+							<Link className="w-full" href={`/dashboard/${user?.id}/invoices`}>
 								<Button variant="secondary" className="w-full">
 									Manage invoices
 								</Button>

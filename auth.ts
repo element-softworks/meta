@@ -154,6 +154,8 @@ export const {
 				session.user.isArchived = token.isArchived;
 				session.user.image = token.image;
 				session.user.notificationsEnabled = token.notificationsEnabled;
+				session.user.stripePaymentId = token.stripePaymentId;
+				session.user.stripeCustomerId = token.stripeCustomerId;
 			}
 
 			return session;
@@ -178,6 +180,8 @@ export const {
 			token.image = session?.image ?? existingUser.image;
 			token.notificationsEnabled =
 				session?.notificationsEnabled ?? existingUser.notificationsEnabled;
+			token.stripePaymentId = session?.stripePaymentId ?? existingUser.stripePaymentId;
+			token.stripeCustomerId = session?.stripeCustomerId ?? existingUser.stripeCustomerId;
 			return token;
 		},
 	},

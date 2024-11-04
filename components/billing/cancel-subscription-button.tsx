@@ -22,7 +22,7 @@ export default function CancelSubscriptionButton(props: CancelSubscriptionButton
 		queryFn: async (values) =>
 			await cancelSubscription(props.customer?.stripeCustomerId ?? '', props.userId),
 		onSuccess: () => {
-			router.push(`/dashboard/users/${props.userId}`);
+			router.push(`/dashboard/${props.userId}`);
 		},
 	});
 
@@ -34,7 +34,7 @@ export default function CancelSubscriptionButton(props: CancelSubscriptionButton
 		queryFn: async (values) =>
 			await uncancelSubscription(props.customer?.stripeCustomerId ?? '', props.userId),
 		onSuccess: () => {
-			router.push(`/dashboard/users/${props.userId}`);
+			router.push(`/dashboard/${props.userId}`);
 		},
 	});
 

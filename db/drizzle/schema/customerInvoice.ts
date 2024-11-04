@@ -1,6 +1,7 @@
 import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import { doublePrecision, foreignKey, index, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { customer } from './customer';
+import { user } from './user';
 export const customerInvoice = pgTable('CustomerInvoice', {
 	id: text('id')
 		.primaryKey()
@@ -27,6 +28,10 @@ export const customerInvoiceRelations = relations(customerInvoice, ({ one }) => 
 	customer: one(customer, {
 		fields: [customerInvoice.customerId],
 		references: [customer.id],
+	}),
+	user: one(user, {
+		fields: [customerInvoice.userId],
+		references: [user.id],
 	}),
 }));
 

@@ -18,14 +18,14 @@ if (!process.env.STRIPE_WEBHOOK_SECRET) {
 export async function generateMetadata({ params }: any) {
 	const userResponse = await getUserById(params.user);
 	return {
-		title: `Billing | ${userResponse?.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+		title: `Billing | ${userResponse?.name} | Users | Dashboard | NextJS SaaS Boilerplate`,
 		description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
 		openGraph: {
-			title: `Billing | ${userResponse?.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			title: `Billing | ${userResponse?.name} | Users | Dashboard | NextJS SaaS Boilerplate`,
 			description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
 		},
 		twitter: {
-			title: `Billing | ${userResponse?.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			title: `Billing | ${userResponse?.name} | Users | Dashboard | NextJS SaaS Boilerplate`,
 			description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
 		},
 	};
@@ -39,9 +39,9 @@ export default async function BillingPage({ params }: { params: { team: string }
 		.where(eq(customer.userId, user?.id!));
 	// const isOwner = await isTeamOwner(team?.team?.members ?? [], user?.id ?? '');
 
-	const teamHasPlan = !!customer?.id && customerResponse?.status === 'active';
+	const userHasPlan = !!customer?.id && customerResponse?.status === 'active';
 
-	const currentTeamPlan = Object.entries(plans).find(
+	const currentPlan = Object.entries(plans).find(
 		(plan) => plan?.[1]?.stripePricingId === customerResponse?.planId
 	)?.[1];
 
@@ -62,13 +62,14 @@ export default async function BillingPage({ params }: { params: { team: string }
 			<Suspense fallback={<>...</>}>
 				<div className="mb-4">
 					<PricingPlans
-						type="subscription"
+						type="one-time"
+						userId={user?.id ?? ''}
 						readOnly={false}
-						stripeCustomerId={user?.stripePricingId ?? ''}
-						currentPlanId={currentTeamPlan?.stripePricingId}
+						stripeCustomerId={user?.stripePaymentId ?? ''}
+						currentPlanId={currentPlan?.stripePricingId}
 					/>
 				</div>
-				{teamHasPlan && currentTeamPlan?.type === 'subscription' ? (
+				{userHasPlan && currentPlan?.type === 'subscription' ? (
 					<div className="flex flex-col gap-4 h-full">
 						<div className="mt-auto">
 							<CancelSubscriptionButton

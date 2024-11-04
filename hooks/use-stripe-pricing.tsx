@@ -45,7 +45,7 @@ export function useStripePricing(props: UseStripePricingProps) {
 				if (data.updated) {
 					setIsLoading(false);
 
-					router.push(`/dashboard/users/${user?.id}`);
+					router.push(`/dashboard/${user?.id}`);
 					return toast({
 						description: 'Your subscription has been updated',
 					});
