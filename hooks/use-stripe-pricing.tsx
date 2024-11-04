@@ -13,7 +13,6 @@ interface UseStripePricingProps {
 	enabled: boolean;
 	price: 'basic' | 'pro' | 'enterprise' | 'starter' | 'full access' | null;
 	stripeCustomerId: string;
-	teamId: string;
 }
 
 if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
@@ -40,14 +39,13 @@ export function useStripePricing(props: UseStripePricingProps) {
 					subscription: !!(pricingPlan.type === 'subscription'),
 					email: user?.email ?? '',
 					userId: user?.id ?? '',
-					teamId: props.teamId ?? '',
 					stripeCustomerId: props.stripeCustomerId ?? '',
 				});
 
 				if (data.updated) {
 					setIsLoading(false);
 
-					router.push(`/dashboard/teams/${user?.currentTeam}`);
+					router.push(`/dashboard/users/${user?.id}`);
 					return toast({
 						description: 'Your subscription has been updated',
 					});

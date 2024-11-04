@@ -1,8 +1,7 @@
 'use server';
 
-import { getTeamById } from '@/data/team';
 import { db } from '@/db/drizzle/db';
-import { team } from '@/db/drizzle/schema';
+import { user } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 import stripe from 'stripe';
@@ -10,23 +9,18 @@ import stripe from 'stripe';
 export async function createPaymentIntent({ amount }: { amount: number }) {
 	const stripeData = new stripe(process.env.STRIPE_SECRET_KEY!);
 
-	const user = await currentUser();
-	const teamResponse = await getTeamById(user?.currentTeam ?? '');
+	const foundUser = await currentUser();
 
-	if (!teamResponse) {
-		return { error: 'Team not found' };
-	}
-	if (!user) {
+	if (!foundUser) {
 		return { error: 'User not found' };
 	}
 
 	try {
 		const customer = await stripeData.customers.create({
-			email: user?.email ?? '',
-			name: teamResponse?.data?.team?.name ?? '',
+			email: foundUser?.email ?? '',
+			name: foundUser?.name ?? '',
 			metadata: {
-				userId: user?.id ?? '',
-				teamId: user?.currentTeam ?? '',
+				userId: foundUser?.id ?? '',
 			},
 		});
 
@@ -39,20 +33,19 @@ export async function createPaymentIntent({ amount }: { amount: number }) {
 			},
 			description: 'Payment for Nextjs SaaS Boilerplate',
 			metadata: {
-				userId: user?.id ?? '',
-				teamId: user?.currentTeam ?? '',
-				email: user?.email ?? '',
-				name: user?.name ?? '',
+				userId: foundUser?.id ?? '',
+				email: foundUser?.email ?? '',
+				name: foundUser?.name ?? '',
 			},
 		});
 
 		await db
-			.update(team)
+			.update(user)
 			.set({
 				stripeCustomerId: customer.id ?? '',
 				stripePaymentId: paymentIntent.id ?? '',
 			})
-			.where(eq(team.id, teamResponse?.data?.team?.id ?? ''));
+			.where(eq(user.id, foundUser?.id ?? ''));
 
 		return { clientSecret: paymentIntent.client_secret };
 	} catch (error) {

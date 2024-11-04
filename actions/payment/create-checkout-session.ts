@@ -1,7 +1,6 @@
 'use server';
 
 import { getCookie } from '@/data/cookies';
-import { getTeamById, isTeamOwnerServer } from '@/data/team';
 import { db } from '@/db/drizzle/db';
 import { customer as DbCustomer } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
@@ -16,14 +15,12 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export const createCheckoutSession = async ({
 	userId,
-	teamId,
 	priceId,
 	email,
 	stripeCustomerId,
 	subscription,
 }: {
 	userId: string;
-	teamId: string;
 	priceId: string;
 	email: string;
 	subscription: boolean;
@@ -36,24 +33,10 @@ export const createCheckoutSession = async ({
 	}
 
 	const sessionResponse = await getCookie('session');
-	const team = await getTeamById(teamId);
-
-	if (!team?.data?.team) {
-		return {
-			error: 'Team not found',
-		};
-	}
-	if (team?.data?.team?.isArchived) {
-		return {
-			error: 'Team is archived, please restore the team to manage billing',
-		};
-	}
 
 	let customer = null;
 
 	if (subscription) {
-		//If you are a team admin, or a site admin, you can archive/restore a team
-
 		//If we have a stripeCustomerId, we are to retrieve the customer
 		if (!!stripeCustomerId?.length) {
 			try {
@@ -75,18 +58,12 @@ export const createCheckoutSession = async ({
 				email: email,
 				metadata: {
 					userId: userId,
-					teamId: teamId,
 					email: email,
 					userSession: sessionResponse?.value ?? '',
 					priceId: priceId,
 				},
 			});
 			customer = newCustomer;
-		}
-		const isOwner = await isTeamOwnerServer(teamId, userId);
-
-		if (!isOwner) {
-			return { error: 'You must be the team owner to manage billing' };
 		}
 
 		try {
@@ -101,11 +78,10 @@ export const createCheckoutSession = async ({
 						quantity: 1,
 					},
 				],
-				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing/success`,
-				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing`,
+				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${userId}/billing/success`,
+				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${userId}/billing`,
 				metadata: {
 					userId: userId,
-					teamId: teamId,
 					email: email,
 					userSession: sessionResponse?.value ?? '',
 				},
@@ -154,7 +130,6 @@ export const createCheckoutSession = async ({
 				email: email,
 				metadata: {
 					userId: userId,
-					teamId: teamId,
 					email: email,
 					userSession: sessionResponse?.value ?? '',
 					priceId: priceId,
@@ -181,7 +156,6 @@ export const createCheckoutSession = async ({
 				payment_method_types: ['card'],
 				metadata: {
 					userId,
-					teamId,
 					email,
 					userSession: sessionResponse?.value ?? '',
 					priceId,
@@ -192,8 +166,8 @@ export const createCheckoutSession = async ({
 						quantity: 1,
 					},
 				],
-				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing/success`,
-				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${teamId}/billing`,
+				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${userId}/billing/success`,
+				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${userId}/billing`,
 			});
 
 			return {
@@ -241,7 +215,6 @@ const handleUpgradeSubscription = async (
 		await stripe.customers.update(stripeCustomerId, {
 			metadata: {
 				userId: customerResponse?.userId,
-				teamId: customerResponse?.teamId,
 				email: customerResponse?.email,
 				userSession: userSession ?? '',
 			},
@@ -307,7 +280,6 @@ const handleUpgradeOneTimePayment = async (
 		const updatedCustomer = await stripe.customers.update(stripeCustomerId, {
 			metadata: {
 				userId: customerResponse?.userId,
-				teamId: customerResponse?.teamId,
 				email: customerResponse?.email,
 				userSession: userSession ?? '',
 				priceId: priceId,

@@ -5,8 +5,6 @@ export { customer, customerRelations } from './customer';
 export { customerInvoice, customerInvoiceRelations } from './customerInvoice';
 export { passwordResetToken } from './passwordResetToken';
 export { session } from './session';
-export { team, teamRelations, teamRole } from './team';
-export { teamMember, teamMemberRelations } from './teamMember';
 export { twoFactorConfirmation, twoFactorConfirmationRelations } from './twoFactorConfirmation';
 export { twoFactorToken } from './twoFactorToken';
 export { user, userRelations, userRole } from './user';

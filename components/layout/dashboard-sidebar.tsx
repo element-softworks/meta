@@ -13,14 +13,6 @@ export function DashboardSidebar() {
 	const [navOpen, setNavOpen] = useState(false);
 	const drawerItems = useSidebarItems();
 
-	const router = useRouter();
-
-	const currentUser = useCurrentUser();
-
-	if (!currentUser?.currentTeam) {
-		router.push('/setup');
-	}
-
 	return (
 		<>
 			<div className="py-2 px-4 lg:px-4 absolute">

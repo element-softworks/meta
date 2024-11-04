@@ -32,7 +32,7 @@ export function ReportBugForm(props: ReportBugFormProps) {
 		},
 	});
 
-	const { query: createTeamQuery, isLoading: isCreating } = useMutation<FormData, {}>({
+	const { query: reportBugQuery, isLoading: isCreating } = useMutation<FormData, {}>({
 		queryFn: async (values) => await reportBug(values!),
 		onCompleted: async (data) => {
 			form.reset();
@@ -50,7 +50,7 @@ export function ReportBugForm(props: ReportBugFormProps) {
 		formData.append('title', values.title);
 		formData.append('description', values.description);
 		formData.append('status', values.status);
-		createTeamQuery(formData);
+		reportBugQuery(formData);
 	}
 
 	return (

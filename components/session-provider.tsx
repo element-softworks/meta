@@ -6,7 +6,7 @@ import { redirect } from 'next/navigation';
 
 export function SessionTrackerProvider({ children }: Readonly<{ children: React.ReactNode }>) {
 	const user = useCurrentUser();
-	useSessionTracker(user?.email ?? '', user?.currentTeam);
+	useSessionTracker(user?.email ?? '');
 
 	return <>{children}</>;
 }

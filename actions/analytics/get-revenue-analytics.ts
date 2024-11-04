@@ -27,11 +27,11 @@ export const getRevenueAnalytics = async () => {
 
 	const totalRevenue = customers
 		.map((customer) => {
-			const currentTeamPlan = Object.entries(plans).find(
+			const currentPlan = Object.entries(plans).find(
 				(plan) => plan?.[1]?.stripePricingId === customer?.planId
 			)?.[1];
 
-			return currentTeamPlan?.price ?? 0;
+			return currentPlan?.price ?? 0;
 		})
 		?.reduce((acc, cost) => acc + cost, 0);
 
@@ -54,11 +54,11 @@ export const getRevenueAnalytics = async () => {
 
 	const previousMonthTotalRevenue = previousMonthRevenue
 		.map((customer) => {
-			const currentTeamPlan = Object.entries(plans).find(
+			const currentPlan = Object.entries(plans).find(
 				(plan) => plan?.[1]?.stripePricingId === customer?.planId
 			)?.[1];
 
-			return currentTeamPlan?.price ?? 0;
+			return currentPlan?.price ?? 0;
 		})
 		?.reduce((acc, cost) => acc + cost, 0);
 

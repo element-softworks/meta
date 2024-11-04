@@ -15,6 +15,27 @@
       "when": 1729630197980,
       "tag": "0001_optimal_skrulls",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1730749523025,
+      "tag": "0002_regular_grim_reaper",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1730749838163,
+      "tag": "0003_faulty_revanche",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1730749880965,
+      "tag": "0004_new_dreadnoughts",
+      "breakpoints": true
     }
   ]
 }

@@ -10,7 +10,6 @@ import { ExtendedUser } from '@/next-auth';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React from 'react';
-import { TeamSelectMenu } from '../auth/team-select-menu';
 
 interface NavStripProps {
 	user: ExtendedUser | undefined;
@@ -89,8 +88,6 @@ export function NavStrip(props: NavStripProps) {
 						})}
 					</BreadcrumbList>
 				</Breadcrumb>
-
-				<TeamSelectMenu enableBadge />
 			</div>
 		</nav>
 	);

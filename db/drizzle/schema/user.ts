@@ -2,8 +2,8 @@ import { InferSelectModel, relations, sql } from 'drizzle-orm';
 import { boolean, index, pgEnum, pgTable, text, timestamp, uniqueIndex } from 'drizzle-orm/pg-core';
 import { userNotification } from './userNotification';
 import { twoFactorConfirmation } from './twoFactorConfirmation';
-import { teamMember } from './teamMember';
 import { account } from './account';
+import { customerInvoice } from './customerInvoice';
 export const userRole = pgEnum('UserRole', ['ADMIN', 'USER']);
 
 export const user = pgTable(
@@ -15,6 +15,8 @@ export const user = pgTable(
 			.default(sql`gen_random_uuid()`),
 		name: text('name'),
 		email: text('email').notNull(),
+		stripeCustomerId: text('stripeCustomerId'),
+		stripePaymentId: text('stripePaymentId'),
 		emailVerified: timestamp('emailVerified', { precision: 3, mode: 'date' }),
 		image: text('image'),
 		password: text('password'),
@@ -47,7 +49,7 @@ export const user = pgTable(
 export const userRelations = relations(user, ({ many }) => ({
 	userNotifications: many(userNotification),
 	twoFactorConfirmations: many(twoFactorConfirmation),
-	teamMembers: many(teamMember),
+	userInvoices: many(customerInvoice),
 	accounts: many(account),
 }));
 

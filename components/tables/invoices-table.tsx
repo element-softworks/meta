@@ -110,12 +110,6 @@ export function InvoicesTable(props: InvoicesTableProps) {
 							>
 								Copy invoice ID
 							</DropdownMenuItem>
-							{/* <DropdownMenuSeparator /> */}
-							{/* <Link href={`/dashboard/invoices/${team.id}`}>
-								<DropdownMenuItem className="cursor-pointer">
-									View invoice
-								</DropdownMenuItem>
-							</Link> */}
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);

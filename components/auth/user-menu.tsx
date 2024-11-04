@@ -107,7 +107,7 @@ export function UserMenu(props: UserMenuProps) {
 							</DropdownMenuItem>
 						</Link>
 
-						<Link href={`/dashboard/teams/${props.user.currentTeam}/billing`}>
+						<Link href={`/dashboard/users/${props.user.id}/billing`}>
 							<DropdownMenuItem className="cursor-pointer">
 								<CreditCard className="mr-2 h-4 w-4" />
 								Billing

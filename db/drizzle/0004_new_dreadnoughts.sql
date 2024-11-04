@@ -1,0 +1,1 @@
+ALTER TABLE "ConciergeToken" DROP COLUMN IF EXISTS "userId";

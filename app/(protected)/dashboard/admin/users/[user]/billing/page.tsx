@@ -1,9 +1,12 @@
 import CancelSubscriptionButton from '@/components/billing/cancel-subscription-button';
 import PricingPlans from '@/components/billing/pricing-plans';
 import { Separator } from '@/components/ui/separator';
-import { getTeamById, getTeamCustomerByTeamId } from '@/data/team';
+import { getUserById } from '@/data/user';
+import { db } from '@/db/drizzle/db';
+import { customer } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import plans from '@/plans';
+import { eq } from 'drizzle-orm';
 import { Suspense } from 'react';
 
 if (!process.env.STRIPE_WEBHOOK_SECRET) {
@@ -13,34 +16,34 @@ if (!process.env.STRIPE_WEBHOOK_SECRET) {
 }
 
 export async function generateMetadata({ params }: any) {
-	const teamResponse = await getTeamById(params.team);
+	const userResponse = await getUserById(params.user);
 	return {
-		title: `Billing | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
-		description: `Billing for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+		title: `Billing | ${userResponse?.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+		description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
 		openGraph: {
-			title: `Billing | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
-			description: `Billing for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+			title: `Billing | ${userResponse?.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
 		},
 		twitter: {
-			title: `Billing | ${teamResponse?.data?.team.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
-			description: `Billing for ${teamResponse?.data?.team.name} on NextJS SaaS Boilerplate.`,
+			title: `Billing | ${userResponse?.name} | Teams | Dashboard | NextJS SaaS Boilerplate`,
+			description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
 		},
 	};
 }
 
 export default async function BillingPage({ params }: { params: { team: string } }) {
 	const user = await currentUser();
-	const team = await getTeamById(params.team ?? '');
-	const customer = await getTeamCustomerByTeamId(params.team ?? '');
+	const [customerResponse] = await db
+		.select()
+		.from(customer)
+		.where(eq(customer.userId, user?.id!));
 	// const isOwner = await isTeamOwner(team?.team?.members ?? [], user?.id ?? '');
 
-	const teamHasPlan = !!customer?.id && customer?.status === 'active';
+	const teamHasPlan = !!customer?.id && customerResponse?.status === 'active';
 
 	const currentTeamPlan = Object.entries(plans).find(
-		(plan) => plan?.[1]?.stripePricingId === customer?.planId
+		(plan) => plan?.[1]?.stripePricingId === customerResponse?.planId
 	)?.[1];
-
-	const isOwner = team?.data?.currentMember?.role === 'OWNER';
 
 	return (
 		<main className="flex flex-col  gap-4 h-full">
@@ -57,28 +60,20 @@ export default async function BillingPage({ params }: { params: { team: string }
 			<Separator />
 
 			<Suspense fallback={<>...</>}>
-				{!teamHasPlan && !user?.currentTeam ? (
-					<p>You must create a team to setup billing</p>
-				) : null}
-
-				{!isOwner ? <p>You must be the team owner to setup/manage billing</p> : null}
-
 				<div className="mb-4">
 					<PricingPlans
 						type="subscription"
-						readOnly={!isOwner || !user?.currentTeam}
-						teamId={team.data?.team?.id ?? ''}
-						stripeCustomerId={team?.data?.team?.stripeCustomerId ?? ''}
+						readOnly={false}
+						stripeCustomerId={user?.stripePricingId ?? ''}
 						currentPlanId={currentTeamPlan?.stripePricingId}
 					/>
 				</div>
-				{teamHasPlan && currentTeamPlan?.type === 'subscription' && isOwner ? (
+				{teamHasPlan && currentTeamPlan?.type === 'subscription' ? (
 					<div className="flex flex-col gap-4 h-full">
 						<div className="mt-auto">
 							<CancelSubscriptionButton
-								customer={customer}
+								customer={customerResponse}
 								userId={user?.id ?? ''}
-								teamId={user?.currentTeam ?? ''}
 							/>
 						</div>
 					</div>

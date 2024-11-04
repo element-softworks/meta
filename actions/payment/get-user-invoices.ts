@@ -5,8 +5,8 @@ import { customerInvoice } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
 import { and, asc, count, desc, eq, or, sql } from 'drizzle-orm';
 
-interface GetTeamInvoicesProps {
-	teamId: string;
+interface GetUserInvoicesProps {
+	userId: string;
 	pageNum: number;
 	perPage: number;
 	search: string;
@@ -14,7 +14,7 @@ interface GetTeamInvoicesProps {
 		createdAt: string;
 	};
 }
-export const getTeamInvoices = async (props: GetTeamInvoicesProps) => {
+export const getUserInvoices = async (props: GetUserInvoicesProps) => {
 	const authUser = await currentUser();
 
 	if (!authUser) {
@@ -26,7 +26,7 @@ export const getTeamInvoices = async (props: GetTeamInvoicesProps) => {
 		.from(customerInvoice)
 		.where(
 			and(
-				eq(customerInvoice.teamId, props.teamId),
+				eq(customerInvoice.userId, props.userId),
 				or(
 					sql`lower(${customerInvoice.id}) like ${`%${props.search.toLowerCase()}%`}`,
 					sql`lower(${customerInvoice.status}) like ${`%${props.search.toLowerCase()}%`}`
@@ -46,7 +46,7 @@ export const getTeamInvoices = async (props: GetTeamInvoicesProps) => {
 		.from(customerInvoice)
 		.where(
 			and(
-				eq(customerInvoice.teamId, props.teamId),
+				eq(customerInvoice.userId, props.userId),
 				or(
 					sql`lower(${customerInvoice.id}) like ${`%${props.search.toLowerCase()}%`}`,
 					sql`lower(${customerInvoice.status}) like ${`%${props.search.toLowerCase()}%`}`

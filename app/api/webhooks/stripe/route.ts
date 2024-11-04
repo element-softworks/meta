@@ -1,11 +1,9 @@
-import { getTeamById } from '@/data/team';
 import { getUserByEmail } from '@/data/user';
 import { db } from '@/db/drizzle/db';
-import { customer, customerInvoice, session, team } from '@/db/drizzle/schema';
+import { customer, customerInvoice, session, user } from '@/db/drizzle/schema';
 import { createNotification } from '@/lib/notifications';
 import { addYears } from 'date-fns';
 import { eq } from 'drizzle-orm';
-import { stat } from 'fs';
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
@@ -40,7 +38,6 @@ export async function POST(req: NextRequest, res: Response) {
 
 		const customerResponse = await getCustomer(subscription.customer as string);
 		const userResponse = await getUserByEmail(customerResponse.email ?? '');
-		const teamResponse = await getTeamById(customerResponse?.metadata?.teamId ?? '');
 
 		if (!userResponse) {
 			console.error('User not found');
@@ -54,7 +51,6 @@ export async function POST(req: NextRequest, res: Response) {
 		const endDate = new Date(subscription?.current_period_end * 1000); //Convert unix timestamp to JS date
 
 		const subscriptionData = {
-			teamId: teamResponse.data?.team?.id ?? '',
 			userId: userResponse.id ?? '',
 			stripeCustomerId: subscription.customer as string,
 			stripeSubscriptionId: subscription.id,
@@ -87,15 +83,15 @@ export async function POST(req: NextRequest, res: Response) {
 				}
 
 				await db
-					.update(team)
+					.update(user)
 					.set({
 						stripeCustomerId: customerResponse.id,
 					})
-					.where(eq(team.id, teamResponse?.data?.team?.id!));
+					.where(eq(user.id, userResponse?.id!));
 
 				await createNotification({
 					userId: customerResponse.metadata.userId,
-					message: `Your subscription to ${teamResponse?.data?.team?.name} has been created`,
+					message: `Your subscription has been created`,
 					title: 'Subscription created',
 				});
 			} else if (type === 'updated') {
@@ -117,17 +113,17 @@ export async function POST(req: NextRequest, res: Response) {
 					})
 					.where(eq(customer.stripeCustomerId, subscriptionData.stripeCustomerId));
 
-				// Update team
+				// Update user
 				await db
-					.update(team)
+					.update(user)
 					.set({
 						stripeCustomerId: '',
 					})
-					.where(eq(team.id, teamResponse?.data?.team?.id!));
+					.where(eq(user.id, userResponse?.id!));
 
 				await createNotification({
 					userId: customerResponse.metadata.userId,
-					message: `Your subscription to ${teamResponse?.data?.team?.name} has been deleted`,
+					message: `Your subscription has been deleted`,
 					title: 'Subscription deleted',
 				});
 			}
@@ -145,7 +141,6 @@ export async function POST(req: NextRequest, res: Response) {
 
 		const customerResponse = await getCustomer(invoice.customer as string);
 		const userResponse = await getUserByEmail(customerResponse.email ?? '');
-		const teamResponse = await getTeamById(customerResponse?.metadata?.teamId ?? '');
 
 		let foundCustomer = await db.query.customer.findFirst({
 			where: eq(customer.stripeCustomerId, customerResponse.id),
@@ -154,10 +149,6 @@ export async function POST(req: NextRequest, res: Response) {
 		if (!userResponse) {
 			console.error('User not found');
 			return NextResponse.json({ error: 'User not found' }, { status: 404 });
-		}
-		if (!team) {
-			console.error('Team not found');
-			return NextResponse.json({ error: 'Team not found' }, { status: 404 });
 		}
 
 		if (!foundCustomer) {
@@ -172,7 +163,6 @@ export async function POST(req: NextRequest, res: Response) {
 					status: invoice.status as string,
 					stripeCustomerId: invoice.customer as string,
 					stripeSubscriptionId: '',
-					teamId: teamResponse?.data?.team?.id ?? '',
 					userId: userResponse.id,
 					endDate: endDate,
 				})
@@ -224,8 +214,8 @@ export async function POST(req: NextRequest, res: Response) {
 			} else {
 				await db.insert(customerInvoice).values({
 					invoiceId: invoice.id ?? '',
-					teamId: teamResponse?.data?.team?.id ?? '',
 					amountPaid: invoice.amount_paid ?? '',
+					userId: userResponse?.id ?? '',
 					amountDue: invoice.amount_due ?? '',
 					total: invoice.total ?? '',
 					invoicePdf: invoice.invoice_pdf ?? '',
@@ -238,9 +228,7 @@ export async function POST(req: NextRequest, res: Response) {
 				});
 				await createNotification({
 					userId: customerResponse?.metadata?.userId ?? '',
-					message: `Your invoice for ${teamResponse?.data?.team?.name} has ${
-						status === 'succeeded' ? 'been paid' : 'failed'
-					}`,
+					message: `Your invoice has ${status === 'succeeded' ? 'been paid' : 'failed'}`,
 					title: `Invoice ${status === 'succeeded' ? 'paid' : 'failed'}`,
 				});
 			}
@@ -259,7 +247,6 @@ export async function POST(req: NextRequest, res: Response) {
 
 		const customerResponse = await getCustomer((payment?.customer as string) ?? '');
 		const userResponse = await getUserByEmail(customerResponse.email ?? '');
-		const teamResponse = await getTeamById(customerResponse?.metadata?.teamId ?? '');
 
 		if (payment.mode === 'payment' && payment.status === 'complete') {
 			//Create a new customer with a one time payment
@@ -279,7 +266,6 @@ export async function POST(req: NextRequest, res: Response) {
 						status: payment?.status === 'complete' ? 'active' : 'unpaid',
 						stripeCustomerId: payment.customer as string,
 						stripeSubscriptionId: '',
-						teamId: teamResponse?.data?.team?.id ?? '',
 						userId: userResponse?.id ?? '',
 						endDate: addYears(new Date(payment?.created * 1000), 999),
 					})
@@ -297,20 +283,19 @@ export async function POST(req: NextRequest, res: Response) {
 						status: payment?.status === 'complete' ? 'active' : 'unpaid',
 						stripeCustomerId: payment.customer as string,
 						stripeSubscriptionId: '',
-						teamId: teamResponse?.data?.team?.id ?? '',
 						userId: userResponse?.id ?? '',
 						endDate: addYears(new Date(payment?.created * 1000), 999),
 					})
 					.where(eq(customer.stripeCustomerId, customerResponse.id));
 			}
 
-			// Update team
+			// Update user
 			await db
-				.update(team)
+				.update(user)
 				.set({
 					stripeCustomerId: customerResponse.id,
 				})
-				.where(eq(team.id, teamResponse?.data?.team?.id!));
+				.where(eq(user.id, userResponse?.id!));
 		}
 	};
 

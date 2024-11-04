@@ -7,15 +7,12 @@ import Google from 'next-auth/providers/google';
 import { getUserByEmail, getUserById } from './data/user';
 import { db } from './db/drizzle/db';
 import { LoginSchema } from './schemas';
-import { and, eq, exists } from 'drizzle-orm';
-import { account, session, teamMember, twoFactorConfirmation, user } from './db/drizzle/schema';
+import { eq } from 'drizzle-orm';
+import { account, session, twoFactorConfirmation, user } from './db/drizzle/schema';
 import { getTwoFactorConfirmationByUserId } from './data/two-factor-confirmation';
 import { getCookie, setCookie } from './data/cookies';
 import { getAccountByUserId } from './data/account';
-import { getUsersTeams } from './data/team';
-import { team } from './db/drizzle/schema/team';
 import { user as dbUser } from './db/drizzle/schema/user';
-import { revalidatePath } from 'next/cache';
 
 export const {
 	handlers,
@@ -146,16 +143,8 @@ export const {
 				session.user.role = token.role;
 			}
 
-			if (token.teams && session.user) {
-				session.user.teams = token.teams;
-			}
-
 			if (session.user) {
 				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
-			}
-
-			if (token.currentTeam && session.user) {
-				session.user.currentTeam = token.currentTeam;
 			}
 
 			if (session.user) {
@@ -173,33 +162,11 @@ export const {
 		jwt: async ({ token, session }) => {
 			if (!token.sub) return token;
 
-			const teamCookie = await getCookie(`${token.sub}-current-team`);
 			const existingUser = await getUserById(token.sub);
-			const [teamResponse] = await db
-				.select()
-				.from(team)
-				.where(
-					and(
-						eq(team.isArchived, false),
-						exists(
-							db
-								.select()
-								.from(teamMember)
-								.where(
-									and(
-										eq(teamMember.teamId, team.id),
-										eq(teamMember.userId, token.sub)
-									)
-								)
-						)
-					)
-				)
-				.limit(1);
 
 			if (!existingUser) return token;
 
 			const existingAccount = await getAccountByUserId(existingUser.id);
-			const currentUserTeams = await getUsersTeams(token.sub);
 
 			token.isOAuth = !!existingAccount;
 			token.name = session?.name ?? existingUser.name;
@@ -209,8 +176,6 @@ export const {
 			token.isTwoFactorEnabled =
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			token.image = session?.image ?? existingUser.image;
-			token.teams = currentUserTeams ?? [];
-			token.currentTeam = teamCookie?.value ?? teamResponse?.id ?? '';
 			token.notificationsEnabled =
 				session?.notificationsEnabled ?? existingUser.notificationsEnabled;
 			return token;

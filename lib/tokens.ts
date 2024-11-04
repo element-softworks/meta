@@ -62,17 +62,7 @@ export const generateVerificationToken = async (currentEmail: string, newEmail?:
 };
 
 //Generate email verification token for credentials authentication method
-export const generateConciergeToken = async ({
-	email,
-	name,
-	teamId,
-	role,
-}: {
-	email: string;
-	name: string;
-	teamId: string;
-	role: 'ADMIN' | 'USER' | 'OWNER';
-}) => {
+export const generateConciergeToken = async ({ email, name }: { email: string; name: string }) => {
 	const token = uuidv4();
 	const expiresAt = new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000); // 1 week
 
@@ -91,9 +81,7 @@ export const generateConciergeToken = async ({
 			token,
 			email,
 			expiresAt,
-			teamId,
 			name,
-			role,
 		})
 		.returning();
 

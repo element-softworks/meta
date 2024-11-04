@@ -1,6 +1,5 @@
 'use server';
 
-import { getTeamById } from '@/data/team';
 import { getUserById } from '@/data/user';
 import { currentUser } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
@@ -12,7 +11,7 @@ if (!process.env.STRIPE_SECRET_KEY) {
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
-export const uncancelSubscription = async (customerId: string, teamId: string, userId: string) => {
+export const uncancelSubscription = async (customerId: string, userId: string) => {
 	const authUser = await currentUser();
 
 	if (!authUser) {
@@ -22,24 +21,11 @@ export const uncancelSubscription = async (customerId: string, teamId: string, u
 		return { error: 'Customer ID is required' };
 	}
 
-	if (!teamId) {
-		return { error: 'Team ID is required' };
-	}
-
 	if (!userId) {
 		return { error: 'User ID is required' };
 	}
 
-	const user = await getUserById(userId);
-	const teamResponse = await getTeamById(teamId);
-
-	if (!teamResponse) {
-		return { error: 'Team not found' };
-	}
-
-	if (teamResponse.data?.currentMember?.role !== 'OWNER' && user?.role !== 'ADMIN') {
-		return { error: 'You must be team owner to cancel billing' };
-	}
+	const userResponse = await getUserById(userId);
 
 	try {
 		const subscriptions = await stripe.subscriptions.list({
@@ -53,7 +39,7 @@ export const uncancelSubscription = async (customerId: string, teamId: string, u
 				});
 			})
 		);
-		revalidatePath(`/dashboard/teams/${teamId}/billing`);
+		revalidatePath(`/dashboard/users/${userResponse?.id}/billing`);
 		return { success: 'Subscription reinstated' };
 	} catch (error: any) {
 		console.error('An error occurred cancelling your subscription:' + error);
