@@ -41,7 +41,7 @@ export const cancelSubscription = async (customerId: string, userId: string) => 
 			})
 		);
 
-		revalidatePath(`/dashboard/user/${user}/billing`);
+		revalidatePath(`/dashboard/users/${user}/billing`);
 		return { success: 'Subscription cancelled' };
 	} catch (error: any) {
 		console.error('An error occurred cancelling your subscription:' + error);

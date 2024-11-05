@@ -35,7 +35,11 @@ export function RegisterForm(props: RegisterFormProps) {
 	const { query: registerQuery, isLoading } = useMutation<RegisterFormFormProps, {}>({
 		queryFn: async (values) => await register(values!, props?.token),
 		onSuccess: () => {
-			form.reset();
+			form.reset({
+				email: '',
+				password: '',
+				name: '',
+			});
 		},
 	});
 

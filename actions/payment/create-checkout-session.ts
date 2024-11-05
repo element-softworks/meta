@@ -78,8 +78,8 @@ export const createCheckoutSession = async ({
 						quantity: 1,
 					},
 				],
-				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${userId}/billing/success`,
-				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${userId}/billing`,
+				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${userId}/billing/success`,
+				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${userId}/billing`,
 				metadata: {
 					userId: userId,
 					email: email,
@@ -166,8 +166,8 @@ export const createCheckoutSession = async ({
 						quantity: 1,
 					},
 				],
-				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${userId}/billing/success`,
-				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/${userId}/billing`,
+				success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${userId}/billing/success`,
+				cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${userId}/billing`,
 			});
 
 			return {

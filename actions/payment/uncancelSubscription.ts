@@ -39,7 +39,7 @@ export const uncancelSubscription = async (customerId: string, userId: string) =
 				});
 			})
 		);
-		revalidatePath(`/dashboard/${userResponse?.id}/billing`);
+		revalidatePath(`/dashboard/users/${userResponse?.id}/billing`);
 		return { success: 'Subscription reinstated' };
 	} catch (error: any) {
 		console.error('An error occurred cancelling your subscription:' + error);
