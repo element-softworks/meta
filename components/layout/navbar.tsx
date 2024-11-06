@@ -2,7 +2,6 @@
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { Book, CreditCard, FrameIcon, Notebook, Phone } from 'lucide-react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { NotificationsMenu } from '../auth/notifications-menu';
 import { UserMenu } from '../auth/user-menu';
@@ -34,7 +33,6 @@ export function Navbar(props: NavbarProps) {
 
 	const showDropShadow = useWindowScrolled();
 
-	const searchParams = useSearchParams();
 	return (
 		<nav
 			style={{

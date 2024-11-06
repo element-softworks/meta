@@ -10,7 +10,7 @@ export default async function generateSitemaps() {
 			url: `${process.env.NEXT_PUBLIC_APP_URL}/blog/${post}`,
 			lastModified: new Date(),
 			changeFrequency: 'weekly',
-			priority: 0.8,
+			priority: 0.7,
 		})),
 		{
 			url: `${process.env.NEXT_PUBLIC_APP_URL}/`,
@@ -49,30 +49,6 @@ export default async function generateSitemaps() {
 			priority: 0.9,
 		},
 		{
-			url: `${process.env.NEXT_PUBLIC_APP_URL}/auth/error`,
-			lastModified: new Date(),
-			changeFrequency: 'yearly',
-			priority: 0.1,
-		},
-		{
-			url: `${process.env.NEXT_PUBLIC_APP_URL}/auth/new-password`,
-			lastModified: new Date(),
-			changeFrequency: 'yearly',
-			priority: 0.2,
-		},
-		{
-			url: `${process.env.NEXT_PUBLIC_APP_URL}/auth/new-verification`,
-			lastModified: new Date(),
-			changeFrequency: 'yearly',
-			priority: 0.2,
-		},
-		{
-			url: `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset`,
-			lastModified: new Date(),
-			changeFrequency: 'yearly',
-			priority: 0.2,
-		},
-		{
 			url: `${process.env.NEXT_PUBLIC_APP_URL}/privacy-policy`,
 			lastModified: new Date(),
 			changeFrequency: 'yearly',
@@ -83,18 +59,6 @@ export default async function generateSitemaps() {
 			lastModified: new Date(),
 			changeFrequency: 'yearly',
 			priority: 0.2,
-		},
-		{
-			url: `${process.env.NEXT_PUBLIC_APP_URL}/robots.txt`,
-			lastModified: new Date(),
-			changeFrequency: 'yearly',
-			priority: 0.1,
-		},
-		{
-			url: `${process.env.NEXT_PUBLIC_APP_URL}/sitemap.xml`,
-			lastModified: new Date(),
-			changeFrequency: 'yearly',
-			priority: 0.1,
 		},
 	];
 }

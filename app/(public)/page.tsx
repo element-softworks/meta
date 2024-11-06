@@ -17,7 +17,7 @@ import { ChartArea, Goal, Pointer } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata() {
 	return {
 		title: `NextJS SaaS Boilerplate`,
 		description:
