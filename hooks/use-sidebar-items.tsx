@@ -29,6 +29,12 @@ export function useSidebarItems() {
 					icon: <LayoutDashboard size={20} />,
 					visible: true,
 				},
+				{
+					text: 'Billing',
+					link: `/dashboard/users/${user?.id}/billing`,
+					icon: <CreditCard size={20} />,
+					visible: true,
+				},
 			],
 		},
 
