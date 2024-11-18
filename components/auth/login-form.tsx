@@ -76,7 +76,7 @@ export function LoginForm() {
 	}
 
 	return (
-		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
+		<div className="flex flex-col gap-4 max-w-full ">
 			<div className="mb-4 ">
 				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
 					{showTwoFactor ? 'Enter 2FA code' : 'Login'}
@@ -148,11 +148,11 @@ export function LoginForm() {
 			</div>
 			<Social className="mt-2" />
 
-			<p className=" text-sm font-normal text-muted-foreground">
+			<p className="text-sm font-medium !font-body mt-4">
 				{"Don't"} have an account yet?{' '}
-				<Button asChild variant="link" className="px-0 ">
-					<Link href="/auth/register">Register now</Link>
-				</Button>
+				<Link className="font-semibold" href="/auth/register">
+					Register now
+				</Link>
 			</p>
 		</div>
 	);

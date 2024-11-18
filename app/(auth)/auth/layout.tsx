@@ -24,7 +24,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 							height={80}
 							className=""
 						/>
-						<div className="justify-center items-center flex mx-auto flex-col my-auto">
+						<div className="justify-center items-center flex mx-auto flex-col my-auto w-full">
 							<Suspense fallback={<ClipLoader size={50} />}>{children}</Suspense>
 						</div>
 					</div>
