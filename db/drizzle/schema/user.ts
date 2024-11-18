@@ -4,10 +4,7 @@ import { userNotification } from './userNotification';
 import { twoFactorConfirmation } from './twoFactorConfirmation';
 import { account } from './account';
 import { coach } from './booking-system/coach';
-<<<<<<< HEAD
 import { customerInvoice } from './customerInvoice';
-=======
->>>>>>> b67b96c66b3e0193080fbbc7ed00b4642de87234
 export const userRole = pgEnum('UserRole', ['ADMIN', 'USER']);
 
 export const user = pgTable(

@@ -6,11 +6,7 @@ import { SessionProvider } from 'next-auth/react';
 import { Fredoka, Inter, Open_Sans } from 'next/font/google';
 import '../globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
-<<<<<<< HEAD
 import { Suspense } from 'react';
-=======
->>>>>>> b67b96c66b3e0193080fbbc7ed00b4642de87234
-
 export const metadata: Metadata = {
 	title: 'Coaching Hours',
 	description: 'This is a boilerplate for building SaaS applications with NextJS.',
