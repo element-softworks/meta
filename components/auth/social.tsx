@@ -1,10 +1,8 @@
 'use client';
-import { FcGoogle } from 'react-icons/fc';
-import { FaGithub } from 'react-icons/fa';
-import { Button } from '../ui/button';
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
+import { FcGoogle } from 'react-icons/fc';
+import { Button } from '../ui/button';
 
 interface SocialProps {
 	className?: string;
@@ -16,7 +14,7 @@ export function Social(props: SocialProps) {
 
 	const onClick = (provider: 'google') => {
 		signIn(provider, {
-			callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+			callbackUrl: callbackUrl || '/dashboard',
 		});
 	};
 

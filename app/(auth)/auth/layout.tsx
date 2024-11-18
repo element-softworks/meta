@@ -9,15 +9,18 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<main className="auth-layout h-screen max-w-full">
 			<section className="flex flex-col md:flex-row min-h-screen ">
-				<section className="min-h-screen bg-primary-foreground flex-1 justify-center-center">
-					<div className="justify-center items-center flex flex-col min-h-screen mb-auto p-4 md:p-8">
+				<section className="min-h-screen bg-primary-foreground flex-1">
+					<div className=" min-h-screen mb-auto relative max-w-lg mx-auto py-8 px-4 md:px-8 ">
 						<Image
 							src="https://coaching-hours.s3.eu-west-2.amazonaws.com/coaching-hours-logo.svg"
 							alt="Coaching hours logo"
-							width={200}
-							height={200}
+							width={150}
+							height={80}
+							className=""
 						/>
-						<Suspense fallback={<ClipLoader size={50} />}>{children}</Suspense>
+						<div className="justify-center items-center flex mx-auto flex-col">
+							<Suspense fallback={<ClipLoader size={50} />}>{children}</Suspense>
+						</div>
 					</div>
 				</section>
 				<aside className="md:flex hidden flex-col w-1/2 bg-background  flex-0 md:flex-1 relative text-white p-8">

@@ -4,15 +4,15 @@ import Link from 'next/link';
 
 export async function generateMetadata() {
 	return {
-		title: `Error | Login | NextJS SaaS Boilerplate`,
-		description: 'Failed logging in to your account on NextJS SaaS Boilerplate.',
+		title: `Error | Login | Coaching Hours`,
+		description: 'Failed logging in to your account on Coaching Hours.',
 		openGraph: {
-			title: `Error | Login | NextJS SaaS Boilerplate`,
-			description: 'Failed logging in to your account on NextJS SaaS Boilerplate.',
+			title: `Error | Login | Coaching Hours`,
+			description: 'Failed logging in to your account on Coaching Hours.',
 		},
 		twitter: {
-			title: `Error | Login | NextJS SaaS Boilerplate`,
-			description: 'Failed logging in to your account on NextJS SaaS Boilerplate.',
+			title: `Error | Login | Coaching Hours`,
+			description: 'Failed logging in to your account on Coaching Hours.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/auth/error`,

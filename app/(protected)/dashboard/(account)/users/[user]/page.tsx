@@ -5,15 +5,15 @@ import { currentUser } from '@/lib/auth';
 
 export async function generateMetadata() {
 	return {
-		title: `Account settings | NextJS SaaS Boilerplate`,
-		description: 'Manage your account settings on NextJS SaaS Boilerplate.',
+		title: `Account settings | Coaching Hours`,
+		description: 'Manage your account settings on Coaching Hours.',
 		openGraph: {
-			title: `Account settings | NextJS SaaS Boilerplate`,
-			description: 'Manage your account settings on NextJS SaaS Boilerplate.',
+			title: `Account settings | Coaching Hours`,
+			description: 'Manage your account settings on Coaching Hours.',
 		},
 		twitter: {
-			title: `Account settings | NextJS SaaS Boilerplate`,
-			description: 'Manage your account settings on NextJS SaaS Boilerplate.',
+			title: `Account settings | Coaching Hours`,
+			description: 'Manage your account settings on Coaching Hours.',
 		},
 	};
 }

@@ -5,14 +5,14 @@ import { Suspense } from 'react';
 
 export async function generateMetadata() {
 	return {
-		title: `Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
+		title: `Users | Admin | Dashboard | Coaching Hours`,
 		description: 'View and manage platform users here',
 		openGraph: {
-			title: `Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
+			title: `Users | Admin | Dashboard | Coaching Hours`,
 			description: 'View and manage platform users here',
 		},
 		twitter: {
-			title: `Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
+			title: `Users | Admin | Dashboard | Coaching Hours`,
 			description: 'View and manage platform users here',
 		},
 	};

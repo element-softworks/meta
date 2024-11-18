@@ -11,15 +11,15 @@ import { getUserById } from '@/data/user';
 export async function generateMetadata({ params }: { params: { user: string } }) {
 	const user = await getUserById(params.user);
 	return {
-		title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
-		description: `${user?.name ?? 'Users'} account settings for NextJS SaaS Boilerplate.`,
+		title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | Coaching Hours`,
+		description: `${user?.name ?? 'Users'} account settings for Coaching Hours.`,
 		openGraph: {
-			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
-			description: `${user?.name ?? 'Users'} account settings for NextJS SaaS Boilerplate.`,
+			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | Coaching Hours`,
+			description: `${user?.name ?? 'Users'} account settings for Coaching Hours.`,
 		},
 		twitter: {
-			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | NextJS SaaS Boilerplate`,
-			description: `${user?.name ?? 'Users'} account settings for NextJS SaaS Boilerplate.`,
+			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | Coaching Hours`,
+			description: `${user?.name ?? 'Users'} account settings for Coaching Hours.`,
 		},
 	};
 }

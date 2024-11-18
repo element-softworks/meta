@@ -2,15 +2,15 @@ import { NotificationsContainer } from '@/components/infinite-scrolls/notificati
 
 export async function generateMetadata() {
 	return {
-		title: `Notifications | Dashboard | NextJS SaaS Boilerplate`,
-		description: 'Manage notifications for NextJS SaaS Boilerplate.',
+		title: `Notifications | Dashboard | Coaching Hours`,
+		description: 'Manage notifications for Coaching Hours.',
 		openGraph: {
-			title: `Notifications | Dashboard | NextJS SaaS Boilerplate`,
-			description: 'Manage notifications for NextJS SaaS Boilerplate.',
+			title: `Notifications | Dashboard | Coaching Hours`,
+			description: 'Manage notifications for Coaching Hours.',
 		},
 		twitter: {
-			title: `Notifications | Dashboard | NextJS SaaS Boilerplate`,
-			description: 'Manage notifications for NextJS SaaS Boilerplate.',
+			title: `Notifications | Dashboard | Coaching Hours`,
+			description: 'Manage notifications for Coaching Hours.',
 		},
 	};
 }

@@ -6,18 +6,18 @@ import { DocumentationTypography } from '@/components/docs/documentation-typogra
 
 export async function generateMetadata() {
 	return {
-		title: `Documentation | NextJS SaaS Boilerplate`,
+		title: `Documentation | Coaching Hours`,
 		description:
-			'View the documentation for NextJS SaaS Boilerplate. Learn how to get started, configure, and customize the boilerplate project.',
+			'View the documentation for Coaching Hours. Learn how to get started, configure, and customize the boilerplate project.',
 		openGraph: {
-			title: `Documentation | NextJS SaaS Boilerplate`,
+			title: `Documentation | Coaching Hours`,
 			description:
-				'View the documentation for NextJS SaaS Boilerplate. Learn how to get started, configure, and customize the boilerplate project.',
+				'View the documentation for Coaching Hours. Learn how to get started, configure, and customize the boilerplate project.',
 		},
 		twitter: {
-			title: `Documentation | NextJS SaaS Boilerplate`,
+			title: `Documentation | Coaching Hours`,
 			description:
-				'View the documentation for NextJS SaaS Boilerplate. Learn how to get started, configure, and customize the boilerplate project.',
+				'View the documentation for Coaching Hours. Learn how to get started, configure, and customize the boilerplate project.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/docs`,

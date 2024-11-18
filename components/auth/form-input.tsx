@@ -47,7 +47,7 @@ export function FormInput(props: FormInputProps) {
 			control={control}
 			name={props.name}
 			render={(inputProps) => (
-				<FormItem>
+				<FormItem className="[&_input]:!mt-1">
 					{props.label ? (
 						<FormLabel className="text-sm font-normal">{props.label}</FormLabel>
 					) : null}

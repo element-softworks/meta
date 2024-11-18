@@ -166,3 +166,54 @@ export const RegisterSchema = z.object({
 	password: z.string().min(6, { message: 'Minimum 6 characters required' }),
 	name: z.string().min(1, { message: 'Name is required' }),
 });
+
+export const CoachSetupDetailsStepSchema = z.object({
+	email: z.string().email(),
+	firstName: z.string().min(1, { message: 'First name is required' }),
+	lastName: z.string().min(1, { message: 'Last name is required' }),
+	password: z.string().min(6, { message: 'Minimum 6 characters required' }),
+	agreedToTerms: z.boolean().refine((value) => value, { message: 'You must agree to the terms' }),
+	agreedToMarketing: z.boolean(),
+});
+
+export const MoreAboutYouStepSchema = z.object({
+	avatar: z
+		.unknown()
+		.transform((value) => {
+			return value as FileList;
+		})
+		.refine(
+			(data) => {
+				const fileSize = data?.[0]?.size;
+
+				//1Mb = 1000000 bytes
+				if (fileSize > 4000000) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: "File size can't exceed 4MB",
+				path: ['image'],
+			}
+		)
+		.refine(
+			(value) => {
+				if (!value) {
+					return false;
+				}
+				return true;
+			},
+			{ message: 'Avatar is required' }
+		),
+	location: z.string().min(1, { message: 'Location is required' }),
+	timezone: z.string().min(1, { message: 'Timezone is required' }),
+	yearsExperience: z.string().min(1, { message: 'Experience is required' }),
+	businessName: z.string().min(1, { message: 'Business name is required' }),
+	businessNumber: z.string().min(1, { message: 'Business number is required' }),
+});
+
+export const CoachSetupSchema = z.object({
+	...CoachSetupDetailsStepSchema.shape,
+	...MoreAboutYouStepSchema.shape,
+});

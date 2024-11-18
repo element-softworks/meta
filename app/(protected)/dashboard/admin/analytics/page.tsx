@@ -5,15 +5,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export async function generateMetadata() {
 	return {
-		title: `Analytics | Admin | Dashboard | NextJS SaaS Boilerplate`,
-		description: 'View and analyze your dashboard analytics on NextJS SaaS Boilerplate.',
+		title: `Analytics | Admin | Dashboard | Coaching Hours`,
+		description: 'View and analyze your dashboard analytics on Coaching Hours.',
 		openGraph: {
-			title: `Analytics | Admin |  Dashboard | NextJS SaaS Boilerplate`,
-			description: 'View and analyze your dashboard analytics on NextJS SaaS Boilerplate.',
+			title: `Analytics | Admin |  Dashboard | Coaching Hours`,
+			description: 'View and analyze your dashboard analytics on Coaching Hours.',
 		},
 		twitter: {
-			title: `Analytics | Admin |  Dashboard | NextJS SaaS Boilerplate`,
-			description: 'View and analyze your dashboard analytics on NextJS SaaS Boilerplate.',
+			title: `Analytics | Admin |  Dashboard | Coaching Hours`,
+			description: 'View and analyze your dashboard analytics on Coaching Hours.',
 		},
 	};
 }
