@@ -31,13 +31,12 @@ export async function generateMetadata({ params }: any) {
 	};
 }
 
-export default async function BillingPage({ params }: { params: { team: string } }) {
+export default async function BillingPage({ params }: { params: { user: string } }) {
 	const user = await currentUser();
 	const [customerResponse] = await db
 		.select()
 		.from(customer)
 		.where(eq(customer.userId, user?.id!));
-	// const isOwner = await isTeamOwner(team?.team?.members ?? [], user?.id ?? '');
 
 	const userHasPlan = !!customer?.id && customerResponse?.status === 'active';
 

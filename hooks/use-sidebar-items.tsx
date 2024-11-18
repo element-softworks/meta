@@ -61,12 +61,7 @@ export function useSidebarItems() {
 					icon: <Users size={20} />,
 					visible: true,
 				},
-				{
-					text: 'Teams',
-					link: '/dashboard/admin/teams',
-					icon: <Flag size={20} />,
-					visible: true,
-				},
+
 				{
 					text: 'Reported bugs',
 					link: '/dashboard/admin/bugs',
