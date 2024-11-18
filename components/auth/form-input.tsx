@@ -52,8 +52,11 @@ export function FormInput(props: FormInputProps) {
 						<FormLabel className="text-sm font-normal">{props.label}</FormLabel>
 					) : null}
 					<FormControl>{props.render({ ...inputProps })}</FormControl>
+
 					{props.description ? (
-						<FormDescription>{props.description}</FormDescription>
+						<FormDescription className="!mt-1 text-muted-foreground">
+							{props.description}
+						</FormDescription>
 					) : null}
 					<FormMessage />
 				</FormItem>

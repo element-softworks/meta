@@ -9,10 +9,12 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import useFormPersist from 'react-hook-form-persist';
 import { DetailsStep } from './details-step';
+import { MoreAboutYouStep } from './more-about-you-step';
+import { VerificationStep } from './verification-step';
 
-export type CoachSetupFormFormProps = z.infer<typeof CoachSetupDetailsStepSchema>;
+export type CoachSetupFormFormProps = z.infer<typeof CoachSetupSchema>;
 
-export type step = 'details' | 'next';
+export type step = 'details' | 'more-details' | 'verification' | 'next';
 
 interface CoachSetupFormProps {
 	searchParams: any;
@@ -27,6 +29,7 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 		watch,
 		setValue,
 		storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+		exclude: ['avatar'],
 	});
 
 	async function onSubmit(values: z.infer<typeof CoachSetupSchema>) {
@@ -57,9 +60,10 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 	console.log(watch(), 'form values');
 
 	return (
-		<div className="flex flex-col gap-4 ">
+		<div className="flex flex-col gap-4 mt-14">
 			{step === 'details' ? (
 				<DetailsStep
+					values={watch()}
 					fadeOut={fadeOut}
 					onSubmit={async (values) => {
 						setValue('email', values.email);
@@ -69,7 +73,40 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 						setValue('agreedToMarketing', values.agreedToMarketing);
 						setValue('agreedToTerms', values.agreedToTerms);
 
+						changePageTimer('more-details', 0);
+					}}
+				/>
+			) : null}
+
+			{step === 'more-details' ? (
+				<MoreAboutYouStep
+					values={watch()}
+					fadeOut={fadeOut}
+					onSubmit={async (values) => {
+						setValue('avatar', values.avatar);
+						setValue('location', values.location);
+						setValue('timezone', values.timezone);
+						setValue('yearsExperience', values.yearsExperience);
+						setValue('businessName', values.businessName);
+						setValue('businessNumber', values.businessName);
+
+						changePageTimer('verification', 0);
+					}}
+					onBack={() => {
+						changePageTimer('details', 0);
+					}}
+				/>
+			) : null}
+
+			{step === 'verification' ? (
+				<VerificationStep
+					values={watch()}
+					fadeOut={fadeOut}
+					onSubmit={async (values) => {
 						changePageTimer('next', 0);
+					}}
+					onBack={() => {
+						changePageTimer('more-details', 0);
 					}}
 				/>
 			) : null}

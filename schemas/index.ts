@@ -187,14 +187,14 @@ export const MoreAboutYouStepSchema = z.object({
 				const fileSize = data?.[0]?.size;
 
 				//1Mb = 1000000 bytes
-				if (fileSize > 4000000) {
+				if (fileSize > 3000000) {
 					return false;
 				}
 				return true;
 			},
 			{
-				message: "File size can't exceed 4MB",
-				path: ['image'],
+				message: "File size can't exceed 3MB",
+				path: ['avatar'],
 			}
 		)
 		.refine(
@@ -204,16 +204,47 @@ export const MoreAboutYouStepSchema = z.object({
 				}
 				return true;
 			},
-			{ message: 'Avatar is required' }
+			{ message: 'Avatar is required', path: ['avatar'] }
 		),
 	location: z.string().min(1, { message: 'Location is required' }),
 	timezone: z.string().min(1, { message: 'Timezone is required' }),
-	yearsExperience: z.string().min(1, { message: 'Experience is required' }),
+	yearsExperience: z.number().min(0, { message: 'Experience is required' }),
 	businessName: z.string().min(1, { message: 'Business name is required' }),
 	businessNumber: z.string().min(1, { message: 'Business number is required' }),
+});
+
+export const VerificationStepSchema = z.object({
+	hoursExperience: z.number().min(0, { message: 'Hours experience is required' }),
+	certificates: z
+		.array(
+			z
+				.unknown()
+				.transform((value) => {
+					return value as FileList;
+				})
+				.refine(
+					(data) => {
+						const fileSize = data?.[0]?.size;
+
+						//1Mb = 1000000 bytes
+						if (fileSize > 3000000) {
+							return false;
+						}
+						return true;
+					},
+					{
+						message: "File size can't exceed 3MB",
+						path: ['certificate'],
+					}
+				)
+		)
+		.min(1, {
+			message: 'At least one certificate is required.',
+		}),
 });
 
 export const CoachSetupSchema = z.object({
 	...CoachSetupDetailsStepSchema.shape,
 	...MoreAboutYouStepSchema.shape,
+	...VerificationStepSchema.shape,
 });

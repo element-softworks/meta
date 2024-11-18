@@ -4,119 +4,199 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { DropzoneInput } from '@/components/inputs/dropzone-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import Image from 'next/image';
-import { CoachSetupDetailsStepSchema } from '@/schemas';
-import { Progress } from '@/components/ui/progress';
-import { FormInput } from '../../form-input';
 import { Input } from '@/components/ui/input';
-import { PasswordInput } from '@/components/inputs/password-input';
-import { Checkbox } from '@/components/ui/checkbox';
-import Link from 'next/link';
+import { Progress } from '@/components/ui/progress';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import counties from '@/lib/countries.json';
+import timezones from '@/lib/timezones.json';
+import { MoreAboutYouStepSchema } from '@/schemas';
+import { FormInput } from '../../form-input';
+import { CoachSetupFormFormProps } from './coach-setup-form';
+import { useEffect } from 'react';
 
-type MoreAboutYouStepFormProps = z.infer<typeof CoachSetupDetailsStepSchema>;
+type MoreAboutYouStepFormProps = z.infer<typeof MoreAboutYouStepSchema>;
 
 interface GenderStepProps {
 	fadeOut: boolean;
 	onSubmit: (values: MoreAboutYouStepFormProps) => void;
+	onBack: () => void;
+	values: CoachSetupFormFormProps;
 }
 
 export function MoreAboutYouStep(props: GenderStepProps) {
+	console.log(props.values, 'more about step values data');
 	const form = useForm<MoreAboutYouStepFormProps>({
-		resolver: zodResolver(CoachSetupDetailsStepSchema),
+		resolver: zodResolver(MoreAboutYouStepSchema),
 		defaultValues: {
-			email: '',
-			firstName: '',
-			lastName: '',
-			password: '',
-			agreedToMarketing: false,
-			agreedToTerms: false,
+			avatar: '' as any,
+			businessName: '',
+			location: '',
+			timezone: '',
+			businessNumber: '',
+			yearsExperience: '' as any,
 		},
 	});
 
-	async function onSubmit(values: z.infer<typeof CoachSetupDetailsStepSchema>) {
+	useEffect(() => {
+		form.reset({
+			avatar: props.values?.avatar ?? '',
+			businessName: props.values?.businessName ?? '',
+			location: props.values?.location ?? '',
+			timezone: props.values?.timezone ?? '',
+			businessNumber: props.values?.businessNumber ?? '',
+			yearsExperience: props.values?.yearsExperience ?? '',
+		});
+	}, [props.values]);
+
+	async function onSubmit(values: z.infer<typeof MoreAboutYouStepSchema>) {
 		props.onSubmit(values);
 	}
 
+	console.log(form.watch(), 'more about step');
+
 	return (
-		<div className="flex flex-col gap-4 max-w-full mt-16 sm:mt-4 mb-16 sm:mb-4">
+		<div className="flex flex-col gap-4 max-w-full mb-16 sm:mb-4 mt-auto">
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<div>
 						<p className="text-sm font-body font-normal mb-2">Sign up progress</p>
-						<Progress value={25} className="" />
+						<Progress value={35} className="" />
 					</div>
 					<div className="w-full flex flex-col gap-2">
 						<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
-							coach sign up
+							a bit more about you
 						</h1>
 
 						<p className="text-lg font-display">
-							Enter your details to join our platform and begin coaching on our
-							platform.
+							You{"'"}re almost there! Let{"'"}s add the last finishing touches to
+							your account.
 						</p>
 
 						<div className="mt-0 lg:mt-6 flex flex-col gap-4">
+							<DropzoneInput
+								label="Avatar"
+								name="avatar"
+								placeholder="Drag or drop to upload an avatar PNG/JPEG Maximum 3MB"
+								defaultFiles={props.values.avatar as any}
+							/>
+
 							<FormInput
-								name="email"
-								label="Email"
+								name="location"
+								label="Coach location"
 								render={({ field }) => (
-									<Input {...field} placeholder="john.doe@example.com" />
+									<Select
+										value={field.value}
+										onValueChange={(value) => {
+											if (!value) return;
+											field.onChange(value);
+										}}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder="Select a location" />
+										</SelectTrigger>
+										<SelectContent>
+											{counties?.map?.((country, index) => {
+												return (
+													<SelectItem
+														className="flex gap-1 flex-row"
+														key={index}
+														value={country?.code}
+													>
+														<div className="flex gap-1">
+															<img
+																className="object-contain"
+																loading="lazy"
+																width="20"
+																srcSet={`https://flagcdn.com/w40/${country?.code?.toLowerCase()}.png 2x`}
+																src={`https://flagcdn.com/w20/${country?.code?.toLowerCase()}.png`}
+																alt={`${country?.name} country flag`}
+															/>
+															<p>{country?.name}</p>
+														</div>
+													</SelectItem>
+												);
+											})}
+										</SelectContent>
+									</Select>
 								)}
 							/>
 
 							<FormInput
-								name="firstName"
-								label="First Name"
-								render={({ field }) => <Input {...field} placeholder="John" />}
-							/>
-
-							<FormInput
-								name="lastName"
-								label="Last Name"
-								render={({ field }) => <Input {...field} placeholder="Doe" />}
-							/>
-
-							<PasswordInput isLoading={false} name="password" label="Password" />
-
-							<FormInput
-								name="agreedToTerms"
+								name="timezone"
+								label="Timezone"
 								render={({ field }) => (
-									<div className="flex items-center space-x-2">
-										<Checkbox
-											checked={field.value}
-											onCheckedChange={field.onChange}
-										/>
-										<label
-											htmlFor="terms"
-											className="text-sm font-medium !font-body"
-										>
-											I agree to the{' '}
-											<Link href="/terms-of-service">terms & conditions</Link>{' '}
-											and <Link href="/privacy-policy">privacy policy</Link>
-										</label>
-									</div>
+									<Select
+										value={field.value}
+										onValueChange={(value) => {
+											if (!value) return;
+											field.onChange(value);
+										}}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder="Select a timezone" />
+										</SelectTrigger>
+										<SelectContent>
+											{timezones?.map?.((timezone, index) => {
+												return (
+													<SelectItem key={index} value={timezone?.zone}>
+														{timezone?.zone} {timezone?.gmt}
+													</SelectItem>
+												);
+											})}
+										</SelectContent>
+									</Select>
 								)}
 							/>
 
 							<FormInput
-								name="agreedToMarketing"
+								name="yearsExperience"
+								label="Years of experience"
 								render={({ field }) => (
-									<div className="flex items-center space-x-2">
-										<Checkbox
-											checked={field.value}
-											onCheckedChange={field.onChange}
-										/>
-										<label
-											htmlFor="terms"
-											className="text-sm font-medium !font-body"
-										>
-											I agree to receive marketing notifications with tips,
-											offers and news
-										</label>
-									</div>
+									<Select
+										value={String(field.value)}
+										onValueChange={(value) => {
+											if (!String(value)) return;
+
+											field.onChange(parseInt(value));
+										}}
+									>
+										<SelectTrigger>
+											<SelectValue placeholder="Select years experience" />
+										</SelectTrigger>
+										<SelectContent>
+											{Array.from({ length: 100 })?.map((_, index) => {
+												return (
+													<SelectItem key={index} value={String(index)}>
+														{index}
+													</SelectItem>
+												);
+											})}
+										</SelectContent>
+									</Select>
 								)}
+							/>
+
+							<FormInput
+								name="businessName"
+								label="Registered business name (or self employed)"
+								render={({ field }) => (
+									<Input {...field} placeholder="Example Company Ltd" />
+								)}
+							/>
+
+							<FormInput
+								name="businessNumber"
+								label="Registered business number"
+								render={({ field }) => <Input {...field} placeholder="00000000" />}
 							/>
 
 							<Button
@@ -124,15 +204,9 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 								className="w-fit !mt-2"
 								onClick={form.handleSubmit(onSubmit)}
 							>
-								continue
+								next step
 							</Button>
 						</div>
-						<p className="text-sm font-medium !font-body mt-4">
-							Already have an account?{' '}
-							<Link className="font-semibold" href="/auth/login">
-								Login
-							</Link>
-						</p>
 					</div>
 				</form>
 			</Form>

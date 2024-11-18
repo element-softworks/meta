@@ -14,12 +14,15 @@ import { Input } from '@/components/ui/input';
 import { PasswordInput } from '@/components/inputs/password-input';
 import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
+import { CoachSetupFormFormProps } from './coach-setup-form';
+import { useEffect } from 'react';
 
 type DetailsStepFormProps = z.infer<typeof CoachSetupDetailsStepSchema>;
 
 interface GenderStepProps {
 	fadeOut: boolean;
 	onSubmit: (values: DetailsStepFormProps) => void;
+	values: CoachSetupFormFormProps;
 }
 
 export function DetailsStep(props: GenderStepProps) {
@@ -34,6 +37,19 @@ export function DetailsStep(props: GenderStepProps) {
 			agreedToTerms: false,
 		},
 	});
+
+	useEffect(() => {
+		if (!props.values) return;
+
+		form.reset({
+			email: props.values?.email ?? '',
+			firstName: props.values?.firstName ?? '',
+			lastName: props.values?.lastName ?? '',
+			password: props.values?.password ?? '',
+			agreedToMarketing: props.values?.agreedToMarketing ?? false,
+			agreedToTerms: props.values?.agreedToTerms ?? false,
+		});
+	}, [props.values]);
 
 	async function onSubmit(values: z.infer<typeof CoachSetupDetailsStepSchema>) {
 		props.onSubmit(values);
