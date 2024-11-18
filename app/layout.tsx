@@ -13,7 +13,7 @@ const fredoka = Fredoka({
 const openSans = Open_Sans({ subsets: ['latin'], variable: '--font-open-sans' });
 
 export const metadata: Metadata = {
-	title: 'NextJS SaaS Boilerplate',
+	title: 'Coaching Hours',
 	description: 'This is a boilerplate for building SaaS applications with NextJS.',
 };
 

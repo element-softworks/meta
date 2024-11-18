@@ -36,6 +36,14 @@ export function useSidebarItems() {
 					icon: <Pen size={20} />,
 					visible: true,
 				},
+<<<<<<< HEAD
+=======
+			],
+		},
+		{
+			name: 'Team',
+			items: [
+>>>>>>> b67b96c66b3e0193080fbbc7ed00b4642de87234
 				{
 					text: 'Billing',
 					link: `/dashboard/users/${user?.id}/billing`,

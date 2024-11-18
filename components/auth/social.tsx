@@ -14,7 +14,7 @@ export function Social(props: SocialProps) {
 	const searchParams = useSearchParams();
 	const callbackUrl = searchParams.get('callbackUrl');
 
-	const onClick = (provider: 'google' | 'github') => {
+	const onClick = (provider: 'google') => {
 		signIn(provider, {
 			callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
 		});
@@ -32,16 +32,6 @@ export function Social(props: SocialProps) {
 			>
 				<FcGoogle size={17} />
 				<span className="ml-1 font-normal">Google</span>
-			</Button>
-
-			<Button
-				className="w-full"
-				variant="outline"
-				size="lg"
-				onClick={() => onClick('github')}
-			>
-				<FaGithub size={17} />
-				<span className="ml-1 font-normal">Github</span>
 			</Button>
 		</div>
 	);
