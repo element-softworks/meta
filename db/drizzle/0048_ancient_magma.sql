@@ -1,5 +1,11 @@
 DO $$ BEGIN
- CREATE TYPE "public"."TeamRole" AS ENUM('OWNER', 'ADMIN', 'USER');
+ CREATE TYPE "public"."ApplicationStatus" AS ENUM('PENDING', 'APPROVED', 'REJECTED', 'IN_PROGRESS');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ CREATE TYPE "public"."BookingType" AS ENUM('BOOKING', 'BLOCKED', 'CANCELLED');
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -35,19 +41,79 @@ CREATE TABLE IF NOT EXISTS "Bug" (
 	"comment" text NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Coach" (
+	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"userId" text NOT NULL,
+	"scheduleId" text,
+	"verified" timestamp (3),
+	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"updatedAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"archivedAt" timestamp (3),
+	"cooldown" integer DEFAULT 15 NOT NULL,
+	"bookingInAdvance" integer DEFAULT 28 NOT NULL,
+	"hoursExperience" integer NOT NULL,
+	"location" text NOT NULL,
+	"timezone" text NOT NULL,
+	"yearsExperience" integer NOT NULL,
+	"businessName" text NOT NULL,
+	"businessNumber" text NOT NULL,
+	"avatar" text NOT NULL,
+	"certificates" text[] NOT NULL,
+	CONSTRAINT "Coach_userId_unique" UNIQUE("userId")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "coachApplication" (
+	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"coachId" text,
+	"status" "ApplicationStatus" DEFAULT 'PENDING' NOT NULL,
+	"reviewedAt" timestamp (3),
+	"reviewedBy" text,
+	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"email" text,
+	"agreedToMarketing" boolean DEFAULT false,
+	"agreedToTerms" boolean DEFAULT false,
+	"firstName" text,
+	"lastName" text,
+	"password" text,
+	"bookingInAdvance" integer DEFAULT 28,
+	"hoursExperience" integer,
+	"location" text,
+	"timezone" text,
+	"yearsExperience" integer,
+	"businessName" text,
+	"businessNumber" text,
+	"avatar" text,
+	"certificates" jsonb NOT NULL 
+);
+
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "coachBooking" (
+	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"coachId" text NOT NULL,
+	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"createdById" text,
+	"bookingType" "BookingType" DEFAULT 'BOOKING' NOT NULL,
+	"startDate" timestamp (3) NOT NULL,
+	"endDate" timestamp (3) NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "coachSchedule" (
+	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"coachId" text NOT NULL,
+	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	"updatedAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ConciergeToken" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"token" text NOT NULL,
 	"expiresAt" timestamp (3) NOT NULL,
-	"teamId" text NOT NULL,
 	"email" text NOT NULL,
-	"name" text NOT NULL,
-	"role" "TeamRole" NOT NULL
+	"name" text NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Customer" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"teamId" text NOT NULL,
 	"userId" text NOT NULL,
 	"stripeCustomerId" text NOT NULL,
 	"stripeSubscriptionId" text NOT NULL,
@@ -73,7 +139,7 @@ CREATE TABLE IF NOT EXISTS "CustomerInvoice" (
 	"invoicePdf" text,
 	"currency" text NOT NULL,
 	"status" text NOT NULL,
-	"teamId" text NOT NULL,
+	"userId" text NOT NULL,
 	"email" text NOT NULL
 );
 --> statement-breakpoint
@@ -101,25 +167,13 @@ CREATE TABLE IF NOT EXISTS "Session" (
 	"converted" boolean
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Team" (
+CREATE TABLE IF NOT EXISTS "timeframeDay" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"name" text NOT NULL,
-	"createdBy" text NOT NULL,
+	"day" integer NOT NULL,
+	"coachScheduleId" text NOT NULL,
 	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"updatedAt" timestamp (3) NOT NULL,
-	"isArchived" boolean DEFAULT false NOT NULL,
-	"image" text,
-	"stripeCustomerId" text,
-	"stripePaymentId" text
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "TeamMember" (
-	"teamId" text NOT NULL,
-	"userId" text NOT NULL,
-	"role" "TeamRole" DEFAULT 'USER' NOT NULL,
-	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"updatedAt" timestamp (3) NOT NULL,
-	CONSTRAINT "TeamMember_pkey" PRIMARY KEY("teamId","userId")
+	"startHour" double precision NOT NULL,
+	"endHour" double precision NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "TwoFactorConfirmation" (
@@ -137,7 +191,10 @@ CREATE TABLE IF NOT EXISTS "TwoFactorToken" (
 CREATE TABLE IF NOT EXISTS "User" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text,
+	"agreedToMarketing" boolean DEFAULT false NOT NULL,
 	"email" text NOT NULL,
+	"stripeCustomerId" text,
+	"stripePaymentId" text,
 	"emailVerified" timestamp (3),
 	"image" text,
 	"password" text,
@@ -181,30 +238,6 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "Customer" ADD CONSTRAINT "Customer_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "public"."Team"("id") ON DELETE cascade ON UPDATE cascade;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "CustomerInvoice" ADD CONSTRAINT "CustomerInvoice_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "public"."Customer"("id") ON DELETE cascade ON UPDATE cascade;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "TeamMember" ADD CONSTRAINT "TeamMember_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "public"."Team"("id") ON DELETE cascade ON UPDATE cascade;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "TeamMember" ADD CONSTRAINT "TeamMember_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE cascade ON UPDATE cascade;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "TwoFactorConfirmation" ADD CONSTRAINT "TwoFactorConfirmation_userId_fkey" FOREIGN KEY ("userId") REFERENCES "public"."User"("id") ON DELETE cascade ON UPDATE cascade;
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -217,17 +250,9 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "Account_userId_idx" ON "Account" USING btree ("userId");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "ConciergeToken_email_token_key" ON "ConciergeToken" USING btree ("email","token");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "ConciergeToken_teamId_email_idx" ON "ConciergeToken" USING btree ("teamId","email");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "ConciergeToken_token_key" ON "ConciergeToken" USING btree ("token");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "Customer_stripeCustomerId_key" ON "Customer" USING btree ("stripeCustomerId");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "Customer_teamId_userId_idx" ON "Customer" USING btree ("teamId","userId");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "CustomerInvoice_customerId_idx" ON "CustomerInvoice" USING btree ("customerId");--> statement-breakpoint
 CREATE INDEX IF NOT EXISTS "PasswordResetToken_email_token_idx" ON "PasswordResetToken" USING btree ("email","token");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "PasswordResetToken_email_token_key" ON "PasswordResetToken" USING btree ("email","token");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "PasswordResetToken_token_key" ON "PasswordResetToken" USING btree ("token");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "Team_stripeCustomerId_stripePaymentId_idx" ON "Team" USING btree ("stripeCustomerId","stripePaymentId");--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "TeamMember_userId_teamId_idx" ON "TeamMember" USING btree ("userId","teamId");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "TwoFactorConfirmation_userId_key" ON "TwoFactorConfirmation" USING btree ("userId");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "TwoFactorToken_email_token_key" ON "TwoFactorToken" USING btree ("email","token");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "TwoFactorToken_token_key" ON "TwoFactorToken" USING btree ("token");--> statement-breakpoint

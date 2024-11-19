@@ -16,6 +16,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
 import { CoachSetupFormFormProps } from './coach-setup-form';
 import { useEffect } from 'react';
+import { useMutation } from '@/hooks/use-mutation';
+import { coachApplicationUpdate } from '@/actions/booking-system/coach-application-update';
 
 type DetailsStepFormProps = z.infer<typeof CoachSetupDetailsStepSchema>;
 
@@ -51,7 +53,20 @@ export function DetailsStep(props: GenderStepProps) {
 		});
 	}, [props.values]);
 
+	const { query: updateQuery, isLoading } = useMutation<Partial<CoachSetupFormFormProps>, {}>({
+		queryFn: async (values) =>
+			await coachApplicationUpdate({
+				email: values?.email ?? '',
+				firstName: values?.firstName ?? '',
+				lastName: values?.lastName ?? '',
+				password: values?.password ?? '',
+				agreedToMarketing: values?.agreedToMarketing ?? false,
+				agreedToTerms: values?.agreedToTerms ?? false,
+			}),
+	});
+
 	async function onSubmit(values: z.infer<typeof CoachSetupDetailsStepSchema>) {
+		await updateQuery(values);
 		props.onSubmit(values);
 	}
 
@@ -136,6 +151,8 @@ export function DetailsStep(props: GenderStepProps) {
 							/>
 
 							<Button
+								isLoading={isLoading}
+								disabled={isLoading}
 								size="lg"
 								className="w-fit !mt-2"
 								onClick={form.handleSubmit(onSubmit)}

@@ -1,1 +1,0 @@
-ALTER TYPE "BookingType" ADD VALUE 'CANCELLED';

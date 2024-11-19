@@ -22,6 +22,8 @@ import { MoreAboutYouStepSchema } from '@/schemas';
 import { FormInput } from '../../form-input';
 import { CoachSetupFormFormProps } from './coach-setup-form';
 import { useEffect } from 'react';
+import { coachApplicationUpdate } from '@/actions/booking-system/coach-application-update';
+import { useMutation } from '@/hooks/use-mutation';
 
 type MoreAboutYouStepFormProps = z.infer<typeof MoreAboutYouStepSchema>;
 
@@ -33,7 +35,6 @@ interface GenderStepProps {
 }
 
 export function MoreAboutYouStep(props: GenderStepProps) {
-	console.log(props.values, 'more about step values data');
 	const form = useForm<MoreAboutYouStepFormProps>({
 		resolver: zodResolver(MoreAboutYouStepSchema),
 		defaultValues: {
@@ -57,7 +58,32 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 		});
 	}, [props.values]);
 
+	const { query: updateQuery, isLoading } = useMutation<FormData, {}>({
+		queryFn: async (values) => {
+			await coachApplicationUpdate(
+				{
+					businessName: values?.get('businessName') as string,
+					location: values?.get('location') as string,
+					timezone: values?.get('timezone') as string,
+					businessNumber: values?.get('businessNumber') as string,
+					yearsExperience: values?.get('yearsExperience') as string,
+				},
+				values
+			);
+		},
+	});
+
 	async function onSubmit(values: z.infer<typeof MoreAboutYouStepSchema>) {
+		const formData = new FormData();
+		const fileInput = values.avatar[0]; // Assuming avatar is being returned as a FileList
+		formData.append('avatar', fileInput);
+		formData.append('businessName', values.businessName);
+		formData.append('location', values.location);
+		formData.append('timezone', values.timezone);
+		formData.append('businessNumber', values.businessNumber);
+		formData.append('yearsExperience', values.yearsExperience);
+
+		await updateQuery(formData);
 		props.onSubmit(values);
 	}
 
@@ -165,9 +191,7 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 									<Select
 										value={String(field.value)}
 										onValueChange={(value) => {
-											if (!String(value)) return;
-
-											field.onChange(parseInt(value));
+											field.onChange(value);
 										}}
 									>
 										<SelectTrigger>
@@ -201,6 +225,8 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 							/>
 
 							<Button
+								disabled={isLoading}
+								isLoading={isLoading}
 								size="lg"
 								className="w-fit !mt-2"
 								onClick={form.handleSubmit(onSubmit)}

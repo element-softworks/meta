@@ -4,50 +4,67 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { CoachSetupDetailsStepSchema, CoachSetupSchema } from '@/schemas';
+import { CoachSetupSchema } from '@/schemas';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import useFormPersist from 'react-hook-form-persist';
+import { useCallback, useEffect, useState } from 'react';
 import { DetailsStep } from './details-step';
+import { IdentityCheckStep } from './identity-check-step';
 import { MoreAboutYouStep } from './more-about-you-step';
 import { VerificationStep } from './verification-step';
-import { IdentityCheckStep } from './identity-check-step';
+import { createVeriffSession } from '@/actions/auth/create-veriff-session';
+import { ThankYouStep } from './thank-you-step';
+import { CoachApplication } from '@/db/drizzle/schema/booking-system/coachApplication';
+import { cookies } from 'next/headers';
+import { setCookie } from '@/data/cookies';
 
 export type CoachSetupFormFormProps = z.infer<typeof CoachSetupSchema>;
 
-export type step = 'details' | 'more-details' | 'verification' | 'identity-check' | 'next';
+export type step = 'details' | 'more-details' | 'verification' | 'identity-check' | 'thank-you';
 
 interface CoachSetupFormProps {
+	sessionId: string | null;
+	hasCookie: boolean;
 	searchParams: any;
+	veriffSession?: string;
+	session: CoachApplication | null | undefined;
 }
 
 export function CoachSetupForm(props: CoachSetupFormProps) {
 	const { watch, setValue, handleSubmit, reset } = useForm<CoachSetupFormFormProps>({
 		resolver: zodResolver(CoachSetupSchema),
 		defaultValues: {
-			email: '',
-			firstName: '',
-			lastName: '',
+			email: props.session?.email ?? '',
+			firstName: props.session?.firstName ?? '',
+			lastName: props.session?.lastName ?? '',
 			password: '',
-			agreedToMarketing: false,
-			agreedToTerms: false,
-			avatar: '' as any,
-			location: '',
-			timezone: '',
-			yearsExperience: 0,
-			businessName: '',
-			businessNumber: '',
-			certificates: [],
-			hoursExperience: '',
+			agreedToMarketing: props.session?.agreedToMarketing ?? false,
+			agreedToTerms: props.session?.agreedToTerms ?? false,
+			avatar: props.session?.avatar ?? ('' as any),
+			location: props.session?.location ?? '',
+			timezone: props.session?.timezone ?? '',
+			yearsExperience: String(props.session?.yearsExperience) ?? '',
+			businessName: props.session?.businessName ?? '',
+			businessNumber: props.session?.businessNumber ?? '',
+			certificates: (props.session?.certificates as any) ?? [],
+			hoursExperience: String(props.session?.hoursExperience) ?? '',
 		},
 	});
+	useEffect(() => {
+		(async () => {
+			if (!props.hasCookie && props.sessionId) {
+				await setCookie({
+					name: 'coachApplicationId',
+					value: props.sessionId,
+				});
+			}
+		})();
 
-	// useFormPersist('coach-setup-form', {
-	// 	watch,
-	// 	setValue,
-	// 	storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-	// 	exclude: ['avatar'],
-	// });
+		return () => {
+			reset();
+		};
+	}, [props.sessionId]);
+
+	console.log(props.sessionId, 'props.session');
 
 	async function onSubmit(values: z.infer<typeof CoachSetupSchema>) {
 		console.log(values, 'values');
@@ -74,10 +91,8 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 		}
 	}, [props?.searchParams?.step]);
 
-	console.log(watch(), 'form values');
-
 	return (
-		<div className="flex flex-col gap-4 mt-14">
+		<div className="flex flex-col gap-4 ">
 			{step === 'details' ? (
 				<DetailsStep
 					values={watch()}
@@ -136,13 +151,16 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 					values={watch()}
 					fadeOut={fadeOut}
 					onSubmit={async () => {
-						changePageTimer('next', 0);
+						await createVeriffSession();
+						// changePageTimer('next', 0);
 					}}
 					onBack={() => {
 						changePageTimer('verification', 0);
 					}}
 				/>
 			) : null}
+
+			{step === 'thank-you' ? <ThankYouStep fadeOut={fadeOut} /> : null}
 		</div>
 	);
 }

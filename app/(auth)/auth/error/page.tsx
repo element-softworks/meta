@@ -22,10 +22,12 @@ export async function generateMetadata() {
 
 export default function AuthErrorPage() {
 	return (
-		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
+		<div className="flex flex-col gap-4 max-w-full ">
 			<div className="mb-4 ">
-				<h1 className="text-2xl font-semibold tracking-tight">Failed logging in</h1>
-				<p className="text-sm text-muted-foreground">
+				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
+					Failed logging in
+				</h1>
+				<p className="text-lg font-normal mt-1">
 					There was a problem while logging in. Your account may have been archived.
 					Contact an administator for help if this continues
 				</p>

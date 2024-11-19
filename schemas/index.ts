@@ -208,7 +208,7 @@ export const MoreAboutYouStepSchema = z.object({
 		),
 	location: z.string().min(1, { message: 'Location is required' }),
 	timezone: z.string().min(1, { message: 'Timezone is required' }),
-	yearsExperience: z.number().min(0, { message: 'Experience is required' }),
+	yearsExperience: z.string().min(1, { message: 'Experience is required' }),
 	businessName: z.string().min(1, { message: 'Business name is required' }),
 	businessNumber: z.string().min(1, { message: 'Business number is required' }),
 });

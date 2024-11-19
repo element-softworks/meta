@@ -1,6 +1,9 @@
+import { coachApplicationStart } from '@/actions/booking-system/coach-application-start';
+import { getSelfApplication } from '@/actions/booking-system/get-self-application';
 import { CoachSetupForm } from '@/components/auth/coach/setup/coach-setup-form';
 import { RegisterForm } from '@/components/auth/register-form';
 import { getConciergeTokenByToken } from '@/data/concierge-token';
+import { cookies } from 'next/headers';
 
 export async function generateMetadata() {
 	return {
@@ -25,10 +28,30 @@ export default async function CoachSetupPage({
 }: {
 	searchParams?: { token: string };
 }) {
-	const token = await getConciergeTokenByToken(searchParams?.token ?? '');
+	let sessionID = null;
+	const currentSession = await getSelfApplication();
+
+	if (!currentSession.data) {
+		const newAppData = await coachApplicationStart();
+		sessionID = newAppData.data?.id;
+
+		console.log(sessionID);
+	} else {
+		sessionID = currentSession.data.id;
+	}
+
+	const veriffSession = await cookies().get('veriffSession');
+	const sessionCookie = await cookies().get('coachApplicationId');
+
 	return (
 		<main>
-			<CoachSetupForm searchParams={searchParams} />
+			<CoachSetupForm
+				sessionId={sessionID}
+				hasCookie={!!sessionCookie?.value}
+				searchParams={searchParams}
+				veriffSession={veriffSession?.value}
+				session={currentSession?.data}
+			/>
 		</main>
 	);
 }
