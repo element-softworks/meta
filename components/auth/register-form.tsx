@@ -99,14 +99,14 @@ export function RegisterForm(props: RegisterFormProps) {
 			securely pass data to OAuth providers without exposing vulnerabilities to the platform.
 			This is a security measure to prevent unauthorized access teams across platform. */}
 			<Social className="mt-2" disabled={!!props.token} />
-			<p className="text-sm font-medium !font-body mt-4">
+			<p className="text-sm font-medium !font-sans mt-4">
 				Already have an account?{' '}
 				<Link className="font-semibold" href="/auth/login">
 					Login
 				</Link>
 			</p>
 
-			<p className="text-sm font-medium !font-body">
+			<p className="text-sm font-medium !font-sans">
 				Want to become a coach?{' '}
 				<Link className="font-semibold" href="/auth/coach-setup">
 					Apply here

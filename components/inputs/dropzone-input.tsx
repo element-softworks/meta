@@ -37,6 +37,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 		}
 	}, [watch(props.name), props.defaultFiles, props.name, watch]);
 
+	console.log(error, 'error data');
 	return (
 		<>
 			<Controller
@@ -121,7 +122,8 @@ export function DropzoneInput(props: DropzoneInputProps) {
 													} transition`}
 												>
 													{!!error
-														? (error as any)?.[props.name]?.message
+														? ((error as any)?.[props.name]?.message ??
+															error?.message)
 														: (props?.placeholder ??
 															'Drag and drop some files here, or click to select files')}
 												</p>

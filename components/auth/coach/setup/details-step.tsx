@@ -60,7 +60,7 @@ export function DetailsStep(props: GenderStepProps) {
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<div>
-						<p className="text-sm font-body font-normal mb-2">Sign up progress</p>
+						<p className="text-sm font-sans font-normal mb-2">Sign up progress</p>
 						<Progress value={25} className="" />
 					</div>
 					<div className="w-full flex flex-col gap-2">
@@ -106,7 +106,7 @@ export function DetailsStep(props: GenderStepProps) {
 										/>
 										<label
 											htmlFor="terms"
-											className="text-sm font-medium !font-body"
+											className="text-sm font-medium !font-sans"
 										>
 											I agree to the{' '}
 											<Link href="/terms-of-service">terms & conditions</Link>{' '}
@@ -126,7 +126,7 @@ export function DetailsStep(props: GenderStepProps) {
 										/>
 										<label
 											htmlFor="terms"
-											className="text-sm font-medium !font-body"
+											className="text-sm font-medium !font-sans"
 										>
 											I agree to receive marketing notifications with tips,
 											offers and news
@@ -143,7 +143,7 @@ export function DetailsStep(props: GenderStepProps) {
 								continue
 							</Button>
 						</div>
-						<p className="text-sm font-medium !font-body mt-4">
+						<p className="text-sm font-medium !font-sans mt-4">
 							Already have an account?{' '}
 							<Link className="font-semibold" href="/auth/login">
 								Login

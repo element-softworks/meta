@@ -4,26 +4,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
-import { DropzoneInput } from '@/components/inputs/dropzone-input';
+import { CertificateDropzoneInput } from '@/components/inputs/certificate-dropzone-input';
 import { Button } from '@/components/ui/button';
-import { Form } from '@/components/ui/form';
+import { Form, FormDescription } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-import counties from '@/lib/countries.json';
-import timezones from '@/lib/timezones.json';
 import { VerificationStepSchema } from '@/schemas';
+import { FileCheck2 } from 'lucide-react';
+import Link from 'next/link';
+import { useEffect } from 'react';
 import { FormInput } from '../../form-input';
 import { CoachSetupFormFormProps } from './coach-setup-form';
-import { useEffect } from 'react';
-import Link from 'next/link';
-import { FileCheck2, FileUp } from 'lucide-react';
 
 type VerificationStepFormProps = z.infer<typeof VerificationStepSchema>;
 
@@ -55,12 +46,14 @@ export function VerificationStep(props: VerificationStepProps) {
 		props.onSubmit(values);
 	}
 
+	console.log(form.watch(), props.values, 'watch data');
+
 	return (
 		<div className="flex flex-col gap-4 max-w-full mb-16 sm:mb-4 mt-auto">
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<div>
-						<p className="text-sm font-body font-normal mb-2">Sign up progress</p>
+						<p className="text-sm font-sans font-normal mb-2">Sign up progress</p>
 						<Progress value={55} className="" />
 					</div>
 					<div className="w-full flex flex-col gap-2">
@@ -85,14 +78,23 @@ export function VerificationStep(props: VerificationStepProps) {
 									<Input {...field} type="number" placeholder="100" />
 								)}
 							/>
-							<DropzoneInput
+							<CertificateDropzoneInput
 								multiple
 								label="Coaching certificates"
 								name="certificates"
 								placeholder="Drag or drop to upload your certificates PDF/PNG/JPEG Maximum 3MB"
 								defaultFiles={props.values.certificates as any}
 								icon={<FileCheck2 className="text-muted-foreground" />}
+								accept={{
+									'image/png': [],
+									'image/jpeg': [],
+									'application/pdf': [],
+								}}
 							/>
+							<FormDescription className="!-mt-2 text-muted-foreground">
+								Please upload and certificates or awards that can confirm your
+								coaching history and standard.
+							</FormDescription>
 
 							<Button
 								size="lg"

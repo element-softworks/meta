@@ -148,7 +148,7 @@ export function LoginForm() {
 			</div>
 			<Social className="mt-2" />
 
-			<p className="text-sm font-medium !font-body mt-4">
+			<p className="text-sm font-medium !font-sans mt-4">
 				{"Don't"} have an account yet?{' '}
 				<Link className="font-semibold" href="/auth/register">
 					Register now

@@ -103,6 +103,9 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 					values={watch()}
 					fadeOut={fadeOut}
 					onSubmit={async (values) => {
+						setValue('certificates', values.certificates);
+						setValue('hoursExperience', values.hoursExperience);
+
 						changePageTimer('next', 0);
 					}}
 					onBack={() => {

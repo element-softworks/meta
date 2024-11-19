@@ -214,29 +214,43 @@ export const MoreAboutYouStepSchema = z.object({
 });
 
 export const VerificationStepSchema = z.object({
-	hoursExperience: z.number().min(0, { message: 'Hours experience is required' }),
+	hoursExperience: z.string().min(1, { message: 'Hours experience is required' }),
 	certificates: z
 		.array(
-			z
-				.unknown()
-				.transform((value) => {
-					return value as FileList;
-				})
-				.refine(
-					(data) => {
-						const fileSize = data?.[0]?.size;
+			z.object({
+				certifiedDate: z.string().min(1, { message: 'Certified date is required' }),
+				certificateName: z.string().min(1, { message: 'Certificate name is required' }),
+				institution: z.string().min(1, { message: 'Institution is required' }),
+				file: z
+					.unknown()
+					.transform((value) => {
+						return value as FileList;
+					})
+					.refine(
+						(data) => {
+							const fileSize = data?.[0]?.size;
 
-						//1Mb = 1000000 bytes
-						if (fileSize > 3000000) {
-							return false;
+							//1Mb = 1000000 bytes
+							if (fileSize > 3000000) {
+								return false;
+							}
+							return true;
+						},
+						{
+							message: "File size can't exceed 3MB",
+							path: ['certificates'],
 						}
-						return true;
-					},
-					{
-						message: "File size can't exceed 3MB",
-						path: ['certificate'],
-					}
-				)
+					)
+					.refine(
+						(value) => {
+							if (!value) {
+								return false;
+							}
+							return true;
+						},
+						{ message: 'File is required', path: ['file'] }
+					),
+			})
 		)
 		.min(1, {
 			message: 'At least one certificate is required.',

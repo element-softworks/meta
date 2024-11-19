@@ -68,7 +68,7 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<div>
-						<p className="text-sm font-body font-normal mb-2">Sign up progress</p>
+						<p className="text-sm font-sans font-normal mb-2">Sign up progress</p>
 						<Progress value={35} className="" />
 					</div>
 					<div className="w-full flex flex-col gap-2">
