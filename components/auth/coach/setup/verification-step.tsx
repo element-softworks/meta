@@ -26,7 +26,6 @@ interface VerificationStepProps {
 }
 
 export function VerificationStep(props: VerificationStepProps) {
-	console.log(props.values, 'more about step values data');
 	const form = useForm<VerificationStepFormProps>({
 		resolver: zodResolver(VerificationStepSchema),
 		defaultValues: {
@@ -46,11 +45,12 @@ export function VerificationStep(props: VerificationStepProps) {
 		props.onSubmit(values);
 	}
 
-	console.log(form.watch(), props.values, 'watch data');
-
 	return (
 		<div className="flex flex-col gap-4 max-w-full mb-16 sm:mb-4 mt-auto">
 			<Form {...form}>
+				<Button variant="secondary" className="w-fit" onClick={props.onBack}>
+					Back
+				</Button>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<div>
 						<p className="text-sm font-sans font-normal mb-2">Sign up progress</p>

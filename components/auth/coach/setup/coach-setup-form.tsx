@@ -11,10 +11,11 @@ import useFormPersist from 'react-hook-form-persist';
 import { DetailsStep } from './details-step';
 import { MoreAboutYouStep } from './more-about-you-step';
 import { VerificationStep } from './verification-step';
+import { IdentityCheckStep } from './identity-check-step';
 
 export type CoachSetupFormFormProps = z.infer<typeof CoachSetupSchema>;
 
-export type step = 'details' | 'more-details' | 'verification' | 'next';
+export type step = 'details' | 'more-details' | 'verification' | 'identity-check' | 'next';
 
 interface CoachSetupFormProps {
 	searchParams: any;
@@ -23,14 +24,30 @@ interface CoachSetupFormProps {
 export function CoachSetupForm(props: CoachSetupFormProps) {
 	const { watch, setValue, handleSubmit, reset } = useForm<CoachSetupFormFormProps>({
 		resolver: zodResolver(CoachSetupSchema),
+		defaultValues: {
+			email: '',
+			firstName: '',
+			lastName: '',
+			password: '',
+			agreedToMarketing: false,
+			agreedToTerms: false,
+			avatar: '' as any,
+			location: '',
+			timezone: '',
+			yearsExperience: 0,
+			businessName: '',
+			businessNumber: '',
+			certificates: [],
+			hoursExperience: '',
+		},
 	});
 
-	useFormPersist('coach-setup-form', {
-		watch,
-		setValue,
-		storage: typeof window !== 'undefined' ? window.localStorage : undefined,
-		exclude: ['avatar'],
-	});
+	// useFormPersist('coach-setup-form', {
+	// 	watch,
+	// 	setValue,
+	// 	storage: typeof window !== 'undefined' ? window.localStorage : undefined,
+	// 	exclude: ['avatar'],
+	// });
 
 	async function onSubmit(values: z.infer<typeof CoachSetupSchema>) {
 		console.log(values, 'values');
@@ -106,10 +123,23 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 						setValue('certificates', values.certificates);
 						setValue('hoursExperience', values.hoursExperience);
 
-						changePageTimer('next', 0);
+						changePageTimer('identity-check', 0);
 					}}
 					onBack={() => {
 						changePageTimer('more-details', 0);
+					}}
+				/>
+			) : null}
+
+			{step === 'identity-check' ? (
+				<IdentityCheckStep
+					values={watch()}
+					fadeOut={fadeOut}
+					onSubmit={async () => {
+						changePageTimer('next', 0);
+					}}
+					onBack={() => {
+						changePageTimer('verification', 0);
 					}}
 				/>
 			) : null}

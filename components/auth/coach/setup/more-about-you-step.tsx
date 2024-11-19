@@ -61,11 +61,12 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 		props.onSubmit(values);
 	}
 
-	console.log(form.watch(), 'more about step');
-
 	return (
 		<div className="flex flex-col gap-4 max-w-full mb-16 sm:mb-4 mt-auto">
 			<Form {...form}>
+				<Button variant="secondary" className="w-fit" onClick={props.onBack}>
+					Back
+				</Button>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<div>
 						<p className="text-sm font-sans font-normal mb-2">Sign up progress</p>
