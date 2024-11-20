@@ -2,6 +2,7 @@ import { ConciergeEmailTemplate } from '@/components/email-templates/concierge-e
 import { NotificationEmailTemplate } from '@/components/email-templates/notification-email-template';
 import { PasswordResetEmailTemplate } from '@/components/email-templates/password-reset-email-template';
 import { TokenEmailTemplate } from '@/components/email-templates/token-email-template';
+import { VerifyCoachEmailTemplate } from '@/components/email-templates/verify-coach-email-template';
 import { VerifyEmailEmailTemplate } from '@/components/email-templates/verify-email-email-template';
 import { getUserByEmail } from '@/data/user';
 import { ConciergeToken } from '@/db/drizzle/schema/conciergeToken';
@@ -36,7 +37,10 @@ export const sendTwoFactorTokenEmail = async (twoFactorToken: TwoFactorToken) =>
 	}
 };
 
-export const sendVerificationEmail = async (verificationToken: VerificationToken) => {
+export const sendVerificationEmail = async (
+	verificationToken: VerificationToken,
+	coach?: boolean
+) => {
 	const confirmationLink = `${process.env.NEXT_PUBLIC_APP_URL}/auth/new-verification?token=${verificationToken.token}`;
 
 	const changeEmail = !!verificationToken?.newEmail;
@@ -51,15 +55,22 @@ export const sendVerificationEmail = async (verificationToken: VerificationToken
 			subject: `${
 				changeEmail
 					? `Change your email address`
+					: coach
+					? 'Thank you for signing up to be a coach on CoachingHours.com'
 					: `Welcome ${
 							verificationToken?.name ?? email
 					  } to Coaching Hours! Verify your account`
 			}`,
-			react: VerifyEmailEmailTemplate({
-				type: changeEmail ? 'change' : 'setup',
-				userFirstname: verificationToken?.name ?? email,
-				verifyEmailLink: confirmationLink,
-			}),
+			react: coach
+				? VerifyCoachEmailTemplate({
+						userFirstname: verificationToken?.name ?? email,
+						verifyEmailLink: confirmationLink,
+				  })
+				: VerifyEmailEmailTemplate({
+						type: changeEmail ? 'change' : 'setup',
+						userFirstname: verificationToken?.name ?? email,
+						verifyEmailLink: confirmationLink,
+				  }),
 		});
 
 		if (error) {
