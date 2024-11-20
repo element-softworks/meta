@@ -1,14 +1,19 @@
 import { ConciergeEmailTemplate } from '@/components/email-templates/concierge-email-template';
+import { NewCoachApplicationEmailTemplate } from '@/components/email-templates/new-coach-application-email-template';
 import { NotificationEmailTemplate } from '@/components/email-templates/notification-email-template';
 import { PasswordResetEmailTemplate } from '@/components/email-templates/password-reset-email-template';
 import { TokenEmailTemplate } from '@/components/email-templates/token-email-template';
 import { VerifyCoachEmailTemplate } from '@/components/email-templates/verify-coach-email-template';
 import { VerifyEmailEmailTemplate } from '@/components/email-templates/verify-email-email-template';
 import { getUserByEmail } from '@/data/user';
+import { db } from '@/db/drizzle/db';
+import { user } from '@/db/drizzle/schema';
+import { CoachApplication } from '@/db/drizzle/schema/booking-system/coachApplication';
 import { ConciergeToken } from '@/db/drizzle/schema/conciergeToken';
 import { PasswordResetToken } from '@/db/drizzle/schema/passwordResetToken';
 import { TwoFactorToken } from '@/db/drizzle/schema/twoFactorToken';
 import { VerificationToken } from '@/db/drizzle/schema/verificationToken';
+import { eq } from 'drizzle-orm';
 
 import { Resend } from 'resend';
 
@@ -101,6 +106,30 @@ export const sendNotificationEmail = async (email: string, message: string, titl
 		return { success: 'Notification email sent.' };
 	} catch (error) {
 		return { error: 'There was a problem sending the notification email.' };
+	}
+};
+
+export const sendNewApplicationEmail = async (application: CoachApplication) => {
+	try {
+		const admins = await db.select().from(user).where(eq(user.role, 'ADMIN'));
+
+		await Promise.all(
+			admins.map(async (admin) => {
+				const { data, error } = await resend.emails.send({
+					from: `${process.env.RESEND_FROM_EMAIL}`,
+					to: admin.email,
+					subject: 'New coach application',
+					react: NewCoachApplicationEmailTemplate({
+						application,
+						link: `${process.env.NEXT_PUBLIC_APP_URL}/admin/coach-applications/${application.id}`,
+					}),
+				});
+			})
+		);
+
+		return { success: 'Coach application email sent.' };
+	} catch (error) {
+		return { error: 'There was a problem sending the coach application email.' };
 	}
 };
 

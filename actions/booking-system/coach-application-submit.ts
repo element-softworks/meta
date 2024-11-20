@@ -6,6 +6,7 @@ import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import { register } from '../auth/register';
+import { sendNewApplicationEmail } from '@/lib/mail';
 
 export const coachApplicationSubmit = async () => {
 	const coachAppId = await cookies().get('coachApplicationId')?.value;
@@ -55,13 +56,16 @@ export const coachApplicationSubmit = async () => {
 				yearsExperience: foundCoachApplication?.yearsExperience ?? 0,
 				bookingInAdvance: foundCoachApplication?.bookingInAdvance ?? 0,
 			})
-			.returning({ id: coach.id });
+			.returning();
 
 		//Update the coach application status to PENDING review and apply the new coachID
 		await db
 			.update(coachApplication)
 			.set({ status: 'PENDING', coachId: foundCoachApplication?.id ?? '' })
 			.returning({ id: coachApplication.id });
+	
+		await sendNewApplicationEmail(foundCoachApplication);
+		
 
 	} catch (error) {
 		return { error: 'An error occurred creating the coach, please try again later.' };
