@@ -12,15 +12,13 @@ export async function PUT(req: NextRequest, res: Response) {
 	const coachId = searchParams.get('coachId');
 
 	if (!validatedFields.success) {
-		return {
+		return NextResponse.json({
 			error: 'An error occurred updating the coach schedule, please try again later.',
-		};
+		});
 	}
 
 	if (!coachId) {
-		return {
-			error: 'No coach ID provided',
-		};
+		return NextResponse.json({ error: 'No coach ID provided' });
 	}
 
 	const response = await updateCoachSchedule(values, coachId);
@@ -33,9 +31,9 @@ export async function GET(req: NextRequest, res: Response) {
 	const coachId = searchParams?.get('coachId');
 
 	if (!coachId) {
-		return {
+		return NextResponse.json({
 			error: 'No coach ID provided',
-		};
+		});
 	}
 
 	const response = await getScheduleByCoach(coachId);
