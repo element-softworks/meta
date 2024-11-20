@@ -47,6 +47,8 @@ export async function reviewCoachApplication(
 		return { error: 'Coach application not found' };
 	}
 
+	
+
 	const { status } = validatedFields.data;
 
 	// Review the coach application
@@ -76,6 +78,13 @@ export async function reviewCoachApplication(
 					.update(coach)
 					.set({
 						verified: new Date(),
+					})
+					.where(eq(coach.id, coachResponse.id));
+			} else {
+				await trx
+					.update(coach)
+					.set({
+						verified: null,
 					})
 					.where(eq(coach.id, coachResponse.id));
 			}
