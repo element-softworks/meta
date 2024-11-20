@@ -102,7 +102,7 @@ export const sendPasswordResetEmail = async (passwordResetToken: PasswordResetTo
 		const { data, error } = await resend.emails.send({
 			from: `${process.env.RESEND_FROM_EMAIL}`,
 			to: passwordResetToken.email,
-			subject: 'Please confirm your password reset',
+			subject: 'Forgot password request for CoachingHours.com',
 			react: PasswordResetEmailTemplate({
 				resetPasswordLink: confirmationLink,
 				userFirstname: currentUser?.name ?? passwordResetToken.email,
