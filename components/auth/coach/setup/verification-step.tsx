@@ -15,6 +15,8 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 import { FormInput } from '../../form-input';
 import { CoachSetupFormFormProps } from './coach-setup-form';
+import { coachApplicationUpdate } from '@/actions/booking-system/coach-application-update';
+import { useMutation } from '@/hooks/use-mutation';
 
 type VerificationStepFormProps = z.infer<typeof VerificationStepSchema>;
 
@@ -42,8 +44,33 @@ export function VerificationStep(props: VerificationStepProps) {
 	}, [props.values]);
 
 	async function onSubmit(values: z.infer<typeof VerificationStepSchema>) {
+		const formData = new FormData();
+
+		values?.certificates?.forEach((image, index) => {
+			formData.append(`certificates.${index}.file`, image.file as any);
+			formData.append(`certificates.${index}.certificateName`, image.certificateName);
+			formData.append(`certificates.${index}.certifiedDate`, image.certifiedDate);
+			formData.append(`certificates.${index}.institution`, image.institution);
+		});
+		formData.append('hoursExperience', values.hoursExperience);
+
+		await updateQuery(formData);
+
 		props.onSubmit(values);
 	}
+
+	const { query: updateQuery, isLoading } = useMutation<FormData, {}>({
+		queryFn: async (values) => {
+			await coachApplicationUpdate(
+				{
+					hoursExperience: values?.get('hoursExperience') as string,
+				},
+				values
+			);
+		},
+	});
+
+	console.log(form.watch(), 'form.watch()');
 
 	return (
 		<div className="flex flex-col gap-4 max-w-full mb-16 sm:mb-4 mt-auto">
@@ -83,7 +110,9 @@ export function VerificationStep(props: VerificationStepProps) {
 								label="Coaching certificates"
 								name="certificates"
 								placeholder="Drag or drop to upload your certificates PDF/PNG/JPEG Maximum 3MB"
-								defaultFiles={props.values.certificates as any}
+								defaultFiles={
+									props.values.certificates?.map?.((v) => v.file) as any
+								}
 								icon={<FileCheck2 className="text-muted-foreground" />}
 								accept={{
 									'image/png': [],
@@ -97,6 +126,8 @@ export function VerificationStep(props: VerificationStepProps) {
 							</FormDescription>
 
 							<Button
+								isLoading={isLoading}
+								disabled={isLoading}
 								size="lg"
 								className="w-fit !mt-2"
 								onClick={form.handleSubmit(onSubmit)}

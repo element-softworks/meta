@@ -29,9 +29,11 @@ export default async function CoachSetupPage({
 	searchParams?: { token: string };
 }) {
 	let sessionID = null;
+	const applicationId = await cookies().get('coachApplicationId');
+
 	const currentSession = await getSelfApplication();
 
-	if (!currentSession.data) {
+	if (!currentSession.data || !applicationId?.value?.length) {
 		const newAppData = await coachApplicationStart();
 		sessionID = newAppData.data?.id;
 

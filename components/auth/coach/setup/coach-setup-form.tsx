@@ -64,8 +64,6 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 		};
 	}, [props.sessionId]);
 
-	console.log(props.sessionId, 'props.session');
-
 	async function onSubmit(values: z.infer<typeof CoachSetupSchema>) {
 		console.log(values, 'values');
 		// await createSetupFormSubmission(values!);

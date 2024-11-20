@@ -1,7 +1,11 @@
 'use server';
+import { db } from '@/db/drizzle/db';
+import { coachApplication } from '@/db/drizzle/schema';
 import crypto from 'crypto';
+import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { coachApplicationSubmit } from '../booking-system/coach-application-submit';
 
 if (!process.env.VERIFF_CLIENT_ID) {
 	throw new Error('VERIFF_CLIENT_ID is not defined');
@@ -37,14 +41,32 @@ export const getVeriffDecision = async () => {
 		}
 	).then((res) => res.json());
 
-	console.log(session, 'session response');
 	const verified = session?.verifications?.some((v: any) => v?.status === 'approved') ?? false;
 
 	if (session?.verifications?.[0]?.status === 'created') {
 		redirect('/auth/coach-setup?step=identity-check');
 	}
 
+	const coachAppId = await cookies().get('coachApplicationId');
+
+	const [foundApplication] = await db
+		.select()
+		.from(coachApplication)
+		.where(eq(coachApplication.id, coachAppId?.value ?? ''));
+
+	if (foundApplication) {
+		await db
+			.update(coachApplication)
+			.set({ idVerified: verified })
+			.where(eq(coachApplication.id, coachAppId?.value ?? ''));
+	} else {
+		return { error: 'Application not found', verified: false };
+	}
+
 	if (verified) {
+		//If successful, submit the application
+		await coachApplicationSubmit();
+
 		return { success: 'Verification successful', verified: true };
 	} else {
 		return { error: 'Verification failed', verified: false };

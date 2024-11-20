@@ -38,6 +38,7 @@ export const coachApplication = pgTable('coachApplication', {
 	businessNumber: text('businessNumber'),
 	avatar: text('avatar'),
 	certificates: jsonb('certificates'), // JSONB column for storing complex data
+	idVerified: boolean('idVerified').default(false),
 });
 
 export const coachApplicationRelations = relations(coachApplication, ({ one, many }) => ({
