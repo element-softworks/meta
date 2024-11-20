@@ -1,5 +1,4 @@
 'use client';
-import { createCoach } from '@/actions/booking-system/create-coach';
 import { createCoachBooking } from '@/actions/booking-system/create-coach-booking';
 import { reviewCoachApplication } from '@/actions/booking-system/review-coach-application';
 import { Button } from '@/components/ui/button';
@@ -63,7 +62,8 @@ export default async function DashboardPage({ searchParams }: any) {
 
 	return (
 		<main className="flex flex-col  gap-4">
-			<Button onClick={async () => await createCoach(coach)} className="w-fit">
+			{/* <Button onClick={async () => await createCoach(coach)} className="w-fit"> */}
+			<Button onClick={async () => await {}} className="w-fit">
 				Create coach
 			</Button>
 

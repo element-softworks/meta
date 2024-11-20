@@ -1,4 +1,4 @@
-import { createCoach } from '@/actions/booking-system/create-coach';
+// import { createCoach } from '@/actions/booking-system/create-coach';
 import { getAllCoaches } from '@/actions/booking-system/get-all-coaches';
 import { CreateCoachSchema } from '@/schemas/booking-system';
 import { NextRequest, NextResponse } from 'next/server';
@@ -14,9 +14,9 @@ export async function POST(req: NextRequest, res: Response) {
 		};
 	}
 
-	const response = await createCoach(values);
+	// const response = await createCoach(values);
 
-	return NextResponse.json(response);
+	// return NextResponse.json(response);
 }
 
 export async function GET(req: NextRequest, res: Response) {
