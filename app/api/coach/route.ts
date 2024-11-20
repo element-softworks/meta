@@ -9,9 +9,9 @@ export async function POST(req: NextRequest, res: Response) {
 	const validatedFields = CreateCoachSchema.safeParse(values);
 
 	if (!validatedFields.success) {
-		return {
+		return NextResponse.json({
 			error: 'An error occurred creating the coach, please try again later.',
-		};
+		});
 	}
 
 	// const response = await createCoach(values);
