@@ -1,3 +1,5 @@
+import { CoachApplicationApprovedEmailTemplate } from '@/components/email-templates/coach-application-approved-email-template';
+import { CoachApplicationRejectedEmailTemplate } from '@/components/email-templates/coach-application-rejected-email-template copy';
 import { ConciergeEmailTemplate } from '@/components/email-templates/concierge-email-template';
 import { NewCoachApplicationEmailTemplate } from '@/components/email-templates/new-coach-application-email-template';
 import { NotificationEmailTemplate } from '@/components/email-templates/notification-email-template';
@@ -130,6 +132,36 @@ export const sendNewApplicationEmail = async (application: CoachApplication) => 
 		return { success: 'Coach application email sent.' };
 	} catch (error) {
 		return { error: 'There was a problem sending the coach application email.' };
+	}
+};
+
+export const sendCoachApplicationStatusEmail = async (
+	application: CoachApplication,
+	approved?: boolean
+) => {
+	try {
+		const { data, error } = await resend.emails.send({
+			from: `${process.env.RESEND_FROM_EMAIL}`,
+			to: application?.email ?? '',
+			subject: approved
+				? 'Congratulations Luke, your application to Coaching Hours is Approved!'
+				: 'Application to Coaching Hours',
+			react: approved
+				? CoachApplicationApprovedEmailTemplate({
+						userFirstname: application?.firstName ?? '',
+				  })
+				: CoachApplicationRejectedEmailTemplate({
+						userFirstname: application?.firstName ?? '',
+				  }),
+		});
+
+		if (error) {
+			return { error: error.message };
+		}
+
+		return { success: 'Verification email sent.' };
+	} catch (error) {
+		return { error: 'There was a problem sending the verification email.' };
 	}
 };
 
