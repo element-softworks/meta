@@ -10,6 +10,7 @@ export const verificationToken = pgTable(
 			.default(sql`gen_random_uuid()`),
 		email: text('email').notNull(),
 		newEmail: text('newEmail'),
+		name: text('name'),
 		token: text('token').notNull(),
 		expiresAt: timestamp('expiresAt', { precision: 3, mode: 'date' }).notNull(),
 	},

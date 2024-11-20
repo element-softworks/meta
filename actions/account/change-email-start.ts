@@ -30,7 +30,11 @@ export const emailChangeStart = async (values: z.infer<typeof ChangeEmailSchema>
 		}
 
 		// Generate a verification token and send it to the user via email
-		const verificationToken = await generateVerificationToken(dbUser.email, values.email);
+		const verificationToken = await generateVerificationToken(
+			existingUser?.name ?? '',
+			dbUser.email,
+			values.email
+		);
 		const data = await sendVerificationEmail(verificationToken);
 
 		if (data.error) {

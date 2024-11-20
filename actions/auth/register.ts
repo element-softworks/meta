@@ -42,10 +42,10 @@ export const register = async (
 			password: hashedPassword,
 			updatedAt: new Date(),
 		})
-		.returning({ id: user.id });
+		.returning({ id: user.id,name: user.name});
 
 	// Generate a verification token and send it to the user via email
-	const verificationToken = await generateVerificationToken(email);
+	const verificationToken = await generateVerificationToken(newUser?.name ?? '',email);
 	const data = await sendVerificationEmail(verificationToken);
 
 	if (data.error) {

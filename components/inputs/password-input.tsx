@@ -47,13 +47,11 @@ export function PasswordInput(props: PasswordInputProps) {
 						{...field}
 						disabled={props.isLoading || props.disabled}
 						type={showPassword ? 'text' : 'password'}
-						placeholder={(props.placeholder ?? showPassword) ? 'password' : '********'}
+						placeholder={props.placeholder ?? showPassword ? 'password' : '********'}
 						autoComplete="on"
 					/>
 
 					<Button
-						isLoading={props.isLoading}
-						disabled={props.isLoading || props.disabled}
 						type="button"
 						variant="ghost"
 						size="icon"
