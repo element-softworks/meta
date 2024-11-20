@@ -16,7 +16,7 @@ export async function POST(req: NextRequest, res: Response) {
 
 	// const response = await createCoach(values);
 
-	// return NextResponse.json(response);
+	return NextResponse.json({});
 }
 
 export async function GET(req: NextRequest, res: Response) {
