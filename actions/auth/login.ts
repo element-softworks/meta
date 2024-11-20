@@ -41,7 +41,7 @@ export const login = async (
 
 	if (!existingUser.emailVerified) {
 		// Generate a verification token and send it to the user via email
-		const verificationToken = await generateVerificationToken(email);
+		const verificationToken = await generateVerificationToken(existingUser?.name ?? '', email);
 		const data = await sendVerificationEmail(verificationToken);
 		if (data.error) {
 			return { error: data.error };

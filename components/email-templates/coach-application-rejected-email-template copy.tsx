@@ -1,26 +1,24 @@
-import * as React from 'react';
 import {
 	Body,
+	Button,
 	Container,
+	Font,
 	Head,
 	Html,
 	Img,
-	Link,
 	Preview,
-	Button,
 	Section,
 	Tailwind,
 	Text,
-	Font,
 } from '@react-email/components';
-import config from '@/tailwind.config';
 
-interface PasswordResetEmailTemplateProps {
+interface CoachApplicationRejectedEmailTemplateProps {
 	userFirstname: string;
-	resetPasswordLink: string;
 }
 
-export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProps) => {
+export const CoachApplicationRejectedEmailTemplate = (
+	props: CoachApplicationRejectedEmailTemplateProps
+) => {
 	return (
 		<Html>
 			<Head>
@@ -45,7 +43,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 					fontStyle="normal"
 				/>
 			</Head>
-			<Preview>Reset your password</Preview>
+			<Preview>coaching application rejected</Preview>
 			<Tailwind>
 				<Body className="bg-white-100">
 					<Container className="max-w-xl mx-auto bg-white border border-neutral-200 rounded-md shadow-md">
@@ -65,7 +63,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 							className="px-8 py-16  bg-[#FFF4EC] rounded-xl"
 						>
 							<Text className="text-black text-xl font-semibold font-display">
-								recover your account
+								coaching application rejected
 							</Text>
 							<Text
 								style={{
@@ -73,7 +71,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="text-black mt-2"
 							>
-								{`Hi ${props.userFirstname},`}
+								Dear {props.userFirstname},
 							</Text>
 
 							<Text
@@ -82,8 +80,9 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="text-black mt-2"
 							>
-								You{"'"}ve requested a forgot password email to reset your password.
-								Click the link below to set a new password.
+								Thank you for your interest in becoming a coach on Coaching Hours.
+								After reviewing your application, we regret to inform you that it
+								has not been successful at this time.
 							</Text>
 
 							<Text
@@ -92,18 +91,32 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="text-black mt-2"
 							>
-								If this wasn{"'"}t you then please ignore this email.
+								We greatly appreciate the effort you put into your submission, and
+								this decision was not made lightly. While we won{"'"}t be moving
+								forward, we encourage you to continue pursuing coaching
+								opportunities and to consider reapplying in the future as our
+								platform evolves.
 							</Text>
-							<Button
+
+							<Text
 								style={{
-									background:
-										'linear-gradient(to right, hsla(246, 79%, 51%, 1), hsla(24, 82%, 87%, 1))',
+									fontFamily: 'Open Sans, sans-serif',
 								}}
-								className="text-white py-3.5 w-fit !mt-6 [&_span]:m-auto flex items-center justify-center rounded-2xl px-8"
-								href={props.resetPasswordLink}
+								className="text-black mt-2"
 							>
-								change password
-							</Button>
+								Thank you again for your interest, and we wish you the very best in
+								your future endeavours.
+							</Text>
+
+							<Text
+								style={{
+									fontFamily: 'Open Sans, sans-serif',
+								}}
+								className="text-black mt-2"
+							>
+								Kind regards, <br></br>
+								The Coaching Hours Team
+							</Text>
 						</Section>
 
 						<Section className="text-black font-light text-xs text-center p-4">

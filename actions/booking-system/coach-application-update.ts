@@ -44,14 +44,7 @@ export const coachApplicationUpdate = async (
 	if (!!avatar?.size) {
 		const buffer = Buffer.from(await avatar.arrayBuffer());
 
-		await uploadFileToS3(buffer, `${uuid}-${avatar.name}`);
-	}
-
-	//If there is an avatar and the user already has an avatar, remove the old avatar from S3
-	if (!!foundApplication.avatar && foundApplication?.avatar?.includes(s3Path)) {
-		//If the user already has an avatar, remove it from S3
-		const avatarKey = foundApplication.avatar.split('/').pop();
-		await removeFileFromS3(avatarKey ?? '');
+		await uploadFileToS3(buffer, `${foundApplication.id}-${avatar.name}`);
 	}
 
 	//Hash the password
@@ -131,7 +124,7 @@ export const coachApplicationUpdate = async (
 			location: !!values?.location ? values.location : undefined,
 			timezone: !!values?.timezone ? values.timezone : undefined,
 			yearsExperience: !!values?.yearsExperience ? Number(values.yearsExperience) : undefined,
-			avatar: !!avatar?.size ? `${s3Path}/${uuid}-${avatar.name}` : undefined,
+			avatar: !!avatar?.size ? `${s3Path}/${foundApplication.id}-${avatar.name}` : undefined,
 			certificates:
 				certificates?.map?.((image, index) => {
 					let imagePath = '';

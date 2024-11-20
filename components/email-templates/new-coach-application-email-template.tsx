@@ -14,13 +14,14 @@ import {
 	Font,
 } from '@react-email/components';
 import config from '@/tailwind.config';
+import { CoachApplication } from '@/db/drizzle/schema/booking-system/coachApplication';
 
-interface PasswordResetEmailTemplateProps {
-	userFirstname: string;
-	resetPasswordLink: string;
+interface NewCoachApplicationEmailTemplateProps {
+	application: CoachApplication;
+	link: string;
 }
 
-export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProps) => {
+export const NewCoachApplicationEmailTemplate = (props: NewCoachApplicationEmailTemplateProps) => {
 	return (
 		<Html>
 			<Head>
@@ -45,7 +46,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 					fontStyle="normal"
 				/>
 			</Head>
-			<Preview>Reset your password</Preview>
+			<Preview>New coach application received</Preview>
 			<Tailwind>
 				<Body className="bg-white-100">
 					<Container className="max-w-xl mx-auto bg-white border border-neutral-200 rounded-md shadow-md">
@@ -65,7 +66,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 							className="px-8 py-16  bg-[#FFF4EC] rounded-xl"
 						>
 							<Text className="text-black text-xl font-semibold font-display">
-								recover your account
+								new coach application received
 							</Text>
 							<Text
 								style={{
@@ -73,8 +74,60 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="text-black mt-2"
 							>
-								{`Hi ${props.userFirstname},`}
+								Dear admin,
 							</Text>
+							<Text
+								style={{
+									fontFamily: 'Open Sans, sans-serif',
+								}}
+								className="text-black mt-2"
+							>
+								A new coach application has been submitted on Coaching Hours. Below
+								are the applicant{"'"}s details:
+							</Text>
+
+							<div
+								style={{
+									gap: '8px',
+								}}
+								className="flex gap-2 flex-row items-center"
+							>
+								<Img
+									className="object-cover rounded-full bg-white"
+									src={props?.application?.avatar ?? ''}
+									width="55"
+									height="55"
+									alt="New application avatar"
+								/>
+								<div
+									style={{
+										marginLeft: '8px',
+									}}
+								>
+									<Text
+										className="text-black"
+										style={{
+											fontFamily: 'Open Sans, sans-serif',
+											fontWeight: 600,
+											margin: 0,
+										}}
+									>
+										{props?.application?.firstName}{' '}
+										{props?.application?.lastName}
+									</Text>
+									<Text
+										className="-mt-2 text-black"
+										style={{
+											fontFamily: 'Open Sans, sans-serif',
+											fontWeight: 500,
+											margin: 0,
+											marginTop: '8px',
+										}}
+									>
+										{props?.application?.location}
+									</Text>
+								</div>
+							</div>
 
 							<Text
 								style={{
@@ -82,17 +135,8 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="text-black mt-2"
 							>
-								You{"'"}ve requested a forgot password email to reset your password.
-								Click the link below to set a new password.
-							</Text>
-
-							<Text
-								style={{
-									fontFamily: 'Open Sans, sans-serif',
-								}}
-								className="text-black mt-2"
-							>
-								If this wasn{"'"}t you then please ignore this email.
+								Please review the application within 24 hours and take the necessary
+								steps for verification and approval.
 							</Text>
 							<Button
 								style={{
@@ -100,9 +144,9 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 										'linear-gradient(to right, hsla(246, 79%, 51%, 1), hsla(24, 82%, 87%, 1))',
 								}}
 								className="text-white py-3.5 w-fit !mt-6 [&_span]:m-auto flex items-center justify-center rounded-2xl px-8"
-								href={props.resetPasswordLink}
+								href={props.link}
 							>
-								change password
+								view application
 							</Button>
 						</Section>
 

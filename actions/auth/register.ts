@@ -13,7 +13,8 @@ import * as z from 'zod';
 export const register = async (
 	values: z.infer<typeof RegisterSchema>,
 	token?: ConciergeToken | null | {},
-	skipHash?: boolean
+	skipHash?: boolean,
+	coach?: boolean
 ) => {
 	const validatedFields = RegisterSchema.safeParse(values);
 
@@ -42,11 +43,11 @@ export const register = async (
 			password: hashedPassword,
 			updatedAt: new Date(),
 		})
-		.returning({ id: user.id });
+		.returning({ id: user.id,name: user.name});
 
 	// Generate a verification token and send it to the user via email
-	const verificationToken = await generateVerificationToken(email);
-	const data = await sendVerificationEmail(verificationToken);
+	const verificationToken = await generateVerificationToken(newUser?.name ?? '',email);
+	const data = await sendVerificationEmail(verificationToken, coach);
 
 	if (data.error) {
 		return { error: data.error };

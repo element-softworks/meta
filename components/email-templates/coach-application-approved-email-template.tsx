@@ -1,26 +1,24 @@
-import * as React from 'react';
 import {
 	Body,
+	Button,
 	Container,
+	Font,
 	Head,
 	Html,
 	Img,
-	Link,
 	Preview,
-	Button,
 	Section,
 	Tailwind,
 	Text,
-	Font,
 } from '@react-email/components';
-import config from '@/tailwind.config';
 
-interface PasswordResetEmailTemplateProps {
+interface CoachApplicationApprovedEmailTemplateProps {
 	userFirstname: string;
-	resetPasswordLink: string;
 }
 
-export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProps) => {
+export const CoachApplicationApprovedEmailTemplate = (
+	props: CoachApplicationApprovedEmailTemplateProps
+) => {
 	return (
 		<Html>
 			<Head>
@@ -45,7 +43,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 					fontStyle="normal"
 				/>
 			</Head>
-			<Preview>Reset your password</Preview>
+			<Preview>coaching application approval</Preview>
 			<Tailwind>
 				<Body className="bg-white-100">
 					<Container className="max-w-xl mx-auto bg-white border border-neutral-200 rounded-md shadow-md">
@@ -65,7 +63,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 							className="px-8 py-16  bg-[#FFF4EC] rounded-xl"
 						>
 							<Text className="text-black text-xl font-semibold font-display">
-								recover your account
+								coaching application approval
 							</Text>
 							<Text
 								style={{
@@ -73,17 +71,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="text-black mt-2"
 							>
-								{`Hi ${props.userFirstname},`}
-							</Text>
-
-							<Text
-								style={{
-									fontFamily: 'Open Sans, sans-serif',
-								}}
-								className="text-black mt-2"
-							>
-								You{"'"}ve requested a forgot password email to reset your password.
-								Click the link below to set a new password.
+								Dear {props.userFirstname},
 							</Text>
 
 							<Text
@@ -92,7 +80,59 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="text-black mt-2"
 							>
-								If this wasn{"'"}t you then please ignore this email.
+								We are thrilled to inform you that your application to join Coaching
+								Hours as a coach has been successful! After carefully reviewing your
+								credentials and experience, we believe you will be a valuable
+								addition to our platform.
+							</Text>
+
+							<Text
+								style={{
+									fontFamily: 'Open Sans, sans-serif',
+								}}
+								className="text-black mt-2"
+							>
+								Your account is now active, and you can start connecting with
+								individuals seeking guidance and development in their career and
+								soft skillsets. We are excited for you to bring your expertise to
+								the community and help others unlock their full potential.
+							</Text>
+
+							<Text
+								style={{
+									fontFamily: 'Open Sans, sans-serif',
+								}}
+								className="text-black mt-2"
+							>
+								To begin, simply log in to your account using the button below and
+								start exploring. If you have any questions or require assistance,
+								feel free to reach out to our us at{' '}
+								<span
+									style={{ fontWeight: 'bold' }}
+									className="text-primary font-bold"
+								>
+									team@coachinghours.com
+								</span>
+								.
+							</Text>
+
+							<Text
+								style={{
+									fontFamily: 'Open Sans, sans-serif',
+								}}
+								className="text-black mt-2"
+							>
+								We look forward to seeing the impact you’ll make!
+							</Text>
+
+							<Text
+								style={{
+									fontFamily: 'Open Sans, sans-serif',
+								}}
+								className="text-black mt-2"
+							>
+								Warm regards, <br></br>
+								The Coaching Hours Team
 							</Text>
 							<Button
 								style={{
@@ -100,9 +140,9 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 										'linear-gradient(to right, hsla(246, 79%, 51%, 1), hsla(24, 82%, 87%, 1))',
 								}}
 								className="text-white py-3.5 w-fit !mt-6 [&_span]:m-auto flex items-center justify-center rounded-2xl px-8"
-								href={props.resetPasswordLink}
+								href={`${process.env.NEXT_PUBLIC_APP_URL}/dashboard`}
 							>
-								change password
+								explore the platform
 							</Button>
 						</Section>
 

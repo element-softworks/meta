@@ -15,12 +15,12 @@ import {
 } from '@react-email/components';
 import config from '@/tailwind.config';
 
-interface PasswordResetEmailTemplateProps {
-	userFirstname: string;
-	resetPasswordLink: string;
+interface VerifyCoachEmailTemplateProps {
+	userFirstname: string | null;
+	verifyEmailLink: string;
 }
 
-export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProps) => {
+export const VerifyCoachEmailTemplate = (props: VerifyCoachEmailTemplateProps) => {
 	return (
 		<Html>
 			<Head>
@@ -45,7 +45,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 					fontStyle="normal"
 				/>
 			</Head>
-			<Preview>Reset your password</Preview>
+			<Preview>Verify your email address</Preview>
 			<Tailwind>
 				<Body className="bg-white-100">
 					<Container className="max-w-xl mx-auto bg-white border border-neutral-200 rounded-md shadow-md">
@@ -65,7 +65,7 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 							className="px-8 py-16  bg-[#FFF4EC] rounded-xl"
 						>
 							<Text className="text-black text-xl font-semibold font-display">
-								recover your account
+								coach application received
 							</Text>
 							<Text
 								style={{
@@ -75,15 +75,15 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 							>
 								{`Hi ${props.userFirstname},`}
 							</Text>
-
 							<Text
 								style={{
 									fontFamily: 'Open Sans, sans-serif',
 								}}
 								className="text-black mt-2"
 							>
-								You{"'"}ve requested a forgot password email to reset your password.
-								Click the link below to set a new password.
+								Thank you for registering to become a coach, our team will review
+								your application and we{"'"}ll usually get back to you within 24
+								hours with a decision.
 							</Text>
 
 							<Text
@@ -92,7 +92,8 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="text-black mt-2"
 							>
-								If this wasn{"'"}t you then please ignore this email.
+								In the meantime please verify your email address by clicking the
+								button below.
 							</Text>
 							<Button
 								style={{
@@ -100,9 +101,9 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 										'linear-gradient(to right, hsla(246, 79%, 51%, 1), hsla(24, 82%, 87%, 1))',
 								}}
 								className="text-white py-3.5 w-fit !mt-6 [&_span]:m-auto flex items-center justify-center rounded-2xl px-8"
-								href={props.resetPasswordLink}
+								href={props.verifyEmailLink}
 							>
-								change password
+								verify account
 							</Button>
 						</Section>
 

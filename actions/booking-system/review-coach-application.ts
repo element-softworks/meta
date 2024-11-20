@@ -2,6 +2,7 @@
 import { db } from '@/db/drizzle/db';
 import { coach, coachApplication } from '@/db/drizzle/schema';
 import { currentUser } from '@/lib/auth';
+import { sendCoachApplicationStatusEmail } from '@/lib/mail';
 import { ReviewCoachApplicationSchema } from '@/schemas/booking-system';
 import { eq } from 'drizzle-orm';
 import * as z from 'zod';
@@ -46,6 +47,8 @@ export async function reviewCoachApplication(
 		return { error: 'Coach application not found' };
 	}
 
+	
+
 	const { status } = validatedFields.data;
 
 	// Review the coach application
@@ -77,8 +80,17 @@ export async function reviewCoachApplication(
 						verified: new Date(),
 					})
 					.where(eq(coach.id, coachResponse.id));
+			} else {
+				await trx
+					.update(coach)
+					.set({
+						verified: null,
+					})
+					.where(eq(coach.id, coachResponse.id));
 			}
 		});
+
+		await sendCoachApplicationStatusEmail(coachApplicationResponse, status === 'APPROVED');
 
 		return { success: 'Coach application reviewed' };
 	} catch (error) {

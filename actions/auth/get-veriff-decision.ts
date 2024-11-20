@@ -65,6 +65,7 @@ export const getVeriffDecision = async () => {
 
 	if (verified) {
 		//If successful, submit the application
+		
 		await coachApplicationSubmit();
 
 		return {

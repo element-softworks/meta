@@ -36,7 +36,11 @@ export const generateTwoFactorToken = async (email: string) => {
 };
 
 //Generate email verification token for credentials authentication method
-export const generateVerificationToken = async (currentEmail: string, newEmail?: string) => {
+export const generateVerificationToken = async (
+	name: string,
+	currentEmail: string,
+	newEmail?: string
+) => {
 	const token = uuidv4();
 	const expiresAt = new Date(new Date().getTime() + 3600 * 1000); // 1 hour
 
@@ -53,6 +57,7 @@ export const generateVerificationToken = async (currentEmail: string, newEmail?:
 		.values({
 			token,
 			email: currentEmail,
+			name: name,
 			newEmail: newEmail ?? null,
 			expiresAt,
 		})
