@@ -1,5 +1,6 @@
 import { coachApplicationStart } from '@/actions/booking-system/coach-application-start';
 import { coachApplicationUpdate } from '@/actions/booking-system/coach-application-update';
+import { getCoachApplication } from '@/actions/booking-system/get-coach-application';
 import { getCoachApplications } from '@/actions/booking-system/get-coach-applications';
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -8,6 +9,13 @@ export async function GET(req: NextRequest, res: Response) {
 	const perPage = searchParams?.get('perPage') ?? '10';
 	const pageNum = searchParams?.get('pageNum') ?? '1';
 	const status = searchParams?.get('status');
+	console.log('yes cheeeeeee1 ');
+
+	if (!searchParams?.get('perPage')?.length || !searchParams?.get('pageNum')?.length) {
+		console.log('yes cheeeeeee');
+		const application = await getCoachApplication(searchParams?.get('appId') as string);
+		return NextResponse.json(application);
+	}
 
 	const response = await getCoachApplications(
 		perPage,

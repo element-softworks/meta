@@ -67,7 +67,10 @@ export const getVeriffDecision = async () => {
 		//If successful, submit the application
 		await coachApplicationSubmit();
 
-		return { success: 'Verification successful', verified: true };
+		return {
+			success: 'Verification successful. Please verify your email address to sign in.',
+			verified: true,
+		};
 	} else {
 		return { error: 'Verification failed', verified: false };
 	}
