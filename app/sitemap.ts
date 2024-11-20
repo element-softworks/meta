@@ -1,17 +1,5 @@
-import { getAllPostSlugs } from '@/sanity/lib/client';
-
 export default async function generateSitemaps() {
-	const posts = await getAllPostSlugs();
-
-	console.log(posts, 'all post slugs');
-
 	return [
-		...posts?.map?.((post) => ({
-			url: `${process.env.NEXT_PUBLIC_APP_URL}/blog/${post}`,
-			lastModified: new Date(),
-			changeFrequency: 'weekly',
-			priority: 0.7,
-		})),
 		{
 			url: `${process.env.NEXT_PUBLIC_APP_URL}/`,
 			lastModified: new Date(),
