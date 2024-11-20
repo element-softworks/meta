@@ -12,7 +12,8 @@ import * as z from 'zod';
 
 export const register = async (
 	values: z.infer<typeof RegisterSchema>,
-	token?: ConciergeToken | null
+	token?: ConciergeToken | null | {},
+	skipHash?: boolean
 ) => {
 	const validatedFields = RegisterSchema.safeParse(values);
 
@@ -21,12 +22,16 @@ export const register = async (
 	}
 
 	const { email, password, name } = validatedFields.data;
-	const hashedPassword = await bcrypt.hash(password, 10);
+	let hashedPassword = password;
+
+	if (!skipHash) {
+		hashedPassword = await bcrypt.hash(password, 10);
+	}
 
 	const existingUser = await getUserByEmail(email);
 
 	if (existingUser) {
-		return { error: 'A user with that email already exists.' };
+		return { error: 'A user with that email already exists.', user: existingUser };
 	}
 
 	const [newUser] = await db
@@ -37,7 +42,7 @@ export const register = async (
 			password: hashedPassword,
 			updatedAt: new Date(),
 		})
-		.returning();
+		.returning({ id: user.id });
 
 	// Generate a verification token and send it to the user via email
 	const verificationToken = await generateVerificationToken(email);
@@ -47,5 +52,5 @@ export const register = async (
 		return { error: data.error };
 	}
 
-	return { success: 'Confirmation email sent.' };
+	return { success: 'Confirmation email sent.', user: newUser };
 };

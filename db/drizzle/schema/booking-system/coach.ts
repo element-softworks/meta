@@ -1,5 +1,5 @@
 import { InferSelectModel, relations, sql } from 'drizzle-orm';
-import { integer, pgTable, text, timestamp, index, foreignKey } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, timestamp, index, foreignKey, jsonb } from 'drizzle-orm/pg-core';
 import { user } from '../user';
 import { coachSchedule } from './coachSchedule';
 
@@ -20,6 +20,14 @@ export const coach = pgTable('Coach', {
 	archivedAt: timestamp('archivedAt', { precision: 3, mode: 'date' }),
 	cooldown: integer('cooldown').notNull().default(15), //15 minutes between bookings
 	bookingInAdvance: integer('bookingInAdvance').notNull().default(28), // 4 weeks in advance bookings
+	hoursExperience: integer('hoursExperience').notNull(),
+	location: text('location').notNull(),
+	timezone: text('timezone').notNull(),
+	yearsExperience: integer('yearsExperience').notNull(),
+	businessName: text('businessName').notNull(),
+	businessNumber: text('businessNumber').notNull(),
+	avatar: text('avatar').notNull(),
+	certificates: jsonb('certificates'), // JSONB column for storing complex data
 });
 
 export const coachRelations = relations(coach, ({ one, many }) => ({

@@ -18,15 +18,15 @@ if (!process.env.STRIPE_WEBHOOK_SECRET) {
 export async function generateMetadata({ params }: any) {
 	const userResponse = await getUserById(params.user);
 	return {
-		title: `Billing | ${userResponse?.name} | Users | Dashboard | NextJS SaaS Boilerplate`,
-		description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
+		title: `Billing | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
+		description: `Billing for ${userResponse?.name} on Coaching Hours.`,
 		openGraph: {
-			title: `Billing | ${userResponse?.name} | Users | Dashboard | NextJS SaaS Boilerplate`,
-			description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
+			title: `Billing | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
+			description: `Billing for ${userResponse?.name} on Coaching Hours.`,
 		},
 		twitter: {
-			title: `Billing | ${userResponse?.name} | Users | Dashboard | NextJS SaaS Boilerplate`,
-			description: `Billing for ${userResponse?.name} on NextJS SaaS Boilerplate.`,
+			title: `Billing | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
+			description: `Billing for ${userResponse?.name} on Coaching Hours.`,
 		},
 	};
 }

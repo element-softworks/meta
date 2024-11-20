@@ -9,15 +9,15 @@ import { AlertCircle, Info } from 'lucide-react';
 
 export async function generateMetadata() {
 	return {
-		title: `Account security | NextJS SaaS Boilerplate`,
-		description: 'Manage your account security settings on NextJS SaaS Boilerplate.',
+		title: `Account security | Coaching Hours`,
+		description: 'Manage your account security settings on Coaching Hours.',
 		openGraph: {
-			title: `Account security | NextJS SaaS Boilerplate`,
-			description: 'Manage your account security settings on NextJS SaaS Boilerplate.',
+			title: `Account security | Coaching Hours`,
+			description: 'Manage your account security settings on Coaching Hours.',
 		},
 		twitter: {
-			title: `Account security | NextJS SaaS Boilerplate`,
-			description: 'Manage your account security settings on NextJS SaaS Boilerplate.',
+			title: `Account security | Coaching Hours`,
+			description: 'Manage your account security settings on Coaching Hours.',
 		},
 	};
 }

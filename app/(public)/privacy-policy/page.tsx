@@ -1,14 +1,14 @@
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {
-		title: 'Privacy Policy | NextJS SaaS Boilerplate',
-		description: 'Privacy Policy for the NextJS SaaS Boilerplate',
+		title: 'Privacy Policy | Coaching Hours',
+		description: 'Privacy Policy for the Coaching Hours',
 		openGraph: {
-			title: 'Privacy Policy | NextJS SaaS Boilerplate',
-			description: 'Privacy Policy for the NextJS SaaS Boilerplate',
+			title: 'Privacy Policy | Coaching Hours',
+			description: 'Privacy Policy for the Coaching Hours',
 		},
 		twitter: {
-			title: 'Privacy Policy | NextJS SaaS Boilerplate',
-			description: 'Privacy Policy for the NextJS SaaS Boilerplate',
+			title: 'Privacy Policy | Coaching Hours',
+			description: 'Privacy Policy for the Coaching Hours',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/privacy-policy`,

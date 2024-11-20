@@ -48,11 +48,13 @@ export function RegisterForm(props: RegisterFormProps) {
 	}
 
 	return (
-		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
+		<div className="flex flex-col gap-4 max-w-full ">
 			<div className="mb-4">
-				<h1 className="text-2xl font-semibold tracking-tight">Register your account</h1>
-				<p className="text-sm text-muted-foreground">
-					Enter your details to register to your account
+				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
+					Register
+				</h1>
+				<p className="text-lg font-normal mt-1">
+					Enter your details to register to your account on the platform.
 				</p>
 			</div>
 			<Form {...form}>
@@ -78,21 +80,18 @@ export function RegisterForm(props: RegisterFormProps) {
 
 					<PasswordInput isLoading={isLoading} name="password" label="Password" />
 
-					<Button isLoading={isLoading} className="w-full" type="submit">
+					<Button isLoading={isLoading} className="w-fit" type="submit">
 						Register with email
 					</Button>
 				</form>
 			</Form>
 			{!!props.token ? null : (
-				<div className="relative mt-2">
-					<div className="absolute inset-0 flex items-center">
-						<span className="w-full border-t"></span>
-					</div>
-					<div className="relative flex justify-center text-xs uppercase">
-						<span className="bg-background px-2 text-muted-foreground">
-							Or continue with
-						</span>
-					</div>
+				<div className="relative flex text-sm items-start mt-4">
+					<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
+					<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
+						or continue with
+					</span>
+					<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 				</div>
 			)}
 
@@ -100,11 +99,18 @@ export function RegisterForm(props: RegisterFormProps) {
 			securely pass data to OAuth providers without exposing vulnerabilities to the platform.
 			This is a security measure to prevent unauthorized access teams across platform. */}
 			<Social className="mt-2" disabled={!!props.token} />
-			<p className="px-8 text-center text-sm text-muted-foreground">
+			<p className="text-sm font-medium !font-sans mt-4">
 				Already have an account?{' '}
-				<Button asChild variant="link" className="px-0 text-muted-foreground">
-					<Link href="/auth/login">Login now</Link>
-				</Button>
+				<Link className="font-semibold" href="/auth/login">
+					Login
+				</Link>
+			</p>
+
+			<p className="text-sm font-medium !font-sans">
+				Want to become a coach?{' '}
+				<Link className="font-semibold" href="/auth/coach-setup">
+					Apply here
+				</Link>
 			</p>
 		</div>
 	);

@@ -1,4 +1,5 @@
 'use client';
+import { User } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import Dropzone, { Accept } from 'react-dropzone';
@@ -12,6 +13,8 @@ interface DropzoneInputProps {
 	defaultFiles?: string[];
 	isLoading?: boolean;
 	label?: string;
+	placeholder?: string;
+	icon?: React.ReactNode;
 }
 
 export function DropzoneInput(props: DropzoneInputProps) {
@@ -34,6 +37,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 		}
 	}, [watch(props.name), props.defaultFiles, props.name, watch]);
 
+	console.log(error, 'error data');
 	return (
 		<>
 			<Controller
@@ -42,7 +46,9 @@ export function DropzoneInput(props: DropzoneInputProps) {
 				render={({ field: { onChange } }) => (
 					<div className="">
 						{props.label ? (
-							<FormLabel className={`${!!error ? 'text-destructive' : ''}`}>
+							<FormLabel
+								className={`text-sm font-normal ${!!error ? 'text-destructive' : ''}`}
+							>
 								{props.label}
 							</FormLabel>
 						) : null}
@@ -53,24 +59,26 @@ export function DropzoneInput(props: DropzoneInputProps) {
 								setFiles(acceptedFiles);
 								onChange(acceptedFiles);
 							}}
-							accept={{
-								'image/webp': [],
-								'image/png': [],
-								'image/jpeg': [],
-								'image/jpg': [],
-								'image/gif': [],
-							}}
+							accept={
+								props.accept ?? {
+									'image/webp': [],
+									'image/png': [],
+									'image/jpeg': [],
+									'image/jpg': [],
+									'image/gif': [],
+								}
+							}
 						>
 							{({ getRootProps, getInputProps, acceptedFiles }) => {
 								return (
 									<>
-										<section className="mt-2">
+										<section className="mt-1">
 											<div
 												{...getRootProps()}
-												className={`group border-2 flex-col gap-2 h-60 border-dashed flex items-center justify-center transition cursor-pointer ${
+												className={`group border flex-col gap-2 bg-background h-40 border-input rounded-2xl flex items-center justify-center transition cursor-pointer ${
 													!!error
 														? 'border-destructive'
-														: 'hover:border-primary hover:bg-card'
+														: 'hover:border-primary hover:bg-background/80'
 												}`}
 											>
 												<input
@@ -80,34 +88,44 @@ export function DropzoneInput(props: DropzoneInputProps) {
 														},
 													})}
 												/>
-												{!props.multiple && (files?.length ?? 0) === 1
-													? files?.map?.((file, index) => {
-															const objectUrl =
-																typeof file === 'string'
-																	? file
-																	: URL.createObjectURL(file);
-															return (
-																<Image
-																	className="w-[75px] h-[75px] object-cover rounded-full"
-																	key={index}
-																	src={objectUrl}
-																	alt="Dropzone image"
-																	width={75}
-																	height={75}
-																/>
-															);
-														})
-													: null}
+												{!props.multiple && (files?.length ?? 0) === 1 ? (
+													files?.map?.((file, index) => {
+														const objectUrl =
+															typeof file === 'string'
+																? file
+																: URL.createObjectURL(file);
+														return (
+															<Image
+																className="w-[40px] h-[40px] object-cover rounded-full"
+																key={index}
+																src={objectUrl}
+																alt="Dropzone image"
+																width={75}
+																height={75}
+															/>
+														);
+													})
+												) : (
+													<div className="bg-card w-[40px] h-[40px] flex justify-center items-center rounded-full">
+														{!!props.icon ? (
+															props.icon
+														) : (
+															<User className="text-muted-foreground" />
+														)}
+													</div>
+												)}
 												<p
-													className={`text-center px-2 ${
+													className={`text-center text-sm font-sans font-light max-w-[34ch] px-2 ${
 														!!error
 															? 'text-destructive'
 															: `text-muted-foreground group-hover:text-primary`
 													} transition`}
 												>
 													{!!error
-														? (error as any)?.[props.name]?.message
-														: 'Drag and drop some files here, or click to select files'}
+														? ((error as any)?.[props.name]?.message ??
+															error?.message)
+														: (props?.placeholder ??
+															'Drag and drop some files here, or click to select files')}
 												</p>
 											</div>
 										</section>

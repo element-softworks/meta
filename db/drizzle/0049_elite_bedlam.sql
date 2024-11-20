@@ -1,0 +1,1 @@
+ALTER TABLE "coachApplication" ALTER COLUMN "certificates" DROP NOT NULL;

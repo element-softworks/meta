@@ -7,10 +7,14 @@ import { Footer } from '@/components/marketing/footer';
 
 const fredoka = Fredoka({
 	subsets: ['latin'],
-	weight: ['300', '400', '500', '600', '700'],
 	variable: '--font-fredoka',
+	weight: ['300', '400', '500', '600', '700'],
 });
-const openSans = Open_Sans({ subsets: ['latin'], variable: '--font-open-sans' });
+const openSans = Open_Sans({
+	subsets: ['latin'],
+	variable: '--font-open-sans',
+	weight: ['300', '400', '500', '600', '700'],
+});
 
 export const metadata: Metadata = {
 	title: 'Coaching Hours',
@@ -23,12 +27,16 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body className={`${fredoka.variable} ${openSans.variable}`}>
+		<html
+			lang="en"
+			suppressHydrationWarning
+			className={`${fredoka.variable} ${openSans.variable}`}
+		>
+			<body>
 				<Toaster />
 				<ThemeProvider
 					attribute="class"
-					defaultTheme="dark"
+					defaultTheme="light"
 					enableSystem
 					disableTransitionOnChange
 				>

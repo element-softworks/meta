@@ -3,7 +3,6 @@
 import * as z from 'zod';
 import { LoginSchema } from '@/schemas';
 import { signIn } from '@/auth';
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { AuthError } from 'next-auth';
 import { getUserByEmail } from '@/data/user';
 import { generateVerificationToken } from '@/lib/tokens';
@@ -100,7 +99,7 @@ export const login = async (
 		await signIn('credentials', {
 			email,
 			password,
-			redirectTo: callbackUrl ?? DEFAULT_LOGIN_REDIRECT,
+			redirectTo: callbackUrl ?? '/dashboard',
 		});
 		// return { success: 'Logged in successfully.' };
 	} catch (error) {
@@ -119,6 +118,4 @@ export const login = async (
 
 		throw error;
 	}
-
-	// return NextResponse.redirect(new URL(DEFAULT_LOGIN_REDIRECT));
 };

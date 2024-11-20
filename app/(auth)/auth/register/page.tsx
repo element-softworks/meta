@@ -4,15 +4,15 @@ import { getConciergeTokenByToken } from '@/data/concierge-token';
 
 export async function generateMetadata() {
 	return {
-		title: `Register | NextJS SaaS Boilerplate`,
-		description: 'Register for an account on NextJS SaaS Boilerplate.',
+		title: `Register | Coaching Hours`,
+		description: 'Register for an account on Coaching Hours.',
 		openGraph: {
-			title: `Register | NextJS SaaS Boilerplate`,
-			description: 'Register for an account on NextJS SaaS Boilerplate.',
+			title: `Register | Coaching Hours`,
+			description: 'Register for an account on Coaching Hours.',
 		},
 		twitter: {
-			title: `Register | NextJS SaaS Boilerplate`,
-			description: 'Register for an account on NextJS SaaS Boilerplate.',
+			title: `Register | Coaching Hours`,
+			description: 'Register for an account on Coaching Hours.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/auth/register`,

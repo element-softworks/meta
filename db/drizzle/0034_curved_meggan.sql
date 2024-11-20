@@ -1,1 +1,0 @@
-ALTER TABLE "Coach" ADD CONSTRAINT "Coach_userId_unique" UNIQUE("userId");

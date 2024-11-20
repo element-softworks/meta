@@ -22,8 +22,9 @@ export const config = {
 		},
 		extend: {
 			fontFamily: {
+				sans: 'var(--font-open-sans)',
 				display: 'var(--font-fredoka)',
-				body: 'var(--font-open-sans)',
+				// body: 'var(--font-open-sans)',
 			},
 			backgroundImage: {
 				'brand-gradient':

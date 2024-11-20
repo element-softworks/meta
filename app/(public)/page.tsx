@@ -19,18 +19,18 @@ import Link from 'next/link';
 
 export async function generateMetadata() {
 	return {
-		title: `NextJS SaaS Boilerplate`,
+		title: `Coaching Hours`,
 		description:
-			'NextJS SaaS Boilerplate is a modern boilerplate for building SaaS applications quickly.',
+			'Coaching Hours is a modern boilerplate for building SaaS applications quickly.',
 		openGraph: {
-			title: `NextJS SaaS Boilerplate`,
+			title: `Coaching Hours`,
 			description:
-				'NextJS SaaS Boilerplate is a modern boilerplate for building SaaS applications quickly.',
+				'Coaching Hours is a modern boilerplate for building SaaS applications quickly.',
 		},
 		twitter: {
-			title: `NextJS SaaS Boilerplate`,
+			title: `Coaching Hours`,
 			description:
-				'NextJS SaaS Boilerplate is a modern boilerplate for building SaaS applications quickly.',
+				'Coaching Hours is a modern boilerplate for building SaaS applications quickly.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}`,

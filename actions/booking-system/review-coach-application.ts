@@ -45,7 +45,6 @@ export async function reviewCoachApplication(
 	if (!coachApplicationResponse) {
 		return { error: 'Coach application not found' };
 	}
-	console.log('testing 4');
 
 	const { status } = validatedFields.data;
 
@@ -54,7 +53,7 @@ export async function reviewCoachApplication(
 	const [coachResponse] = await db
 		.select()
 		.from(coach)
-		.where(eq(coach.id, coachApplicationResponse.coachId));
+		.where(eq(coach.id, coachApplicationResponse.coachId!));
 
 	if (!coachResponse) {
 		return { error: 'Coach not found' };

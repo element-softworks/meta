@@ -19,15 +19,15 @@ import Link from 'next/link';
 
 export async function generateMetadata() {
 	return {
-		title: `Dashboard | NextJS SaaS Boilerplate`,
-		description: 'Dashboard for NextJS SaaS Boilerplate.',
+		title: `Dashboard | Coaching Hours`,
+		description: 'Dashboard for Coaching Hours.',
 		openGraph: {
-			title: `Dashboard | NextJS SaaS Boilerplate`,
-			description: 'Dashboard for NextJS SaaS Boilerplate.',
+			title: `Dashboard | Coaching Hours`,
+			description: 'Dashboard for Coaching Hours.',
 		},
 		twitter: {
-			title: `Dashboard | NextJS SaaS Boilerplate`,
-			description: 'Dashboard for NextJS SaaS Boilerplate.',
+			title: `Dashboard | Coaching Hours`,
+			description: 'Dashboard for Coaching Hours.',
 		},
 	};
 }

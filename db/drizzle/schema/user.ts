@@ -15,6 +15,7 @@ export const user = pgTable(
 			.notNull()
 			.default(sql`gen_random_uuid()`),
 		name: text('name'),
+		agreedToMarketing: boolean('agreedToMarketing').default(false).notNull(),
 		email: text('email').notNull(),
 		stripeCustomerId: text('stripeCustomerId'),
 		stripePaymentId: text('stripePaymentId'),
