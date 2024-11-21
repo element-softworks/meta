@@ -58,6 +58,8 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 		});
 	}, [props.values]);
 
+	console.log(props.values, 'props values');
+
 	const { query: updateQuery, isLoading } = useMutation<FormData, {}>({
 		queryFn: async (values) => {
 			await coachApplicationUpdate(
@@ -113,7 +115,12 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 								label="Avatar"
 								name="avatar"
 								placeholder="Drag or drop to upload an avatar PNG/JPEG Maximum 3MB"
-								defaultFiles={props.values.avatar as any}
+								// defaultFiles={props.values.avatar as any}
+								defaultFiles={
+									!!props.values.avatar?.length
+										? [props.values.avatar as any]
+										: undefined
+								}
 							/>
 
 							<FormInput
@@ -189,7 +196,7 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 								label="Years of experience"
 								render={({ field }) => (
 									<Select
-										value={String(field.value)}
+										defaultValue={props.values.yearsExperience}
 										onValueChange={(value) => {
 											field.onChange(value);
 										}}

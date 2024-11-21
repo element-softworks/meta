@@ -29,26 +29,24 @@ interface CertificateDropzoneInputProps {
 
 export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 	const { multiple = false } = props;
-	const { control, formState, watch } = useFormContext();
+	const { control, formState, watch, setValue } = useFormContext();
 
 	// const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
 	// 	control,
 	// 	name: props.name,
 	// });
 
-	const [files, setFiles] = React.useState<File[] | null | string[]>(props.defaultFiles ?? null);
+	const { fields, append, remove } = useFieldArray({ control, name: props.name });
 
 	const error = formState.errors[props.name];
 
 	useEffect(() => {
-		if (!watch(props.name)) {
-			setFiles(null);
+		if (props.defaultFiles) {
+			props.defaultFiles.forEach((file) => append({ file }));
 		}
+	}, []);
 
-		if (props.defaultFiles && !watch(props.name)) {
-			setFiles(props.defaultFiles);
-		}
-	}, [watch(props.name), props.defaultFiles, props.name, watch]);
+	console.log(fields, 'fields data');
 
 	return (
 		<>
@@ -59,7 +57,9 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 					<div className="">
 						{props.label ? (
 							<FormLabel
-								className={`text-sm font-normal ${!!error ? 'text-destructive' : ''}`}
+								className={`text-sm font-normal ${
+									!!error ? 'text-destructive' : ''
+								}`}
 							>
 								{props.label}
 							</FormLabel>
@@ -68,22 +68,8 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 						<Dropzone
 							multiple={multiple}
 							onDrop={(acceptedFiles) => {
-								const wrappedFiles = acceptedFiles.map((file) => ({
-									file,
-								}));
-
-								setFiles((prevFiles: any) => {
-									// Merge previous files and new files wrapped in `.file`
-									const mergedFiles = multiple
-										? [...(prevFiles || []), ...wrappedFiles]
-										: wrappedFiles;
-
-									return mergedFiles;
-								});
-
-								onChange(
-									multiple ? [...(files || []), ...wrappedFiles] : wrappedFiles
-								);
+								const newFiles = acceptedFiles.map((file) => ({ file }));
+								append([...fields, ...newFiles]);
 							}}
 							accept={
 								props.accept ?? {
@@ -114,32 +100,14 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 														},
 													})}
 												/>
-												{!props.multiple && (files?.length ?? 0) === 1 ? (
-													files?.map?.((file, index) => {
-														const objectUrl =
-															typeof file === 'string'
-																? file
-																: URL.createObjectURL(file);
-														return (
-															<Image
-																className="w-[40px] h-[40px] object-cover rounded-full"
-																key={index}
-																src={objectUrl}
-																alt="Dropzone image"
-																width={75}
-																height={75}
-															/>
-														);
-													})
-												) : (
-													<div className="bg-card w-[40px] h-[40px] flex justify-center items-center rounded-full">
-														{!!props.icon ? (
-															props.icon
-														) : (
-															<User className="text-muted-foreground" />
-														)}
-													</div>
-												)}
+
+												<div className="bg-card w-[40px] h-[40px] flex justify-center items-center rounded-full">
+													{!!props.icon ? (
+														props.icon
+													) : (
+														<User className="text-muted-foreground" />
+													)}
+												</div>
 												<p
 													className={`text-center text-sm font-sans font-light max-w-[34ch] px-2 ${
 														!!error
@@ -148,174 +116,102 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 													} transition`}
 												>
 													{!!error
-														? ((error as any)?.[props.name]?.message ??
-															error?.message)
-														: (props?.placeholder ??
-															'Drag and drop some files here, or click to select files')}
+														? (error as any)?.[props.name]?.message ??
+														  error?.message
+														: props?.placeholder ??
+														  'Drag and drop some files here, or click to select files'}
 												</p>
 											</div>
 										</section>
 										<div
-											className={`flex gap-2 flex-wrap ${!!((files?.length ?? 0) > 0) ? 'mt-4' : ''}`}
+											className={`flex gap-2 flex-wrap ${
+												!!((fields?.length ?? 0) > 0) ? 'mt-4' : ''
+											}`}
 										>
-											{props.multiple && (files?.length ?? 0) > 0
-												? files?.map?.((file, index) => {
-														return (
-															<div
-																className="border rounded-lg p-4 w-full"
-																key={index}
-															>
-																<p className="font-medium font-display">
-																	{typeof file !== 'string'
-																		? (file as any)?.file?.name
-																		: file}
-																</p>
-
-																<div className="flex flex-col gap-4 mt-6">
-																	<DateSelectInput
-																		isLoading={false}
-																		name={`certificates.${index}.certifiedDate`}
-																		label="Certified date"
-																	/>
-
-																	<FormInput
-																		name={`certificates.${index}.certificateName`}
-																		label="Certificate name"
-																		render={({ field }) => (
-																			<Select
-																				value={field.value}
-																				onValueChange={(
-																					value
-																				) => {
-																					if (!value)
-																						return;
-																					field.onChange(
-																						value
-																					);
-																				}}
-																			>
-																				<SelectTrigger>
-																					<SelectValue placeholder="Select a certificate" />
-																				</SelectTrigger>
-																				<SelectContent>
-																					{timezones?.map?.(
-																						(
-																							timezone,
-																							index
-																						) => {
-																							return (
-																								<SelectItem
-																									key={
-																										index
-																									}
-																									value={
-																										timezone?.zone
-																									}
-																								>
-																									{
-																										timezone?.zone
-																									}{' '}
-																									{
-																										timezone?.gmt
-																									}
-																								</SelectItem>
-																							);
-																						}
-																					)}
-																				</SelectContent>
-																			</Select>
+											{fields.map((item: any, index) => (
+												<div
+													key={item.id}
+													className="border rounded-lg p-4 w-full"
+												>
+													<p className="font-medium font-display">
+														{typeof item.file === 'string'
+															? item.file
+															: item?.file?.name || 'Uploaded file'}
+													</p>
+													<div className="flex flex-col gap-4 mt-6">
+														<DateSelectInput
+															isLoading={false}
+															name={`${props.name}.${index}.certifiedDate`}
+															label="Certified date"
+														/>
+														<FormInput
+															name={`${props.name}.${index}.certificateName`}
+															label="Certificate name"
+															render={({ field }) => (
+																<Select
+																	value={field.value}
+																	onValueChange={field.onChange}
+																>
+																	<SelectTrigger>
+																		<SelectValue placeholder="Select a certificate" />
+																	</SelectTrigger>
+																	<SelectContent>
+																		{timezones.map(
+																			(timezone, i) => (
+																				<SelectItem
+																					key={i}
+																					value={
+																						timezone.zone
+																					}
+																				>
+																					{timezone.zone}{' '}
+																					{timezone.gmt}
+																				</SelectItem>
+																			)
 																		)}
-																	/>
-
-																	<FormInput
-																		name={`certificates.${index}.institution`}
-																		label="Institution"
-																		render={({ field }) => (
-																			<Select
-																				value={field.value}
-																				onValueChange={(
-																					value
-																				) => {
-																					if (!value)
-																						return;
-																					field.onChange(
-																						value
-																					);
-																				}}
-																			>
-																				<SelectTrigger>
-																					<SelectValue placeholder="Select an institution" />
-																				</SelectTrigger>
-																				<SelectContent>
-																					{timezones?.map?.(
-																						(
-																							timezone,
-																							index
-																						) => {
-																							return (
-																								<SelectItem
-																									key={
-																										index
-																									}
-																									value={
-																										timezone?.zone
-																									}
-																								>
-																									{
-																										timezone?.zone
-																									}{' '}
-																									{
-																										timezone?.gmt
-																									}
-																								</SelectItem>
-																							);
-																						}
-																					)}
-																				</SelectContent>
-																			</Select>
+																	</SelectContent>
+																</Select>
+															)}
+														/>
+														<FormInput
+															name={`${props.name}.${index}.institution`}
+															label="Institution"
+															render={({ field }) => (
+																<Select
+																	value={field.value}
+																	onValueChange={field.onChange}
+																>
+																	<SelectTrigger>
+																		<SelectValue placeholder="Select an institution" />
+																	</SelectTrigger>
+																	<SelectContent>
+																		{timezones.map(
+																			(timezone, i) => (
+																				<SelectItem
+																					key={i}
+																					value={
+																						timezone.zone
+																					}
+																				>
+																					{timezone.zone}{' '}
+																					{timezone.gmt}
+																				</SelectItem>
+																			)
 																		)}
-																	/>
-
-																	<Button
-																		className="w-fit mt-4"
-																		variant="destructive"
-																		onClick={() => {
-																			setFiles(
-																				(
-																					prevFiles: any
-																				) => {
-																					const newFiles =
-																						prevFiles.filter(
-																							(
-																								_: any,
-																								i: number
-																							) =>
-																								i !==
-																								index
-																						);
-																					return newFiles;
-																				}
-																			);
-
-																			onChange(
-																				(
-																					files as any
-																				)?.filter?.(
-																					(
-																						_: any,
-																						i: number
-																					) => i !== index
-																				)
-																			);
-																		}}
-																	>
-																		remove certificate
-																	</Button>
-																</div>
-															</div>
-														);
-													})
-												: null}
+																	</SelectContent>
+																</Select>
+															)}
+														/>
+														<Button
+															className="w-fit mt-4"
+															variant="destructive"
+															onClick={() => remove(index)}
+														>
+															Remove certificate
+														</Button>
+													</div>
+												</div>
+											))}
 										</div>
 									</>
 								);

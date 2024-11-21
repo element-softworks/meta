@@ -32,16 +32,19 @@ export function VerificationStep(props: VerificationStepProps) {
 		resolver: zodResolver(VerificationStepSchema),
 		defaultValues: {
 			certificates: [],
-			hoursExperience: '' as any,
+			hoursExperience: '',
 		},
 	});
 
 	useEffect(() => {
 		form.reset({
-			certificates: props.values?.certificates ?? [],
-			hoursExperience: props.values?.hoursExperience ?? '',
+			certificates: props.values?.certificates ?? form.getValues('certificates') ?? [],
+			hoursExperience:
+				props.values?.hoursExperience ?? form.getValues('hoursExperience') ?? '',
 		});
 	}, [props.values]);
+
+	console.log(props.values, 'valueseseses');
 
 	async function onSubmit(values: z.infer<typeof VerificationStepSchema>) {
 		const formData = new FormData();

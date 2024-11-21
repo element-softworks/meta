@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { s3Path } from '@/lib/s3';
 import { removeFileFromS3 } from '../system/remove-file-from-s3';
 import bcrypt from 'bcryptjs';
+import { revalidatePath } from 'next/cache';
 
 export const coachApplicationUpdate = async (
 	values: Partial<z.infer<typeof CoachSetupSchema>>,
@@ -144,6 +145,8 @@ export const coachApplicationUpdate = async (
 				}) ?? [],
 		})
 		.where(eq(coachApplication.id, applicationId.value));
+
+	await revalidatePath('/auth/coach-setup');
 
 	return { success: true };
 };
