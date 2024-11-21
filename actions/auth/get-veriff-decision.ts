@@ -63,14 +63,18 @@ export const getVeriffDecision = async () => {
 		return { error: 'Application not found', verified: false };
 	}
 
-	if(foundApplication.status !== 'IN_PROGRESS') {
-		return {verified: true}
+	if (foundApplication.status !== 'IN_PROGRESS') {
+		return { verified: true };
 	}
 
 	if (verified) {
 		//If successful, submit the application
-		
-		await coachApplicationSubmit();
+
+		const response = await coachApplicationSubmit();
+
+		if (response.error) {
+			return { error: response.error, verified: true };
+		}
 
 		return {
 			success: 'Verification successful. Please verify your email address to sign in.',
