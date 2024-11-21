@@ -13,6 +13,15 @@ const nextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
+	redirects: async () => {
+		return [
+			{
+				source: '/',
+				destination: '/auth/login',
+				permanent: true,
+			},
+		];
+	},
 };
 
 const withBundleAnalyzerData = withBundleAnalyzer({

@@ -56,8 +56,8 @@ export function SidebarItem(props: SidebarItemProps) {
 			<Link href={props.link} prefetch={prefetch} className="h-9">
 				<Button
 					size="sm"
-					className={`w-full !font-sans hover:text-primary/70 justify-start px-4 flex items-center gap-2 ${
-						isActive ? 'text-primary' : 'text-foreground font-medium'
+					className={`w-full !font-sans hover:text-primary/70 justify-start font-medium px-4 flex items-center gap-2 ${
+						isActive ? 'text-primary' : 'text-foreground '
 					} 
 					${props.size === 'sm' ? 'text-[0.8rem] h-7 font-normal' : 'text-sm'}
 					`}
@@ -111,8 +111,8 @@ export function SidebarGroup(props: SidebarGroupProps) {
 				collapsible
 			>
 				<AccordionItem value="item-1" className="border-none">
-					<AccordionTrigger className="text-sm py-0 font-medium text-foreground !no-underline !font-sans">
-						<p className="!no-underline">{props.text}</p>
+					<AccordionTrigger className="text-sm py-0 font-semibold text-foreground  !no-underline !font-sans">
+						<p className="!no-underline !font-sans">{props.text}</p>
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col pb-2">
 						{props.children}

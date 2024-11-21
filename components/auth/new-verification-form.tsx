@@ -38,7 +38,10 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
 					Verifying email
 				</h1>
-				<p className="text-lg font-normal mt-1">Email verification is in progress</p>
+				<p className="text-lg font-normal mt-1">
+					Your email is being verified. You will be able to login once the verification is
+					complete.
+				</p>
 			</div>
 
 			{!status && (
@@ -61,28 +64,25 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 			)}
 
 			<Link href="/auth/login">
-				<Button isLoading={false} className="w-full mt-2">
+				<Button isLoading={false} className="w-fit mt-2">
 					Back to login
 				</Button>
 			</Link>
 
-			<div className="relative mt-2">
-				<div className="absolute inset-0 flex items-center">
-					<span className="w-full border-t"></span>
-				</div>
-				<div className="relative flex justify-center text-xs uppercase">
-					<span className="bg-background px-2 text-muted-foreground">
-						Or continue with
-					</span>
-				</div>
+			<div className="relative flex text-sm items-start mt-4">
+				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
+				<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
+					or continue with
+				</span>
+				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 			</div>
 			<Social className="mt-2" />
 
-			<p className="px-8 text-center text-sm text-muted-foreground">
+			<p className="text-sm font-medium !font-sans mt-4">
 				Already have an account?{' '}
-				<Button asChild variant="link" className="px-0 text-muted-foreground">
-					<Link href="/auth/login">Login now</Link>
-				</Button>
+				<Link className="font-semibold" href="/auth/login">
+					Login now
+				</Link>
 			</p>
 		</div>
 	);

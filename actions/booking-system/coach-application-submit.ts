@@ -1,12 +1,11 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import { coach, coachApplication } from '@/db/drizzle/schema';
+import { coach, coachApplication, user } from '@/db/drizzle/schema';
+import { sendNewApplicationEmail } from '@/lib/mail';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
-import { NextResponse } from 'next/server';
 import { register } from '../auth/register';
-import { sendNewApplicationEmail } from '@/lib/mail';
 
 export const coachApplicationSubmit = async () => {
 	const coachAppId = await cookies().get('coachApplicationId')?.value;
@@ -23,6 +22,8 @@ export const coachApplicationSubmit = async () => {
 	if (!foundCoachApplication) {
 		return { error: 'No coach application found' };
 	}
+
+	await sendNewApplicationEmail(foundCoachApplication);
 
 	if (foundCoachApplication.status !== 'IN_PROGRESS') {
 		return { error: 'Coach application already submitted' };
@@ -58,14 +59,19 @@ export const coachApplicationSubmit = async () => {
 			})
 			.returning();
 
+		//Update the user to have the new coachId
+		await db
+			.update(user)
+			.set({ coachId: linkedCoach?.id ?? '' })
+			.where(eq(user.id, newUser?.user?.id ?? ''))
+			.returning();
+
 		//Update the coach application status to PENDING review and apply the new coachID
 		await db
 			.update(coachApplication)
 			.set({ status: 'PENDING', coachId: linkedCoach?.id ?? '' })
 			.where(eq(coachApplication.id, coachAppId))
 			.returning({ id: coachApplication.id });
-
-		await sendNewApplicationEmail(foundCoachApplication);
 	} catch (error) {
 		return { error: 'An error occurred creating the coach, please try again later.' };
 	}
