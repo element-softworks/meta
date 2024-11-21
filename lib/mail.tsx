@@ -22,13 +22,14 @@ import { Resend } from 'resend';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendTwoFactorTokenEmail = async (twoFactorToken: TwoFactorToken) => {
+	const emailingUser = await getUserByEmail(twoFactorToken.email);
 	try {
 		const { data, error } = await resend.emails.send({
 			from: `${process.env.RESEND_FROM_EMAIL}`,
 			to: twoFactorToken.email,
 			subject: 'Your two-factor authentication code',
 			react: TokenEmailTemplate({
-				username: twoFactorToken.email,
+				username: emailingUser?.name ?? twoFactorToken.email,
 				confirmationCode: twoFactorToken.token,
 				codeDuration: '5 minutes',
 			}),

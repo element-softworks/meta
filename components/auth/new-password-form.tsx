@@ -12,6 +12,7 @@ import { PasswordInput } from '../inputs/password-input';
 import { Button } from '../ui/button';
 import { Form } from '../ui/form';
 import { Social } from './social';
+import { ArrowLeft } from 'lucide-react';
 
 type NewPasswordProps = z.infer<typeof NewPasswordSchema>;
 
@@ -28,7 +29,10 @@ export function NewPasswordForm() {
 	} = useMutation<NewPasswordProps, NewPasswordResponse>({
 		queryFn: async (values) => await newPasswordFinish(values!, token),
 		onCompleted: (data) => {
-			form.reset();
+			form.reset({
+				password: '',
+				passwordConfirm: '',
+			});
 		},
 	});
 
@@ -36,6 +40,7 @@ export function NewPasswordForm() {
 		resolver: zodResolver(NewPasswordSchema),
 		defaultValues: {
 			password: '',
+			passwordConfirm: '',
 		},
 	});
 
@@ -48,13 +53,20 @@ export function NewPasswordForm() {
 		<div className="flex flex-col gap-4 max-w-full">
 			<div className="mb-4 ">
 				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
-					Reset password
+					complete forgot password
 				</h1>
-				<p className="text-lg font-normal mt-1">Enter your new password below</p>
+				<p className="text-lg font-normal mt-1">
+					Enter a new password to complete the forgot password process.
+				</p>
 			</div>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<PasswordInput isLoading={isLoading} name="password" label="New password" />
+					<PasswordInput
+						isLoading={isLoading}
+						name="passwordConfirm"
+						label="Confirm password"
+					/>
 
 					<div>
 						<Link href="/auth/login">
@@ -69,14 +81,13 @@ export function NewPasswordForm() {
 				</form>
 			</Form>
 
-			<div className="relative flex text-sm items-start mt-4">
-				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
-				<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
-					or continue with
-				</span>
-				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
-			</div>
-			<Social className="mt-2" />
+			<Link
+				href="/auth/login"
+				className="flex items-center gap-1 font-display font-medium text-sm mt-4"
+			>
+				<ArrowLeft size={20} />
+				back to login
+			</Link>
 		</div>
 	);
 }
