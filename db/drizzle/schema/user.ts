@@ -22,6 +22,7 @@ export const user = pgTable(
 		emailVerified: timestamp('emailVerified', { precision: 3, mode: 'date' }),
 		image: text('image'),
 		password: text('password'),
+		coachId: text('coachId'),
 		role: userRole('role').default('USER').notNull(),
 		isTwoFactorEnabled: boolean('isTwoFactorEnabled').default(false).notNull(),
 		isArchived: boolean('isArchived').default(false).notNull(),
@@ -53,6 +54,10 @@ export const userRelations = relations(user, ({ many, one }) => ({
 	twoFactorConfirmations: many(twoFactorConfirmation),
 	userInvoices: many(customerInvoice),
 	accounts: many(account),
+	coach: one(coach, {
+		fields: [user.coachId],
+		references: [coach.id],
+	}),
 }));
 
 export type User = InferSelectModel<typeof user>;
