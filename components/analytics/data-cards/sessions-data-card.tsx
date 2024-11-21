@@ -1,4 +1,4 @@
-import { getSessionsCount } from '@/actions/get-sessions-count';
+import { getSessionsCount } from '@/actions/analytics/get-sessions-count';
 import { addDays, addHours, addMonths, addWeeks, startOfDay, subDays, subMonths } from 'date-fns';
 import {
 	Card,
@@ -9,8 +9,8 @@ import {
 	CardTitle,
 } from '../../ui/card';
 import { MoveDown, MoveLeft, MoveUp } from 'lucide-react';
-import { DataCard } from '../../data-card';
-import { AnalyticsIcon } from '@/app/analytics-icon';
+import { DataCard } from '../../general/data-card';
+import { AnalyticsIcon } from '@/components/analytics/analytics-icon';
 
 interface SessionsDataCardProps {
 	variant: 'today' | 'week' | 'now' | 'unique';

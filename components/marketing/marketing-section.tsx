@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 
 interface MarketingSectionProps {
@@ -28,7 +26,7 @@ export function MarketingSection(props: MarketingSectionProps) {
 								'linear-gradient(to right, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 96%)',
 							maskImage:
 								'linear-gradient(to right, rgba(0, 0, 0, 0) 4%, rgba(0, 0, 0, 1) 8%, rgba(0, 0, 0, 1) 92%, rgba(0, 0, 0, 0) 96%)',
-					  }
+						}
 					: {}
 			}
 		>

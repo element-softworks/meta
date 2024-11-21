@@ -1,6 +1,6 @@
 'use server';
 
-import { getSessionAnalytics } from '@/actions/get-session-analytics';
+import { getSessionAnalytics } from '@/actions/analytics/get-session-analytics';
 import { ChartConfig } from '@/components/ui/chart';
 import { addDays, addMonths, addWeeks, endOfDay, format } from 'date-fns';
 import { SessionsChart } from './sessions-chart';
@@ -36,6 +36,9 @@ export default async function SessionsChartContainer({ searchParams }: { searchP
 	} else if (dataTypeQuery === 'today') {
 		chartTitle = 'Total sessions today';
 		chartDescription = 'Session activity data recorded today';
+	} else if (dataTypeQuery === 'custom') {
+		chartTitle = `Total Sessions from date range`;
+		chartDescription = `Aggregated session data from ${format(new Date(startDate), 'MMM dd, yyyy')} to ${format(new Date(endDate), 'MMM dd, yyyy')}.`;
 	} else {
 		chartTitle = 'Total Sessions for the Past 3 Months';
 		chartDescription = 'Aggregated session data from the last 3 months.';

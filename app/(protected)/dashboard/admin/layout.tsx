@@ -1,9 +1,11 @@
-'use client';
+import { currentUser } from '@/lib/auth';
+import { redirect } from 'next/navigation';
 
-import { useAdminRoute } from '@/hooks/use-admin-route';
-
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-	useAdminRoute();
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+	const user = await currentUser();
+	if (!user || user.role !== 'ADMIN') {
+		return redirect('/dashboard');
+	}
 
 	return <>{children}</>;
 }

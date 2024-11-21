@@ -8,7 +8,7 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from '@/components/ui/chart';
-import { DateSelectorPicker } from '../date-selector-picker';
+import { DateSelectorPicker } from '../general/date-selector-picker';
 
 interface NewSubscriptionsChartProps {
 	searchParams: any;

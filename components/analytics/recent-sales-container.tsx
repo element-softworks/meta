@@ -1,6 +1,6 @@
 'use server';
 
-import { getInvoices } from '@/actions/get-invoices';
+import { getInvoices } from '@/actions/payment/get-invoices';
 import { RecentSales } from './recent-sales';
 
 export default async function RecentSalesContainer() {

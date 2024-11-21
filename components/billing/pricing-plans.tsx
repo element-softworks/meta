@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 interface PricingProps {
 	readOnly?: boolean;
-	teamId: string;
+	userId: string;
 	currentPlanId: string | undefined;
 	stripeCustomerId: string;
 }
@@ -78,7 +78,6 @@ export function SubscriptionPricingPlans(props: PricingProps) {
 		enabled: !!price,
 		price,
 		stripeCustomerId: props.stripeCustomerId,
-		teamId: props.teamId,
 	});
 
 	const basic = plans.basic;
@@ -203,7 +202,6 @@ export function OneTimePricingPlans(props: PricingProps) {
 		enabled: !!price,
 		price,
 		stripeCustomerId: props.stripeCustomerId,
-		teamId: props.teamId,
 	});
 
 	const fullAccess = plans?.['full access'];
@@ -287,12 +285,12 @@ export function OneTimePricingPlans(props: PricingProps) {
 }
 
 interface PricingPlansProps extends PricingProps {
-	type: 'one time' | 'subscription';
+	type: 'one-time' | 'subscription';
 }
 export default function PricingPlans(props: PricingPlansProps) {
 	if (props.type === 'subscription') {
 		return <SubscriptionPricingPlans {...props} />;
-	} else if (props.type === 'one time') {
+	} else if (props.type === 'one-time') {
 		return <OneTimePricingPlans {...props} />;
 	}
 }

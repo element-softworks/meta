@@ -1,6 +1,6 @@
 'use client';
 
-import { resetPasswordLoggedin } from '@/actions/reset-password-loggedin';
+import { resetPasswordLoggedin } from '@/actions/account/reset-password-loggedin';
 import { Separator } from '@/components/ui/separator';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
@@ -53,7 +53,6 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 		const response = await ResetPasswordQuery(values);
 	}
 
-	if (user?.isOAuth) return null;
 	return (
 		<>
 			{!disableSeparator ? <Separator /> : null}
@@ -65,20 +64,22 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 							isLoading={isLoading}
 							name="password"
 							label="Current password"
-							visible={!user?.isOAuth}
+							disabled={!!user?.isOAuth}
 						/>
 
 						<PasswordInput
 							isLoading={isLoading}
 							name="newPassword"
-							label="Current password"
-							visible={!user?.isOAuth}
+							label="New password"
+							disabled={!!user?.isOAuth}
 						/>
 
 						<Button
 							type="submit"
 							isLoading={isLoading}
-							disabled={isLoading || !user || !form.formState.isDirty}
+							disabled={
+								isLoading || !user || !form.formState.isDirty || !!user?.isOAuth
+							}
 						>
 							Change password
 						</Button>

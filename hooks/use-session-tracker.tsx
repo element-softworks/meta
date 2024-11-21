@@ -1,10 +1,10 @@
 'use client';
 
-import { trackSessions } from '@/actions/track-sessions';
+import { trackSessions } from '@/actions/analytics/track-sessions';
 import { useEffect, useState } from 'react';
 import { useIdleTimer } from 'react-idle-timer';
 
-export function useSessionTracker(email: string, currentTeam?: string) {
+export function useSessionTracker(email: string) {
 	const [state, setState] = useState<string>('Active');
 
 	const onIdle = async () => {

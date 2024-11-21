@@ -11,36 +11,78 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from '../ui/button';
 
+export type SideBarItem =
+	| {
+			text: string;
+			link: string;
+			icon?: React.ReactNode;
+			visible: boolean;
+			active?: boolean;
+			children?:
+				| {
+						text: string;
+						active?: boolean;
+						link: string;
+						icon?: React.ReactNode;
+						visible: boolean;
+				  }[]
+				| undefined;
+	  }[]
+	| undefined;
+
 export interface SidebarItemProps {
+	size?: 'sm' | 'md';
 	link: string;
 	text: string;
 	icon?: React.ReactNode;
 	prefetch?: boolean;
 	onClick?: () => void;
+	nested?: SideBarItem;
+	active?: boolean;
 }
 export function SidebarItem(props: SidebarItemProps) {
 	const { prefetch = true } = props;
 	const pathName = usePathname();
 
-	const isActive = pathName === props.link;
+	const isActive = props.active ?? pathName === props.link;
+
 	return (
-		<Link
-			href={props.link}
-			prefetch={prefetch}
-			onClick={() => props?.onClick?.()}
-			className="h-9"
+		<div
+			onClick={(e) => {
+				e.preventDefault();
+				props?.onClick?.();
+			}}
 		>
-			<Button
-				size="sm"
-				className={`w-full text-sm justify-start px-4 flex items-center gap-2 ${
-					isActive && 'font-bold'
-				} `}
-				variant={isActive ? 'default' : 'ghost'}
-			>
-				{props.icon}
-				{props.text}
-			</Button>
-		</Link>
+			<Link href={props.link} prefetch={prefetch} className="h-9">
+				<Button
+					size="sm"
+					className={`w-full  justify-start px-4 flex items-center gap-2 ${
+						isActive && 'font-bold'
+					} 
+					${props.size === 'sm' ? 'text-[0.8rem] h-7 font-normal' : 'text-sm'}
+					`}
+					variant={isActive ? 'default' : 'ghost'}
+				>
+					{props.icon}
+					{props.text}
+				</Button>
+			</Link>
+			{props.nested && (
+				<div className="pl-4">
+					{props.nested.map((child) => (
+						<SidebarItem
+							size="sm"
+							key={child.link}
+							link={child.link}
+							text={child.text}
+							icon={child.icon}
+							nested={child.children}
+							active={child.active}
+						/>
+					))}
+				</div>
+			)}
+		</div>
 	);
 }
 
@@ -82,7 +124,7 @@ export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?
 	return (
 		<aside
 			style={{}}
-			className={`w-0 lg:w-[270px]  border-border transition-all px-0 py-3 lg:px-4 lg:border-r`}
+			className={`w-0 lg:w-[270px] shadow bg-primary-foreground transition-all px-0 py-3 lg:px-4 lg:border-r`}
 		>
 			<div
 				className={`flex flex-col flex-1 ${

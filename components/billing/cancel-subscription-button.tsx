@@ -1,6 +1,6 @@
 'use client';
-import { cancelSubscription } from '@/actions/cancelSubscription';
-import { uncancelSubscription } from '@/actions/uncancelSubscription';
+import { cancelSubscription } from '@/actions/payment/cancelSubscription';
+import { uncancelSubscription } from '@/actions/payment/uncancelSubscription';
 import { Button } from '@/components/ui/button';
 import { Customer } from '@/db/drizzle/schema/customer';
 import { useMutation } from '@/hooks/use-mutation';
@@ -8,7 +8,6 @@ import { format } from 'date-fns';
 import { useRouter } from 'next/navigation';
 
 interface CancelSubscriptionButtonProps {
-	teamId: string;
 	userId: string;
 	customer: Customer | undefined;
 }
@@ -21,13 +20,9 @@ export default function CancelSubscriptionButton(props: CancelSubscriptionButton
 		data: cancelData,
 	} = useMutation<{}, {}>({
 		queryFn: async (values) =>
-			await cancelSubscription(
-				props.customer?.stripeCustomerId ?? '',
-				props.teamId,
-				props.userId
-			),
+			await cancelSubscription(props.customer?.stripeCustomerId ?? '', props.userId),
 		onSuccess: () => {
-			router.push(`/dashboard/teams/${props.teamId}`);
+			router.push(`/dashboard/users/${props.userId}`);
 		},
 	});
 
@@ -37,13 +32,9 @@ export default function CancelSubscriptionButton(props: CancelSubscriptionButton
 		data,
 	} = useMutation<{}, {}>({
 		queryFn: async (values) =>
-			await uncancelSubscription(
-				props.customer?.stripeCustomerId ?? '',
-				props.teamId,
-				props.userId
-			),
+			await uncancelSubscription(props.customer?.stripeCustomerId ?? '', props.userId),
 		onSuccess: () => {
-			router.push(`/dashboard/teams/${props.teamId}`);
+			router.push(`/dashboard/users/${props.userId}`);
 		},
 	});
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { emailChangeStart } from '@/actions/change-email-start';
+import { emailChangeStart } from '@/actions/account/change-email-start';
 import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';
 import { ChangeEmailSchema } from '@/schemas';
@@ -51,15 +51,20 @@ export function ChangeEmailForm(props: ChangeEmailFormProps) {
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
 					<FormInput
-						visible={!user?.isOAuth}
+						disabled={!!user?.isOAuth}
 						name="email"
 						label="Email"
 						render={({ field }) => (
 							<div className="flex items-center gap-2">
-								<Input {...field} disabled={isLoading} />
+								<Input {...field} disabled={isLoading || !!user?.isOAuth} />
 								<Button
 									variant="secondary"
-									disabled={isLoading || !user || !form.formState.isDirty}
+									disabled={
+										isLoading ||
+										!user ||
+										!form.formState.isDirty ||
+										!!user?.isOAuth
+									}
 									isLoading={isLoading || !user}
 									type="submit"
 								>

@@ -1,6 +1,6 @@
 'use client';
 
-import { newPasswordStart } from '@/actions/new-password-start';
+import { newPasswordStart } from '@/actions/account/new-password-start';
 import { useMutation } from '@/hooks/use-mutation';
 import { ResetSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -42,10 +42,12 @@ export function ResetForm() {
 	}
 
 	return (
-		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
+		<div className="flex flex-col gap-4 max-w-full">
 			<div className="mb-4 ">
-				<h1 className="text-2xl font-semibold tracking-tight">Forgot your password?</h1>
-				<p className="text-sm text-muted-foreground">
+				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
+					Forgot password?
+				</h1>
+				<p className="text-lg font-normal mt-1">
 					Enter your account email to start your password reset
 				</p>
 			</div>
@@ -64,28 +66,25 @@ export function ResetForm() {
 						)}
 					/>
 
-					<Button className="w-full" type="submit" isLoading={isLoading}>
+					<Button className="w-fit" type="submit" isLoading={isLoading}>
 						Send password reset
 					</Button>
 				</form>
 			</Form>
-			<div className="relative mt-2">
-				<div className="absolute inset-0 flex items-center">
-					<span className="w-full border-t"></span>
-				</div>
-				<div className="relative flex justify-center text-xs uppercase">
-					<span className="bg-background px-2 text-muted-foreground">
-						Or continue with
-					</span>
-				</div>
+			<div className="relative flex text-sm items-start mt-4">
+				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
+				<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
+					or continue with
+				</span>
+				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 			</div>
 			<Social className="mt-2" />
 
-			<p className="px-8 text-center text-sm text-muted-foreground">
+			<p className="text-sm font-medium !font-sans mt-4">
 				Remember your details?{' '}
-				<Button asChild variant="link" className="px-0 text-muted-foreground">
-					<Link href="/auth/login">Login now</Link>
-				</Button>
+				<Link className="font-semibold" href="/auth/login">
+					Login now
+				</Link>
 			</p>
 		</div>
 	);

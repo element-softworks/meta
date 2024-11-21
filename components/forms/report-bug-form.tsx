@@ -1,6 +1,6 @@
 'use client';
 
-import { reportBug } from '@/actions/report-bug';
+import { reportBug } from '@/actions/system/report-bug';
 import { useMutation } from '@/hooks/use-mutation';
 import { ReportBugSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -32,7 +32,7 @@ export function ReportBugForm(props: ReportBugFormProps) {
 		},
 	});
 
-	const { query: createTeamQuery, isLoading: isCreating } = useMutation<FormData, {}>({
+	const { query: reportBugQuery, isLoading: isCreating } = useMutation<FormData, {}>({
 		queryFn: async (values) => await reportBug(values!),
 		onCompleted: async (data) => {
 			form.reset();
@@ -43,8 +43,6 @@ export function ReportBugForm(props: ReportBugFormProps) {
 	async function onSubmit(values: ReportBugFormInputProps) {
 		const formData = new FormData();
 
-		console.log(values, 'values data');
-
 		values?.images?.forEach((image, index) => {
 			formData.append(`images.${index}`, image as any);
 		});
@@ -52,7 +50,7 @@ export function ReportBugForm(props: ReportBugFormProps) {
 		formData.append('title', values.title);
 		formData.append('description', values.description);
 		formData.append('status', values.status);
-		createTeamQuery(formData);
+		reportBugQuery(formData);
 	}
 
 	return (

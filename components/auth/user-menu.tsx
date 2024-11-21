@@ -26,7 +26,7 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { LogoutButton } from './logout-button';
-import { NotificationsIcon } from '../notifications-icon';
+import { NotificationsIcon } from '../general/notifications-icon';
 import { ReportBugDialog } from '../dialogs/report-bug-dialog';
 
 interface UserMenuProps {
@@ -48,9 +48,9 @@ export function UserMenu(props: UserMenuProps) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
-				<Button asChild variant="outline">
+				<Button className="px-0 py-0 bg-transparent" asChild variant="ghost">
 					<div className="relative">
-						<Avatar className="size-7 relative">
+						<Avatar className="size-10 relative">
 							{props.user?.image && (
 								<AvatarImage
 									width={35}
@@ -61,9 +61,6 @@ export function UserMenu(props: UserMenuProps) {
 							)}
 							<AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
 						</Avatar>
-						<NotificationsIcon className="top-0 left-9 absolute" count={props.count} />
-
-						<p className="font-normal ml-2">Account</p>
 					</div>
 				</Button>
 			</DropdownMenuTrigger>
@@ -101,16 +98,14 @@ export function UserMenu(props: UserMenuProps) {
 								Settings
 							</DropdownMenuItem>
 						</Link>
-						{!props.user?.isOAuth ? (
-							<Link href="/dashboard/security">
-								<DropdownMenuItem className="cursor-pointer">
-									<ShieldCheck className="mr-2 h-4 w-4" />
-									Security
-								</DropdownMenuItem>
-							</Link>
-						) : null}
+						<Link href="/dashboard/security">
+							<DropdownMenuItem className="cursor-pointer">
+								<ShieldCheck className="mr-2 h-4 w-4" />
+								Security
+							</DropdownMenuItem>
+						</Link>
 
-						<Link href={`/dashboard/teams/${props.user.currentTeam}/billing`}>
+						<Link href={`/dashboard/users/${props.user.id}/billing`}>
 							<DropdownMenuItem className="cursor-pointer">
 								<CreditCard className="mr-2 h-4 w-4" />
 								Billing

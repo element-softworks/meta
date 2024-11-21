@@ -1,6 +1,6 @@
 'use server';
 
-import { getSubscriptionAnalytics } from '@/actions/get-payment-analytics';
+import { getSubscriptionAnalytics } from '@/actions/analytics/get-payment-analytics';
 import { ChartConfig } from '@/components/ui/chart';
 import { addDays, endOfDay, format } from 'date-fns';
 import { NewSubscriptionsChart } from './new-subscriptions-chart';

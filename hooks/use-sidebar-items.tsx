@@ -9,6 +9,7 @@ import {
 	DollarSign,
 	Flag,
 	LayoutDashboard,
+	Pen,
 	PiggyBank,
 	Users,
 	Users2,
@@ -29,34 +30,22 @@ export function useSidebarItems() {
 					icon: <LayoutDashboard size={20} />,
 					visible: true,
 				},
-			],
-		},
-		{
-			name: 'Team',
-			items: [
 				{
-					text: 'Billing',
-					link: `/dashboard/teams/${user?.currentTeam}/billing`,
-					icon: <CreditCard size={20} />,
-					visible: true,
-				},
-				{
-					text: 'Invoices',
-					link: `/dashboard/teams/${user?.currentTeam}/invoices`,
-					icon: <Banknote size={20} />,
+					text: 'Coach',
+					link: '/dashboard/coaches',
+					icon: <Pen size={20} />,
 					visible: true,
 				},
 
 				{
-					text: !!user?.currentTeam ? 'Team' : 'Teams',
-					link: !!user?.currentTeam
-						? `/dashboard/teams/${user?.currentTeam}`
-						: '/dashboard/teams',
-					icon: <Users size={20} />,
+					text: 'Billing',
+					link: `/dashboard/users/${user?.id}/billing`,
+					icon: <CreditCard size={20} />,
 					visible: true,
 				},
 			],
 		},
+
 		{
 			name: 'Admin',
 			visible: user?.role === 'ADMIN',
@@ -73,12 +62,7 @@ export function useSidebarItems() {
 					icon: <Users size={20} />,
 					visible: true,
 				},
-				{
-					text: 'Teams',
-					link: '/dashboard/admin/teams',
-					icon: <Flag size={20} />,
-					visible: true,
-				},
+
 				{
 					text: 'Reported bugs',
 					link: '/dashboard/admin/bugs',

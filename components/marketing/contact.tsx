@@ -35,7 +35,6 @@ export function Contact(props: ContactProps) {
 
 	async function onSubmit(values: z.infer<typeof ContactSchema>) {
 		// await registerQuery(values);
-		console.log(values, 'form values');
 		if (!process.env.NEXT_PUBLIC_FORM_URL) {
 			throw new Error('Form URL is not defined, please define it in your .env file');
 		}

@@ -1,5 +1,3 @@
-'use client';
-
 import Marquee from 'react-fast-marquee';
 
 interface MarqueeTextProps {
@@ -16,7 +14,7 @@ export function MarqueeText(props: MarqueeTextProps) {
 					<p
 						key={index}
 						className={`text-3xl md:text-4xl lg:text-6xl mx-4 md:mx-8 ${
-							isEven ? 'text-muted-foreground' : ''
+							isEven ? 'text-primary/70' : ''
 						}`}
 					>
 						{text}

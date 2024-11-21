@@ -1,6 +1,6 @@
 'use server';
 
-import { getAllUsers } from '@/actions/get-all-users';
+import { getAllUsers } from '@/actions/account/get-all-users';
 import { UsersTable } from './users-table';
 import { Suspense } from 'react';
 

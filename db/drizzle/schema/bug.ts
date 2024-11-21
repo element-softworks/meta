@@ -1,5 +1,5 @@
 import { InferSelectModel, sql } from 'drizzle-orm';
-import { pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 export const bug = pgTable('Bug', {
 	id: text('id')

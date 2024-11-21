@@ -1,5 +1,20 @@
-import { BugsContainer } from '@/components/bugs-container';
+import { BugsContainer } from '@/components/infinite-scrolls/bugs-container';
 import { Separator } from '@/components/ui/separator';
+
+export async function generateMetadata() {
+	return {
+		title: `Bugs | Admin |  Dashboard | Coaching Hours`,
+		description: 'View and manage bugs for Coaching Hours.',
+		openGraph: {
+			title: `Bugs | Admin |  Dashboard | Coaching Hours`,
+			description: 'View and manage bugs for Coaching Hours.',
+		},
+		twitter: {
+			title: `Bugs | Admin |  Dashboard | Coaching Hours`,
+			description: 'View and manage bugs for Coaching Hours.',
+		},
+	};
+}
 
 export default async function AdminTeamsPage({ searchParams }: { searchParams: any }) {
 	return (

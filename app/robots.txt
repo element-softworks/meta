@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+
+# Host
+Host: https://www.nextjs-saas-boilerplate.org
+
+# Sitemap
+Sitemap: https://www.nextjs-saas-boilerplate.org/sitemap.xml

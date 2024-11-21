@@ -8,17 +8,12 @@ export function Footer() {
 	const FOOTER_COLUMNS = [
 		{
 			title: 'Company',
-			links: [
-				{ title: 'About', href: '/about' },
-				{ title: 'Contact', href: '/contact' },
-				{ title: 'Careers', href: '/careers' },
-			],
+			links: [{ title: 'Contact', href: '/#contact' }],
 		},
 		{
 			title: 'Product',
 			links: [
-				{ title: 'Features', href: '/features' },
-				{ title: 'Pricing', href: '/pricing' },
+				{ title: 'Pricing', href: '/#pricing' },
 				{ title: 'Documentation', href: '/docs' },
 			],
 		},
@@ -32,7 +27,7 @@ export function Footer() {
 		},
 	];
 	return (
-		<footer className="border-t border-border">
+		<footer className="border-t border-border bg-primary-foreground">
 			<div className="flex md:flex-row flex-col gap-10 md:gap-20 lg:gap-40 container pt-10 md:pt-20 pb-12">
 				<Link href="/" aria-label="Go to homepage" className="">
 					<div className=" flex items-center text-lg font-light z-[200] relative flex-nowrap">
@@ -64,7 +59,7 @@ export function Footer() {
 
 					<div className="flex gap-6 lg:gap-10 mt-4 md:mt-0 text-sm">
 						<Link href="/privacy-policy">Privacy Policy</Link>
-						<Link href="/terms-and-conditions">Terms & Conditions</Link>
+						<Link href="/terms-of-service">Terms of Service</Link>
 					</div>
 				</div>
 			</div>

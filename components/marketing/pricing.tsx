@@ -1,20 +1,8 @@
-'use client';
-
-import {
-	Duration,
-	addDays,
-	addSeconds,
-	formatDuration,
-	intervalToDuration,
-	subSeconds,
-} from 'date-fns';
 import { Check, Gift, X } from 'lucide-react';
-import { format } from 'path';
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
+import Link from 'next/link';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import Link from 'next/link';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card';
 
 interface PricingProps {
 	title: string;

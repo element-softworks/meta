@@ -1,5 +1,5 @@
 'use client';
-import { createPaymentIntent } from '@/actions/create-payment-intent';
+import { createPaymentIntent } from '@/actions/payment/create-payment-intent';
 import { useMutation } from '@/hooks/use-mutation';
 import convertToSubCurrency from '@/lib/convertToSubCurrency';
 import { CardElement, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
@@ -65,7 +65,7 @@ export function CheckoutForm(props: CheckoutFormProps) {
 
 		if (!data?.clientSecret) return;
 
-		const confirmationLink = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/teams/${user?.currentTeam}/billing/success?amount=${props.amount}`;
+		const confirmationLink = `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/users/${user?.id}/billing/success?amount=${props.amount}`;
 
 		const { error } = await stripe.confirmPayment({
 			elements,

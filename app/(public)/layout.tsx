@@ -3,12 +3,10 @@ import { SessionTrackerProvider } from '@/components/session-provider';
 import { Toaster } from '@/components/ui/toaster';
 import type { Metadata } from 'next';
 import { SessionProvider } from 'next-auth/react';
-import { Inter } from 'next/font/google';
+import { Fredoka, Inter, Open_Sans } from 'next/font/google';
 import '../globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
-
-const inter = Inter({ subsets: ['latin'] });
-
+import { Suspense } from 'react';
 export const metadata: Metadata = {
 	title: 'Coaching Hours',
 	description: 'This is a boilerplate for building SaaS applications with NextJS.',
@@ -24,7 +22,7 @@ export default async function RootLayout({
 			<SessionTrackerProvider>
 				<ThemeProvider>
 					<Toaster />
-					<div className={`flex flex-col min-h-screen mx-auto ${inter.className}`}>
+					<div className={`flex flex-col min-h-screen mx-auto`}>
 						<Navbar sticky contained disableBorderBottom />
 
 						<div className="flex flex-1 relative">

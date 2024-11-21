@@ -10,6 +10,9 @@ const nextConfig = {
 			},
 		],
 	},
+	eslint: {
+		ignoreDuringBuilds: true,
+	},
 };
 
 const withBundleAnalyzerData = withBundleAnalyzer({

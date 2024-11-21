@@ -1,7 +1,7 @@
 'use client';
 import { ExtendedUser } from '@/next-auth';
 
-import { adminArchiveUser } from '@/actions/admin-archive-user';
+import { adminArchiveUser } from '@/actions/account/admin-archive-user';
 import { User } from '@/db/drizzle/schema/user';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
@@ -31,7 +31,7 @@ export function ArchiveUserDropdownMenuItem(props: ArchiveUserDropdownMenuItemPr
 	const currentUser = useCurrentUser();
 	if (currentUser?.role !== 'ADMIN') return null;
 
-	const isArchived = !!props.user?.isArchived ?? false;
+	const isArchived = !!props.user?.isArchived;
 
 	const title = isArchived ? 'Restore' : 'Archive';
 	const description = isArchived

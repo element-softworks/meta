@@ -1,0 +1,1 @@
+ALTER TABLE "coachApplication" ADD COLUMN "idVerified" boolean DEFAULT false;

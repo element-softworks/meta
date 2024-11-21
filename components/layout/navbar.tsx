@@ -3,20 +3,12 @@ import { useCurrentUser } from '@/hooks/use-current-user';
 import { Book, CreditCard, FrameIcon, Notebook, Phone } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
+import { NotificationsMenu } from '../auth/notifications-menu';
 import { UserMenu } from '../auth/user-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
 
-export const NAVBAR_ITEMS = [
-	{ name: 'Pricing', href: '/#pricing', icon: <CreditCard className="mr-2 h-4 w-4" /> },
-	{
-		name: 'Contact',
-		href: '/#contact',
-		icon: <Phone className="mr-2 h-4 w-4" />,
-	},
-	{ name: 'Blog', href: '/blog', icon: <Book className="mr-2 h-4 w-4" /> },
-	{ name: 'Docs', href: '/docs', icon: <Notebook className="mr-2 h-4 w-4" /> },
-];
+export const NAVBAR_ITEMS = [];
 
 interface NavbarProps {
 	count?: number;
@@ -31,6 +23,7 @@ export function Navbar(props: NavbarProps) {
 	const [navOpen, setNavOpen] = useState(false);
 
 	const showDropShadow = useWindowScrolled();
+
 	return (
 		<nav
 			style={{
@@ -39,20 +32,15 @@ export function Navbar(props: NavbarProps) {
 						? 'rgba(0, 0, 0, 0.05) 0px 1px 20px 0px'
 						: 'none',
 			}}
-			className={`py-2 lg:py-4 px-4 lg:px-6 lg:h-20 z-40 transition-all ${
+			className={`py-2 lg:py-4 px-4 lg:px-6 lg:h-20 z-40 transition-all shadow-md ${
 				props.sticky && 'sticky top-0'
 			} 
-			${
-				props.disableBorderBottom
-					? `${showDropShadow ? 'border-b border-border transition-all' : ''}`
-					: 'border-b border-border'
-			}
 			`}
 		>
 			{props.sticky && (
 				<div
 					id="overlap"
-					className={`absolute top-0 left-0 w-full h-full backdrop-blur-md transition-all duration-300 bg-[hsla(var(--nav-background))]`}
+					className={`absolute top-0 left-0 w-full h-full shadow backdrop-blur-md transition-all duration-300 bg-primary-foreground`}
 				></div>
 			)}
 
@@ -68,14 +56,8 @@ export function Navbar(props: NavbarProps) {
 					</div>
 				</Link>
 
-				<UserMobileMenu
-					user={user}
-					navOpen={navOpen}
-					onNavOpenChange={(state: boolean) => setNavOpen(state)}
-					count={props.count}
-				/>
-				<div className="lg:flex items-center gap-10 hidden">
-					<div className="flex ">
+				<div className="lg:flex items-center gap-10">
+					{/* <div className="flex ">
 						{NAVBAR_ITEMS.map((item, index) => {
 							return (
 								<Link
@@ -87,9 +69,10 @@ export function Navbar(props: NavbarProps) {
 								</Link>
 							);
 						})}
-					</div>
+					</div> */}
 
-					<div className="flex">
+					<div className="flex gap-2">
+						<NotificationsMenu />
 						<UserMenu user={user} count={props.count} />
 					</div>
 				</div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { uploadUserAvatar } from '@/actions/upload-user-avatar';
+import { uploadUserAvatar } from '@/actions/system/upload-user-avatar';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';

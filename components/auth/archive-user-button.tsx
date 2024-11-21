@@ -1,7 +1,7 @@
 'use client';
 import { ExtendedUser } from '@/next-auth';
 
-import { adminArchiveUser } from '@/actions/admin-archive-user';
+import { adminArchiveUser } from '@/actions/account/admin-archive-user';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { useState } from 'react';
@@ -30,7 +30,7 @@ export function ArchiveUserButton(props: ArchiveUserButtonProps) {
 	const currentUser = useCurrentUser();
 	if (currentUser?.role !== 'ADMIN') return null;
 
-	const isArchived = !!props.user?.isArchived ?? false;
+	const isArchived = !!props.user?.isArchived;
 
 	const title = isArchived ? 'Restore' : 'Archive';
 	const description = isArchived

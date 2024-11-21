@@ -1,6 +1,6 @@
 'use client';
 
-import { adminSendPasswordReset } from '@/actions/admin-send-password-reset';
+import { adminSendPasswordReset } from '@/actions/account/admin-send-password-reset';
 import { useCurrentUser } from '@/hooks/use-current-user';
 import { useMutation } from '@/hooks/use-mutation';
 import { ExtendedUser } from '@/next-auth';

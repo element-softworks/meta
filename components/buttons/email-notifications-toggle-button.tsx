@@ -4,7 +4,7 @@ import { BellRing } from 'lucide-react';
 import { Switch } from '../ui/switch';
 import { useMutation } from '@/hooks/use-mutation';
 import { useSession } from 'next-auth/react';
-import { emailNotificationsEnabledToggle } from '@/actions/email-notifications-enabled-toggle';
+import { emailNotificationsEnabledToggle } from '@/actions/account/email-notifications-enabled-toggle';
 
 interface EmailNotificationsToggleButtonProps {
 	checked: boolean;

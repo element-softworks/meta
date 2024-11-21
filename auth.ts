@@ -7,13 +7,11 @@ import Google from 'next-auth/providers/google';
 import { getUserByEmail, getUserById } from './data/user';
 import { db } from './db/drizzle/db';
 import { LoginSchema } from './schemas';
-import { and, eq, exists } from 'drizzle-orm';
-import { account, session, teamMember, twoFactorConfirmation, user } from './db/drizzle/schema';
+import { eq } from 'drizzle-orm';
+import { account, session, twoFactorConfirmation, user } from './db/drizzle/schema';
 import { getTwoFactorConfirmationByUserId } from './data/two-factor-confirmation';
 import { getCookie, setCookie } from './data/cookies';
 import { getAccountByUserId } from './data/account';
-import { getUsersTeams } from './data/team';
-import { team } from './db/drizzle/schema/team';
 import { user as dbUser } from './db/drizzle/schema/user';
 
 export const {
@@ -24,8 +22,8 @@ export const {
 	unstable_update: update,
 } = NextAuth({
 	pages: {
-		signIn: '/auth/login',
-		signOut: '/auth/logout',
+		signIn: '/dashboard',
+		signOut: '/',
 		newUser: '/setup',
 		error: '/auth/error',
 	},
@@ -63,6 +61,9 @@ export const {
 	],
 	events: {
 		//https://authjs.dev/reference/core search for "events"
+		async signOut() {
+			await setCookie({ name: 'session', value: '', maxAge: 0 });
+		},
 
 		async linkAccount({ user: userData }) {
 			await db
@@ -87,40 +88,6 @@ export const {
 					})
 					.where(eq(dbUser.id, existingUser?.id));
 			}
-
-			// //If the user isnt in a team, create a team and put them into it
-			// const userInTeam = await db
-			// 	.select()
-			// 	.from(teamMember)
-			// 	.where(eq(teamMember.userId, user?.id!));
-
-			// if (!userInTeam.length && !!existingUser?.id) {
-			// 	const [newTeam] = await db
-			// 		.insert(team)
-			// 		.values({
-			// 			name: `${existingUser?.name}'s Team`,
-			// 			updatedAt: new Date(),
-			// 			createdBy: user?.id!,
-			// 		})
-			// 		.returning({ id: team.id });
-
-			// 	console.log(existingUser, 'existing user data');
-
-			// 	console.log(newTeam.id, user.id, 'new team id');
-			// 	//Create new team member
-			// 	await db.insert(teamMember).values({
-			// 		role: 'OWNER',
-			// 		teamId: newTeam.id,
-			// 		userId: existingUser?.id ?? '',
-			// 		updatedAt: new Date(),
-			// 	});
-
-			// 	//Set the current team cookie to the new team
-			// 	setCookie({
-			// 		name: `${existingUser?.email}-current-team`,
-			// 		value: newTeam.id,
-			// 	});
-			// }
 
 			//Update the session with the user's email
 			const sessionResponse = await getCookie('session');
@@ -172,16 +139,8 @@ export const {
 				session.user.role = token.role;
 			}
 
-			if (token.teams && session.user) {
-				session.user.teams = token.teams;
-			}
-
 			if (session.user) {
 				session.user.isTwoFactorEnabled = token.isTwoFactorEnabled;
-			}
-
-			if (token.currentTeam && session.user) {
-				session.user.currentTeam = token.currentTeam;
 			}
 
 			if (session.user) {
@@ -191,6 +150,8 @@ export const {
 				session.user.isArchived = token.isArchived;
 				session.user.image = token.image;
 				session.user.notificationsEnabled = token.notificationsEnabled;
+				session.user.stripePaymentId = token.stripePaymentId;
+				session.user.stripeCustomerId = token.stripeCustomerId;
 			}
 
 			return session;
@@ -199,35 +160,11 @@ export const {
 		jwt: async ({ token, session }) => {
 			if (!token.sub) return token;
 
-			console.log(token.sub, 'token sub');
-
-			const teamCookie = await getCookie(`${token.sub}-current-team`);
 			const existingUser = await getUserById(token.sub);
-			const [teamResponse] = await db
-				.select()
-				.from(team)
-				.where(
-					and(
-						eq(team.isArchived, false),
-						exists(
-							db
-								.select()
-								.from(teamMember)
-								.where(
-									and(
-										eq(teamMember.teamId, team.id),
-										eq(teamMember.userId, token.sub)
-									)
-								)
-						)
-					)
-				)
-				.limit(1);
 
 			if (!existingUser) return token;
 
 			const existingAccount = await getAccountByUserId(existingUser.id);
-			const currentUserTeams = await getUsersTeams(token.sub);
 
 			token.isOAuth = !!existingAccount;
 			token.name = session?.name ?? existingUser.name;
@@ -237,10 +174,10 @@ export const {
 			token.isTwoFactorEnabled =
 				session?.isTwoFactorEnabled ?? existingUser.isTwoFactorEnabled;
 			token.image = session?.image ?? existingUser.image;
-			token.teams = currentUserTeams ?? [];
-			token.currentTeam = teamCookie?.value ?? teamResponse?.id ?? '';
 			token.notificationsEnabled =
 				session?.notificationsEnabled ?? existingUser.notificationsEnabled;
+			token.stripePaymentId = session?.stripePaymentId ?? existingUser.stripePaymentId;
+			token.stripeCustomerId = session?.stripeCustomerId ?? existingUser.stripeCustomerId;
 			return token;
 		},
 	},

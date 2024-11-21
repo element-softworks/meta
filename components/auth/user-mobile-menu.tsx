@@ -30,7 +30,7 @@ import {
 import { LogoutButton } from './logout-button';
 import { NAVBAR_ITEMS } from '../layout/navbar';
 import { LoginButton } from './login-button';
-import { NotificationsIcon } from '../notifications-icon';
+import { NotificationsIcon } from '../general/notifications-icon';
 import { ReportBugDialog } from '../dialogs/report-bug-dialog';
 
 interface UserMobileMenuProps {
@@ -61,7 +61,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 						Security
 					</DropdownMenuItem>
 				</Link>
-				<Link href={`/dashboard/teams/${props.user?.currentTeam}/billing`}>
+				<Link href={`/dashboard/users/${props.user?.id}/billing`}>
 					<DropdownMenuItem className="cursor-pointer">
 						<CreditCard className="mr-2 h-4 w-4" />
 						Billing
@@ -77,6 +77,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 			<DropdownMenu onOpenChange={(open) => props.onNavOpenChange(open)}>
 				<DropdownMenuTrigger asChild className="cursor-pointer">
 					<Button
+						className="dark:text-white text-black"
 						aria-label="Open user menu"
 						onClick={() => props.onNavOpenChange(!props.navOpen)}
 						variant="link"

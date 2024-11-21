@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Check, MoreHorizontal, X } from 'lucide-react';
-import { DataTable } from '../data-table';
+import { DataTable } from '../general/data-table';
 
 import { Button } from '@/components/ui/button';
 import {

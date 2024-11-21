@@ -3,7 +3,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { MoreHorizontal } from 'lucide-react';
-import { DataTable } from '../data-table';
+import { DataTable } from '../general/data-table';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -87,6 +87,18 @@ export function InvoicesTable(props: InvoicesTableProps) {
 								</a>
 							) : null}
 
+							{!!invoice?.invoicePdf ? (
+								<a
+									href={`${invoice?.invoicePdf?.split('/pdf')[0]}`}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<DropdownMenuItem className="cursor-pointer">
+										View invoice
+									</DropdownMenuItem>
+								</a>
+							) : null}
+
 							<DropdownMenuItem
 								className="cursor-pointer"
 								onClick={() => {
@@ -98,12 +110,6 @@ export function InvoicesTable(props: InvoicesTableProps) {
 							>
 								Copy invoice ID
 							</DropdownMenuItem>
-							{/* <DropdownMenuSeparator /> */}
-							{/* <Link href={`/dashboard/invoices/${team.id}`}>
-								<DropdownMenuItem className="cursor-pointer">
-									View invoice
-								</DropdownMenuItem>
-							</Link> */}
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);

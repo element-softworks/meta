@@ -11,6 +11,7 @@ import {
 	Section,
 	Tailwind,
 	Text,
+	Font,
 } from '@react-email/components';
 import config from '@/tailwind.config';
 
@@ -23,40 +24,87 @@ interface VerifyEmailEmailTemplateProps {
 export const VerifyEmailEmailTemplate = (props: VerifyEmailEmailTemplateProps) => {
 	return (
 		<Html>
-			<Head />
-			<Preview>{props.type === 'change' ? 'Change' : 'Verify'} your email address</Preview>
+			<Head>
+				<Font
+					fontFamily="Open Sans"
+					fallbackFontFamily="Verdana"
+					webFont={{
+						url: 'https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap',
+						format: 'woff2',
+					}}
+					fontWeight={500}
+					fontStyle="normal"
+				/>
+				<Font
+					fontFamily="Fredoka"
+					fallbackFontFamily="Verdana"
+					webFont={{
+						url: 'https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap',
+						format: 'woff2',
+					}}
+					fontWeight={700}
+					fontStyle="normal"
+				/>
+			</Head>
+			<Preview>
+				{props.type === 'change' ? 'Confirm Email Change' : 'Verify Your Email Address'}
+			</Preview>
 			<Tailwind>
-				<Body className="">
-					<Container className="bg-neutral-100 border border-neutral-200 rounded-md">
-						<Section className="bg-neutral-200 ">
+				<Body className="bg-white-100">
+					<Container className="max-w-xl mx-auto bg-white border border-neutral-200 rounded-md shadow-md">
+						<Section className="bg-white rounded-xl p-4 text-center">
 							<Img
-								className="py-2 px-6"
-								src={`https://www.fmt.se/wp-content/uploads/2023/02/logo-placeholder-image.png`}
-								width="75"
-								height="75"
+								className="mx-auto py-2 object-contain"
+								src={`https://coaching-hours.s3.eu-west-2.amazonaws.com/logo.png`}
+								width="150"
+								height="70"
 								alt="logo"
 							/>
 						</Section>
-						<Section className="p-6 ">
-							<Text className="text-black text-2xl font-bold">
-								Verify your email {props.type === 'change' ? 'change' : 'address'}
+						<Section
+							style={{
+								fontFamily: 'Fredoka, sans-serif',
+							}}
+							className="px-8 py-16  bg-[#FFF4EC] rounded-xl"
+						>
+							<Text className="text-black text-xl font-semibold font-display">
+								welcome to coaching hours
 							</Text>
-							<Text className="text-black">
-								Hi {props.userFirstname}, you recently requested to{' '}
-								{props.type === 'change' ? 'change' : 'verify'} your email address.
-								Click the link below to complete the process:
+							<Text
+								style={{
+									fontFamily: 'Open Sans, sans-serif',
+								}}
+								className="text-black mt-2"
+							>
+								{props.type === 'change'
+									? 'You recently requested to change the email address associated with your account.'
+									: `${props.userFirstname}, you’re just one stop away from joining a community of thousands of coaches and coachees working together to level up their skillsets.`}
 							</Text>
 							<Button
-								className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3"
+								style={{
+									background:
+										'linear-gradient(to right, hsla(246, 79%, 51%, 1), hsla(24, 82%, 87%, 1))',
+								}}
+								className="text-white py-3.5 w-fit !mt-6 [&_span]:m-auto flex items-center justify-center rounded-2xl px-8"
 								href={props.verifyEmailLink}
 							>
-								{props.type === 'change' ? 'change' : 'verify'} email
+								{props.type === 'change'
+									? 'confirm email change'
+									: 'verify account'}
 							</Button>
-							<Text className="text-black">
-								If you didn&apos;t request this, just ignore and delete this
-								message.
+						</Section>
+
+						<Section className="text-black font-light text-xs text-center p-4">
+							<Text
+								style={{
+									fontFamily: 'Open Sans, sans-serif',
+									fontWeight: 300,
+								}}
+								className="mb-2 text-sm font-light"
+							>
+								@{new Date().getFullYear()} Copyright Coaching Hours Ltd. Registered
+								in England & Wales no. 14879225
 							</Text>
-							<Text className="text-black font-bold">Thank you!</Text>
 						</Section>
 					</Container>
 				</Body>

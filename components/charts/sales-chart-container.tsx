@@ -1,8 +1,8 @@
 'use server';
 
-import { getSaleAnalytics } from '@/actions/get-sale-analytics';
+import { getSaleAnalytics } from '@/actions/analytics/get-sale-analytics';
 import { ChartConfig } from '@/components/ui/chart';
-import { addMonths, endOfDay, subMonths } from 'date-fns';
+import { addMonths, endOfDay, format, subMonths } from 'date-fns';
 import { SalesChart } from './sales-chart';
 
 export default async function SalesChartContainer({ searchParams }: { searchParams: any }) {
@@ -36,6 +36,9 @@ export default async function SalesChartContainer({ searchParams }: { searchPara
 	} else if (dataTypeQuery === 'today') {
 		chartTitle = 'Total sales today';
 		chartDescription = 'Session activity data recorded today';
+	} else if (dataTypeQuery === 'custom') {
+		chartTitle = `Total Sessions from date range`;
+		chartDescription = `Aggregated session data from ${format(new Date(startDate), 'MMM dd, yyyy')} to ${format(new Date(endDate), 'MMM dd, yyyy')}.`;
 	} else {
 		chartTitle = 'Total sales past month';
 		chartDescription = 'Showing sale data for the last 30 days.';

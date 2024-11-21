@@ -13,15 +13,6 @@ export function DashboardSidebar() {
 	const [navOpen, setNavOpen] = useState(false);
 	const drawerItems = useSidebarItems();
 
-	const router = useRouter();
-
-	const currentUser = useCurrentUser();
-
-	console.log(currentUser, 'current user');
-	if (!currentUser?.currentTeam) {
-		router.push('/setup');
-	}
-
 	return (
 		<>
 			<div className="py-2 px-4 lg:px-4 absolute">
@@ -33,7 +24,7 @@ export function DashboardSidebar() {
 					drawerItems={drawerItems}
 				/>
 				<Button
-					className="p-0 mr-4 block lg:hidden"
+					className="p-0 mr-4 block lg:hidden dark:text-white text-black"
 					onClick={() => setNavOpen((prev) => !prev)}
 					variant="link"
 				>
@@ -44,7 +35,7 @@ export function DashboardSidebar() {
 					)}
 				</Button>
 			</div>
-			<Sidebar>
+			<Sidebar fixed>
 				{SIDEBAR_ITEMS?.map?.((group, index) => {
 					if (group.visible === false) return null;
 					return (

@@ -1,10 +1,8 @@
 'use client';
-import { FcGoogle } from 'react-icons/fc';
-import { FaGithub } from 'react-icons/fa';
-import { Button } from '../ui/button';
-import { DEFAULT_LOGIN_REDIRECT } from '@/routes';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
+import { FcGoogle } from 'react-icons/fc';
+import { Button } from '../ui/button';
 
 interface SocialProps {
 	className?: string;
@@ -16,16 +14,16 @@ export function Social(props: SocialProps) {
 
 	const onClick = (provider: 'google') => {
 		signIn(provider, {
-			callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+			callbackUrl: callbackUrl || '/dashboard',
 		});
 	};
 
 	if (props.disabled) return null;
 
 	return (
-		<div className={`${props.className} flex flex-col w-full gap-y-2 items-center`}>
+		<div className={`${props.className} flex flex-col w-fit gap-y-2 items-center`}>
 			<Button
-				className="w-full"
+				className="w-full bg-transparent"
 				variant="outline"
 				size="lg"
 				onClick={() => onClick('google')}

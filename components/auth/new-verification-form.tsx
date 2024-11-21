@@ -1,6 +1,6 @@
 'use client';
 
-import { newEmailVerification } from '@/actions/new-email-verification';
+import { newEmailVerification } from '@/actions/account/new-email-verification';
 import { useMutation } from '@/hooks/use-mutation';
 import { Check } from 'lucide-react';
 import Link from 'next/link';
@@ -33,10 +33,12 @@ export function NewVerificationForm(props: NewVerificationFormProps) {
 	}, [onSubmit]);
 
 	return (
-		<div className="flex flex-col gap-4 max-w-full md:w-[400px]">
+		<div className="flex flex-col gap-4 max-w-full">
 			<div className="mb-4 ">
-				<h1 className="text-2xl font-semibold tracking-tight">Verifying email</h1>
-				<p className="text-sm text-muted-foreground">Email verification is in progress</p>
+				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
+					Verifying email
+				</h1>
+				<p className="text-lg font-normal mt-1">Email verification is in progress</p>
 			</div>
 
 			{!status && (

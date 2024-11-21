@@ -11,7 +11,7 @@ import {
 import { Bar, BarChart } from 'recharts';
 
 import { useMemo, useState } from 'react';
-import { DateSelectorPicker } from '../date-selector-picker';
+import { DateSelectorPicker } from '../general/date-selector-picker';
 import { Button } from '../ui/button';
 import { ChartColumnBig, ChartLine } from 'lucide-react';
 interface SalesChart {
