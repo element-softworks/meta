@@ -63,6 +63,10 @@ export const getVeriffDecision = async () => {
 		return { error: 'Application not found', verified: false };
 	}
 
+	if(foundApplication.status !== 'IN_PROGRESS') {
+		return {verified: true}
+	}
+
 	if (verified) {
 		//If successful, submit the application
 		

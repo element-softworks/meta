@@ -51,7 +51,10 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 	});
 	useEffect(() => {
 		(async () => {
-			if (!props.hasCookie && props.sessionId) {
+			if (
+				(!props.hasCookie && props.sessionId) ||
+				(props.session?.status !== 'IN_PROGRESS' && !!props.sessionId)
+			) {
 				await setCookie({
 					name: 'coachApplicationId',
 					value: props.sessionId,
@@ -62,7 +65,7 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 		return () => {
 			reset();
 		};
-	}, [props.sessionId]);
+	}, []);
 
 	async function onSubmit(values: z.infer<typeof CoachSetupSchema>) {
 		console.log(values, 'values');

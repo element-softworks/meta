@@ -61,12 +61,11 @@ export const coachApplicationSubmit = async () => {
 		//Update the coach application status to PENDING review and apply the new coachID
 		await db
 			.update(coachApplication)
-			.set({ status: 'PENDING', coachId: linkedCoach?.id ?? '' }).where(eq(coachApplication.id, coachAppId))
+			.set({ status: 'PENDING', coachId: linkedCoach?.id ?? '' })
+			.where(eq(coachApplication.id, coachAppId))
 			.returning({ id: coachApplication.id });
-	
-		await sendNewApplicationEmail(foundCoachApplication);
-		
 
+		await sendNewApplicationEmail(foundCoachApplication);
 	} catch (error) {
 		return { error: 'An error occurred creating the coach, please try again later.' };
 	}

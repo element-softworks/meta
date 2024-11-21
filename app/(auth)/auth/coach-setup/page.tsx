@@ -3,7 +3,7 @@ import { getSelfApplication } from '@/actions/booking-system/get-self-applicatio
 import { CoachSetupForm } from '@/components/auth/coach/setup/coach-setup-form';
 import { RegisterForm } from '@/components/auth/register-form';
 import { getConciergeTokenByToken } from '@/data/concierge-token';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 export async function generateMetadata() {
 	return {
@@ -29,18 +29,18 @@ export default async function CoachSetupPage({
 	searchParams?: { token: string };
 }) {
 	let sessionID = null;
-	const applicationId = await cookies().get('coachApplicationId');
 
+	const applicationId = await cookies().get('coachApplicationId');
 	const currentSession = await getSelfApplication();
 
 	if (!currentSession.data || !applicationId?.value?.length) {
 		const newAppData = await coachApplicationStart();
-		sessionID = newAppData.data?.id;
-
-		console.log(sessionID);
+		sessionID = newAppData?.data?.id ?? '';
 	} else {
 		sessionID = currentSession.data.id;
 	}
+
+	// read the custom x-url header
 
 	const veriffSession = await cookies().get('veriffSession');
 	const sessionCookie = await cookies().get('coachApplicationId');
