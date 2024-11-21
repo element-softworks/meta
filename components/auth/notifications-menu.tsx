@@ -56,16 +56,11 @@ export function NotificationsMenu(props: NotificationsMenuProps) {
 	return (
 		<DropdownMenu open={open} onOpenChange={(open) => setOpen(open)}>
 			{/* <Tooltip text="Notifications" className="-bottom-10"> */}
-			<DropdownMenuTrigger>
-				<Button variant="ghost">
-					<div className="relative">
-						<BellDotIcon className="h-5 w-5" />
-						<NotificationsIcon
-							className="-top-1.5 left-2 absolute"
-							count={unreadCount}
-						/>
-					</div>
-				</Button>
+			<DropdownMenuTrigger asChild>
+				<div className="relative cursor-pointer my-auto">
+					<BellDotIcon className="h-5 w-5" />
+					<NotificationsIcon className="-top-1.5 left-2 absolute" count={unreadCount} />
+				</div>
 			</DropdownMenuTrigger>
 			{/* </Tooltip> */}
 			<DropdownMenuContent

@@ -69,13 +69,13 @@ export function UserMenu(props: UserMenuProps) {
 					<>
 						<DropdownMenuLabel>General</DropdownMenuLabel>
 
-						<Link href="/dashboard">
+						<Link href="/dashboard" className="text-foreground">
 							<DropdownMenuItem className="cursor-pointer">
 								<LayoutDashboard className="mr-2 h-4 w-4" />
 								<span>Dashboard</span>
 							</DropdownMenuItem>
 						</Link>
-						<Link href="/dashboard/notifications">
+						<Link href="/dashboard/notifications" className="text-foreground">
 							<DropdownMenuItem className="cursor-pointer relative">
 								<Bell className="mr-2 h-4 w-4" />
 								<NotificationsIcon
@@ -92,25 +92,28 @@ export function UserMenu(props: UserMenuProps) {
 
 				<DropdownMenuGroup>
 					<DropdownMenuGroup>
-						<Link href="/dashboard/settings">
+						<Link href="/dashboard/settings" className="text-foreground">
 							<DropdownMenuItem className="cursor-pointer">
 								<Settings className="mr-2 h-4 w-4" />
 								Settings
 							</DropdownMenuItem>
 						</Link>
-						<Link href="/dashboard/security">
+						<Link href="/dashboard/security" className="text-foreground">
 							<DropdownMenuItem className="cursor-pointer">
 								<ShieldCheck className="mr-2 h-4 w-4" />
 								Security
 							</DropdownMenuItem>
 						</Link>
 
-						<Link href={`/dashboard/users/${props.user.id}/billing`}>
+						{/* <Link
+							href={`/dashboard/users/${props.user.id}/billing`}
+							className="text-foreground"
+						>
 							<DropdownMenuItem className="cursor-pointer">
 								<CreditCard className="mr-2 h-4 w-4" />
 								Billing
 							</DropdownMenuItem>
-						</Link>
+						</Link> */}
 					</DropdownMenuGroup>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
