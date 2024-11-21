@@ -35,7 +35,7 @@ export function DashboardSidebar() {
 					)}
 				</Button>
 			</div>
-			<Sidebar>
+			<Sidebar fixed>
 				{SIDEBAR_ITEMS?.map?.((group, index) => {
 					if (group.visible === false) return null;
 					return (

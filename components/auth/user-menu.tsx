@@ -48,9 +48,9 @@ export function UserMenu(props: UserMenuProps) {
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild className="cursor-pointer">
-				<Button asChild variant="outline">
+				<Button className="px-0 py-0 bg-transparent" asChild variant="ghost">
 					<div className="relative">
-						<Avatar className="size-7 relative">
+						<Avatar className="size-10 relative">
 							{props.user?.image && (
 								<AvatarImage
 									width={35}
@@ -61,8 +61,6 @@ export function UserMenu(props: UserMenuProps) {
 							)}
 							<AvatarFallback>{props.user?.name?.slice(0, 2)}</AvatarFallback>
 						</Avatar>
-
-						<p className="font-normal ml-2">Account</p>
 					</div>
 				</Button>
 			</DropdownMenuTrigger>

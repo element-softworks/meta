@@ -1,4 +1,5 @@
 import { AuthLayoutButton } from '@/components/auth/auth-layout-button';
+import { Footer } from '@/components/marketing/footer';
 import { FrameIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -50,6 +51,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 					</div>
 				</aside>
 			</section>
+			<Footer />
 		</main>
 	);
 }

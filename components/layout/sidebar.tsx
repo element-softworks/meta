@@ -124,7 +124,7 @@ export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?
 	return (
 		<aside
 			style={{}}
-			className={`w-0 lg:w-[270px]  border-border transition-all px-0 py-3 lg:px-4 lg:border-r`}
+			className={`w-0 lg:w-[270px] shadow bg-primary-foreground transition-all px-0 py-3 lg:px-4 lg:border-r`}
 		>
 			<div
 				className={`flex flex-col flex-1 ${

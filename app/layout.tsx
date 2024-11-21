@@ -41,7 +41,6 @@ export default async function RootLayout({
 					disableTransitionOnChange
 				>
 					{children}
-					<Footer />
 				</ThemeProvider>
 			</body>
 		</html>

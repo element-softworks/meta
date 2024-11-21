@@ -21,7 +21,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
 			<SessionTrackerProvider>
 				<Toaster />
 				<div className="flex flex-col min-h-screen ">
-					<Navbar count={count?.count ?? 0} />
+					<Navbar sticky count={count?.count ?? 0} />
 					<div className="flex flex-1">
 						<DashboardSidebar />
 
