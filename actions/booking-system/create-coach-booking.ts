@@ -65,7 +65,6 @@ export const createCoachBooking = async (
 
 	//Make sure bookings cant be in the past
 	if (currentBookingStartDate < currentDate || currentBookingEndDate < currentDate) {
-		console.log('The booking date cannot be in the past.');
 		return {
 			error: 'The booking date cannot be in the past.',
 		};
@@ -79,7 +78,6 @@ export const createCoachBooking = async (
 		(currentBookingStartDate > bookingInAdvanceDate ||
 			currentBookingEndDate > bookingInAdvanceDate)
 	) {
-		console.log(`The booking date cannot be more than ${bookingInAdvance} days in advance.`);
 		return {
 			error: `The booking date cannot be more than ${bookingInAdvance} days in advance.`,
 		};
@@ -121,13 +119,11 @@ export const createCoachBooking = async (
 		});
 
 		if (!isAvailable) {
-			console.log('The coach is not available for the selected time frame.');
 			return {
 				error: 'The coach is not available for the selected time frame.',
 			};
 		}
 	} catch (error) {
-		console.log('An error occurred checking the coach availability, please try again later.');
 		return {
 			error: 'An error occurred checking the coach availability, please try again later.',
 		};
@@ -143,7 +139,9 @@ export const createCoachBooking = async (
 		});
 
 		return {
-			success: `The coach ${values.bookingType === 'BOOKING' ? 'booking' : 'blocking'} time was successfully created.`,
+			success: `The coach ${
+				values.bookingType === 'BOOKING' ? 'booking' : 'blocking'
+			} time was successfully created.`,
 		};
 	} catch (error) {
 		return {

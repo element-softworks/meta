@@ -44,8 +44,6 @@ export function VerificationStep(props: VerificationStepProps) {
 		});
 	}, [props.values]);
 
-	console.log(props.values, 'valueseseses');
-
 	async function onSubmit(values: z.infer<typeof VerificationStepSchema>) {
 		const formData = new FormData();
 
@@ -72,8 +70,6 @@ export function VerificationStep(props: VerificationStepProps) {
 			);
 		},
 	});
-
-	console.log(form.watch(), 'form.watch()');
 
 	return (
 		<div className="flex flex-col gap-4 max-w-full mb-16 sm:mb-4 mt-auto">

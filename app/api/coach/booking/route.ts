@@ -67,7 +67,6 @@ export async function DELETE(req: NextRequest, res: Response) {
 		});
 	}
 
-	console.log('testing 1');
 	const response = await cancelCoachBooking(bookingId!);
 
 	return NextResponse.json(response);

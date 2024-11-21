@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
+import { coachApplicationUpdate } from '@/actions/booking-system/coach-application-update';
 import { DropzoneInput } from '@/components/inputs/dropzone-input';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
@@ -16,14 +17,13 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { useMutation } from '@/hooks/use-mutation';
 import counties from '@/lib/countries.json';
 import timezones from '@/lib/timezones.json';
 import { MoreAboutYouStepSchema } from '@/schemas';
+import { useEffect } from 'react';
 import { FormInput } from '../../form-input';
 import { CoachSetupFormFormProps } from './coach-setup-form';
-import { useEffect } from 'react';
-import { coachApplicationUpdate } from '@/actions/booking-system/coach-application-update';
-import { useMutation } from '@/hooks/use-mutation';
 
 type MoreAboutYouStepFormProps = z.infer<typeof MoreAboutYouStepSchema>;
 
@@ -57,8 +57,6 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 			yearsExperience: props.values?.yearsExperience ?? '',
 		});
 	}, [props.values]);
-
-	console.log(props.values, 'props values');
 
 	const { query: updateQuery, isLoading } = useMutation<FormData, {}>({
 		queryFn: async (values) => {

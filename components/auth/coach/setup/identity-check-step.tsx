@@ -1,19 +1,7 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-
-import { CertificateDropzoneInput } from '@/components/inputs/certificate-dropzone-input';
 import { Button } from '@/components/ui/button';
-import { Form, FormDescription } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
-import { VerificationStepSchema } from '@/schemas';
-import { FileCheck2 } from 'lucide-react';
-import Link from 'next/link';
-import { useEffect } from 'react';
-import { FormInput } from '../../form-input';
 import { CoachSetupFormFormProps } from './coach-setup-form';
 
 interface IdentityCheckStepProps {
@@ -24,8 +12,6 @@ interface IdentityCheckStepProps {
 }
 
 export function IdentityCheckStep(props: IdentityCheckStepProps) {
-	console.log(props.values, 'more about step values data');
-
 	async function onSubmit() {
 		props.onSubmit();
 	}

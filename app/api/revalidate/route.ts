@@ -2,7 +2,6 @@ import { revalidatePath, revalidateTag } from 'next/cache';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
-	console.log('revalidate post tag data...');
 	try {
 		revalidateTag('post');
 		revalidatePath('/blog');

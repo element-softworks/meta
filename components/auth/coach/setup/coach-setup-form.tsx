@@ -68,7 +68,6 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 	}, []);
 
 	async function onSubmit(values: z.infer<typeof CoachSetupSchema>) {
-		console.log(values, 'values');
 		// await createSetupFormSubmission(values!);
 	}
 

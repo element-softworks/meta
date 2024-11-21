@@ -46,8 +46,6 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 		}
 	}, []);
 
-	console.log(fields, 'fields data');
-
 	return (
 		<>
 			<Controller

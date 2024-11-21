@@ -37,7 +37,6 @@ export function DropzoneInput(props: DropzoneInputProps) {
 		}
 	}, [watch(props.name), props.defaultFiles, props.name, watch]);
 
-	console.log(error, 'error data');
 	return (
 		<>
 			<Controller
@@ -47,7 +46,9 @@ export function DropzoneInput(props: DropzoneInputProps) {
 					<div className="">
 						{props.label ? (
 							<FormLabel
-								className={`text-sm font-normal ${!!error ? 'text-destructive' : ''}`}
+								className={`text-sm font-normal ${
+									!!error ? 'text-destructive' : ''
+								}`}
 							>
 								{props.label}
 							</FormLabel>
@@ -122,15 +123,17 @@ export function DropzoneInput(props: DropzoneInputProps) {
 													} transition`}
 												>
 													{!!error
-														? ((error as any)?.[props.name]?.message ??
-															error?.message)
-														: (props?.placeholder ??
-															'Drag and drop some files here, or click to select files')}
+														? (error as any)?.[props.name]?.message ??
+														  error?.message
+														: props?.placeholder ??
+														  'Drag and drop some files here, or click to select files'}
 												</p>
 											</div>
 										</section>
 										<div
-											className={`flex gap-2 flex-wrap ${!!((files?.length ?? 0) > 0) ? 'mt-4' : ''}`}
+											className={`flex gap-2 flex-wrap ${
+												!!((files?.length ?? 0) > 0) ? 'mt-4' : ''
+											}`}
 										>
 											{props.multiple && (files?.length ?? 0) > 0
 												? files?.map?.((file, index) => {
@@ -148,7 +151,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 																height={100}
 															/>
 														);
-													})
+												  })
 												: null}
 										</div>
 									</>

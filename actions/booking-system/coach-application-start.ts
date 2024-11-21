@@ -9,7 +9,6 @@ export const coachApplicationStart = async () => {
 	const header_url = headersList.get('x-url') || '';
 
 	if (header_url.includes('/auth/coach-setup?step=thank-you')) return;
-	console.log('creating new coach application');
 
 	const [newCoachApplication] = await db
 		.insert(coachApplication)
