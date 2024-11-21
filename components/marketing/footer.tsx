@@ -1,66 +1,77 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '../ui/button';
-import { FrameIcon } from 'lucide-react';
 
 export function Footer() {
 	const FOOTER_COLUMNS = [
 		{
 			title: 'Company',
-			links: [{ title: 'Contact', href: '/#contact' }],
-		},
-		{
-			title: 'Product',
 			links: [
-				{ title: 'Pricing', href: '/#pricing' },
-				{ title: 'Documentation', href: '/docs' },
+				{ title: 'Home', href: '/' },
+				{ title: 'About', href: '/' },
+				{ title: 'Insights', href: '/' },
 			],
 		},
 		{
-			title: 'Social',
+			title: 'Dashboard',
 			links: [
-				{ title: 'GitHub', href: 'https://github.com' },
-				{ title: 'Twitter', href: 'https://twitter.com' },
-				{ title: 'LinkedIn', href: 'https://linkedin.com' },
+				{ title: 'For coachees', href: '/auth/register' },
+				{ title: 'For coaches', href: '/auth/coach-setup' },
+				{ title: 'Register interest', href: '/' },
+			],
+		},
+		{
+			title: 'Contact',
+			links: [
+				{ title: 'Contact us', href: '/#contact-us' },
+				{ title: 'Instagram', href: '/#instagram' },
+				{ title: 'LinkedIn', href: '/#linkedin' },
+			],
+		},
+		{
+			title: 'Legal',
+			links: [
+				{ title: 'Terms and conditions', href: '/terms-of-service' },
+				{ title: 'Privacy policy', href: '/privacy-policy' },
 			],
 		},
 	];
 	return (
 		<footer className="border-t border-border bg-primary-foreground">
 			<div className="flex md:flex-row flex-col gap-10 md:gap-20 lg:gap-40 container pt-10 md:pt-20 pb-12">
-				<Link href="/" aria-label="Go to homepage" className="">
-					<div className=" flex items-center text-lg font-light z-[200] relative flex-nowrap">
-						<FrameIcon className="mr-2" size={30} />
-						<p className="whitespace-nowrap">Coaching Hours</p>
-					</div>
-				</Link>
-				<div className=" grid grid-cols-2 lg:grid-cols-3 gap-10 w-full">
+				<div>
+					<Link href="/dashboard" aria-label="Go to homepage">
+						<Image
+							src="https://coaching-hours.s3.eu-west-2.amazonaws.com/coaching-hours-logo.svg"
+							alt="Coaching hours logo"
+							width={100}
+							height={80}
+							className=""
+						/>
+					</Link>
+					<p className="text-xs sm:text-nowrap text-secondary-foreground mt-2">
+						Copyright {new Date().getFullYear()}-{Number(new Date().getFullYear()) + 1}.
+						Coaching Hours Ltd #14879225
+					</p>
+				</div>
+				<div className=" grid grid-cols-2 lg:grid-cols-4 gap-10 w-full">
 					{FOOTER_COLUMNS.map((column, index) => (
 						<div key={index}>
-							<p className="font-semibold">{column.title}</p>
-							<div className="flex flex-col gap-1 mt-4">
+							<p className="font-bold font-display">{column.title}</p>
+							<div className="flex flex-col gap-2.5 mt-2">
 								{column.links.map((link, index) => (
-									<Link key={index} href={link.href} className="text-sm">
+									<Link
+										key={index}
+										href={link.href}
+										className="text-sm font-normal text-foreground hover:text-primary"
+									>
 										{link.title}
 									</Link>
 								))}
 							</div>
 						</div>
 					))}
-				</div>
-			</div>
-			<div className="container pb-10 md:pb-20 pt-12 border-t border-border">
-				<div className="flex gap-0 lg:gap-10 lg:flex-row flex-col">
-					<p className="text-sm">
-						&copy; {new Date().getFullYear()} Coaching Hours. All rights reserved
-					</p>
-					<p className="text-sm flex-1">Company No. 123456789</p>
-
-					<div className="flex gap-6 lg:gap-10 mt-4 md:mt-0 text-sm">
-						<Link href="/privacy-policy">Privacy Policy</Link>
-						<Link href="/terms-of-service">Terms of Service</Link>
-					</div>
 				</div>
 			</div>
 		</footer>

@@ -16,12 +16,14 @@ interface CoachCardProps {
 export function CoachCard(props: CoachCardProps) {
 	return (
 		<Card className="p-4 lg:pr-8 w-fit mt-8 relative">
-			<div className="flex flex-col gap-10 lg:flex-row grid-cols-1 lg:items-stretch">
-				<img
-					src={props.image}
-					alt="coach image"
-					className="object-cover rounded-2xl h-full aspect-square max-h-[300px]"
-				/>
+			<div className="flex flex-col gap-10 lg:flex-row grid-cols-1 ">
+				<div className="aspect-square">
+					<img
+						src={props.image}
+						alt="coach image"
+						className="object-cover rounded-2xl h-full min-w-[300px] w-full aspect-square max-h-[300px]"
+					/>
+				</div>
 
 				<div className="flex flex-col gap-4 h-full justify-between">
 					<div className="flex gap-4 lg:mt-4 items-center">
