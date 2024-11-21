@@ -39,7 +39,12 @@ export function DashboardSidebar() {
 				{SIDEBAR_ITEMS?.map?.((group, index) => {
 					if (group.visible === false) return null;
 					return (
-						<SidebarGroup key={index} text={group.name} visible={group.visible}>
+						<SidebarGroup
+							key={index}
+							text={group.name}
+							visible={group.visible}
+							accordion={group.accordion}
+						>
 							{group.items.map((item, index) => {
 								if (!item.visible) return null;
 								return (

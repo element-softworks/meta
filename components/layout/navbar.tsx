@@ -7,6 +7,7 @@ import { NotificationsMenu } from '../auth/notifications-menu';
 import { UserMenu } from '../auth/user-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
+import Image from 'next/image';
 
 export const NAVBAR_ITEMS = [];
 
@@ -49,11 +50,8 @@ export function Navbar(props: NavbarProps) {
 					props.contained && 'container px-0'
 				}`}
 			>
-				<Link href="/" aria-label="Go to homepage">
-					<div className=" flex items-center text-lg font-light z-[200] relative">
-						<FrameIcon className="mr-2" size={30} />
-						<p className="hidden lg:block">Coaching Hours</p>
-					</div>
+				<Link href="/dashboard" aria-label="Go to homepage">
+					<Image unoptimized src="/coaching-logo.svg" width={40} height={40} alt="Logo" />
 				</Link>
 
 				<div className="lg:flex items-center gap-10">

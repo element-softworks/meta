@@ -1,21 +1,7 @@
 'use client';
 
-import {
-	Banknote,
-	BugPlay,
-	ChartBar,
-	ChartPie,
-	CreditCard,
-	DollarSign,
-	Flag,
-	LayoutDashboard,
-	Pen,
-	PiggyBank,
-	Users,
-	Users2,
-} from 'lucide-react';
+import { BugPlay, ChartPie, CreditCard, LayoutDashboard, Pen, Users } from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
-import { FaMoneyBill } from 'react-icons/fa';
 
 export function useSidebarItems() {
 	const user = useCurrentUser();
@@ -25,22 +11,9 @@ export function useSidebarItems() {
 			name: 'General',
 			items: [
 				{
-					text: 'Dashboard',
+					text: 'Home',
 					link: '/dashboard',
 					icon: <LayoutDashboard size={20} />,
-					visible: true,
-				},
-				{
-					text: 'Coach',
-					link: '/dashboard/coaches',
-					icon: <Pen size={20} />,
-					visible: true,
-				},
-
-				{
-					text: 'Billing',
-					link: `/dashboard/users/${user?.id}/billing`,
-					icon: <CreditCard size={20} />,
 					visible: true,
 				},
 			],
@@ -48,6 +21,7 @@ export function useSidebarItems() {
 
 		{
 			name: 'Admin',
+			accordion: true,
 			visible: user?.role === 'ADMIN',
 			items: [
 				{

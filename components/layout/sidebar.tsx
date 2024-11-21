@@ -56,12 +56,12 @@ export function SidebarItem(props: SidebarItemProps) {
 			<Link href={props.link} prefetch={prefetch} className="h-9">
 				<Button
 					size="sm"
-					className={`w-full  justify-start px-4 flex items-center gap-2 ${
-						isActive && 'font-bold'
+					className={`w-full !font-sans hover:text-primary/70 justify-start px-4 flex items-center gap-2 ${
+						isActive ? 'text-primary' : 'text-foreground font-medium'
 					} 
 					${props.size === 'sm' ? 'text-[0.8rem] h-7 font-normal' : 'text-sm'}
 					`}
-					variant={isActive ? 'default' : 'ghost'}
+					variant="ghost"
 				>
 					{props.icon}
 					{props.text}
@@ -88,6 +88,7 @@ export function SidebarItem(props: SidebarItemProps) {
 
 export interface SidebarGroupProps {
 	text: string;
+	accordion?: boolean;
 	children?: React.ReactNode;
 	visible?: boolean;
 	mobile?: boolean;
@@ -95,9 +96,11 @@ export interface SidebarGroupProps {
 }
 export function SidebarGroup(props: SidebarGroupProps) {
 	const { visible = true } = props;
+
 	if (!visible) return null;
-	return (
-		<>
+
+	if (props.accordion)
+		return (
 			<Accordion
 				defaultChecked
 				className={`${
@@ -107,17 +110,18 @@ export function SidebarGroup(props: SidebarGroupProps) {
 				defaultValue="item-1"
 				collapsible
 			>
-				<AccordionItem value="item-1">
-					<AccordionTrigger className="text-xs py-2 text-muted-foreground font-semibold uppercase">
-						{props.text}
+				<AccordionItem value="item-1" className="border-none">
+					<AccordionTrigger className="text-sm py-0 font-medium text-foreground !no-underline !font-sans">
+						<p className="!no-underline">{props.text}</p>
 					</AccordionTrigger>
 					<AccordionContent className="flex flex-col pb-2">
 						{props.children}
 					</AccordionContent>
 				</AccordionItem>
 			</Accordion>
-		</>
-	);
+		);
+
+	return <>{props.children}</>;
 }
 
 export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?: boolean }) {
@@ -127,7 +131,7 @@ export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?
 			className={`w-0 lg:w-[270px] shadow bg-primary-foreground transition-all px-0 py-3 lg:px-4 lg:border-r`}
 		>
 			<div
-				className={`flex flex-col flex-1 ${
+				className={`flex flex-col gap-4 flex-1 ${
 					fixed && 'overflow-auto fixed top-24 left-0 w-0 lg:w-[270px] px-0 py-6 lg:p-4'
 				}`}
 			>

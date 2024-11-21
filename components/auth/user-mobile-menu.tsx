@@ -92,7 +92,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 				<DropdownMenuContent className={`w-80 mr-2`}>
 					<DropdownMenuLabel>General</DropdownMenuLabel>
 					<DropdownMenuGroup>
-						{NAVBAR_ITEMS.map((item, index) => {
+						{/* {NAVBAR_ITEMS.map((item, index) => {
 							return (
 								<Link key={index} href={item.href}>
 									<DropdownMenuItem className="cursor-pointer">
@@ -101,7 +101,7 @@ export function UserMobileMenu(props: UserMobileMenuProps) {
 									</DropdownMenuItem>
 								</Link>
 							);
-						})}
+						})} */}
 
 						{!props.user ? null : (
 							<>
