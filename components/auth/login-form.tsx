@@ -79,11 +79,11 @@ export function LoginForm() {
 		<div className="flex flex-col gap-4 max-w-full ">
 			<div className="mb-4 ">
 				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
-					{showTwoFactor ? 'Enter 2FA code' : 'Login'}
+					{showTwoFactor ? 'two factor authentication' : 'login'}
 				</h1>
 				<p className="text-lg font-normal mt-1">
 					{showTwoFactor
-						? 'Enter the two factor code sent to your email address'
+						? 'Enter the 6-digit code on your 2FA device'
 						: 'Enter your email and password to login to your account'}
 				</p>
 			</div>
@@ -133,7 +133,7 @@ export function LoginForm() {
 
 					<div>
 						<Button isLoading={isLoading} className="w-fit" type="submit">
-							{showTwoFactor ? 'Confirm 2FA code' : 'login with email'}
+							{showTwoFactor ? 'complete login' : 'login with email'}
 						</Button>
 					</div>
 				</form>

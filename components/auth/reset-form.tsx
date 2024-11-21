@@ -12,6 +12,7 @@ import { Form } from '../ui/form';
 import { Input } from '../ui/input';
 import { FormInput } from './form-input';
 import { Social } from './social';
+import { ArrowLeft } from 'lucide-react';
 
 type ResetFormProps = z.infer<typeof ResetSchema>;
 
@@ -45,10 +46,11 @@ export function ResetForm() {
 		<div className="flex flex-col gap-4 max-w-full">
 			<div className="mb-4 ">
 				<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
-					Forgot password?
+					forgot password
 				</h1>
 				<p className="text-lg font-normal mt-1">
-					Enter your account email to start your password reset
+					Enter your email address and if an account exists we{"'"}ll send a password
+					reset form.
 				</p>
 			</div>
 
@@ -71,21 +73,22 @@ export function ResetForm() {
 					</Button>
 				</form>
 			</Form>
-			<div className="relative flex text-sm items-start mt-4">
+			{/* <div className="relative flex text-sm items-start mt-4">
 				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 				<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
 					or continue with
 				</span>
 				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 			</div>
-			<Social className="mt-2" />
+			<Social className="mt-2" /> */}
 
-			<p className="text-sm font-medium !font-sans mt-4">
-				Remember your details?{' '}
-				<Link className="font-semibold" href="/auth/login">
-					Login now
-				</Link>
-			</p>
+			<Link
+				href="/auth/login"
+				className="flex items-center gap-1 font-display font-medium text-sm mt-4"
+			>
+				<ArrowLeft size={20} />
+				back to login
+			</Link>
 		</div>
 	);
 }

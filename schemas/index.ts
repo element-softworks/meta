@@ -153,9 +153,20 @@ export const LoginSchema = z.object({
 	code: z.optional(z.string()),
 });
 
-export const NewPasswordSchema = z.object({
-	password: z.string().min(6, { message: 'Minimum 6 characters required' }),
-});
+export const NewPasswordSchema = z
+	.object({
+		password: z.string().min(6, { message: 'Minimum 6 characters required' }),
+		passwordConfirm: z.string().min(6, { message: 'Minimum 6 characters required' }),
+	})
+	.superRefine(({ passwordConfirm, password }, ctx) => {
+		if (passwordConfirm !== password) {
+			ctx.addIssue({
+				code: 'custom',
+				message: 'The passwords did not match',
+				path: ['passwordConfirm'],
+			});
+		}
+	});
 
 export const ResetSchema = z.object({
 	email: z.string().email(),
