@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import { coach, coachApplication } from '@/db/drizzle/schema';
+import { coach, coachApplication, user } from '@/db/drizzle/schema';
 import { eq } from 'drizzle-orm';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
@@ -56,6 +56,13 @@ export const coachApplicationSubmit = async () => {
 				yearsExperience: foundCoachApplication?.yearsExperience ?? 0,
 				bookingInAdvance: foundCoachApplication?.bookingInAdvance ?? 0,
 			})
+			.returning();
+
+		//Update the user to have the new coachId
+		await db
+			.update(user)
+			.set({ coachId: linkedCoach?.id ?? '' })
+			.where(eq(user.id, newUser?.user?.id ?? ''))
 			.returning();
 
 		//Update the coach application status to PENDING review and apply the new coachID
