@@ -35,6 +35,7 @@ export const createCoachBooking = async (
 	const validatedFields = CoachBookingSchema.safeParse(values);
 
 	if (!validatedFields.success) {
+		console.error(validatedFields.error.errors, 'errors data');
 		return {
 			error: 'An error occurred creating the coach booking, please try again later.',
 		};

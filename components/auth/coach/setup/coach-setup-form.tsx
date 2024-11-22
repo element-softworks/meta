@@ -42,7 +42,7 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 			avatar: props.session?.avatar ?? ('' as any),
 			location: props.session?.location ?? '',
 			timezone: props.session?.timezone ?? '',
-			yearsExperience: String(props.session?.yearsExperience) ?? '',
+			yearsExperience: String(props.session?.yearsExperience ?? '') ?? '',
 			businessName: props.session?.businessName ?? '',
 			businessNumber: props.session?.businessNumber ?? '',
 			certificates: (props.session?.certificates as any) ?? [],
@@ -138,7 +138,9 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 						setValue('certificates', values.certificates);
 						setValue('hoursExperience', values.hoursExperience);
 
-						changePageTimer('identity-check', 0);
+						props.session?.idVerified
+							? changePageTimer('thank-you', 0)
+							: changePageTimer('identity-check', 0);
 					}}
 					onBack={() => {
 						changePageTimer('more-details', 0);

@@ -78,15 +78,20 @@ export function RegisterForm(props: RegisterFormProps) {
 						)}
 					/>
 
-					<PasswordInput isLoading={isLoading} name="password" label="Password" />
+					<PasswordInput
+						isLoading={isLoading}
+						name="password"
+						label="Password"
+						showStrengthRequirements
+					/>
 
 					<Button isLoading={isLoading} className="w-fit" type="submit">
-						Register with email
+						sign up
 					</Button>
 				</form>
 			</Form>
 			{!!props.token ? null : (
-				<div className="relative flex text-sm items-start mt-4">
+				<div className="relative flex text-base items-start mt-4">
 					<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 					<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
 						or continue with

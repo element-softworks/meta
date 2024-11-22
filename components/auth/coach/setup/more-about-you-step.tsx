@@ -87,6 +87,7 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 		props.onSubmit(values);
 	}
 
+	console.log(form.watch(), 'watch data');
 	return (
 		<div className="flex flex-col gap-4 max-w-full mb-16 sm:mb-4 mt-auto">
 			<Form {...form}>
@@ -136,7 +137,21 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 											<SelectValue placeholder="Select a location" />
 										</SelectTrigger>
 										<SelectContent>
-											{counties?.map?.((country, index) => {
+											{[
+												{
+													name: 'United Kingdom',
+													dial_code: '+44',
+													code: 'GB',
+												},
+												{
+													name: 'United States',
+													dial_code: '+1',
+													code: 'US',
+												},
+												...counties?.filter?.(
+													(c) => c.code !== 'GB' && c.code !== 'US'
+												),
+											]?.map?.((country, index) => {
 												return (
 													<SelectItem
 														className="flex gap-1 flex-row"
@@ -203,13 +218,17 @@ export function MoreAboutYouStep(props: GenderStepProps) {
 											<SelectValue placeholder="Select years experience" />
 										</SelectTrigger>
 										<SelectContent>
-											{Array.from({ length: 100 })?.map((_, index) => {
+											{Array.from({ length: 14 })?.map((_, index) => {
 												return (
-													<SelectItem key={index} value={String(index)}>
-														{index}
+													<SelectItem
+														key={index}
+														value={String(index + 1)}
+													>
+														{index + 1}
 													</SelectItem>
 												);
 											})}
+											<SelectItem value={'15+'}>15+</SelectItem>
 										</SelectContent>
 									</Select>
 								)}
