@@ -138,7 +138,9 @@ export function CoachSetupForm(props: CoachSetupFormProps) {
 						setValue('certificates', values.certificates);
 						setValue('hoursExperience', values.hoursExperience);
 
-						changePageTimer('identity-check', 0);
+						props.session?.idVerified
+							? changePageTimer('thank-you', 0)
+							: changePageTimer('identity-check', 0);
 					}}
 					onBack={() => {
 						changePageTimer('more-details', 0);

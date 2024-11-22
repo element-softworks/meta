@@ -2,8 +2,10 @@
 
 import { getVeriffDecision } from '@/actions/auth/get-veriff-decision';
 import { CenteredLoader } from '@/components/layout/centered-loader';
+import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useMutation } from '@/hooks/use-mutation';
+import { Info } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
@@ -40,7 +42,7 @@ export function ThankYouStep(props: ThankYouStepProps) {
 							</p>
 							<CenteredLoader />
 						</>
-					) : data?.verified ? (
+					) : data?.verified && !data?.error ? (
 						<>
 							<h1 className="text-4xl md:text-5xl font-semibold tracking-tight font-display">
 								Thank you
@@ -48,12 +50,16 @@ export function ThankYouStep(props: ThankYouStepProps) {
 
 							<p className="text-lg font-display">
 								Thank you for registering to become a coach, our team will review
-								your application and we’ll usually get back to you within 24 hours.
+								your application and we{"'"}ll usually get back to you within 24
+								hours.
 							</p>
-							<p className="">
-								Please check your emails for a verification link to complete your
-								registration.
-							</p>
+							<Alert>
+								<Info className="w-6 h-6 mr-2" />
+								<p>
+									Please check your emails for a verification link to complete
+									your registration.
+								</p>
+							</Alert>
 
 							<div className="mt-0 lg:mt-4 flex flex-col gap-4">
 								<Link href="/auth/login">
@@ -70,7 +76,8 @@ export function ThankYouStep(props: ThankYouStepProps) {
 							</h1>
 
 							<p className="text-lg font-display">
-								We were unable to verify your identity. Please try again.
+								We were unable to finalize your account. Possible reasons are your
+								email may already be in use or your identity could not be verified.
 							</p>
 
 							<div className="mt-0 lg:mt-4 flex flex-col gap-4">
