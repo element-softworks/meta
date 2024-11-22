@@ -123,7 +123,7 @@ export function LoginForm() {
 									size="sm"
 									variant="link"
 									asChild
-									className="px-0 text-muted-foreground font-light text-xs"
+									className="px-0 text-muted-foreground font-sans font-normal text-xs"
 								>
 									<Link href="/auth/reset">Forgot password?</Link>
 								</Button>
@@ -133,13 +133,13 @@ export function LoginForm() {
 
 					<div>
 						<Button isLoading={isLoading} className="w-fit" type="submit">
-							{showTwoFactor ? 'complete login' : 'login with email'}
+							{showTwoFactor ? 'complete login' : 'sign in'}
 						</Button>
 					</div>
 				</form>
 			</Form>
 
-			<div className="relative flex text-sm items-start mt-4">
+			<div className="relative flex text-base items-start mt-4">
 				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 				<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
 					or continue with
@@ -151,7 +151,7 @@ export function LoginForm() {
 			<p className="text-sm font-medium !font-sans mt-4">
 				{"Don't"} have an account yet?{' '}
 				<Link className="font-semibold" href="/auth/register">
-					Register now
+					Sign up now
 				</Link>
 			</p>
 		</div>

@@ -156,3 +156,7 @@ body {
 	background: #ffcab9;
 	mix-blend-mode: multiply;
 }
+
+.rdp-vhidden {
+	@apply hidden;
+}

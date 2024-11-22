@@ -9,11 +9,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { useFormContext } from 'react-hook-form';
 
 interface DateSelectInputProps {
+	showYears?: boolean;
 	isLoading: boolean;
 	name: string;
 	label?: string;
 	disabled?: boolean;
 	placeholder?: string;
+	onChange?: (value: string) => void;
 }
 export function DateSelectInput(props: DateSelectInputProps) {
 	const { watch } = useFormContext();
@@ -43,16 +45,22 @@ export function DateSelectInput(props: DateSelectInputProps) {
 					</PopoverTrigger>
 					<PopoverContent className="w-auto p-0">
 						<Calendar
+							fromYear={1960}
+							toYear={2030}
+							captionLayout="dropdown-buttons"
 							mode="single"
 							selected={date}
 							onSelect={(date) => {
 								setDate(date!);
-								field.onChange(date?.toISOString());
+								!!props.onChange
+									? props.onChange?.(date?.toISOString()!)
+									: field.onChange(date?.toISOString());
 							}}
 							initialFocus
 						/>
 					</PopoverContent>
 				</Popover>
+
 				// <Input {...field} />
 			)}
 		/>

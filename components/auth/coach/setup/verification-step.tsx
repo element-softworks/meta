@@ -31,8 +31,8 @@ export function VerificationStep(props: VerificationStepProps) {
 	const form = useForm<VerificationStepFormProps>({
 		resolver: zodResolver(VerificationStepSchema),
 		defaultValues: {
-			certificates: [],
-			hoursExperience: '',
+			certificates: props.values?.certificates ?? [],
+			hoursExperience: props.values?.hoursExperience ?? '',
 		},
 	});
 
@@ -57,7 +57,13 @@ export function VerificationStep(props: VerificationStepProps) {
 
 		await updateQuery(formData);
 
-		props.onSubmit(values);
+		form.reset({
+			certificates: props.values?.certificates ?? form.getValues('certificates') ?? [],
+			hoursExperience:
+				props.values?.hoursExperience ?? form.getValues('hoursExperience') ?? '',
+		});
+
+		props.onSubmit(form.watch());
 	}
 
 	const { query: updateQuery, isLoading } = useMutation<FormData, {}>({
@@ -70,6 +76,8 @@ export function VerificationStep(props: VerificationStepProps) {
 			);
 		},
 	});
+
+	console.log(form.watch(), 'certs data');
 
 	return (
 		<div className="flex flex-col gap-4 max-w-full mb-16 sm:mb-4 mt-auto">

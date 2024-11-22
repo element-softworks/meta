@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { Logo } from '../general/logo';
 
 export function Footer() {
 	const FOOTER_COLUMNS = [
@@ -42,13 +43,7 @@ export function Footer() {
 			<div className="flex md:flex-row flex-col gap-10 md:gap-20 lg:gap-40 container pt-10 md:pt-20 pb-12">
 				<div>
 					<Link href="/dashboard" aria-label="Go to homepage">
-						<Image
-							src="https://coaching-hours.s3.eu-west-2.amazonaws.com/coaching-hours-logo.svg"
-							alt="Coaching hours logo"
-							width={100}
-							height={80}
-							className=""
-						/>
+						<Logo width={150} height={50} />
 					</Link>
 					<p className="text-xs sm:text-nowrap text-secondary-foreground mt-2">
 						Copyright {new Date().getFullYear()}-{Number(new Date().getFullYear()) + 1}.

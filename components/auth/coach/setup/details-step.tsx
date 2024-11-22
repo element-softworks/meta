@@ -109,7 +109,12 @@ export function DetailsStep(props: GenderStepProps) {
 								render={({ field }) => <Input {...field} placeholder="Doe" />}
 							/>
 
-							<PasswordInput isLoading={false} name="password" label="Password" />
+							<PasswordInput
+								isLoading={false}
+								name="password"
+								label="Password"
+								showStrengthRequirements
+							/>
 
 							<FormInput
 								name="agreedToTerms"

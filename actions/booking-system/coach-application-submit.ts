@@ -73,6 +73,7 @@ export const coachApplicationSubmit = async () => {
 			.where(eq(coachApplication.id, coachAppId))
 			.returning({ id: coachApplication.id });
 	} catch (error) {
+		console.error(error, 'error creating coach');
 		return { error: 'An error occurred creating the coach, please try again later.' };
 	}
 

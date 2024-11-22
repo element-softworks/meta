@@ -73,7 +73,7 @@ export function ResetForm() {
 					</Button>
 				</form>
 			</Form>
-			{/* <div className="relative flex text-sm items-start mt-4">
+			{/* <div className="relative flex text-base items-start mt-4">
 				<span className="bg-primary-foreground border-t px-3 text-muted-foreground" />
 				<span className="bg-primary-foreground -mt-2 px-2 text-muted-foreground">
 					or continue with

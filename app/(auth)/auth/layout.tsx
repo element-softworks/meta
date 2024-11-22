@@ -1,8 +1,7 @@
-import { AuthLayoutButton } from '@/components/auth/auth-layout-button';
+import { Logo } from '@/components/general/logo';
 import { Footer } from '@/components/marketing/footer';
-import { FrameIcon } from 'lucide-react';
+import { ThemeProvider } from '@/components/theme-provider';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Suspense } from 'react';
 import { ClipLoader } from 'react-spinners';
 
@@ -10,31 +9,25 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<main className="auth-layout min-h-screen max-w-full">
 			<section className="flex flex-col md:flex-row min-h-screen ">
-				<section className="min-h-screen bg-primary-foreground flex-1">
+				<section className="min-h-screen bg-primary-foreground flex-1 ">
 					<section className="h-16 block md:hidden">
 						<div className="isolate">
 							<div className="noise"></div>
-							<div className="overlay"></div>
+							<div className="overlay dark:bg-foreground"></div>
 						</div>
 					</section>
 					<div className=" min-h-screen mb-auto relative max-w-lg mx-auto w-full py-8 px-4 md:px-8 flex flex-col">
-						<Image
-							src="https://coaching-hours.s3.eu-west-2.amazonaws.com/coaching-hours-logo.svg"
-							alt="Coaching hours logo"
-							width={150}
-							height={80}
-							className=""
-						/>
+						<Logo width={200} height={50} />
 						<div className="justify-center items-center flex mx-auto flex-col my-auto w-full">
 							<Suspense fallback={<ClipLoader size={50} />}>{children}</Suspense>
 						</div>
 					</div>
 				</section>
 				<aside className="md:flex overflow-hidden hidden flex-col w-1/2 bg-background  flex-0 md:flex-1 relative text-white ">
-					<section className="h-16">
-						<div className="isolate">
-							<div className="noise"></div>
-							<div className="overlay"></div>
+					<section className="h-16 ">
+						<div className="isolate ">
+							<div className="noise "></div>
+							<div className="overlay dark:bg-foreground"></div>
 						</div>
 					</section>
 
