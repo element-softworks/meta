@@ -68,6 +68,7 @@ export function ResetPasswordForm(props: ResetPasswordFormProps) {
 						/>
 
 						<PasswordInput
+							showStrengthRequirements
 							isLoading={isLoading}
 							name="newPassword"
 							label="New password"

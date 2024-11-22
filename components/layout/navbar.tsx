@@ -8,6 +8,7 @@ import { UserMenu } from '../auth/user-menu';
 import { UserMobileMenu } from '../auth/user-mobile-menu';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
 export const NAVBAR_ITEMS = [];
 
@@ -24,6 +25,9 @@ export function Navbar(props: NavbarProps) {
 	const [navOpen, setNavOpen] = useState(false);
 
 	const showDropShadow = useWindowScrolled();
+	const { theme } = useTheme();
+
+	console.log(theme, 'theme move');
 
 	return (
 		<nav
@@ -51,7 +55,13 @@ export function Navbar(props: NavbarProps) {
 				}`}
 			>
 				<Link href="/dashboard" aria-label="Go to homepage">
-					<Image unoptimized src="/coaching-logo.svg" width={40} height={40} alt="Logo" />
+					<Image
+						unoptimized
+						src={theme === 'dark' ? '/coaching-logo-white.svg' : '/coaching-logo.svg'}
+						width={50}
+						height={40}
+						alt="Logo"
+					/>
 				</Link>
 
 				<div className="lg:flex items-center gap-10">
@@ -70,7 +80,7 @@ export function Navbar(props: NavbarProps) {
 					</div> */}
 
 					<div className="flex gap-2">
-						<NotificationsMenu />
+						{/* <NotificationsMenu /> */}
 						<UserMenu user={user} count={props.count} />
 					</div>
 				</div>

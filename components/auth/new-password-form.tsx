@@ -61,7 +61,12 @@ export function NewPasswordForm() {
 			</div>
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-					<PasswordInput isLoading={isLoading} name="password" label="New password" />
+					<PasswordInput
+						isLoading={isLoading}
+						name="password"
+						label="New password"
+						showStrengthRequirements
+					/>
 					<PasswordInput
 						isLoading={isLoading}
 						name="passwordConfirm"

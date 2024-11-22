@@ -119,8 +119,28 @@ export const ChangeEmailSchema = z.object({
 
 export const ResetPasswordSchema = z
 	.object({
-		password: z.string().min(6, { message: 'Minimum 6 characters required' }),
-		newPassword: z.string().min(6, { message: 'Minimum 6 characters required' }),
+		password: z.string().min(1, { message: 'Password is required' }),
+		newPassword: z
+			.string()
+			.min(9, { message: 'Password must be at least 9 characters' })
+			.refine(
+				(password) => {
+					if (password?.length < 9) {
+						return false;
+					} else if (!/[A-Z]/.test(password)) {
+						return false;
+					} else if (!/[0-9]/.test(password)) {
+						return false;
+					} else if (!/[A-Za-z0-9]/.test(password)) {
+						return false;
+					} else {
+						return true;
+					}
+				},
+				{
+					message: 'Password not strong enough',
+				}
+			),
 	})
 	.refine(
 		(data) => {
@@ -155,7 +175,27 @@ export const LoginSchema = z.object({
 
 export const NewPasswordSchema = z
 	.object({
-		password: z.string().min(6, { message: 'Minimum 6 characters required' }),
+		password: z
+			.string()
+			.min(9, { message: 'Password must be at least 9 characters' })
+			.refine(
+				(password) => {
+					if (password?.length < 9) {
+						return false;
+					} else if (!/[A-Z]/.test(password)) {
+						return false;
+					} else if (!/[0-9]/.test(password)) {
+						return false;
+					} else if (!/[A-Za-z0-9]/.test(password)) {
+						return false;
+					} else {
+						return true;
+					}
+				},
+				{
+					message: 'Password not strong enough',
+				}
+			),
 		passwordConfirm: z.string().min(6, { message: 'Minimum 6 characters required' }),
 	})
 	.superRefine(({ passwordConfirm, password }, ctx) => {
@@ -174,7 +214,27 @@ export const ResetSchema = z.object({
 
 export const RegisterSchema = z.object({
 	email: z.string().email(),
-	password: z.string().min(6, { message: 'Minimum 6 characters required' }),
+	password: z
+		.string()
+		.min(9, { message: 'Password must be at least 9 characters' })
+		.refine(
+			(password) => {
+				if (password?.length < 9) {
+					return false;
+				} else if (!/[A-Z]/.test(password)) {
+					return false;
+				} else if (!/[0-9]/.test(password)) {
+					return false;
+				} else if (!/[A-Za-z0-9]/.test(password)) {
+					return false;
+				} else {
+					return true;
+				}
+			},
+			{
+				message: 'Password not strong enough',
+			}
+		),
 	name: z.string().min(1, { message: 'Name is required' }),
 });
 
@@ -182,7 +242,27 @@ export const CoachSetupDetailsStepSchema = z.object({
 	email: z.string().email(),
 	firstName: z.string().min(1, { message: 'First name is required' }),
 	lastName: z.string().min(1, { message: 'Last name is required' }),
-	password: z.string().min(6, { message: 'Minimum 6 characters required' }),
+	password: z
+		.string()
+		.min(9, { message: 'Password must be at least 9 characters' })
+		.refine(
+			(password) => {
+				if (password?.length < 9) {
+					return false;
+				} else if (!/[A-Z]/.test(password)) {
+					return false;
+				} else if (!/[0-9]/.test(password)) {
+					return false;
+				} else if (!/[A-Za-z0-9]/.test(password)) {
+					return false;
+				} else {
+					return true;
+				}
+			},
+			{
+				message: 'Password not strong enough',
+			}
+		),
 	agreedToTerms: z.boolean().refine((value) => value, { message: 'You must agree to the terms' }),
 	agreedToMarketing: z.boolean(),
 });
