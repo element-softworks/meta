@@ -36,7 +36,7 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 	// 	name: props.name,
 	// });
 
-	const { fields, append, remove } = useFieldArray({ control, name: props.name });
+	const { fields, append, remove, insert, update } = useFieldArray({ control, name: props.name });
 
 	const error = formState.errors[props.name];
 
@@ -45,6 +45,8 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 			props.defaultFiles.forEach((file) => append({ file }));
 		}
 	}, []);
+
+	console.log(fields, 'fields');
 
 	return (
 		<>
@@ -138,6 +140,13 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 													</p>
 													<div className="flex flex-col gap-4 mt-6">
 														<DateSelectInput
+															showYears
+															onChange={(date) => {
+																update(index, {
+																	...item,
+																	certifiedDate: date,
+																});
+															}}
 															isLoading={false}
 															name={`${props.name}.${index}.certifiedDate`}
 															label="Certified date"
@@ -147,8 +156,13 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 															label="Certificate name"
 															render={({ field }) => (
 																<Select
-																	value={field.value}
-																	onValueChange={field.onChange}
+																	value={item.certificateName}
+																	onValueChange={(value) => {
+																		update(index, {
+																			...item,
+																			certificateName: value,
+																		});
+																	}}
 																>
 																	<SelectTrigger>
 																		<SelectValue placeholder="Select a certificate" />
@@ -176,8 +190,13 @@ export function CertificateDropzoneInput(props: CertificateDropzoneInputProps) {
 															label="Institution"
 															render={({ field }) => (
 																<Select
-																	value={field.value}
-																	onValueChange={field.onChange}
+																	value={item.institution}
+																	onValueChange={(value) => {
+																		update(index, {
+																			...item,
+																			institution: value,
+																		});
+																	}}
 																>
 																	<SelectTrigger>
 																		<SelectValue placeholder="Select an institution" />
