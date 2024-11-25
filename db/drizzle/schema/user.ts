@@ -3,7 +3,6 @@ import { boolean, index, pgEnum, pgTable, text, timestamp, uniqueIndex } from 'd
 import { userNotification } from './userNotification';
 import { twoFactorConfirmation } from './twoFactorConfirmation';
 import { account } from './account';
-import { coach } from './booking-system/coach';
 import { customerInvoice } from './customerInvoice';
 export const userRole = pgEnum('UserRole', ['ADMIN', 'USER']);
 
@@ -54,10 +53,6 @@ export const userRelations = relations(user, ({ many, one }) => ({
 	twoFactorConfirmations: many(twoFactorConfirmation),
 	userInvoices: many(customerInvoice),
 	accounts: many(account),
-	coach: one(coach, {
-		fields: [user.coachId],
-		references: [coach.id],
-	}),
 }));
 
 export type User = InferSelectModel<typeof user>;

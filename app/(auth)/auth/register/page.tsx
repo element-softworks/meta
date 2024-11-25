@@ -4,15 +4,15 @@ import { getConciergeTokenByToken } from '@/data/concierge-token';
 
 export async function generateMetadata() {
 	return {
-		title: `Register | Coaching Hours`,
-		description: 'Register for an account on Coaching Hours.',
+		title: `Register | Meta`,
+		description: 'Register for an account on Meta.',
 		openGraph: {
-			title: `Register | Coaching Hours`,
-			description: 'Register for an account on Coaching Hours.',
+			title: `Register | Meta`,
+			description: 'Register for an account on Meta.',
 		},
 		twitter: {
-			title: `Register | Coaching Hours`,
-			description: 'Register for an account on Coaching Hours.',
+			title: `Register | Meta`,
+			description: 'Register for an account on Meta.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/auth/register`,

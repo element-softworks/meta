@@ -31,7 +31,7 @@ export async function createPaymentIntent({ amount }: { amount: number }) {
 			automatic_payment_methods: {
 				enabled: true,
 			},
-			description: 'Payment for Coaching Hours',
+			description: 'Payment for Meta',
 			metadata: {
 				userId: foundUser?.id ?? '',
 				email: foundUser?.email ?? '',

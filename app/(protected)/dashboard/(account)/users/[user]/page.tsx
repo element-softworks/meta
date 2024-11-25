@@ -5,15 +5,15 @@ import { currentUser } from '@/lib/auth';
 
 export async function generateMetadata() {
 	return {
-		title: `Account settings | Coaching Hours`,
-		description: 'Manage your account settings on Coaching Hours.',
+		title: `Account settings | Meta`,
+		description: 'Manage your account settings on Meta.',
 		openGraph: {
-			title: `Account settings | Coaching Hours`,
-			description: 'Manage your account settings on Coaching Hours.',
+			title: `Account settings | Meta`,
+			description: 'Manage your account settings on Meta.',
 		},
 		twitter: {
-			title: `Account settings | Coaching Hours`,
-			description: 'Manage your account settings on Coaching Hours.',
+			title: `Account settings | Meta`,
+			description: 'Manage your account settings on Meta.',
 		},
 	};
 }

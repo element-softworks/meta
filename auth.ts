@@ -152,7 +152,6 @@ export const {
 				session.user.notificationsEnabled = token.notificationsEnabled;
 				session.user.stripePaymentId = token.stripePaymentId;
 				session.user.stripeCustomerId = token.stripeCustomerId;
-				session.user.coachId = token.coachId;
 			}
 
 			return session;
@@ -179,7 +178,6 @@ export const {
 				session?.notificationsEnabled ?? existingUser.notificationsEnabled;
 			token.stripePaymentId = session?.stripePaymentId ?? existingUser.stripePaymentId;
 			token.stripeCustomerId = session?.stripeCustomerId ?? existingUser.stripeCustomerId;
-			token.coachId = session?.coachId ?? existingUser.coachId;
 			return token;
 		},
 	},

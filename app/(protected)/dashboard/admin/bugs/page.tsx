@@ -3,15 +3,15 @@ import { Separator } from '@/components/ui/separator';
 
 export async function generateMetadata() {
 	return {
-		title: `Bugs | Admin |  Dashboard | Coaching Hours`,
-		description: 'View and manage bugs for Coaching Hours.',
+		title: `Bugs | Admin |  Dashboard | Meta`,
+		description: 'View and manage bugs for Meta.',
 		openGraph: {
-			title: `Bugs | Admin |  Dashboard | Coaching Hours`,
-			description: 'View and manage bugs for Coaching Hours.',
+			title: `Bugs | Admin |  Dashboard | Meta`,
+			description: 'View and manage bugs for Meta.',
 		},
 		twitter: {
-			title: `Bugs | Admin |  Dashboard | Coaching Hours`,
-			description: 'View and manage bugs for Coaching Hours.',
+			title: `Bugs | Admin |  Dashboard | Meta`,
+			description: 'View and manage bugs for Meta.',
 		},
 	};
 }

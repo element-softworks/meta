@@ -2,15 +2,15 @@ import { ResetForm } from '@/components/auth/reset-form';
 
 export async function generateMetadata() {
 	return {
-		title: `Reset Password | Coaching Hours`,
-		description: 'Reset your password on Coaching Hours.',
+		title: `Reset Password | Meta`,
+		description: 'Reset your password on Meta.',
 		openGraph: {
-			title: `Reset Password | Coaching Hours`,
-			description: 'Reset your password on Coaching Hours.',
+			title: `Reset Password | Meta`,
+			description: 'Reset your password on Meta.',
 		},
 		twitter: {
-			title: `Reset Password | Coaching Hours`,
-			description: 'Reset your password on Coaching Hours.',
+			title: `Reset Password | Meta`,
+			description: 'Reset your password on Meta.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/auth/reset`,

@@ -47,7 +47,7 @@ export function Footer() {
 					</Link>
 					<p className="text-xs sm:text-nowrap text-secondary-foreground mt-2">
 						Copyright {new Date().getFullYear()}-{Number(new Date().getFullYear()) + 1}.
-						Coaching Hours Ltd #14879225
+						Meta Ltd #14879225
 					</p>
 				</div>
 				<div className=" grid grid-cols-2 lg:grid-cols-4 gap-10 w-full">

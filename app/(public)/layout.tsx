@@ -8,7 +8,7 @@ import '../globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Suspense } from 'react';
 export const metadata: Metadata = {
-	title: 'Coaching Hours',
+	title: 'Meta',
 	description: 'This is a boilerplate for building SaaS applications with NextJS.',
 };
 

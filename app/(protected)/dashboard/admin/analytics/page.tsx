@@ -5,15 +5,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export async function generateMetadata() {
 	return {
-		title: `Analytics | Admin | Dashboard | Coaching Hours`,
-		description: 'View and analyze your dashboard analytics on Coaching Hours.',
+		title: `Analytics | Admin | Dashboard | Meta`,
+		description: 'View and analyze your dashboard analytics on Meta.',
 		openGraph: {
-			title: `Analytics | Admin |  Dashboard | Coaching Hours`,
-			description: 'View and analyze your dashboard analytics on Coaching Hours.',
+			title: `Analytics | Admin |  Dashboard | Meta`,
+			description: 'View and analyze your dashboard analytics on Meta.',
 		},
 		twitter: {
-			title: `Analytics | Admin |  Dashboard | Coaching Hours`,
-			description: 'View and analyze your dashboard analytics on Coaching Hours.',
+			title: `Analytics | Admin |  Dashboard | Meta`,
+			description: 'View and analyze your dashboard analytics on Meta.',
 		},
 	};
 }

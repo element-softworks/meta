@@ -8,7 +8,6 @@ export type ExtendedUser = DefaultSession['user'] & {
 	notificationsEnabled: boolean;
 	stripePaymentId: string;
 	stripeCustomerId: string;
-	coachId: string;
 };
 
 declare module 'next-auth' {
@@ -26,7 +25,6 @@ declare module 'next-auth/jwt' {
 		/** OpenID ID Token */
 		role: UserRole;
 		isTwoFactorEnabled: boolean;
-		coachId: string;
 		isOAuth: boolean;
 		isArchived: boolean;
 		image: string;

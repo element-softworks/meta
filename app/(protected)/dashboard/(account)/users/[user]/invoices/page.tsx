@@ -7,15 +7,15 @@ import { Suspense } from 'react';
 export async function generateMetadata({ params }: any) {
 	const userResponse = await getUserById(params.user);
 	return {
-		title: `Invoices | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
-		description: `Invoices for ${userResponse?.name} on Coaching Hours.`,
+		title: `Invoices | ${userResponse?.name} | Users | Dashboard | Meta`,
+		description: `Invoices for ${userResponse?.name} on Meta.`,
 		openGraph: {
-			title: `Invoices | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
-			description: `Invoices for ${userResponse?.name} on Coaching Hours.`,
+			title: `Invoices | ${userResponse?.name} | Users | Dashboard | Meta`,
+			description: `Invoices for ${userResponse?.name} on Meta.`,
 		},
 		twitter: {
-			title: `Invoices | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
-			description: `Invoices for ${userResponse?.name} on Coaching Hours.`,
+			title: `Invoices | ${userResponse?.name} | Users | Dashboard | Meta`,
+			description: `Invoices for ${userResponse?.name} on Meta.`,
 		},
 	};
 }

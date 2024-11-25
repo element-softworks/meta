@@ -6,18 +6,18 @@ import { Suspense } from 'react';
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {
-		title: `SaaSphere Coaching Hours`,
+		title: `SaaSphere Meta`,
 		description:
-			'SaaSphere Coaching Hours is a modern boilerplate for building SaaS applications quickly.',
+			'SaaSphere Meta is a modern boilerplate for building SaaS applications quickly.',
 		openGraph: {
-			title: `SaaSphere Coaching Hours`,
+			title: `SaaSphere Meta`,
 			description:
-				'SaaSphere Coaching Hours is a modern boilerplate for building SaaS applications quickly.',
+				'SaaSphere Meta is a modern boilerplate for building SaaS applications quickly.',
 		},
 		twitter: {
-			title: `SaaSphere Coaching Hours`,
+			title: `SaaSphere Meta`,
 			description:
-				'SaaSphere Coaching Hours is a modern boilerplate for building SaaS applications quickly.',
+				'SaaSphere Meta is a modern boilerplate for building SaaS applications quickly.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}`,

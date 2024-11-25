@@ -20,11 +20,6 @@ const nextConfig = {
 				destination: '/auth/login',
 				permanent: true,
 			},
-			{
-				source: '/auth/register',
-				destination: '/auth/coach-setup',
-				permanent: true,
-			},
 		];
 	},
 };

@@ -114,8 +114,8 @@ export const PasswordResetEmailTemplate = (props: PasswordResetEmailTemplateProp
 								}}
 								className="mb-2 text-sm font-light"
 							>
-								@{new Date().getFullYear()} Copyright Coaching Hours Ltd. Registered
-								in England & Wales no. 14879225
+								@{new Date().getFullYear()} Copyright Meta Ltd. Registered in
+								England & Wales no. 14879225
 							</Text>
 						</Section>
 					</Container>

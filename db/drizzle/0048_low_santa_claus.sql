@@ -1,16 +1,4 @@
 DO $$ BEGIN
- CREATE TYPE "public"."ApplicationStatus" AS ENUM('PENDING', 'APPROVED', 'REJECTED', 'IN_PROGRESS');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- CREATE TYPE "public"."BookingType" AS ENUM('BOOKING', 'BLOCKED', 'CANCELLED');
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  CREATE TYPE "public"."UserRole" AS ENUM('ADMIN', 'USER');
 EXCEPTION
  WHEN duplicate_object THEN null;
@@ -39,69 +27,6 @@ CREATE TABLE IF NOT EXISTS "Bug" (
 	"status" text DEFAULT 'OPEN' NOT NULL,
 	"title" text NOT NULL,
 	"comment" text NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Coach" (
-	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"userId" text NOT NULL,
-	"scheduleId" text,
-	"verified" timestamp (3),
-	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"updatedAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"archivedAt" timestamp (3),
-	"cooldown" integer DEFAULT 15 NOT NULL,
-	"bookingInAdvance" integer DEFAULT 28 NOT NULL,
-	"hoursExperience" integer NOT NULL,
-	"location" text NOT NULL,
-	"timezone" text NOT NULL,
-	"yearsExperience" integer NOT NULL,
-	"businessName" text NOT NULL,
-	"businessNumber" text NOT NULL,
-	"avatar" text NOT NULL,
-	"certificates" text[] NOT NULL,
-	CONSTRAINT "Coach_userId_unique" UNIQUE("userId")
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "coachApplication" (
-	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"coachId" text,
-	"status" "ApplicationStatus" DEFAULT 'PENDING' NOT NULL,
-	"reviewedAt" timestamp (3),
-	"reviewedBy" text,
-	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"email" text,
-	"agreedToMarketing" boolean DEFAULT false,
-	"agreedToTerms" boolean DEFAULT false,
-	"firstName" text,
-	"lastName" text,
-	"password" text,
-	"bookingInAdvance" integer DEFAULT 28,
-	"hoursExperience" integer,
-	"location" text,
-	"timezone" text,
-	"yearsExperience" integer,
-	"businessName" text,
-	"businessNumber" text,
-	"avatar" text,
-	"certificates" jsonb NOT NULL 
-);
-
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "coachBooking" (
-	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"coachId" text NOT NULL,
-	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"createdById" text,
-	"bookingType" "BookingType" DEFAULT 'BOOKING' NOT NULL,
-	"startDate" timestamp (3) NOT NULL,
-	"endDate" timestamp (3) NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "coachSchedule" (
-	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"coachId" text NOT NULL,
-	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"updatedAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ConciergeToken" (
@@ -167,15 +92,6 @@ CREATE TABLE IF NOT EXISTS "Session" (
 	"converted" boolean
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "timeframeDay" (
-	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"day" integer NOT NULL,
-	"coachScheduleId" text NOT NULL,
-	"createdAt" timestamp (3) DEFAULT CURRENT_TIMESTAMP NOT NULL,
-	"startHour" double precision NOT NULL,
-	"endHour" double precision NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "TwoFactorConfirmation" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"userId" text NOT NULL
@@ -198,6 +114,7 @@ CREATE TABLE IF NOT EXISTS "User" (
 	"emailVerified" timestamp (3),
 	"image" text,
 	"password" text,
+	"coachId" text,
 	"role" "UserRole" DEFAULT 'USER' NOT NULL,
 	"isTwoFactorEnabled" boolean DEFAULT false NOT NULL,
 	"isArchived" boolean DEFAULT false NOT NULL,
@@ -221,6 +138,7 @@ CREATE TABLE IF NOT EXISTS "VerificationToken" (
 	"id" text PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" text NOT NULL,
 	"newEmail" text,
+	"name" text,
 	"token" text NOT NULL,
 	"expiresAt" timestamp (3) NOT NULL
 );

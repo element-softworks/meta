@@ -110,13 +110,6 @@ export function RegisterForm(props: RegisterFormProps) {
 					Login
 				</Link>
 			</p>
-
-			<p className="text-sm font-medium !font-sans">
-				Want to become a coach?{' '}
-				<Link className="font-semibold" href="/auth/coach-setup">
-					Apply here
-				</Link>
-			</p>
 		</div>
 	);
 }

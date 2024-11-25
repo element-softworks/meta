@@ -1,3 +1,3 @@
 export const boilerplateConfig = {
-	projectName: 'Coaching Hours',
+	projectName: 'Meta',
 };

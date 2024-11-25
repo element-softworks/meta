@@ -1,14 +1,14 @@
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {
-		title: 'Privacy Policy | Coaching Hours',
-		description: 'Privacy Policy for the Coaching Hours',
+		title: 'Privacy Policy | Meta',
+		description: 'Privacy Policy for the Meta',
 		openGraph: {
-			title: 'Privacy Policy | Coaching Hours',
-			description: 'Privacy Policy for the Coaching Hours',
+			title: 'Privacy Policy | Meta',
+			description: 'Privacy Policy for the Meta',
 		},
 		twitter: {
-			title: 'Privacy Policy | Coaching Hours',
-			description: 'Privacy Policy for the Coaching Hours',
+			title: 'Privacy Policy | Meta',
+			description: 'Privacy Policy for the Meta',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/privacy-policy`,

@@ -18,15 +18,15 @@ if (!process.env.STRIPE_WEBHOOK_SECRET) {
 export async function generateMetadata({ params }: any) {
 	const userResponse = await getUserById(params.user);
 	return {
-		title: `Billing | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
-		description: `Billing for ${userResponse?.name} on Coaching Hours.`,
+		title: `Billing | ${userResponse?.name} | Users | Dashboard | Meta`,
+		description: `Billing for ${userResponse?.name} on Meta.`,
 		openGraph: {
-			title: `Billing | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
-			description: `Billing for ${userResponse?.name} on Coaching Hours.`,
+			title: `Billing | ${userResponse?.name} | Users | Dashboard | Meta`,
+			description: `Billing for ${userResponse?.name} on Meta.`,
 		},
 		twitter: {
-			title: `Billing | ${userResponse?.name} | Users | Dashboard | Coaching Hours`,
-			description: `Billing for ${userResponse?.name} on Coaching Hours.`,
+			title: `Billing | ${userResponse?.name} | Users | Dashboard | Meta`,
+			description: `Billing for ${userResponse?.name} on Meta.`,
 		},
 	};
 }

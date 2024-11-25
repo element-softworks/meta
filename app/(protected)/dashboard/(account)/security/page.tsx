@@ -9,15 +9,15 @@ import { AlertCircle, Info } from 'lucide-react';
 
 export async function generateMetadata() {
 	return {
-		title: `Account security | Coaching Hours`,
-		description: 'Manage your account security settings on Coaching Hours.',
+		title: `Account security | Meta`,
+		description: 'Manage your account security settings on Meta.',
 		openGraph: {
-			title: `Account security | Coaching Hours`,
-			description: 'Manage your account security settings on Coaching Hours.',
+			title: `Account security | Meta`,
+			description: 'Manage your account security settings on Meta.',
 		},
 		twitter: {
-			title: `Account security | Coaching Hours`,
-			description: 'Manage your account security settings on Coaching Hours.',
+			title: `Account security | Meta`,
+			description: 'Manage your account security settings on Meta.',
 		},
 	};
 }

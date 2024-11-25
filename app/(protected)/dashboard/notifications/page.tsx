@@ -2,15 +2,15 @@ import { NotificationsContainer } from '@/components/infinite-scrolls/notificati
 
 export async function generateMetadata() {
 	return {
-		title: `Notifications | Dashboard | Coaching Hours`,
-		description: 'Manage notifications for Coaching Hours.',
+		title: `Notifications | Dashboard | Meta`,
+		description: 'Manage notifications for Meta.',
 		openGraph: {
-			title: `Notifications | Dashboard | Coaching Hours`,
-			description: 'Manage notifications for Coaching Hours.',
+			title: `Notifications | Dashboard | Meta`,
+			description: 'Manage notifications for Meta.',
 		},
 		twitter: {
-			title: `Notifications | Dashboard | Coaching Hours`,
-			description: 'Manage notifications for Coaching Hours.',
+			title: `Notifications | Dashboard | Meta`,
+			description: 'Manage notifications for Meta.',
 		},
 	};
 }

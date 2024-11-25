@@ -1,14 +1,14 @@
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {
-		title: 'Terms of Service | Coaching Hours',
-		description: 'Terms of Service for the Coaching Hours',
+		title: 'Terms of Service | Meta',
+		description: 'Terms of Service for the Meta',
 		openGraph: {
-			title: 'Terms of Service | Coaching Hours',
-			description: 'Terms of Service for the Coaching Hours',
+			title: 'Terms of Service | Meta',
+			description: 'Terms of Service for the Meta',
 		},
 		twitter: {
-			title: 'Terms of Service | Coaching Hours',
-			description: 'Terms of Service for the Coaching Hours',
+			title: 'Terms of Service | Meta',
+			description: 'Terms of Service for the Meta',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/terms-of-service`,

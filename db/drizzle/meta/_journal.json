@@ -138,43 +138,8 @@
     {
       "idx": 48,
       "version": "7",
-      "when": 1732024960618,
-      "tag": "0048_ancient_magma",
-      "breakpoints": true
-    },
-    {
-      "idx": 49,
-      "version": "7",
-      "when": 1732025388327,
-      "tag": "0049_elite_bedlam",
-      "breakpoints": true
-    },
-    {
-      "idx": 50,
-      "version": "7",
-      "when": 1732092885004,
-      "tag": "0050_fast_whirlwind",
-      "breakpoints": true
-    },
-    {
-      "idx": 51,
-      "version": "7",
-      "when": 1732094209330,
-      "tag": "0051_simple_betty_ross",
-      "breakpoints": true
-    },
-    {
-      "idx": 52,
-      "version": "7",
-      "when": 1732104018156,
-      "tag": "0052_awesome_forgotten_one",
-      "breakpoints": true
-    },
-    {
-      "idx": 53,
-      "version": "7",
-      "when": 1732185676258,
-      "tag": "0053_happy_white_tiger",
+      "when": 1732523054515,
+      "tag": "0048_low_santa_claus",
       "breakpoints": true
     }
   ]
