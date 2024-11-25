@@ -8,3 +8,5 @@ export { twoFactorToken } from './twoFactorToken';
 export { user, userRelations, userRole } from './user';
 export { userNotification, userNotificationRelations } from './userNotification';
 export { verificationToken } from './verificationToken';
+export { store, storeRelations } from './store';
+export { storeGeolocation, storeGeolocationRelations } from './storeGeolocation';

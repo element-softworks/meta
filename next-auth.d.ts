@@ -6,8 +6,6 @@ export type ExtendedUser = DefaultSession['user'] & {
 	isOAuth: boolean;
 	isArchived: boolean;
 	notificationsEnabled: boolean;
-	stripePaymentId: string;
-	stripeCustomerId: string;
 };
 
 declare module 'next-auth' {
@@ -29,7 +27,5 @@ declare module 'next-auth/jwt' {
 		isArchived: boolean;
 		image: string;
 		notificationsEnabled: boolean;
-		stripePaymentId: string;
-		stripeCustomerId: string;
 	}
 }

@@ -49,7 +49,7 @@ export function UserMenu(props: UserMenuProps) {
 			<DropdownMenuTrigger asChild className="cursor-pointer">
 				<Button className="px-0 py-0 bg-transparent" asChild variant="ghost">
 					<div className="relative">
-						<Avatar className="size-10 relative">
+						<Avatar className="size-8 relative">
 							{props.user?.image && (
 								<AvatarImage
 									width={35}
