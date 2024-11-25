@@ -1,6 +1,6 @@
 'use client';
 
-import { BugPlay, ChartPie, LayoutDashboard, Users } from 'lucide-react';
+import { BugPlay, ChartPie, LayoutDashboard, LocateIcon, Users } from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
 
 export function useSidebarItems() {
@@ -14,6 +14,12 @@ export function useSidebarItems() {
 					text: 'Home',
 					link: '/dashboard',
 					icon: <LayoutDashboard size={20} />,
+					visible: true,
+				},
+				{
+					text: 'Stores',
+					link: '/dashboard/stores',
+					icon: <LocateIcon size={20} />,
 					visible: true,
 				},
 			],
