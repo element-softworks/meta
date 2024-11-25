@@ -3,12 +3,6 @@ import { getStores } from '@/actions/store/get-stores';
 import { formDataToNestedObject } from '@/lib/utils';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const config = {
-	api: {
-		bodyParser: false,
-	},
-};
-
 export async function POST(req: NextRequest, res: Response) {
 	const values = await req.formData();
 
