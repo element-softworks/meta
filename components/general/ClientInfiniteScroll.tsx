@@ -2,7 +2,7 @@
 
 import { useParam } from '@/hooks/use-param';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { ClipLoader } from 'react-spinners';
+import { CenteredLoader } from '../layout/centered-loader';
 
 interface ClientInfiniteScrollProps {
 	children: React.ReactNode;
@@ -10,6 +10,7 @@ interface ClientInfiniteScrollProps {
 	hasMore: boolean;
 	perPage: number;
 	increment?: number;
+	endMessage?: React.ReactNode;
 }
 
 export function ClientInfiniteScroll(props: ClientInfiniteScrollProps) {
@@ -17,6 +18,7 @@ export function ClientInfiniteScroll(props: ClientInfiniteScrollProps) {
 	const { mutateParam } = useParam();
 
 	const handleNext = async () => {
+		console.log('next datatata');
 		await mutateParam({
 			param: 'perPage',
 			value: String(props.perPage + increment),
@@ -26,18 +28,24 @@ export function ClientInfiniteScroll(props: ClientInfiniteScrollProps) {
 
 	return (
 		<InfiniteScroll
-			className="!overflow-visible"
+			// className="!overflow-visible"
 			dataLength={props.dataLength}
 			next={() => {
 				handleNext();
 			}}
 			hasMore={props.hasMore}
 			loader={
-				<div className="mt-6 mx-auto w-full flex items-center justify-center">
-					<ClipLoader className="m-auto" size={25} />
+				<div className="py-10">
+					<CenteredLoader />
 				</div>
 			}
-			endMessage={<p className="mt-6 font-semibold">No more results to see</p>}
+			endMessage={
+				!!props.endMessage ? (
+					props.endMessage
+				) : (
+					<p className="mt-6 font-semibold">No more results to see</p>
+				)
+			}
 		>
 			{props.children}
 		</InfiniteScroll>

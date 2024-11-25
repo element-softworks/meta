@@ -56,24 +56,24 @@ body {
 
 @layer base {
 	:root {
-		--nav-background: 25, 100%, 96%, 0.8;
-		--background: 25 100% 96%;
+		--nav-background: 200 14% 96%;
+		--background: 200 14% 96%;
 		--foreground: 20 14.3% 4.1%;
-		--card: 0 0% 100%;
-		--card-foreground: 20 14.3% 4.1%;
+		--card: 220 20% 97%;
+		--card-foreground: 210 17% 9%;
 		--popover: 0 0% 100%;
 		--popover-foreground: 20 14.3% 4.1%;
 		--primary: 205 100% 51%;
 		--primary-foreground: 0 0% 100%;
-		--secondary: 60 4.8% 95.9%;
-		--secondary-foreground: 24 9.8% 10%;
+		--secondary: 210 18% 89%;
+		--secondary-foreground: 209 16% 37%;
 		--muted: 60 4.8% 95.9%;
-		--muted-foreground: 25 5.3% 44.7%;
+		--muted-foreground: 207 16% 57%;
 		--accent: 60 4.8% 95.9%;
 		--accent-foreground: 24 9.8% 10%;
 		--destructive: 0 72% 51%;
 		--destructive-foreground: 60 9.1% 97.8%;
-		--border: 20 5.9% 90%;
+		--border: 257 19% 93%;
 		--input: 0 0 83%;
 		--ring: 20 14.3% 4.1%;
 		--radius: 0.5rem;

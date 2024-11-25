@@ -13,12 +13,10 @@ export const user = pgTable(
 			.notNull()
 			.default(sql`gen_random_uuid()`),
 		name: text('name'),
-		agreedToMarketing: boolean('agreedToMarketing').default(false).notNull(),
 		email: text('email').notNull(),
 		emailVerified: timestamp('emailVerified', { precision: 3, mode: 'date' }),
 		image: text('image'),
 		password: text('password'),
-		coachId: text('coachId'),
 		role: userRole('role').default('USER').notNull(),
 		isTwoFactorEnabled: boolean('isTwoFactorEnabled').default(false).notNull(),
 		isArchived: boolean('isArchived').default(false).notNull(),

@@ -22,8 +22,8 @@ export const config = {
 		},
 		extend: {
 			fontFamily: {
-				sans: 'var(--font-open-sans)',
-				display: 'var(--font-fredoka)',
+				sans: 'var(--font-inter)',
+				display: 'var(--font-inter)',
 				// body: 'var(--font-open-sans)',
 			},
 			backgroundImage: {

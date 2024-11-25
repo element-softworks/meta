@@ -148,6 +148,34 @@
       "when": 1732523682604,
       "tag": "0049_mysterious_fallen_one",
       "breakpoints": true
+    },
+    {
+      "idx": 50,
+      "version": "7",
+      "when": 1732531477424,
+      "tag": "0050_bouncy_impossible_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 51,
+      "version": "7",
+      "when": 1732531614022,
+      "tag": "0051_wakeful_onslaught",
+      "breakpoints": true
+    },
+    {
+      "idx": 52,
+      "version": "7",
+      "when": 1732531944613,
+      "tag": "0052_nebulous_genesis",
+      "breakpoints": true
+    },
+    {
+      "idx": 53,
+      "version": "7",
+      "when": 1732538610738,
+      "tag": "0053_hard_warlock",
+      "breakpoints": true
     }
   ]
 }

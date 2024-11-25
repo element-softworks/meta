@@ -5,14 +5,9 @@ import { Fredoka, Inter, Open_Sans } from 'next/font/google';
 import './globals.css';
 import { Footer } from '@/components/marketing/footer';
 
-const fredoka = Fredoka({
+const inter = Inter({
 	subsets: ['latin'],
-	variable: '--font-fredoka',
-	weight: ['300', '400', '500', '600', '700'],
-});
-const openSans = Open_Sans({
-	subsets: ['latin'],
-	variable: '--font-open-sans',
+	variable: '--font-inter',
 	weight: ['300', '400', '500', '600', '700'],
 });
 
@@ -27,11 +22,7 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html
-			lang="en"
-			suppressHydrationWarning
-			className={`${fredoka.variable} ${openSans.variable}`}
-		>
+		<html lang="en" suppressHydrationWarning className={`${inter.variable} `}>
 			<body>
 				<Toaster />
 				<ThemeProvider

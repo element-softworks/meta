@@ -1,6 +1,6 @@
 'use client';
 
-import { BugPlay, ChartPie, LayoutDashboard, LocateIcon, Users } from 'lucide-react';
+import { BugPlay, ChartPie, Home, LayoutDashboard, LocateIcon, Users } from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
 
 export function useSidebarItems() {
@@ -11,15 +11,15 @@ export function useSidebarItems() {
 			name: 'General',
 			items: [
 				{
-					text: 'Home',
+					text: 'Dashboard',
 					link: '/dashboard',
-					icon: <LayoutDashboard size={20} />,
+					icon: <Home size={16} />,
 					visible: true,
 				},
 				{
 					text: 'Stores',
 					link: '/dashboard/stores',
-					icon: <LocateIcon size={20} />,
+					icon: <LocateIcon size={16} />,
 					visible: true,
 				},
 			],
@@ -33,20 +33,20 @@ export function useSidebarItems() {
 				{
 					text: 'Analytics',
 					link: '/dashboard/admin/analytics',
-					icon: <ChartPie size={20} />,
+					icon: <ChartPie size={16} />,
 					visible: true,
 				},
 				{
 					text: 'Users',
 					link: '/dashboard/admin/users',
-					icon: <Users size={20} />,
+					icon: <Users size={16} />,
 					visible: true,
 				},
 
 				{
 					text: 'Reported bugs',
 					link: '/dashboard/admin/bugs',
-					icon: <BugPlay size={20} />,
+					icon: <BugPlay size={16} />,
 					visible: true,
 				},
 			],

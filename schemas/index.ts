@@ -353,3 +353,96 @@ export const CoachSetupSchema = z.object({
 	...MoreAboutYouStepSchema.shape,
 	...VerificationStepSchema.shape,
 });
+
+export const StoresSchema = z.object({
+	name: z
+		.string()
+		.min(1, { message: 'Name is required' })
+		.max(35, { message: 'Name is too long' }),
+	contactEmail: z.string().email(),
+	contactPhone: z.string().min(1),
+	image: z
+		.unknown()
+		.transform((value) => {
+			return value as File;
+		})
+		.refine(
+			(data) => {
+				console.log(data, 'image data');
+				const fileSize = data?.size;
+
+				//1Mb = 1000000 bytes
+				if (fileSize > 4000000) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: "File size can't exceed 4MB",
+				path: ['image'],
+			}
+		)
+		.refine(
+			(data) => {
+				if (!data?.size) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: 'Image is required',
+			}
+		),
+	openingTimes: z
+		.array(
+			z
+				.array(
+					z.object({
+						time: z.string().regex(/^\d{1,2}:\d{2}$/), // Ensures valid time format, e.g., "HH:MM"
+						period: z.enum(['am', 'pm']),
+					})
+				)
+				.refine(
+					(times) => {
+						if (times.length === 0) return true; // if the day is closed
+
+						const [openingTime, closingTime] = times;
+
+						const parseTime = (timeObj: { time: string; period: 'am' | 'pm' }) => {
+							const [hours, minutes] = timeObj.time.split(':').map(Number);
+							const offset = timeObj.period === 'pm' ? 12 : 0;
+							const adjustedHours =
+								timeObj.period === 'pm' && hours === 12 ? 0 : hours;
+							return adjustedHours + offset + minutes / 100;
+						};
+
+						const openingDecimalTime = parseTime(openingTime);
+						const closingDecimalTime = parseTime(closingTime);
+
+						return openingDecimalTime <= closingDecimalTime;
+					},
+					{
+						message: 'The opening time must be before or equal to the closing time.',
+					}
+				)
+		)
+		.nonempty({ message: 'Opening times are required.' }),
+	maxCapacity: z.number().int().min(0, { message: 'Max capacity cannot be less than 0' }),
+	address: z.object({
+		name: z.string().min(1, { message: 'Name is required' }),
+		lineOne: z.string().optional(),
+		lineTwo: z.string().optional(),
+		city: z.string().optional(),
+		county: z.string().optional(),
+		country: z.string().optional(),
+		postCode: z.string().optional(),
+		addressType: z.string().optional(),
+	}),
+	zoom: z
+		.number()
+		.min(0, { message: 'Zoom cannot be less than 0' })
+		.max(24, { message: 'Zoom cannot exceed 24' }),
+	longitude: z.number(),
+	latitude: z.number(),
+	boundingBox: z.array(z.array(z.number()).max(2)).min(2).max(2),
+});
