@@ -80,7 +80,7 @@ export function Navbar(props: NavbarProps) {
 					</div> */}
 
 					<div className="flex gap-2">
-						{/* <NotificationsMenu /> */}
+						<NotificationsMenu />
 						<UserMenu user={user} count={props.count} />
 					</div>
 				</div>

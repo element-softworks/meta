@@ -1,4 +1,3 @@
-import { PaymentsAnalytics } from '@/components/analytics/payments-analytics';
 import { SessionsAnalytics } from '@/components/analytics/sessions-analytics';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -33,13 +32,9 @@ export default async function AdminAnalyticsPage({ searchParams }: { searchParam
 			<Tabs defaultValue="sessions" className="">
 				<TabsList>
 					<TabsTrigger value="sessions">Sessions</TabsTrigger>
-					<TabsTrigger value="payments">Payments</TabsTrigger>
 				</TabsList>
 				<TabsContent value="sessions" className="flex flex-col gap-4">
 					<SessionsAnalytics searchParams={searchParams} />
-				</TabsContent>
-				<TabsContent value="payments" className="flex flex-col gap-4">
-					<PaymentsAnalytics searchParams={searchParams} />
 				</TabsContent>
 			</Tabs>
 		</main>

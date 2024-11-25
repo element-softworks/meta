@@ -3,7 +3,6 @@ import { boolean, index, pgEnum, pgTable, text, timestamp, uniqueIndex } from 'd
 import { userNotification } from './userNotification';
 import { twoFactorConfirmation } from './twoFactorConfirmation';
 import { account } from './account';
-import { customerInvoice } from './customerInvoice';
 export const userRole = pgEnum('UserRole', ['ADMIN', 'USER']);
 
 export const user = pgTable(
@@ -16,8 +15,6 @@ export const user = pgTable(
 		name: text('name'),
 		agreedToMarketing: boolean('agreedToMarketing').default(false).notNull(),
 		email: text('email').notNull(),
-		stripeCustomerId: text('stripeCustomerId'),
-		stripePaymentId: text('stripePaymentId'),
 		emailVerified: timestamp('emailVerified', { precision: 3, mode: 'date' }),
 		image: text('image'),
 		password: text('password'),
@@ -51,7 +48,6 @@ export const user = pgTable(
 export const userRelations = relations(user, ({ many, one }) => ({
 	userNotifications: many(userNotification),
 	twoFactorConfirmations: many(twoFactorConfirmation),
-	userInvoices: many(customerInvoice),
 	accounts: many(account),
 }));
 

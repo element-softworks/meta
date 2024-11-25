@@ -3,7 +3,6 @@
 import { ExtendedUser } from '@/next-auth';
 import {
 	Bell,
-	Bug,
 	CreditCard,
 	LayoutDashboard,
 	LogOut,
@@ -75,7 +74,7 @@ export function UserMenu(props: UserMenuProps) {
 								<span>Home</span>
 							</DropdownMenuItem>
 						</Link>
-						{/* <Link href="/dashboard/notifications" className="text-foreground">
+						<Link href="/dashboard/notifications" className="text-foreground">
 							<DropdownMenuItem className="cursor-pointer relative">
 								<Bell className="mr-2 h-4 w-4" />
 								<NotificationsIcon
@@ -85,12 +84,12 @@ export function UserMenu(props: UserMenuProps) {
 								<span>Notifications</span>
 							</DropdownMenuItem>
 						</Link>
-						<DropdownMenuSeparator /> */}
+						<DropdownMenuSeparator />
 					</>
 				)}
-				{/* <DropdownMenuLabel>Account</DropdownMenuLabel> */}
+				<DropdownMenuLabel>Account</DropdownMenuLabel>
 
-				{/* <DropdownMenuGroup>
+				<DropdownMenuGroup>
 					<DropdownMenuGroup>
 						<Link href="/dashboard/settings" className="text-foreground">
 							<DropdownMenuItem className="cursor-pointer">
@@ -104,18 +103,8 @@ export function UserMenu(props: UserMenuProps) {
 								Security
 							</DropdownMenuItem>
 						</Link>
-
-						<Link
-							href={`/dashboard/users/${props.user.id}/billing`}
-							className="text-foreground"
-						>
-							<DropdownMenuItem className="cursor-pointer">
-								<CreditCard className="mr-2 h-4 w-4" />
-								Billing
-							</DropdownMenuItem>
-						</Link>
 					</DropdownMenuGroup>
-				</DropdownMenuGroup> */}
+				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuItem
 					className="cursor-pointer"
@@ -135,9 +124,9 @@ export function UserMenu(props: UserMenuProps) {
 					</DropdownMenuItem>
 				</LogoutButton>
 
-				{/* <DropdownMenuSeparator /> */}
+				<DropdownMenuSeparator />
 
-				{/* <ReportBugDialog /> */}
+				<ReportBugDialog />
 			</DropdownMenuContent>
 		</DropdownMenu>
 	);

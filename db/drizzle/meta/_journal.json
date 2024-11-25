@@ -141,6 +141,13 @@
       "when": 1732523054515,
       "tag": "0048_low_santa_claus",
       "breakpoints": true
+    },
+    {
+      "idx": 49,
+      "version": "7",
+      "when": 1732523682604,
+      "tag": "0049_mysterious_fallen_one",
+      "breakpoints": true
     }
   ]
 }

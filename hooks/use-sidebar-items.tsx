@@ -1,6 +1,6 @@
 'use client';
 
-import { BugPlay, ChartPie, CreditCard, LayoutDashboard, Pen, Users } from 'lucide-react';
+import { BugPlay, ChartPie, LayoutDashboard, Users } from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
 
 export function useSidebarItems() {

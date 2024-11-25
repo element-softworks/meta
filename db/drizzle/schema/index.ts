@@ -1,8 +1,6 @@
 export { account, accountRelations } from './account';
 export { bug } from './bug';
 export { conciergeToken } from './conciergeToken';
-export { customer, customerRelations } from './customer';
-export { customerInvoice, customerInvoiceRelations } from './customerInvoice';
 export { passwordResetToken } from './passwordResetToken';
 export { session } from './session';
 export { twoFactorConfirmation, twoFactorConfirmationRelations } from './twoFactorConfirmation';
