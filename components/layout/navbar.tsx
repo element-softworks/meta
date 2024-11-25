@@ -9,6 +9,7 @@ import { UserMobileMenu } from '../auth/user-mobile-menu';
 import { useWindowScrolled } from '../ui/use-window-scrolled';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
+import { Logo } from '../general/logo';
 
 export const NAVBAR_ITEMS = [];
 
@@ -55,13 +56,7 @@ export function Navbar(props: NavbarProps) {
 				}`}
 			>
 				<Link href="/dashboard" aria-label="Go to homepage">
-					<Image
-						unoptimized
-						src={theme === 'dark' ? '/coaching-logo-white.svg' : '/coaching-logo.svg'}
-						width={50}
-						height={40}
-						alt="Logo"
-					/>
+					<Logo width={120} height={40} />
 				</Link>
 
 				<div className="lg:flex items-center gap-10">

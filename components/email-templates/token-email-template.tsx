@@ -53,7 +53,7 @@ export const TokenEmailTemplate = (props: TokenEmailTemplateProps) => {
 						<Section className="bg-white rounded-xl p-4 text-center">
 							<Img
 								className="mx-auto py-2 object-contain"
-								src={`https://coaching-hours.s3.eu-west-2.amazonaws.com/logo.png`}
+								src={`/meta-logos/positive-primary/RGB/Meta_lockup_positive primary_RGB.png`}
 								width="150"
 								height="70"
 								alt="logo"

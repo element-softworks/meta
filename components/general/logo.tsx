@@ -2,7 +2,6 @@
 
 import { useTheme } from 'next-themes';
 import Image from 'next/image';
-import logo from '/coaching-hours-primary-text.svg';
 
 interface LogoProps {
 	width: number;
@@ -14,14 +13,16 @@ export function Logo(props: LogoProps) {
 	return (
 		<>
 			<Image
-				src={'/coaching-hours-primary-text.svg'}
+				src={'/meta-logos/positive-primary/RGB/Meta_lockup_positive primary_RGB.svg'}
 				alt="Coaching hours logo"
 				width={props.width}
 				height={props.height}
 				className="dark:hidden -ml-4"
 			/>
 			<Image
-				src={'/coaching-hours-text-white-logo.svg'}
+				src={
+					'/public/meta-logos/negative-primary/RGB/Meta_lockup_negative primary_white_RGB.svg'
+				}
 				alt="Coaching hours logo"
 				width={props.width}
 				height={props.height}
