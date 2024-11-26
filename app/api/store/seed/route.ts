@@ -1,12 +1,6 @@
 import { seedStores } from '@/actions/store/seed-stores';
 import { NextRequest, NextResponse } from 'next/server';
 
-export const config = {
-	api: {
-		bodyParser: false,
-	},
-};
-
 export async function POST(req: NextRequest, res: Response) {
 	const { searchParams } = new URL(req.url);
 
