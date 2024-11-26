@@ -35,8 +35,6 @@ export function StoreDetailsStep(props: StoreDetailsStepProps) {
 		props.onSubmit(values);
 	}
 
-	console.log(form.watch(), 'watch data');
-
 	return (
 		<div className="h-full">
 			<div className="space-y-4 h-full">
@@ -53,14 +51,12 @@ export function StoreDetailsStep(props: StoreDetailsStepProps) {
 						/>
 
 						<FormInput
-							required
 							name="contactEmail"
 							label="Contact Email"
 							render={({ field }) => <Input {...field} disabled={props.isLoading} />}
 						/>
 
 						<FormInput
-							required
 							name="contactPhone"
 							label="Contact Phone"
 							render={({ field }) => <Input {...field} disabled={props.isLoading} />}

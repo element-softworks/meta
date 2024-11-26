@@ -10,12 +10,13 @@ import * as z from 'zod';
 import { Form } from '../../ui/form';
 
 import { toast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
+import { serialize } from 'object-to-formdata';
 import { FormStepper } from './form-stepper';
 import LocationAddressStep, { addressStepDefaultValues } from './store-address-step';
 import { StoreDetailsStep, detailsStepDefaultValues } from './store-details-step';
 import LocationMapStep, { mapStepDefaultValues } from './store-map-step';
-import { createStore } from '@/actions/store/create-store';
-import { serialize } from 'object-to-formdata';
+import { revalidateData } from '@/actions/system/revalidatePath';
 
 export type StoresFormInputProps = z.infer<typeof StoresSchema>;
 
@@ -31,6 +32,7 @@ interface StoresFormProps {
 
 export function StoresForm(props: StoresFormProps) {
 	const { update } = useSession();
+	const router = useRouter();
 
 	const defaultStore = props.isEditing ? props.editingStore : null;
 
@@ -55,8 +57,9 @@ export function StoresForm(props: StoresFormProps) {
 		},
 
 		onCompleted: async (data) => {
-			console.log(data, 'response data');
 			form.reset();
+			router.push('/dashboard/stores');
+			await revalidateData('/dashboard/stores');
 		},
 	});
 
@@ -67,7 +70,11 @@ export function StoresForm(props: StoresFormProps) {
 		// queryFn: async (values) => await editStore(values!),
 		queryFn: async (values) => {},
 		onCompleted: async (data) => {
-			form.reset();
+			form.reset({
+				...detailsStepDefaultValues,
+				...addressStepDefaultValues,
+				...mapStepDefaultValues,
+			});
 		},
 	});
 

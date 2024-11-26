@@ -359,8 +359,8 @@ export const StoresSchema = z.object({
 		.string()
 		.min(1, { message: 'Name is required' })
 		.max(35, { message: 'Name is too long' }),
-	contactEmail: z.string().email(),
-	contactPhone: z.string().min(1),
+	contactEmail: z.union([z.literal(''), z.string().email()]),
+	contactPhone: z.string(),
 	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
 	image: z
 		.unknown()
@@ -471,8 +471,8 @@ export const StoreDetailsSchema = z.object({
 		.string()
 		.min(1, { message: 'Name is required' })
 		.max(35, { message: 'Name is too long' }),
-	contactEmail: z.string().email(),
-	contactPhone: z.string().min(1),
+	contactEmail: z.union([z.literal(''), z.string().email()]),
+	contactPhone: z.string(),
 	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
 	image: z
 		.unknown()
@@ -558,8 +558,8 @@ export const StoresSubmitSchema = z.object({
 		.string()
 		.min(1, { message: 'Name is required' })
 		.max(35, { message: 'Name is too long' }),
-	contactEmail: z.string().email(),
-	contactPhone: z.string().min(1),
+	contactEmail: z.union([z.literal(''), z.string().email()]),
+	contactPhone: z.string(),
 	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
 	image: z
 		.unknown()
