@@ -15,6 +15,7 @@ interface DropzoneInputProps {
 	label?: string;
 	placeholder?: string;
 	icon?: React.ReactNode;
+	required?: boolean;
 }
 
 export function DropzoneInput(props: DropzoneInputProps) {
@@ -36,11 +37,12 @@ export function DropzoneInput(props: DropzoneInputProps) {
 					<div className="">
 						{props.label ? (
 							<FormLabel
-								className={`text-sm font-normal ${
+								className={`text-sm flex font-normal ${
 									!!error ? 'text-destructive' : ''
 								}`}
 							>
-								{props.label}
+								{props.label}{' '}
+								{!!props.required ? <p className="text-destructive">*</p> : null}{' '}
 							</FormLabel>
 						) : null}
 

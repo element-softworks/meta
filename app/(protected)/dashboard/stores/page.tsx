@@ -7,6 +7,7 @@ import Image from 'next/image';
 import countries from '@/countries.json';
 import { SearchBar } from '@/components/general/search-bar';
 import { Store } from '@/db/drizzle/schema/store';
+import { CreateStoreAction } from '@/components/store/create-store-action';
 
 export async function generateMetadata() {
 	return {
@@ -48,7 +49,9 @@ export default async function StoresPage({
 					{storesResponse?.total ?? 0} Stores
 				</h1>
 				<SearchBar className="flex-1" placeholder="Search stores..." />
-				<div className="md:flex-1 justify-end flex">{/* <CreateLocationAction /> */}</div>
+				<div className="md:flex-1 justify-end flex">
+					<CreateStoreAction />
+				</div>
 			</div>
 
 			<div className="">
@@ -105,8 +108,8 @@ export default async function StoresPage({
 					<div className="flex items-center justify-center mt-10">
 						<div className="max-w-lg mx-auto">
 							<CardWrapper
-								title="Add your first location"
-								description="Locations are what you will use to link thinks like cameras, kiosks and links to physical locations. "
+								title="Add your first store"
+								description="Stores are physical locations where people can visit."
 							>
 								{/* <CreateLocationAction button={<Button>Create location</Button>} /> */}
 							</CardWrapper>
