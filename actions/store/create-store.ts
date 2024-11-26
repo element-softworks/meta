@@ -3,19 +3,22 @@
 import { db } from '@/db/drizzle/db';
 import { Store, StoreInsert, store } from '@/db/drizzle/schema/store';
 import { checkPermissions } from '@/lib/auth';
-import { StoresSchema } from '@/schemas';
+import { StoresSubmitSchema } from '@/schemas';
 import { z } from 'zod';
 import { uploadImage } from '../system/upload-image';
 import { storeGeolocation } from '@/db/drizzle/schema';
+import { revalidatePath } from 'next/cache';
 
-export const createStore = async (values: z.infer<typeof StoresSchema>) => {
+export const createStore = async (values: z.infer<typeof StoresSubmitSchema>) => {
 	console.log(values, 'recieved values');
 	const authData = await checkPermissions({ admin: true });
 
-	const validatedFields = await StoresSchema.safeParse(values);
+	const validatedFields = await StoresSubmitSchema.safeParse(values);
 
 	if (!validatedFields.success) {
-		return { error: validatedFields.error.errors };
+		console.error('Error validating fields:', validatedFields.error);
+		return { error: 'Error validating fields' };
+	} else {
 	}
 
 	if (authData?.error) {
@@ -23,7 +26,7 @@ export const createStore = async (values: z.infer<typeof StoresSchema>) => {
 	} else {
 		//Upload the location image
 
-		const imageResponse = await uploadImage(validatedFields?.data?.image);
+		const imageResponse = await uploadImage(validatedFields?.data?.image?.[0]);
 
 		const storeResponse: Store = await db.transaction(async (trx) => {
 			const meta = {
@@ -33,12 +36,10 @@ export const createStore = async (values: z.infer<typeof StoresSchema>) => {
 				updatedBy: authData?.user?.id ?? '',
 			};
 
-			console.log('creating 1...');
-
 			// Insert into locations table
 			const insertValues: StoreInsert = {
 				name: validatedFields?.data?.name,
-				maxCapacity: validatedFields?.data?.maxCapacity ?? 0,
+				maxCapacity: Number(validatedFields?.data?.maxCapacity ?? 0),
 				coverImageAsset: validatedFields?.data?.image
 					? imageResponse?.imagePath
 					: undefined,
@@ -47,7 +48,6 @@ export const createStore = async (values: z.infer<typeof StoresSchema>) => {
 				openingTimes: validatedFields?.data?.openingTimes ?? [],
 				...meta,
 			};
-			console.log('creating 2...');
 
 			const [newStore] = await trx.insert(store).values(insertValues).returning();
 
@@ -68,10 +68,11 @@ export const createStore = async (values: z.infer<typeof StoresSchema>) => {
 				postCode: validatedFields?.data.address.postCode,
 				...meta,
 			});
-			console.log('creating 3...');
 
 			return newStore;
 		});
+
+		revalidatePath('/dashboard/stores');
 
 		return { success: 'Store created successfully', store: storeResponse };
 	}

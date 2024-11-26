@@ -46,21 +46,46 @@ export function StoreDetailsStep(props: StoreDetailsStepProps) {
 						className="space-y-4 h-full flex flex-col "
 					>
 						<FormInput
+							required
 							name="name"
 							label="Name"
 							render={({ field }) => <Input {...field} disabled={props.isLoading} />}
 						/>
 
+						<FormInput
+							required
+							name="contactEmail"
+							label="Contact Email"
+							render={({ field }) => <Input {...field} disabled={props.isLoading} />}
+						/>
+
+						<FormInput
+							required
+							name="contactPhone"
+							label="Contact Phone"
+							render={({ field }) => <Input {...field} disabled={props.isLoading} />}
+						/>
+
+						<FormInput
+							required
+							name="maxCapacity"
+							label="Store Capacity"
+							render={({ field }) => (
+								<Input {...field} type="number" disabled={props.isLoading} />
+							)}
+						/>
+
 						<DropzoneInput
+							required
 							label="Image"
 							name="image"
 							defaultFiles={
 								!!props.editingStore?.coverImageAsset || !!parentForm.watch('image')
 									? [
-											parentForm.watch().image ??
-												props.editingStore?.coverImageAsset,
+											props.editingStore?.coverImageAsset ??
+												(parentForm.watch().image?.[0] as any),
 									  ]
-									: (undefined as any)
+									: undefined
 							}
 						/>
 
@@ -122,46 +147,49 @@ export const detailsStepDefaultValues = (store?: Store | null) => {
 	const { getValues, watch } = methods || {};
 
 	return {
-		name: getValues?.('name') ?? location?.name ?? '',
+		name: getValues?.('name') ?? store?.name ?? '',
+		contactEmail: getValues?.('contactEmail') ?? store?.contactEmail ?? '',
+		contactPhone: getValues?.('contactPhone') ?? store?.contactPhone ?? '',
+		maxCapacity: getValues?.('maxCapacity') ?? store?.maxCapacity ?? '',
 		openingTimes: getValues?.('openingTimes') ?? [
-			!!store?.openingTimes?.[0]
-				? formatTimeValue(store?.openingTimes?.[0]?.[0] ?? [])
+			!!(store as any)?.openingTimes?.[0]
+				? formatTimeValue((store as any)?.openingTimes?.[0]?.[0] ?? [])
 				: [
 						{ time: '09:00', period: 'am' },
 						{ time: '05:00', period: 'pm' },
 				  ],
-			!!store?.openingTimes?.[1]
-				? formatTimeValue(store?.openingTimes?.[1]?.[0] ?? [])
+			!!(store as any)?.openingTimes?.[1]
+				? formatTimeValue((store as any)?.openingTimes?.[1]?.[0] ?? [])
 				: [
 						{ time: '09:00', period: 'am' },
 						{ time: '05:00', period: 'pm' },
 				  ],
-			!!store?.openingTimes?.[2]
-				? formatTimeValue(store?.openingTimes?.[2]?.[0] ?? [])
+			!!(store as any)?.openingTimes?.[2]
+				? formatTimeValue((store as any)?.openingTimes?.[2]?.[0] ?? [])
 				: [
 						{ time: '09:00', period: 'am' },
 						{ time: '05:00', period: 'pm' },
 				  ],
-			!!store?.openingTimes?.[3]
-				? formatTimeValue(store?.openingTimes?.[3]?.[0] ?? [])
+			!!(store as any)?.openingTimes?.[3]
+				? formatTimeValue((store as any)?.openingTimes?.[3]?.[0] ?? [])
 				: [
 						{ time: '09:00', period: 'am' },
 						{ time: '05:00', period: 'pm' },
 				  ],
-			!!store?.openingTimes?.[4]
-				? formatTimeValue(store?.openingTimes?.[4]?.[0] ?? [])
+			!!(store as any)?.openingTimes?.[4]
+				? formatTimeValue((store as any)?.openingTimes?.[4]?.[0] ?? [])
 				: [
 						{ time: '09:00', period: 'am' },
 						{ time: '05:00', period: 'pm' },
 				  ],
-			!!store?.openingTimes?.[5]
-				? formatTimeValue(store?.openingTimes?.[5]?.[0] ?? [])
+			!!(store as any)?.openingTimes?.[5]
+				? formatTimeValue((store as any)?.openingTimes?.[5]?.[0] ?? [])
 				: [
 						{ time: '09:00', period: 'am' },
 						{ time: '05:00', period: 'pm' },
 				  ],
-			!!store?.openingTimes?.[6]
-				? formatTimeValue(store?.openingTimes?.[6]?.[0] ?? [])
+			!!(store as any)?.openingTimes?.[6]
+				? formatTimeValue((store as any)?.openingTimes?.[6]?.[0] ?? [])
 				: [
 						{ time: '09:00', period: 'am' },
 						{ time: '05:00', period: 'pm' },

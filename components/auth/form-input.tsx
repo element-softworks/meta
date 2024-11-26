@@ -25,6 +25,7 @@ interface FormInputProps {
 	disabled?: boolean;
 	name: string;
 	label?: string;
+	required?: boolean;
 	description?: string;
 	render: (props: {
 		field: ControllerRenderProps<FieldValues, string>;
@@ -34,7 +35,7 @@ interface FormInputProps {
 }
 
 export function FormInput(props: FormInputProps) {
-	const { visible = true } = props;
+	const { visible = true, required = false } = props;
 	const { control } = useFormContext();
 
 	if (!visible) {
@@ -49,7 +50,10 @@ export function FormInput(props: FormInputProps) {
 			render={(inputProps) => (
 				<FormItem className="[&_input]:!mt-1">
 					{props.label ? (
-						<FormLabel className="text-sm font-normal">{props.label}</FormLabel>
+						<FormLabel className="text-sm font-normal flex">
+							{props.label}{' '}
+							{!!props.required ? <p className="text-destructive">*</p> : null}{' '}
+						</FormLabel>
 					) : null}
 					<FormControl>{props.render({ ...inputProps })}</FormControl>
 

@@ -108,8 +108,8 @@ export default async function StoresPage({
 					<div className="flex items-center justify-center mt-10">
 						<div className="max-w-lg mx-auto">
 							<CardWrapper
-								title="Add your first location"
-								description="Locations are what you will use to link thinks like cameras, kiosks and links to physical locations. "
+								title="Add your first store"
+								description="Stores are physical locations where people can visit."
 							>
 								{/* <CreateLocationAction button={<Button>Create location</Button>} /> */}
 							</CardWrapper>

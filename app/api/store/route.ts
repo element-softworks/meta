@@ -1,6 +1,7 @@
 import { createStore } from '@/actions/store/create-store';
 import { getStores } from '@/actions/store/get-stores';
 import { formDataToNestedObject } from '@/lib/utils';
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const config = {
@@ -14,23 +15,34 @@ export async function POST(req: NextRequest, res: Response) {
 
 	const parsedValues = formDataToNestedObject(values);
 
-	const response = await createStore({
-		...parsedValues,
+	try {
+		const response = await createStore({
+			...parsedValues,
+			name: parsedValues.name,
+			address: parsedValues.address,
+			boundingBox: parsedValues?.boundingBox?.map((item: string[]) =>
+				item.map((i) => Number(i))
+			),
+			image: [parsedValues.image] as any,
+			latitude: Number(parsedValues.latitude),
+			longitude: Number(parsedValues.longitude),
+			openingTimes: parsedValues.openingTimes,
+			zoom: Number(parsedValues.zoom),
+			maxCapacity: String(parsedValues.maxCapacity),
+			contactEmail: parsedValues.contactEmail,
+			contactPhone: parsedValues.contactPhone,
+		});
 
-		name: parsedValues.name,
-		address: parsedValues.address,
-		boundingBox: parsedValues?.boundingBox?.map((item: string[]) => item.map((i) => Number(i))),
-		image: parsedValues.image,
-		latitude: Number(parsedValues.latitude),
-		longitude: Number(parsedValues.longitude),
-		openingTimes: parsedValues.openingTimes,
-		zoom: Number(parsedValues.zoom),
-		maxCapacity: Number(parsedValues.maxCapacity),
-		contactEmail: parsedValues.contactEmail,
-		contactPhone: parsedValues.contactPhone,
-	});
+		revalidatePath('/dashboard/stores');
 
-	return NextResponse.json({ success: true, data: response });
+		if (!!response?.error) {
+			return NextResponse.json({ error: 'An error occurred creating the store.' });
+		} else {
+			return NextResponse.json({ ...response });
+		}
+	} catch (error: any) {
+		return NextResponse.json({ error: error.message });
+	}
 }
 
 export async function GET(req: NextRequest, res: Response) {

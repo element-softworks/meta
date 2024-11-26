@@ -4,18 +4,18 @@ import { useMutation } from '@/hooks/use-mutation';
 import { StoresSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
-import { serialize } from 'object-to-formdata';
 import { Suspense, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Form } from '../../ui/form';
 
-import { createStore } from '@/actions/store/create-store';
 import { toast } from '@/components/ui/use-toast';
 import { FormStepper } from './form-stepper';
 import LocationAddressStep, { addressStepDefaultValues } from './store-address-step';
 import { StoreDetailsStep, detailsStepDefaultValues } from './store-details-step';
 import LocationMapStep, { mapStepDefaultValues } from './store-map-step';
+import { createStore } from '@/actions/store/create-store';
+import { serialize } from 'object-to-formdata';
 
 export type StoresFormInputProps = z.infer<typeof StoresSchema>;
 
@@ -43,19 +43,25 @@ export function StoresForm(props: StoresFormProps) {
 		},
 	});
 
-	const { query: createLocationQuery, isLoading: isCreating } = useMutation<
+	const { query: createStoreQuery, isLoading: isCreating } = useMutation<
 		FormData,
 		StoresResponse
 	>({
-		queryFn: async (values) => await createStore(values!),
+		queryFn: async (values) => {
+			return await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/store`, {
+				method: 'POST',
+				body: values,
+			}).then((res) => res.json());
+		},
 
 		onCompleted: async (data) => {
+			console.log(data, 'response data');
 			form.reset();
 		},
 	});
 
-	const { query: updateLocationQuery, isLoading: isUpdating } = useMutation<
-		FormData,
+	const { query: updateStoreQuery, isLoading: isUpdating } = useMutation<
+		z.infer<typeof StoresSchema>,
 		StoresResponse
 	>({
 		// queryFn: async (values) => await editStore(values!),
@@ -66,8 +72,6 @@ export function StoresForm(props: StoresFormProps) {
 	});
 
 	const onSubmit: SubmitHandler<StoresFormInputProps> = async (body) => {
-		// const formData = new FormData();
-
 		const formattedOpeningTimes = body.openingTimes?.map((dayData) => {
 			const time = dayData?.map((times) => {
 				let hours = Number(times?.time?.split(':')?.[0]) ?? 0;
@@ -88,40 +92,54 @@ export function StoresForm(props: StoresFormProps) {
 		const formData = serialize(
 			{
 				name: body.name,
-				image: typeof body.image === 'string' ? undefined : body.image,
-				geolocation: {
-					boundingBox: body.boundingBox,
-					zoom: body.zoom,
-					longitude: body.longitude,
-					latitude: body.latitude,
-					address: body.address,
-				},
+				contactEmail: body.contactEmail,
+				contactPhone: body.contactPhone,
+				maxCapacity: body.maxCapacity,
+				zoom: body.zoom,
+				longitude: body.longitude,
+				latitude: body.latitude,
+				address: body.address,
 			},
 			{ indices: true, dotsForObjectNotation: true }
 		);
 
+		formData.append('image', body.image?.[0]);
+
+		body.boundingBox?.map((item, index) => {
+			item?.map((i, iIndex) => {
+				formData.append(`boundingBox.${index}.${iIndex}`, JSON.stringify(i));
+			});
+		});
+
 		formattedOpeningTimes?.map((dayData, index) => {
 			dayData?.map((timeData, timeIndex) => {
-				formData.append(
-					`details.openingTimes.${index}.0.${timeIndex}`,
-					JSON.stringify(timeData)
-				);
+				formData.append(`openingTimes.${index}.0.${timeIndex}`, JSON.stringify(timeData));
 			});
 			if (!dayData?.length) {
-				formData.append(`details.openingTimes.${index}.0.0`, JSON.stringify(0));
-				formData.append(`details.openingTimes.${index}.0.1 `, JSON.stringify(0));
+				formData.append(`openingTimes.${index}.0.0`, JSON.stringify(0));
+				formData.append(`openingTimes.${index}.0.1 `, JSON.stringify(0));
 			}
 		});
 
 		if (props.isEditing) {
-			formData.append('locationId', props.editingStore?.id ?? '');
-
 			toast({
 				description: 'Editing store...',
 				variant: 'default',
 			});
 
-			await updateLocationQuery(formData);
+			await updateStoreQuery({
+				address: body.address,
+				contactEmail: body.contactEmail,
+				contactPhone: body.contactPhone,
+				image: body.image,
+				maxCapacity: body.maxCapacity,
+				name: body.name,
+				openingTimes: body.openingTimes,
+				latitude: body.latitude,
+				longitude: body.longitude,
+				zoom: body.zoom,
+				boundingBox: body.boundingBox,
+			});
 			setStep('details');
 			props.onComplete?.();
 		} else {
@@ -129,7 +147,9 @@ export function StoresForm(props: StoresFormProps) {
 				description: 'Creating store...',
 				variant: 'default',
 			});
-			const newLocation = await createLocationQuery(formData);
+
+			console.log(body, 'body data');
+			const newLocation = await createStoreQuery(formData);
 			setStep('details');
 			props.onComplete?.();
 		}
@@ -146,6 +166,10 @@ export function StoresForm(props: StoresFormProps) {
 	} else if (step === 'address') {
 		descriptionText = 'Verify address details';
 	}
+
+	console.log(form.watch(), 'form data');
+
+	console.log(form.formState.errors, 'errors data');
 	return (
 		<div className="h-full flex flex-col ">
 			<Form {...form}>
@@ -168,6 +192,9 @@ export function StoresForm(props: StoresFormProps) {
 									form.setValue('name', values.name);
 									form.setValue('image', values.image);
 									form.setValue('openingTimes', values.openingTimes);
+									form.setValue('contactEmail', values.contactEmail);
+									form.setValue('contactPhone', values.contactPhone);
+									form.setValue('maxCapacity', values.maxCapacity);
 
 									setStep('map');
 								}}

@@ -361,15 +361,15 @@ export const StoresSchema = z.object({
 		.max(35, { message: 'Name is too long' }),
 	contactEmail: z.string().email(),
 	contactPhone: z.string().min(1),
+	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
 	image: z
 		.unknown()
 		.transform((value) => {
-			return value as File;
+			return value as FileList;
 		})
 		.refine(
 			(data) => {
-				console.log(data, 'image data');
-				const fileSize = data?.size;
+				const fileSize = data?.[0]?.size;
 
 				//1Mb = 1000000 bytes
 				if (fileSize > 4000000) {
@@ -384,7 +384,7 @@ export const StoresSchema = z.object({
 		)
 		.refine(
 			(data) => {
-				if (!data?.size) {
+				if (!data?.[0]?.size) {
 					return false;
 				}
 				return true;
@@ -427,7 +427,6 @@ export const StoresSchema = z.object({
 				)
 		)
 		.nonempty({ message: 'Opening times are required.' }),
-	maxCapacity: z.number().int().min(0, { message: 'Max capacity cannot be less than 0' }),
 	address: z.object({
 		name: z.string().min(1, { message: 'Name is required' }),
 		lineOne: z.string().optional(),
@@ -472,6 +471,9 @@ export const StoreDetailsSchema = z.object({
 		.string()
 		.min(1, { message: 'Name is required' })
 		.max(35, { message: 'Name is too long' }),
+	contactEmail: z.string().email(),
+	contactPhone: z.string().min(1),
+	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
 	image: z
 		.unknown()
 		.transform((value) => {
@@ -549,4 +551,65 @@ export const StoreAddressValidationSchema = z.object({
 		country: z.string().min(1, { message: 'Country is required' }),
 		postCode: z.string().min(1, { message: 'Post code is required' }),
 	}),
+});
+
+export const StoresSubmitSchema = z.object({
+	name: z
+		.string()
+		.min(1, { message: 'Name is required' })
+		.max(35, { message: 'Name is too long' }),
+	contactEmail: z.string().email(),
+	contactPhone: z.string().min(1),
+	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
+	image: z
+		.unknown()
+		.transform((value) => {
+			return value as FileList;
+		})
+		.refine(
+			(data) => {
+				const fileSize = data?.[0]?.size;
+
+				//1Mb = 1000000 bytes
+				if (fileSize > 4000000) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: "File size can't exceed 4MB",
+				path: ['image'],
+			}
+		)
+		.refine(
+			(data) => {
+				if (!data?.[0]?.size) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: 'Image is required',
+			}
+		),
+	openingTimes: z
+		.array(z.array(z.array(z.string())))
+		.nonempty({ message: 'Opening times are required.' }),
+	address: z.object({
+		name: z.string().min(1, { message: 'Name is required' }),
+		lineOne: z.string().optional(),
+		lineTwo: z.string().optional(),
+		city: z.string().optional(),
+		county: z.string().optional(),
+		country: z.string().optional(),
+		postCode: z.string().optional(),
+		addressType: z.string().optional(),
+	}),
+	zoom: z
+		.number()
+		.min(0, { message: 'Zoom cannot be less than 0' })
+		.max(24, { message: 'Zoom cannot exceed 24' }),
+	longitude: z.number(),
+	latitude: z.number(),
+	boundingBox: z.array(z.array(z.number()).max(2)).min(2).max(2),
 });

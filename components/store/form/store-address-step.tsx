@@ -53,6 +53,7 @@ const StoreAddressStep: React.FC<StoreAddressStepProps> = (props) => {
 				) : (
 					<>
 						<FormInput
+							required
 							name="address.lineOne"
 							label="Line one"
 							render={({ field }) => <Input {...field} />}
@@ -66,11 +67,13 @@ const StoreAddressStep: React.FC<StoreAddressStepProps> = (props) => {
 
 						<div className="grid grid-cols-2 gap-4">
 							<FormInput
+								required
 								name="address.county"
 								label="County"
 								render={({ field }) => <Input {...field} />}
 							/>
 							<FormInput
+								required
 								name="address.city"
 								label="City"
 								render={({ field }) => <Input {...field} />}
@@ -78,6 +81,7 @@ const StoreAddressStep: React.FC<StoreAddressStepProps> = (props) => {
 						</div>
 
 						<FormInput
+							required
 							name="address.postCode"
 							label="Postal code"
 							render={({ field }) => <Input {...field} />}

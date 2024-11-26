@@ -31,6 +31,7 @@ import { ArrowBigLeft, ArrowLeft, ArrowRight } from 'lucide-react';
 import { StoreMapSchema } from '@/schemas';
 import useStateDebounce from '@/hooks/useStateDebounce';
 import useDidUpdateEffect from '@/hooks/useDidUpdateEffect';
+import { getLocation } from '@/actions/store/get-location';
 
 export type StoreMapInputProps = z.infer<typeof StoreMapSchema>;
 
@@ -74,7 +75,6 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 		return zoom;
 	};
 
-	console.log(watch('zoom'), 'zoom watch');
 	const longitude = watch('longitude');
 	const latitude = watch('latitude');
 	const zoom = watch('zoom') ?? 20;
@@ -87,10 +87,9 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 	});
 
 	const searchParams = useSearchParams();
-	console.log(watch(), 'watch valaa');
 	const [geolocation, setGeolocation] = useState<any>(
 		!!watch()?.address?.name?.length ? watch() : null
-	); // HERE maps geolocation API response
+	);
 
 	const router = useRouter();
 
@@ -102,7 +101,7 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 		(searchParams.get('location') as string | undefined) ??
 			geolocation?.address.label ??
 			props.editingStore?.geolocation?.address?.name ??
-			'test',
+			'',
 		300,
 		(newQuery) => {
 			setQuery(newQuery);
@@ -120,27 +119,15 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 
 		(async () => {
 			try {
-				const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/v2/locations/geo-locate`);
-				url.searchParams.append('query', query);
-				url.searchParams.append('lang', 'en');
-				// url.searchParams.append('show', 'streetInfo');
-				url.searchParams.append('limit', '20');
-
-				// ['houseNumber', 'street', 'address', 'postalCode'].forEach((type) =>
-				// 	url.searchParams.append('types', type)
-				// );
-
-				// Append each location in 'geolocationOriginatingStore' as a separate 'at' parameter
-				geolocationOriginatingStore.forEach((location) =>
-					url.searchParams.append('at', String(location))
-				);
-				const response = await fetch(url.toString(), {
-					method: 'GET',
+				const data = await getLocation({
+					query: query,
+					lang: 'en',
+					limit: 20,
+					at: geolocationOriginatingStore,
+					types: ['houseNumber', 'street', 'address', 'postalCode'],
+					show: 'streetInfo',
 				});
 
-				const data = await response.json();
-
-				console.log(data, 'response data 2');
 				setGeolocations(data);
 			} catch (error) {
 				console.error('Failed to fetch geolocation data:', error);
@@ -424,8 +411,8 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 								<div className="w-[100px] h-[100px] relative ">
 									<div className="absolute top-1/2 w-[140px] h-[140px]">
 										<div className="relative w-full h-full">
-											<div className="bg-primary-200 w-[140px] h-[140px] rounded-full opacity-20" />
-											<div className="bg-primary-500 -translate-x-1/2 -translate-y-1/2 z-20  left-1/2 top-1/2 absolute rounded-full w-[7px] h-[7px]" />
+											<div className="bg-primary/80 w-[140px] h-[140px] rounded-full opacity-20" />
+											<div className="bg-primary -translate-x-1/2 -translate-y-1/2 z-20  left-1/2 top-1/2 absolute rounded-full w-[7px] h-[7px]" />
 										</div>
 									</div>
 								</div>
