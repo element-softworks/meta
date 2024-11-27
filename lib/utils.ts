@@ -1,4 +1,5 @@
 import { type ClassValue, clsx } from 'clsx';
+import { addHours, format, startOfDay } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -35,3 +36,11 @@ export function formDataToNestedObject(formData: FormData): Record<string, any> 
 
 	return result;
 }
+
+export const convertHourToAMPM = (hour: number, formatString?: string) => {
+	// if (!hour) return null;
+	return format(
+		new Date(addHours(startOfDay(Date.now()), hour)),
+		!!formatString ? formatString : 'h:mmaaa'
+	);
+};

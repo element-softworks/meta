@@ -83,7 +83,7 @@ export default async function StoresPage({
 										title={storeData?.store?.name}
 										subtitle={storeData?.store?.geolocation?.addressName}
 										image={storeData?.store?.coverImageAsset ?? ''}
-										link={`/dashboard/locations/${storeData?.store?.id}`}
+										link={`/dashboard/stores/${storeData?.store?.id}`}
 										endIcon={
 											country?.code && (
 												<div className="flex gap-2">

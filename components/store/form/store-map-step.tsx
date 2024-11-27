@@ -32,6 +32,10 @@ import { StoreMapSchema } from '@/schemas';
 import useStateDebounce from '@/hooks/useStateDebounce';
 import useDidUpdateEffect from '@/hooks/useDidUpdateEffect';
 import { getLocation } from '@/actions/store/get-location';
+import { StoreResponse } from '@/actions/store/get-stores';
+import { StoresFormInputProps } from './stores-form';
+import { Store } from '@/db/drizzle/schema/store';
+import { StoreGeolocation } from '@/db/drizzle/schema/storeGeolocation';
 
 export type StoreMapInputProps = z.infer<typeof StoreMapSchema>;
 
@@ -100,7 +104,7 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 	const [query, setQuery] = useStateDebounce<string>(
 		(searchParams.get('location') as string | undefined) ??
 			geolocation?.address.label ??
-			props.editingStore?.geolocation?.address?.name ??
+			props.editingStore?.address?.addressName ??
 			'',
 		300,
 		(newQuery) => {
@@ -113,6 +117,7 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 
 	const [geolocations, setGeolocations] = useState<any>([]);
 
+	console.log(form.formState.errors, 'form errs');
 	useEffect(() => {
 		if (!query) return;
 		setIsLoading(true);
@@ -492,30 +497,27 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 
 export default StoreMapStep;
 
-export const mapStepDefaultValues = (location?: any) => {
+export const mapStepDefaultValues = (store?: Store & { address: StoreGeolocation }) => {
 	const methods = useFormContext<StoreMapInputProps>();
 	const { getValues } = methods || {};
 
+	console.log(store, 'store data');
 	return {
 		address: {
-			name: getValues?.('address.name') ?? location?.geolocation?.address?.name ?? '',
-			lineOne:
-				getValues?.('address.lineOne') ?? location?.geolocation?.address?.lineOne ?? '',
-			lineTwo:
-				getValues?.('address.lineTwo') ?? location?.geolocation?.address?.lineTwo ?? '',
-			city: getValues?.('address.city') ?? location?.geolocation?.address?.city ?? '',
-			county: getValues?.('address.county') ?? location?.geolocation?.address?.county ?? '',
-			country:
-				getValues?.('address.country') ?? location?.geolocation?.address?.country ?? '',
-			postCode:
-				getValues?.('address.postCode') ?? location?.geolocation?.address?.postCode ?? '',
-			type: getValues?.('address.type') ?? location?.geolocation?.address?.type ?? '',
+			name: getValues?.('address.name') ?? store?.address?.addressName ?? '',
+			lineOne: getValues?.('address.lineOne') ?? store?.address?.addressLineOne ?? '',
+			lineTwo: getValues?.('address.lineTwo') ?? store?.address?.addressLineTwo ?? '',
+			city: getValues?.('address.city') ?? store?.address?.city ?? '',
+			county: getValues?.('address.county') ?? store?.address?.county ?? '',
+			country: getValues?.('address.country') ?? store?.address?.country ?? '',
+			postCode: getValues?.('address.postCode') ?? store?.address?.postCode ?? '',
+			type: getValues?.('address.type') ?? store?.address?.addressType ?? '',
 		},
-		longitude: getValues?.('longitude') ?? location?.geolocation?.longitude ?? 51.5072,
-		latitude: getValues?.('latitude') ?? location?.geolocation?.latitude ?? 0.1276,
-		zoom: getValues?.('zoom') ?? location?.geolocation?.zoom ?? 16,
+		longitude: getValues?.('longitude') ?? store?.address?.longitude ?? 51.5072,
+		latitude: getValues?.('latitude') ?? store?.address?.latitude ?? 0.1276,
+		zoom: getValues?.('zoom') ?? store?.address?.zoom ?? 16,
 		boundingBox: getValues?.('boundingBox') ??
-			location?.geolocation?.boundingBox ?? [
+			store?.address?.boundingBox ?? [
 				[51.5072, 0.1276],
 				[51.5072, 0.1276],
 			],

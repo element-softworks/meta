@@ -17,6 +17,7 @@ import LocationAddressStep, { addressStepDefaultValues } from './store-address-s
 import { StoreDetailsStep, detailsStepDefaultValues } from './store-details-step';
 import LocationMapStep, { mapStepDefaultValues } from './store-map-step';
 import { revalidateData } from '@/actions/system/revalidatePath';
+import { Store } from '@/db/drizzle/schema/store';
 
 export type StoresFormInputProps = z.infer<typeof StoresSchema>;
 
@@ -26,7 +27,7 @@ type StoresResponse = {
 
 interface StoresFormProps {
 	isEditing?: boolean;
-	editingStore?: any | null;
+	editingStore?: Store | null;
 	onComplete?: () => void;
 }
 
@@ -57,24 +58,38 @@ export function StoresForm(props: StoresFormProps) {
 		},
 
 		onCompleted: async (data) => {
-			form.reset();
+			form.reset({
+				...detailsStepDefaultValues,
+				...addressStepDefaultValues,
+				...mapStepDefaultValues,
+			});
 			router.push('/dashboard/stores');
 			await revalidateData('/dashboard/stores');
 		},
 	});
 
 	const { query: updateStoreQuery, isLoading: isUpdating } = useMutation<
-		z.infer<typeof StoresSchema>,
+		FormData,
 		StoresResponse
 	>({
-		// queryFn: async (values) => await editStore(values!),
-		queryFn: async (values) => {},
+		queryFn: async (values) => {
+			return await fetch(
+				`${process.env.NEXT_PUBLIC_APP_URL}/api/store?storeId=${props.editingStore?.id}`,
+				{
+					method: 'PUT',
+					body: values,
+				}
+			).then((res) => res.json());
+		},
 		onCompleted: async (data) => {
 			form.reset({
 				...detailsStepDefaultValues,
 				...addressStepDefaultValues,
 				...mapStepDefaultValues,
 			});
+
+			router.push(`/dashboard/stores/${props.editingStore?.id}`);
+			await revalidateData(`/dashboard/stores/${props.editingStore?.id}`);
 		},
 	});
 
@@ -134,19 +149,7 @@ export function StoresForm(props: StoresFormProps) {
 				variant: 'default',
 			});
 
-			await updateStoreQuery({
-				address: body.address,
-				contactEmail: body.contactEmail,
-				contactPhone: body.contactPhone,
-				image: body.image,
-				maxCapacity: body.maxCapacity,
-				name: body.name,
-				openingTimes: body.openingTimes,
-				latitude: body.latitude,
-				longitude: body.longitude,
-				zoom: body.zoom,
-				boundingBox: body.boundingBox,
-			});
+			await updateStoreQuery(formData);
 			setStep('details');
 			props.onComplete?.();
 		} else {
@@ -174,9 +177,6 @@ export function StoresForm(props: StoresFormProps) {
 		descriptionText = 'Verify address details';
 	}
 
-	console.log(form.watch(), 'form data');
-
-	console.log(form.formState.errors, 'errors data');
 	return (
 		<div className="h-full flex flex-col ">
 			<Form {...form}>

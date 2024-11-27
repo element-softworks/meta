@@ -1,5 +1,6 @@
 import { createStore } from '@/actions/store/create-store';
 import { getStores } from '@/actions/store/get-stores';
+import { updateStore } from '@/actions/store/update-store';
 import { formDataToNestedObject } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
@@ -10,7 +11,7 @@ export async function POST(req: NextRequest, res: Response) {
 	const parsedValues = formDataToNestedObject(values);
 
 	try {
-		const response = await createStore({
+		const response: any = await createStore({
 			...parsedValues,
 			name: parsedValues.name,
 			address: parsedValues.address,
@@ -22,7 +23,7 @@ export async function POST(req: NextRequest, res: Response) {
 			longitude: Number(parsedValues.longitude),
 			openingTimes: parsedValues.openingTimes,
 			zoom: Number(parsedValues.zoom),
-			maxCapacity: String(parsedValues.maxCapacity),
+			maxCapacity: Number(parsedValues.maxCapacity),
 			contactEmail: parsedValues.contactEmail,
 			contactPhone: parsedValues.contactPhone,
 		});
@@ -30,7 +31,52 @@ export async function POST(req: NextRequest, res: Response) {
 		revalidatePath('/dashboard/stores');
 
 		if (!!response?.error) {
-			return NextResponse.json({ error: 'An error occurred creating the store.' });
+			return NextResponse.json({
+				error: response?.error ?? 'An error occurred creating the store.',
+			});
+		} else {
+			return NextResponse.json({ ...response });
+		}
+	} catch (error: any) {
+		return NextResponse.json({ error: error.message });
+	}
+}
+
+export async function PUT(req: NextRequest, res: Response) {
+	const values = await req.formData();
+
+	const urlParams = new URL(req.url).searchParams;
+	const storeId = urlParams.get('storeId') ?? '';
+
+	const parsedValues = formDataToNestedObject(values);
+
+	try {
+		const response: any = await updateStore(
+			{
+				...parsedValues,
+				name: parsedValues.name,
+				address: parsedValues.address,
+				boundingBox: parsedValues?.boundingBox?.map((item: string[]) =>
+					item.map((i) => Number(i))
+				),
+				image: [parsedValues.image] as any,
+				latitude: Number(parsedValues.latitude),
+				longitude: Number(parsedValues.longitude),
+				openingTimes: parsedValues.openingTimes,
+				zoom: Number(parsedValues.zoom),
+				maxCapacity: Number(parsedValues.maxCapacity),
+				contactEmail: parsedValues.contactEmail,
+				contactPhone: parsedValues.contactPhone,
+			},
+			storeId
+		);
+
+		revalidatePath('/dashboard/stores');
+
+		if (!!response?.error) {
+			return NextResponse.json({
+				error: response?.error ?? 'An error occurred updating the store.',
+			});
 		} else {
 			return NextResponse.json({ ...response });
 		}

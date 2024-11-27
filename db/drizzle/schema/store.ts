@@ -14,7 +14,7 @@ export const store = pgTable(
 		maxCapacity: integer('max_capacity'),
 		coverImageAsset: text('cover_image_asset'),
 		contactEmail: varchar('contact_email', { length: 256 }),
-		openingTimes: jsonb('opening_times'),
+		openingTimes: jsonb('opening_times').$type<number[][][]>(),
 		createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),

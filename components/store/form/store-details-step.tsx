@@ -35,6 +35,8 @@ export function StoreDetailsStep(props: StoreDetailsStepProps) {
 		props.onSubmit(values);
 	}
 
+	console.log(form.watch(), 'form wathc ');
+
 	return (
 		<div className="h-full">
 			<div className="space-y-4 h-full">
@@ -63,11 +65,19 @@ export function StoreDetailsStep(props: StoreDetailsStepProps) {
 						/>
 
 						<FormInput
-							required
 							name="maxCapacity"
 							label="Store Capacity"
 							render={({ field }) => (
-								<Input {...field} type="number" disabled={props.isLoading} />
+								<Input
+									{...field}
+									type="number"
+									onChange={(e) => {
+										if (e.target.value?.[e.target.value.length - 1] === '.')
+											return field.onChange(null);
+										field.onChange(parseInt(e.target.value));
+									}}
+									disabled={props.isLoading}
+								/>
 							)}
 						/>
 
@@ -140,13 +150,13 @@ export const detailsStepDefaultValues = (store?: Store | null) => {
 	const methods = useFormContext<StoreDetailsInputProps>();
 	const parentForm = useFormContext<StoresFormInputProps>();
 
-	const { getValues, watch } = methods || {};
+	const { getValues, watch, formState } = methods || {};
 
 	return {
 		name: getValues?.('name') ?? store?.name ?? '',
 		contactEmail: getValues?.('contactEmail') ?? store?.contactEmail ?? '',
 		contactPhone: getValues?.('contactPhone') ?? store?.contactPhone ?? '',
-		maxCapacity: getValues?.('maxCapacity') ?? store?.maxCapacity ?? '',
+		maxCapacity: getValues?.('maxCapacity') ?? store?.maxCapacity ?? undefined,
 		openingTimes: getValues?.('openingTimes') ?? [
 			!!(store as any)?.openingTimes?.[0]
 				? formatTimeValue((store as any)?.openingTimes?.[0]?.[0] ?? [])

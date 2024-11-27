@@ -28,6 +28,7 @@ export const createStore = async (values: z.infer<typeof StoresSubmitSchema>) =>
 
 		const imageResponse = await uploadImage(validatedFields?.data?.image?.[0]);
 
+		console.log(validatedFields?.data?.maxCapacity, 'max cpaaappapa');
 		const storeResponse: Store = await db.transaction(async (trx) => {
 			const meta = {
 				createdAt: new Date(),
@@ -39,13 +40,19 @@ export const createStore = async (values: z.infer<typeof StoresSubmitSchema>) =>
 			// Insert into locations table
 			const insertValues: StoreInsert = {
 				name: validatedFields?.data?.name,
-				maxCapacity: Number(validatedFields?.data?.maxCapacity ?? 0),
+				maxCapacity: isNaN(validatedFields?.data?.maxCapacity!)
+					? 0
+					: validatedFields?.data?.maxCapacity ?? 0,
 				coverImageAsset: validatedFields?.data?.image
 					? imageResponse?.imagePath
 					: undefined,
 				contactEmail: validatedFields?.data?.contactEmail ?? '',
 				contactPhone: validatedFields?.data?.contactPhone ?? '',
-				openingTimes: validatedFields?.data?.openingTimes ?? [],
+				openingTimes:
+					validatedFields?.data?.openingTimes?.map((day) =>
+						day?.map?.((time) => time?.map?.((startEnd) => Number(startEnd)))
+					) ?? [],
+
 				...meta,
 			};
 

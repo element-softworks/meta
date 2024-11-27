@@ -361,7 +361,7 @@ export const StoresSchema = z.object({
 		.max(35, { message: 'Name is too long' }),
 	contactEmail: z.union([z.literal(''), z.string().email()]),
 	contactPhone: z.string(),
-	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
+	maxCapacity: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
 	image: z
 		.unknown()
 		.transform((value) => {
@@ -369,6 +369,9 @@ export const StoresSchema = z.object({
 		})
 		.refine(
 			(data) => {
+				if (typeof data?.[0] === 'string' && !!data?.[0]) {
+					return true;
+				}
 				const fileSize = data?.[0]?.size;
 
 				//1Mb = 1000000 bytes
@@ -384,7 +387,7 @@ export const StoresSchema = z.object({
 		)
 		.refine(
 			(data) => {
-				if (!data?.[0]?.size) {
+				if (!data?.[0]?.size && !data?.[0]) {
 					return false;
 				}
 				return true;
@@ -455,7 +458,7 @@ export const StoreMapSchema = z.object({
 		county: z.string().optional(),
 		country: z.string().optional(),
 		postCode: z.string().optional(),
-		type: z.string().min(1, { message: 'Type is required' }),
+		type: z.string().optional(),
 	}),
 	zoom: z
 		.number()
@@ -473,7 +476,7 @@ export const StoreDetailsSchema = z.object({
 		.max(35, { message: 'Name is too long' }),
 	contactEmail: z.union([z.literal(''), z.string().email()]),
 	contactPhone: z.string(),
-	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
+	maxCapacity: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
 	image: z
 		.unknown()
 		.transform((value) => {
@@ -481,6 +484,9 @@ export const StoreDetailsSchema = z.object({
 		})
 		.refine(
 			(data) => {
+				if (typeof data?.[0] === 'string' && !!data?.[0]) {
+					return true;
+				}
 				const fileSize = data?.[0]?.size;
 
 				//1Mb = 1000000 bytes
@@ -496,7 +502,7 @@ export const StoreDetailsSchema = z.object({
 		)
 		.refine(
 			(data) => {
-				if (!data?.[0]?.size) {
+				if (!data?.[0]?.size && !data?.[0]) {
 					return false;
 				}
 				return true;
@@ -560,7 +566,7 @@ export const StoresSubmitSchema = z.object({
 		.max(35, { message: 'Name is too long' }),
 	contactEmail: z.union([z.literal(''), z.string().email()]),
 	contactPhone: z.string(),
-	maxCapacity: z.string().min(0, { message: 'Max capacity cannot be less than 0' }),
+	maxCapacity: z.union([z.number().int().positive().min(1), z.nan()]).optional(),
 	image: z
 		.unknown()
 		.transform((value) => {
@@ -568,6 +574,10 @@ export const StoresSubmitSchema = z.object({
 		})
 		.refine(
 			(data) => {
+				if (typeof data?.[0] === 'string' && !!data?.[0]) {
+					return true;
+				}
+
 				const fileSize = data?.[0]?.size;
 
 				//1Mb = 1000000 bytes
@@ -583,7 +593,7 @@ export const StoresSubmitSchema = z.object({
 		)
 		.refine(
 			(data) => {
-				if (!data?.[0]?.size) {
+				if (!data?.[0]?.size && !data?.[0]) {
 					return false;
 				}
 				return true;

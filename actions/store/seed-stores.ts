@@ -28,6 +28,8 @@ export const seedStores = async () => {
 
 	try {
 		await db.transaction(async (trx) => {
+			await trx.delete(storeGeolocation);
+			await trx.delete(store);
 			//Insert store entries
 			await trx.insert(store).values(parsedStores);
 
