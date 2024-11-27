@@ -1,3 +1,4 @@
+import { DashboardLayout } from '@/components/layouts';
 import { currentUser } from '@/lib/auth';
 
 export async function generateMetadata() {
@@ -19,8 +20,10 @@ export default async function DashboardPage() {
 	const userResponse = await currentUser();
 
 	return (
-		<main className="flex flex-col  gap-4 h-full">
-			<section className="xl:ml-[10%] xl:mt-[6%]"></section>
-		</main>
+		<DashboardLayout>
+			<main className="flex flex-col  gap-4 h-full">
+				<section className="xl:ml-[10%] xl:mt-[6%]"></section>
+			</main>
+		</DashboardLayout>
 	);
 }

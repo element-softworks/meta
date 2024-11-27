@@ -5,10 +5,15 @@ import { store, storeGeolocation } from '@/db/drizzle/schema';
 import { Store } from '@/db/drizzle/schema/store';
 import { StoreGeolocation } from '@/db/drizzle/schema/storeGeolocation';
 import { checkPermissions } from '@/lib/auth';
-import { count, desc, eq, sql } from 'drizzle-orm';
+import { and, count, desc, eq, exists, isNull, ne, not, sql } from 'drizzle-orm';
 
-export const getStores = async (perPage: number, pageNum: number, search?: string) => {
-	const authResponse = await checkPermissions({ admin: true });
+export const getStores = async (
+	perPage: number,
+	pageNum: number,
+	search?: string,
+	showArchived?: boolean
+) => {
+	const authResponse = await checkPermissions({ admin: false });
 
 	if (authResponse?.error) {
 		return authResponse;
@@ -23,9 +28,16 @@ export const getStores = async (perPage: number, pageNum: number, search?: strin
 				})
 				.from(store)
 				.where(
-					!!search?.length
-						? sql`lower(${store.name}) like ${`%${search.toLowerCase()}%`}`
-						: undefined
+					and(
+						!showArchived
+							? isNull(store.archivedAt)
+							: authResponse?.user?.role === 'ADMIN'
+							? not(isNull(store.archivedAt))
+							: isNull(store.archivedAt),
+						!!search?.length
+							? sql`lower(${store.name}) like ${`%${search.toLowerCase()}%`}`
+							: undefined
+					)
 				)
 				.limit(Number(perPage))
 				.offset((Number(pageNum) - 1) * Number(perPage))
@@ -36,9 +48,16 @@ export const getStores = async (perPage: number, pageNum: number, search?: strin
 				.select({ count: count() })
 				.from(store)
 				.where(
-					!!search?.length
-						? sql`lower(${store.name}) like ${`%${search.toLowerCase()}%`}`
-						: undefined
+					and(
+						!showArchived
+							? isNull(store.archivedAt)
+							: authResponse?.user?.role === 'ADMIN'
+							? not(isNull(store.archivedAt))
+							: isNull(store.archivedAt),
+						!!search?.length
+							? sql`lower(${store.name}) like ${`%${search.toLowerCase()}%`}`
+							: undefined
+					)
 				);
 
 			const totalPages = Math.ceil(totalStores.count / Number(perPage));

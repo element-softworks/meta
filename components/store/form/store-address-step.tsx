@@ -34,62 +34,49 @@ const StoreAddressStep: React.FC<StoreAddressStepProps> = (props) => {
 		props.onSubmit(values);
 	}
 
+	console.log(form.watch(), 'fromd ata');
+
 	return (
 		<FormProvider {...form}>
 			<form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4 h-full">
-				{!!geolocationCountry && geolocationCountry !== country ? (
-					<div className="flex flex-col gap-4">
-						<div className="flex flex-col gap-2">
-							<p>Address country changed</p>
-							<p>
-								Your address country must match your map position, please change
-								your address in the previous step to be within {country}.
-							</p>
-						</div>
-						<Button variant="outline" onClick={() => props.onBack()}>
-							Search address
-						</Button>
+				<>
+					<FormInput
+						required
+						name="address.lineOne"
+						label="Line one"
+						render={({ field }) => <Input {...field} />}
+					/>
+
+					<FormInput
+						name="address.lineTwo"
+						label="Line two"
+						render={({ field }) => <Input {...field} />}
+					/>
+
+					<div className="grid grid-cols-2 gap-4">
+						<FormInput
+							required
+							name="address.county"
+							label="County"
+							render={({ field }) => <Input {...field} />}
+						/>
+						<FormInput
+							required
+							name="address.city"
+							label="City"
+							render={({ field }) => <Input {...field} />}
+						/>
 					</div>
-				) : (
-					<>
-						<FormInput
-							required
-							name="address.lineOne"
-							label="Line one"
-							render={({ field }) => <Input {...field} />}
-						/>
 
-						<FormInput
-							name="address.lineTwo"
-							label="Line two"
-							render={({ field }) => <Input {...field} />}
-						/>
+					<FormInput
+						required
+						name="address.postCode"
+						label="Postal code"
+						render={({ field }) => <Input {...field} />}
+					/>
 
-						<div className="grid grid-cols-2 gap-4">
-							<FormInput
-								required
-								name="address.county"
-								label="County"
-								render={({ field }) => <Input {...field} />}
-							/>
-							<FormInput
-								required
-								name="address.city"
-								label="City"
-								render={({ field }) => <Input {...field} />}
-							/>
-						</div>
-
-						<FormInput
-							required
-							name="address.postCode"
-							label="Postal code"
-							render={({ field }) => <Input {...field} />}
-						/>
-
-						<CountrySelect name="address.country" />
-					</>
-				)}
+					<CountrySelect name="address.country" />
+				</>
 
 				<div className="!mt-auto">
 					<div className="flex gap-4 md:gap-20 !mt-4">

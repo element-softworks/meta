@@ -1,6 +1,8 @@
+import { archiveStores } from '@/actions/store/archive-stores';
 import { createStore } from '@/actions/store/create-store';
 import { getStores } from '@/actions/store/get-stores';
 import { updateStore } from '@/actions/store/update-store';
+import { store } from '@/db/drizzle/schema';
 import { formDataToNestedObject } from '@/lib/utils';
 import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
@@ -89,6 +91,8 @@ export async function GET(req: NextRequest, res: Response) {
 	const { searchParams } = new URL(req.url);
 	const perPage = searchParams.get('perPage');
 	const pageNum = searchParams.get('pageNum');
+	const showArchived = searchParams.get('showArchived');
+	const search = searchParams.get('search');
 
 	if (!perPage) {
 		return NextResponse.json({
@@ -101,7 +105,29 @@ export async function GET(req: NextRequest, res: Response) {
 		});
 	}
 
-	const response = await getStores(Number(perPage), Number(pageNum));
+	const response = await getStores(
+		Number(perPage),
+		Number(pageNum),
+		search ?? undefined,
+		showArchived === 'true'
+	);
 
 	return NextResponse.json({ success: true, data: response });
+}
+
+export async function DELETE(req: NextRequest, res: Response) {
+	const { searchParams } = new URL(req.url);
+	const storeIds = searchParams.get('storeIds');
+
+	if (!storeIds?.length) {
+		return NextResponse.json({
+			error: 'storeIds is required',
+		});
+	}
+
+	const formattedIds = storeIds?.split(',');
+
+	const response = await archiveStores(formattedIds);
+
+	return NextResponse.json({ ...response });
 }

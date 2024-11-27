@@ -8,9 +8,9 @@ import { z } from 'zod';
 import { uploadImage } from '../system/upload-image';
 import { storeGeolocation } from '@/db/drizzle/schema';
 import { revalidatePath } from 'next/cache';
+import countries from '@/countries.json';
 
 export const createStore = async (values: z.infer<typeof StoresSubmitSchema>) => {
-	console.log(values, 'recieved values');
 	const authData = await checkPermissions({ admin: true });
 
 	const validatedFields = await StoresSubmitSchema.safeParse(values);
@@ -26,9 +26,13 @@ export const createStore = async (values: z.infer<typeof StoresSubmitSchema>) =>
 	} else {
 		//Upload the location image
 
-		const imageResponse = await uploadImage(validatedFields?.data?.image?.[0]);
+		const selectedCountry = countries.find(
+			(country) =>
+				country.code?.toLowerCase() === validatedFields?.data?.address?.country ||
+				country.name?.toLowerCase() === validatedFields?.data?.address?.country
+		);
 
-		console.log(validatedFields?.data?.maxCapacity, 'max cpaaappapa');
+		const imageResponse = await uploadImage(validatedFields?.data?.image?.[0]);
 		const storeResponse: Store = await db.transaction(async (trx) => {
 			const meta = {
 				createdAt: new Date(),
@@ -71,7 +75,7 @@ export const createStore = async (values: z.infer<typeof StoresSubmitSchema>) =>
 				addressLineTwo: validatedFields?.data.address.lineTwo,
 				city: validatedFields?.data.address.city,
 				county: validatedFields?.data.address.county,
-				country: validatedFields?.data.address.country,
+				country: selectedCountry?.code ?? validatedFields?.data.address.country,
 				postCode: validatedFields?.data.address.postCode,
 				...meta,
 			});

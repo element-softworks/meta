@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { removeFileFromS3 } from '../system/remove-file-from-s3';
 import { uploadImage } from '../system/upload-image';
 import stores from './stores.json';
+import countries from '@/countries.json';
 
 export const updateStore = async (values: z.infer<typeof StoresSubmitSchema>, storeId: string) => {
 	const authData = await checkPermissions({ admin: true });
@@ -55,6 +56,12 @@ export const updateStore = async (values: z.infer<typeof StoresSubmitSchema>, st
 		} else {
 		}
 
+		const selectedCountry = countries.find(
+			(country) =>
+				country.code?.toLowerCase() === validatedFields?.data?.address?.country ||
+				country.name?.toLowerCase() === validatedFields?.data?.address?.country
+		);
+
 		const storeResponse: Store = await db.transaction(async (trx) => {
 			const meta = {
 				updatedAt: new Date(),
@@ -77,7 +84,7 @@ export const updateStore = async (values: z.infer<typeof StoresSubmitSchema>, st
 				...meta,
 			};
 
-			const [newStore] = await trx
+			const [updatedStore] = await trx
 				.update(store)
 				.set({ ...updateValues, coverImageAsset: imageResponse?.imagePath ?? undefined })
 				.where(eq(store.id, storeId))
@@ -87,7 +94,7 @@ export const updateStore = async (values: z.infer<typeof StoresSubmitSchema>, st
 			await trx
 				.update(storeGeolocation)
 				.set({
-					storeId: newStore.id,
+					storeId: updatedStore.id,
 					longitude: validatedFields?.data.longitude,
 					latitude: validatedFields?.data.latitude,
 					zoom: validatedFields?.data.zoom,
@@ -98,13 +105,14 @@ export const updateStore = async (values: z.infer<typeof StoresSubmitSchema>, st
 					addressLineTwo: validatedFields?.data.address.lineTwo,
 					city: validatedFields?.data.address.city,
 					county: validatedFields?.data.address.county,
-					country: validatedFields?.data.address.country,
+					country: selectedCountry?.code ?? validatedFields?.data.address.country,
 					postCode: validatedFields?.data.address.postCode,
 					...meta,
 				})
 				.where(eq(storeGeolocation.storeId, storeId));
+			console.log('updating 7...');
 
-			return newStore;
+			return updatedStore;
 		});
 
 		revalidatePath('/dashboard/stores');

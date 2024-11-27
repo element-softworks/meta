@@ -284,96 +284,109 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 													</CommandEmpty>
 												)}
 												<CommandGroup className="">
-													{geolocations?.map?.((geolocation: any) => (
-														<CommandItem
-															key={geolocation.id}
-															value={geolocation?.title}
-															onSelect={(currentValue) => {
-																setAutocompleteValue(
-																	currentValue === value
-																		? ''
-																		: currentValue
-																);
-
-																const country = countries?.find(
-																	({ name }) =>
-																		name ===
-																		geolocation?.address
-																			?.countryName
-																);
-
-																setValue(
-																	'address.name',
+													{geolocations?.map?.((geolocation: any) => {
+														console.log(
+															geolocation,
+															'geolocation data'
+														);
+														return (
+															<CommandItem
+																key={geolocation.id}
+																value={
 																	geolocation?.address?.label ??
-																		geolocation?.title ??
-																		''
-																);
-																setValue(
-																	'address.lineOne',
-																	geolocation?.resultType ===
-																		'place'
-																		? geolocation?.title
-																		: geolocation?.resultType ===
-																		  'houseNumber'
-																		? geolocation?.address?.label?.split(
-																				', '
-																		  )?.[0] ?? ''
-																		: geolocation?.address
-																				?.street ?? ''
-																);
-																setValue(
-																	'address.lineTwo',
-																	geolocation?.address
-																		?.district || ''
-																);
-																setValue(
-																	'address.city',
-																	geolocation?.address?.city ?? ''
-																);
-																setValue(
-																	'address.country',
-																	country?.name ??
+																	geolocation?.title
+																}
+																onSelect={(currentValue) => {
+																	setAutocompleteValue(
+																		currentValue === value
+																			? ''
+																			: currentValue
+																	);
+
+																	const country = countries?.find(
+																		({ name }) =>
+																			name ===
+																			geolocation?.address
+																				?.countryName
+																	);
+
+																	setValue(
+																		'address.name',
 																		geolocation?.address
-																			?.countryName ??
-																		''
-																);
-																setValue(
-																	'address.postCode',
-																	geolocation?.address
-																		?.postalCode ?? ''
-																);
-																setValue(
-																	'address.county',
-																	`${
-																		geolocation?.address?.county
-																			? `${
-																					geolocation
-																						?.address
-																						?.county
-																			  }${
-																					geolocation
-																						?.address
-																						?.state
-																						? ', '
-																						: ''
-																			  }`
-																			: ''
-																	}${
+																			?.label ??
+																			geolocation?.title ??
+																			''
+																	);
+																	setValue(
+																		'address.lineOne',
+																		geolocation?.resultType ===
+																			'place'
+																			? geolocation?.title
+																			: geolocation?.resultType ===
+																			  'houseNumber'
+																			? geolocation?.address?.label?.split(
+																					', '
+																			  )?.[0] ?? ''
+																			: geolocation?.address
+																					?.street ?? ''
+																	);
+																	setValue(
+																		'address.lineTwo',
 																		geolocation?.address
-																			?.state ?? ''
-																	}`
-																);
-																setValue(
-																	'address.type',
-																	geolocation?.resultType ?? ''
-																);
-																setGeolocation(geolocation);
-																setAutocompleteOpen(false);
-															}}
-														>
-															{geolocation?.title}
-														</CommandItem>
-													))}
+																			?.district || ''
+																	);
+																	setValue(
+																		'address.city',
+																		geolocation?.address
+																			?.city ?? ''
+																	);
+																	setValue(
+																		'address.country',
+																		country?.name ??
+																			geolocation?.address
+																				?.countryName ??
+																			''
+																	);
+																	setValue(
+																		'address.postCode',
+																		geolocation?.address
+																			?.postalCode ?? ''
+																	);
+																	setValue(
+																		'address.county',
+																		`${
+																			geolocation?.address
+																				?.county
+																				? `${
+																						geolocation
+																							?.address
+																							?.county
+																				  }${
+																						geolocation
+																							?.address
+																							?.state
+																							? ', '
+																							: ''
+																				  }`
+																				: ''
+																		}${
+																			geolocation?.address
+																				?.state ?? ''
+																		}`
+																	);
+																	setValue(
+																		'address.type',
+																		geolocation?.resultType ??
+																			''
+																	);
+																	setGeolocation(geolocation);
+																	setAutocompleteOpen(false);
+																}}
+															>
+																{geolocation?.title}
+															</CommandItem>
+														);
+													})}
 												</CommandGroup>
 											</>
 										) : null}
@@ -501,7 +514,6 @@ export const mapStepDefaultValues = (store?: Store & { address: StoreGeolocation
 	const methods = useFormContext<StoreMapInputProps>();
 	const { getValues } = methods || {};
 
-	console.log(store, 'store data');
 	return {
 		address: {
 			name: getValues?.('address.name') ?? store?.address?.addressName ?? '',

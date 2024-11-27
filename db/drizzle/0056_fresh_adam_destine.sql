@@ -1,0 +1,1 @@
+ALTER TABLE "StoreGeolocation" ADD COLUMN "latitude" json NOT NULL;

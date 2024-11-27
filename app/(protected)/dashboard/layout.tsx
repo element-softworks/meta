@@ -20,19 +20,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
 		<SessionProvider session={session}>
 			<SessionTrackerProvider>
 				<Toaster />
-				<div className="flex flex-col min-h-screen ">
-					<Navbar sticky count={count?.count ?? 0} />
-					<div className="flex flex-1">
-						<DashboardSidebar />
 
-						<div className="w-full overflow-hidden flex-1 flex flex-col ">
-							{/* <NavStrip user={session?.user} /> */}
-							<main className="w-full p-4  overflow-hidden flex-1 mt-8 lg:mt-0">
-								{children}
-							</main>
-						</div>
-					</div>
-				</div>
+				{children}
 			</SessionTrackerProvider>
 		</SessionProvider>
 	);

@@ -75,6 +75,11 @@
 		"code": "AT"
 	},
 	{
+		"name": "Österreich",
+		"dial_code": "+43",
+		"code": "AT"
+	},
+	{
 		"name": "Azerbaijan",
 		"dial_code": "+994",
 		"code": "AZ"
@@ -391,6 +396,11 @@
 	},
 	{
 		"name": "Germany",
+		"dial_code": "+49",
+		"code": "DE"
+	},
+	{
+		"name": "Deutschland",
 		"dial_code": "+49",
 		"code": "DE"
 	},

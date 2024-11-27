@@ -1,0 +1,1 @@
+ALTER TABLE "StoreGeolocation" ALTER COLUMN "zoom" SET DATA TYPE double precision;

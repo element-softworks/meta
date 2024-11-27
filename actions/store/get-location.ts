@@ -21,6 +21,8 @@ export const getLocation = async ({
 			apiKey: process.env.HERE_API_KEY,
 			at: Array.isArray(at) ? at.join(',') : at,
 			q: query,
+			// types: 'address, area, city, houseNumber, postalCode, street',
+			lang: 'en',
 		},
 	});
 

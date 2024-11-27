@@ -10,6 +10,7 @@ export const store = pgTable(
 			.notNull()
 			.default(sql`gen_random_uuid()`),
 		name: varchar('name', { length: 256 }).notNull(),
+
 		contactPhone: text('contact_phone'),
 		maxCapacity: integer('max_capacity'),
 		coverImageAsset: text('cover_image_asset'),

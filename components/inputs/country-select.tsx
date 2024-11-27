@@ -58,10 +58,10 @@ const CountrySelect = <T extends FieldValues>(props: CountrySelectProps<T>) => {
 								{countries?.map?.((country, index) => (
 									<CommandItem
 										key={index}
-										value={country?.name}
 										onSelect={(currentValue) => {
 											setAutocompleteValue(currentValue);
-											field.onChange(currentValue);
+
+											field.onChange(selectedCountry?.code ?? currentValue);
 											setAutocompleteOpen(false);
 										}}
 									>

@@ -7,9 +7,12 @@ import {
 	text,
 	pgTable,
 	timestamp,
+	numeric,
+	json,
 } from 'drizzle-orm/pg-core';
 import { relations, sql } from 'drizzle-orm';
 import { store } from './store';
+import { float } from 'drizzle-orm/mysql-core';
 
 export const storeGeolocation = pgTable(
 	'StoreGeolocation',
@@ -19,9 +22,9 @@ export const storeGeolocation = pgTable(
 			.notNull()
 			.default(sql`gen_random_uuid()`),
 		storeId: text('store_id').references(() => store.id),
-		longitude: doublePrecision('longitude').notNull(),
-		latitude: doublePrecision('latitude').notNull(),
-		zoom: integer('zoom').notNull(),
+		longitude: json('longitude').$type<number>().notNull(),
+		latitude: json('latitude').$type<number>().notNull(),
+		zoom: doublePrecision('zoom').notNull(),
 		boundingBox: jsonb('bounding_box').notNull(),
 		addressName: varchar('address_name', { length: 256 }).notNull(),
 		addressLineOne: varchar('address_line_one', { length: 256 }),

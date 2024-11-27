@@ -1,3 +1,4 @@
+import { AdminLayout } from '@/components/layouts';
 import { currentUser } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
@@ -7,5 +8,5 @@ export default async function DashboardLayout({ children }: { children: React.Re
 		return redirect('/dashboard');
 	}
 
-	return <>{children}</>;
+	return <AdminLayout>{children}</AdminLayout>;
 }
