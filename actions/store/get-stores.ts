@@ -15,6 +15,7 @@ export const getStores = async (
 ) => {
 	const authResponse = await checkPermissions({ admin: false });
 
+	console.log('getting stores');
 	if (authResponse?.error) {
 		return authResponse;
 	} else {
@@ -61,8 +62,6 @@ export const getStores = async (
 				);
 
 			const totalPages = Math.ceil(totalStores.count / Number(perPage));
-
-			console.log(foundStores, 'foundStores');
 
 			return {
 				success: true,

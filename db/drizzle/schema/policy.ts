@@ -1,15 +1,15 @@
 import { relations, sql } from 'drizzle-orm';
-import { pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
-import { question } from './question';
+import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { policyQuestion } from './policyQuestion';
+import { policyStore } from './policyStore';
 
-export const answer = pgTable('Answer', {
+export const policy = pgTable('Policy', {
 	id: text('id')
 		.primaryKey()
 		.notNull()
 		.default(sql`gen_random_uuid()`),
-	questionId: text('question_id').notNull(),
-	answer: text('answer'),
-	metaChoiceId: text('meta_choice_id'),
+	name: text('name').notNull(),
+
 	createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),
@@ -22,11 +22,9 @@ export const answer = pgTable('Answer', {
 	archivedBy: text('archivedBy'),
 });
 
-export const answerRelations = relations(answer, ({ one, many }) => ({
-	question: one(question, {
-		fields: [answer.questionId],
-		references: [question.metaQuestionId],
-	}),
+export const policyRelations = relations(policy, ({ one, many }) => ({
+	questions: many(policyQuestion),
+	stores: many(policyStore),
 }));
 
-export type Answer = typeof answer.$inferSelect;
+export type Policy = typeof policy.$inferSelect;

@@ -56,6 +56,7 @@ interface DataTableProps<TData, TValue> {
 	archivedFilterEnabled?: boolean;
 	columns: ColumnDef<TData, TValue>[];
 	search?: string | { useParams: boolean };
+	actions?: React.ReactNode;
 	perPageSelectEnabled?: boolean;
 	columnVisibilityEnabled?: boolean;
 	rowSelectionEnabled?: boolean;
@@ -72,6 +73,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
 	title,
 	description,
+	actions,
 	columns,
 	data,
 	search,
@@ -184,14 +186,19 @@ export function DataTable<TData, TValue>({
 
 	return (
 		<Suspense fallback={<>Loading....</>}>
-			<div className="w-full">
+			<div className="w-full rounded-md border">
 				{!!title && (
-					<div className="pt-4 pb-2">
-						<p className="text-md font-semibold">{title}</p>
-						<p className="text-xs text-muted-foreground">{description}</p>
+					<div className="flex pt-4 pb-4 gap-4 flex-wrap p-4">
+						<div className=" flex-1">
+							<p className="text-xl lg:text-2xl font-semibold">{title}</p>
+							<p className="text-sm font-medium text-muted-foreground">
+								{description}
+							</p>
+						</div>
+						<div>{actions}</div>
 					</div>
 				)}
-				<div className="flex items-center pb-4  gap-2">
+				<div className="flex items-center pb-4  gap-2 px-4">
 					{!!search ? (
 						<Input
 							disabled={isLoading}
@@ -200,7 +207,7 @@ export function DataTable<TData, TValue>({
 							}`}
 							value={
 								typeof search === 'string'
-									? ((table.getColumn(search)?.getFilterValue() as string) ?? '')
+									? (table.getColumn(search)?.getFilterValue() as string) ?? ''
 									: searchValue
 							}
 							onChange={(event) => {
@@ -259,15 +266,13 @@ export function DataTable<TData, TValue>({
 						) : null}
 					</div>
 				</div>
-				<div
-					className={`rounded-md border overflow-hidden no-scrollbar ${maxHeightClassName} `}
-				>
+				<div className={`overflow-hidden no-scrollbar ${maxHeightClassName} `}>
 					<Table maxHeight={maxHeight}>
-						<TableHeader className={`${stickyHeader && 'sticky'} z-10 top-0 bg-card `}>
+						<TableHeader className={`${stickyHeader && 'sticky'} z-10 top-0 `}>
 							{table.getHeaderGroups().map((headerGroup) => (
 								<TableRow key={headerGroup.id}>
 									{rowSelectionEnabled ? (
-										<TableHead>
+										<TableHead className="[&_th]:!px-0">
 											<Checkbox
 												checked={
 													table.getIsAllPageRowsSelected() ||
@@ -310,7 +315,7 @@ export function DataTable<TData, TValue>({
 												className={`${
 													lastColumnSticky &&
 													isLastColumn &&
-													'sticky right-0 bg-accent '
+													'sticky right-0 bg-accent [&_thead]:px-0'
 												}`}
 											>
 												{header.isPlaceholder ? null : isSortable ? (
@@ -369,7 +374,7 @@ export function DataTable<TData, TValue>({
 											{(isLoading
 												? Array.from({
 														length: table.getAllColumns()?.length,
-													}).map((r, i) => ({ id: i }))
+												  }).map((r, i) => ({ id: i }))
 												: row?.getVisibleCells?.()
 											)?.map((cellData, index) => {
 												const cell = cellData as Cell<TData, unknown>;
@@ -413,7 +418,7 @@ export function DataTable<TData, TValue>({
 					</Table>
 				</div>
 
-				<div className="flex items-center justify-end space-x-2 py-4">
+				<div className="flex items-center justify-end space-x-2 py-4 px-4">
 					{rowSelectionEnabled ? (
 						<div className="flex-1 text-sm text-muted-foreground">
 							{table.getFilteredSelectedRowModel().rows.length} of{' '}

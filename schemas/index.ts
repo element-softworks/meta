@@ -354,6 +354,21 @@ export const CoachSetupSchema = z.object({
 	...VerificationStepSchema.shape,
 });
 
+export const PoliciesSchema = z.object({
+	name: z.string().min(1, { message: 'Name is required' }),
+	stores: z
+		.array(z.object({ id: z.string().min(1), label: z.string().min(1) }))
+		.nonempty({ message: 'Stores are required' }),
+	questions: z
+		.array(
+			z.object({
+				id: z.string().min(1),
+				label: z.string().min(1),
+			})
+		)
+		.nonempty({ message: 'Questions are required' }),
+});
+
 export const StoresSchema = z.object({
 	name: z
 		.string()

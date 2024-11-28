@@ -6,6 +6,7 @@ import FormDrawer from '../general/form-drawer';
 import { Button } from '../ui/button';
 import { Store } from '@/db/drizzle/schema/store';
 import { StoresForm } from './form/stores-form';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 export function EditStoreAction(
 	props: { store: Store | undefined } & React.ButtonHTMLAttributes<HTMLButtonElement>
@@ -15,6 +16,12 @@ export function EditStoreAction(
 	const onOpenChange = (open: boolean) => {
 		setOpen(open);
 	};
+
+	const user = useCurrentUser();
+
+	if (user?.role !== 'ADMIN') {
+		return null;
+	}
 
 	return (
 		<>

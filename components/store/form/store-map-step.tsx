@@ -342,10 +342,7 @@ const StoreMapStep: React.FC<StoreMapStepProps> = (props) => {
 																	);
 																	setValue(
 																		'address.country',
-																		country?.name ??
-																			geolocation?.address
-																				?.countryName ??
-																			''
+																		country?.code ?? ''
 																	);
 																	setValue(
 																		'address.postCode',
