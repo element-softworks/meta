@@ -108,14 +108,10 @@ export default async function LocationPage({
 
 				<div className="grid grid-cols-1 xl:grid-cols-3 gap-4">
 					<div className="xl:col-span-2 ">
-						<Suspense
-							fallback={<AnswersTable answers={[]} totalPages={1} isLoading={true} />}
-						>
-							<PolicyQuestionsTableContainer
-								policyId={params.policy}
-								searchParams={searchParams}
-							/>
-						</Suspense>
+						<PolicyQuestionsTableContainer
+							policyId={params.policy}
+							searchParams={searchParams}
+						/>
 					</div>
 					<div className="flex flex-col gap-6  col-span-1 mb-10 xl:mb-0">
 						{/* MAP SECTION */}
@@ -127,7 +123,7 @@ export default async function LocationPage({
 								</p>
 							</div>
 							<Map
-								height="96%"
+								height="96.3%"
 								centreMarker={false}
 								draggableMarker={false}
 								expandable={false}
