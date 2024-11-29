@@ -1,7 +1,17 @@
 'use client';
 
-import { BugPlay, ChartPie, Home, LayoutDashboard, LocateIcon, Users } from 'lucide-react';
+import {
+	BugPlay,
+	ChartPie,
+	File,
+	FileQuestion,
+	Home,
+	LayoutDashboard,
+	LocateIcon,
+	Users,
+} from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
+import { FaQuestion } from 'react-icons/fa';
 
 export function useSidebarItems() {
 	const user = useCurrentUser();
@@ -20,6 +30,12 @@ export function useSidebarItems() {
 					text: 'Stores',
 					link: '/dashboard/stores',
 					icon: <LocateIcon size={16} />,
+					visible: true,
+				},
+				{
+					text: 'Policies',
+					link: '/dashboard/policies',
+					icon: <File size={16} />,
 					visible: true,
 				},
 			],
@@ -42,7 +58,12 @@ export function useSidebarItems() {
 					icon: <Users size={16} />,
 					visible: true,
 				},
-
+				{
+					text: 'Question and Answers',
+					link: '/dashboard/question-and-answers',
+					icon: <FileQuestion size={16} />,
+					visible: true,
+				},
 				{
 					text: 'Reported bugs',
 					link: '/dashboard/admin/bugs',

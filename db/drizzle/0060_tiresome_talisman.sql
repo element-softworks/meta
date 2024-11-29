@@ -1,0 +1,1 @@
+ALTER TYPE "AnswerType" ADD VALUE 'OPEN_TEXT';

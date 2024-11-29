@@ -1,6 +1,7 @@
 import { TwoFactorForm } from '@/components/auth/2fa-form';
 import { ChangeEmailForm } from '@/components/auth/change-email-form';
 import { ResetPasswordForm } from '@/components/auth/reset-password-form';
+import { GeneralLayout } from '@/components/layouts';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Separator } from '@/components/ui/separator';
 import { getAccountByUserId } from '@/data/account';
@@ -26,34 +27,44 @@ export default async function SecurityPage() {
 	const user = await currentUser();
 	const account = await getAccountByUserId(user?.id ?? '');
 	return (
-		<main className="flex flex-col max-w-2xl gap-4">
-			<div className="">
-				<h1 className="text-xl font-bold">Account security</h1>
-				<p className="text-muted-foreground text-sm">
-					Edit your account security settings below
-				</p>
-			</div>
+		<GeneralLayout
+			crumbs={[
+				{
+					active: true,
+					text: `Security`,
+					default: 'Security',
+				},
+			]}
+		>
+			<main className="flex flex-col max-w-2xl gap-4">
+				<div className="">
+					<h1 className="text-xl font-bold">Account security</h1>
+					<p className="text-muted-foreground text-sm">
+						Edit your account security settings below
+					</p>
+				</div>
 
-			<Separator />
+				<Separator />
 
-			{user?.isOAuth ? (
-				<Alert className="mb-6">
-					<Info className="h-4 w-4" />
-					<AlertTitle>Note</AlertTitle>
-					<AlertDescription>
-						As you{"'"}ve signed in with {account?.provider} there{"'"}s no option to
-						edit your email, password, or 2FA. Please login to {account?.provider} to
-						manage this
-					</AlertDescription>
-				</Alert>
-			) : null}
+				{user?.isOAuth ? (
+					<Alert className="mb-6">
+						<Info className="h-4 w-4" />
+						<AlertTitle>Note</AlertTitle>
+						<AlertDescription>
+							As you{"'"}ve signed in with {account?.provider} there{"'"}s no option
+							to edit your email, password, or 2FA. Please login to{' '}
+							{account?.provider} to manage this
+						</AlertDescription>
+					</Alert>
+				) : null}
 
-			<div className="flex flex-col gap-2">
-				<ChangeEmailForm />
-			</div>
-			<TwoFactorForm />
+				<div className="flex flex-col gap-2">
+					<ChangeEmailForm />
+				</div>
+				<TwoFactorForm />
 
-			<ResetPasswordForm />
-		</main>
+				<ResetPasswordForm />
+			</main>
+		</GeneralLayout>
 	);
 }

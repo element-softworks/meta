@@ -52,6 +52,7 @@ export function UserMenu(props: UserMenuProps) {
 						<Avatar className="size-8 relative">
 							{props.user?.image && (
 								<AvatarImage
+									className="object-cover"
 									width={35}
 									height={35}
 									src={props.user?.image}

@@ -52,6 +52,7 @@ export function Testimonials(props: TestimonialsProps) {
 											<Avatar className="size-8 relative">
 												{!!testimonial.image && (
 													<AvatarImage
+														className="object-cover"
 														width={35}
 														height={35}
 														src={testimonial.image}

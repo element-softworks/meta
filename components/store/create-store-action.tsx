@@ -5,6 +5,7 @@ import { Fragment, useState } from 'react';
 import { Button } from '../ui/button';
 import FormDrawer from '../general/form-drawer';
 import { StoresForm } from './form/stores-form';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 export function CreateStoreAction(
 	props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -17,6 +18,12 @@ export function CreateStoreAction(
 		setOpen(open);
 	};
 
+	const user = useCurrentUser();
+
+	if (user?.role !== 'ADMIN') {
+		return null;
+	}
+
 	return (
 		<>
 			{props.button ? (
@@ -25,7 +32,6 @@ export function CreateStoreAction(
 				<Button
 					className="w-fit aspect-square"
 					size="icon"
-					variant="successful"
 					onClick={() => setOpen((prev) => !prev)}
 				>
 					<Plus />

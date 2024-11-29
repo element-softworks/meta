@@ -62,8 +62,6 @@ export const getStores = async (
 
 			const totalPages = Math.ceil(totalStores.count / Number(perPage));
 
-			console.log(foundStores, 'foundStores');
-
 			return {
 				success: true,
 				stores: foundStores,

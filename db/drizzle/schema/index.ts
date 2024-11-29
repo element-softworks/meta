@@ -10,3 +10,8 @@ export { userNotification, userNotificationRelations } from './userNotification'
 export { verificationToken } from './verificationToken';
 export { store, storeRelations } from './store';
 export { storeGeolocation, storeGeolocationRelations } from './storeGeolocation';
+export { answerType, question, questionRelations } from './question';
+export { answer, answerRelations } from './answer';
+export { policy, policyRelations } from './policy';
+export { policyQuestion, policyQuestionRelations } from './policyQuestion';
+export { policyStore, policyStoreRelations } from './policyStore';

@@ -89,7 +89,9 @@ export default async function StoresPage({
 								{storesResponse?.stores?.map((storeData) => {
 									const country = countries?.find(
 										(country) =>
-											country?.name === storeData?.store?.geolocation?.country
+											country?.name ===
+												storeData?.store?.geolocation?.country ||
+											country?.code === storeData?.store?.geolocation?.country
 									);
 
 									return (

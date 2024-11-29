@@ -13,7 +13,7 @@ export const archiveStores = async (storeIds: string[]) => {
 	if (authData?.error) {
 		return authData;
 	} else {
-		await db.transaction(async (transaction) => {
+		await db.transaction(async (transaction: any) => {
 			for (const storeId of storeIds) {
 				const [currentStore] = await transaction
 					.select({ archivedAt: store.archivedAt })

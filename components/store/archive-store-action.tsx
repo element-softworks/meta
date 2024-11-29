@@ -9,6 +9,7 @@ import { useMutation } from '@/hooks/use-mutation';
 import { archiveStores } from '@/actions/store/archive-stores';
 import { FaTrashRestore } from 'react-icons/fa';
 import { toast } from '../ui/use-toast';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 export function ArchiveStoreAction(
 	props: { store: Store | undefined } & React.ButtonHTMLAttributes<HTMLButtonElement>
@@ -25,6 +26,12 @@ export function ArchiveStoreAction(
 	});
 
 	const isArchived = !!props.store?.archivedAt;
+
+	const user = useCurrentUser();
+
+	if (user?.role !== 'ADMIN') {
+		return null;
+	}
 
 	return (
 		<div>

@@ -32,7 +32,7 @@ const CountrySelect = <T extends FieldValues>(props: CountrySelectProps<T>) => {
 			country.name?.toLowerCase() === field?.value?.toLowerCase()
 	);
 
-	const [value, setAutocompleteValue] = useState(getValues('address.country') ?? '');
+	const [value, setAutocompleteValue] = useState(selectedCountry?.name);
 
 	const [autocompleteOpen, setAutocompleteOpen] = useState(false);
 
@@ -43,7 +43,8 @@ const CountrySelect = <T extends FieldValues>(props: CountrySelectProps<T>) => {
 			</FormLabel>
 			<Command className="mb-4 bg-card h-fit">
 				<CommandInput
-					value={value}
+					defaultValue={selectedCountry?.name}
+					value={value ?? selectedCountry?.name}
 					onValueChange={(search) => {
 						setAutocompleteValue(search);
 						setAutocompleteOpen(true);
