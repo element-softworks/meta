@@ -80,8 +80,11 @@ export function PoliciesForm(props: PoliciesFormProps) {
 		},
 
 		onCompleted: async (data) => {
-			form.reset();
-			router.push('/dashboard/stores');
+			form.reset({
+				name: '',
+				stores: [],
+				questions: [],
+			});
 			await revalidateData('/dashboard/stores');
 		},
 	});

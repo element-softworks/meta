@@ -1,5 +1,5 @@
 import { db } from '@/db/drizzle/db';
-import { policy, policyQuestion, policyStore, storeGeolocation, user } from '@/db/drizzle/schema';
+import { policy, policyQuestion, storeGeolocation, user } from '@/db/drizzle/schema';
 import { Policy } from '@/db/drizzle/schema/policy';
 import { Question, question } from '@/db/drizzle/schema/question';
 import { Store, store } from '@/db/drizzle/schema/store';
@@ -67,8 +67,7 @@ export const getPolicies = async (
 				`.as('questions'),
 			})
 			.from(policy)
-			.leftJoin(policyStore, eq(policyStore.policyId, policy.id))
-			.leftJoin(store, eq(store.id, policyStore.storeId))
+			.leftJoin(store, eq(store.policyId, policy.id))
 			.leftJoin(policyQuestion, eq(policyQuestion.policyId, policy.id))
 			.leftJoin(question, eq(question.id, policyQuestion.questionId))
 			.leftJoin(storeGeolocation, eq(storeGeolocation.storeId, store.id))

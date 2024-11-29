@@ -267,6 +267,13 @@
       "when": 1732868129176,
       "tag": "0066_salty_romulus",
       "breakpoints": true
+    },
+    {
+      "idx": 67,
+      "version": "7",
+      "when": 1732882713858,
+      "tag": "0067_silly_talkback",
+      "breakpoints": true
     }
   ]
 }

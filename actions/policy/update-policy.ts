@@ -1,10 +1,10 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import { policy, policyQuestion, policyStore } from '@/db/drizzle/schema';
+import { policy, policyQuestion, store } from '@/db/drizzle/schema';
 import { checkPermissions } from '@/lib/auth';
 import { PoliciesSchema } from '@/schemas';
-import { eq } from 'drizzle-orm';
+import { eq, inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
 
@@ -21,7 +21,8 @@ export const updatePolicy = async (values: z.infer<typeof PoliciesSchema>, polic
 		return authData;
 	} else {
 		await db.transaction(async (trx) => {
-			await trx.delete(policyStore).where(eq(policyStore.policyId, policyId));
+			//Reset the store ids
+			await trx.update(store).set({ policyId: null }).where(eq(store.policyId, policyId));
 			await trx.delete(policyQuestion).where(eq(policyQuestion.policyId, policyId));
 
 			//Create the new policy
@@ -35,16 +36,16 @@ export const updatePolicy = async (values: z.infer<typeof PoliciesSchema>, polic
 				.where(eq(policy.id, policyId))
 				.returning({ id: policy.id });
 
-			//Create the new policyStores
-			const newPolicyStores = await trx
-				.insert(policyStore)
-				.values(
-					values?.stores?.map((store) => ({
-						policyId: foundPolicy?.id,
-						storeId: store.id,
-					}))
-				)
-				.returning();
+			//Update the stores with the new policyId
+			const updatedStores = await trx
+				.update(store)
+				.set({ policyId: foundPolicy?.id })
+				.where(
+					inArray(
+						store.id,
+						values?.stores?.map((store) => store.id)
+					)
+				);
 
 			//Create the new policyQuestions
 			const newPolicyQuestions = await trx

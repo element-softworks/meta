@@ -4,7 +4,6 @@ import { db } from '@/db/drizzle/db';
 import {
 	policy,
 	policyQuestion,
-	policyStore,
 	question,
 	store,
 	storeGeolocation,
@@ -13,7 +12,6 @@ import {
 import { Policy } from '@/db/drizzle/schema/policy';
 import { Question } from '@/db/drizzle/schema/question';
 import { Store } from '@/db/drizzle/schema/store';
-import { StoreGeolocation } from '@/db/drizzle/schema/storeGeolocation';
 import { eq, sql } from 'drizzle-orm';
 import { User } from 'next-auth';
 
@@ -74,8 +72,7 @@ export const getPolicyById = async (id: string) => {
 				`.as('questions'),
 		})
 		.from(policy)
-		.leftJoin(policyStore, eq(policyStore.policyId, policy.id))
-		.leftJoin(store, eq(store.id, policyStore.storeId))
+		.leftJoin(store, eq(store.policyId, policy.id))
 		.leftJoin(policyQuestion, eq(policyQuestion.policyId, policy.id))
 		.leftJoin(question, eq(question.id, policyQuestion.questionId))
 		.leftJoin(storeGeolocation, eq(storeGeolocation.storeId, store.id))

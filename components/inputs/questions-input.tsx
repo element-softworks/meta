@@ -44,7 +44,7 @@ export function QuestionsInput<T extends FieldValues>(props: QuestionsInputProps
 			console.log('questions response data searching... 2');
 
 			const questionsResponse = (await getQuestions(
-				20,
+				100,
 				1,
 				value ?? '',
 				false

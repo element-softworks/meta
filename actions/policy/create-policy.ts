@@ -1,9 +1,10 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import { policy, policyQuestion, policyStore } from '@/db/drizzle/schema';
+import { policy, policyQuestion, store } from '@/db/drizzle/schema';
 import { checkPermissions } from '@/lib/auth';
 import { PoliciesSchema } from '@/schemas';
+import { inArray } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import * as z from 'zod';
 
@@ -29,16 +30,16 @@ export const createPolicy = async (values: z.infer<typeof PoliciesSchema>) => {
 					name: validatedFields?.data?.name,
 				})
 				.returning({ id: policy.id });
-			//Create the new policyStores
-			const newPolicyStores = await trx
-				.insert(policyStore)
-				.values(
-					values?.stores?.map((store) => ({
-						policyId: newPolicy?.id,
-						storeId: store.id,
-					}))
-				)
-				.returning();
+			//Update the stores with the new policyId
+			const updatedStores = await trx
+				.update(store)
+				.set({ policyId: newPolicy?.id })
+				.where(
+					inArray(
+						store.id,
+						values?.stores?.map((store) => store.id)
+					)
+				);
 
 			//Create the new policyQuestions
 			const newPolicyQuestions = await trx

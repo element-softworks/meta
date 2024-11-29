@@ -1,6 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
 import { index, integer, jsonb, pgTable, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { storeGeolocation } from './storeGeolocation';
+import { policy } from './policy';
 
 export const store = pgTable(
 	'Store',
@@ -10,7 +11,7 @@ export const store = pgTable(
 			.notNull()
 			.default(sql`gen_random_uuid()`),
 		name: varchar('name', { length: 256 }).notNull(),
-
+		policyId: text('policyId').references(() => policy.id, { onDelete: 'cascade' }),
 		contactPhone: text('contact_phone'),
 		maxCapacity: integer('max_capacity'),
 		coverImageAsset: text('cover_image_asset'),
@@ -36,6 +37,10 @@ export const storeRelations = relations(store, ({ one, many }) => ({
 	geolocation: one(storeGeolocation, {
 		fields: [store.id],
 		references: [storeGeolocation.storeId],
+	}),
+	policy: one(policy, {
+		fields: [store.policyId],
+		references: [policy.id],
 	}),
 }));
 

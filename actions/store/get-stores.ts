@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import { store, storeGeolocation } from '@/db/drizzle/schema';
+import { policy, store, storeGeolocation } from '@/db/drizzle/schema';
 import { Store } from '@/db/drizzle/schema/store';
 import { StoreGeolocation } from '@/db/drizzle/schema/storeGeolocation';
 import { checkPermissions } from '@/lib/auth';
@@ -11,7 +11,8 @@ export const getStores = async (
 	perPage: number,
 	pageNum: number,
 	search?: string,
-	showArchived?: boolean
+	showArchived?: boolean,
+	hideStoresWithPolicies?: boolean
 ) => {
 	const authResponse = await checkPermissions({ admin: false });
 
@@ -36,7 +37,8 @@ export const getStores = async (
 							: isNull(store.archivedAt),
 						!!search?.length
 							? sql`lower(${store.name}) like ${`%${search.toLowerCase()}%`}`
-							: undefined
+							: undefined,
+						hideStoresWithPolicies ? and(isNull(store.policyId)) : undefined
 					)
 				)
 				.limit(Number(perPage))

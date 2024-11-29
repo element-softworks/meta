@@ -14,4 +14,3 @@ export { answerType, question, questionRelations } from './question';
 export { answer, answerRelations } from './answer';
 export { policy, policyRelations } from './policy';
 export { policyQuestion, policyQuestionRelations } from './policyQuestion';
-export { policyStore, policyStoreRelations } from './policyStore';

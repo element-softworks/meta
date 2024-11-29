@@ -1,7 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
 import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { policyQuestion } from './policyQuestion';
-import { policyStore } from './policyStore';
+import { store } from './store';
 
 export const policy = pgTable('Policy', {
 	id: text('id')
@@ -24,7 +24,7 @@ export const policy = pgTable('Policy', {
 
 export const policyRelations = relations(policy, ({ one, many }) => ({
 	questions: many(policyQuestion),
-	stores: many(policyStore),
+	stores: many(store),
 }));
 
 export type Policy = typeof policy.$inferSelect;
