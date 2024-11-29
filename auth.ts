@@ -24,7 +24,7 @@ export const {
 	pages: {
 		signIn: '/dashboard',
 		signOut: '/',
-		newUser: '/setup',
+		newUser: '/dashboard',
 		error: '/auth/error',
 	},
 	adapter: DrizzleAdapter(db, {

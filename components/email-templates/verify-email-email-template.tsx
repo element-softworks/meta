@@ -68,7 +68,7 @@ export const VerifyEmailEmailTemplate = (props: VerifyEmailEmailTemplateProps) =
 							className="px-8 py-16  bg-[#FFF4EC] rounded-xl"
 						>
 							<Text className="text-black text-xl font-semibold font-display">
-								welcome to coaching hours
+								welcome to Meta
 							</Text>
 							<Text
 								style={{
