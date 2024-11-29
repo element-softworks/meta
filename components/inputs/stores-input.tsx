@@ -42,8 +42,6 @@ export function StoresInput<T extends FieldValues>(props: StoresInputProps<T>) {
 
 	useEffect(() => {
 		(async () => {
-			console.log('stores response data searching... 2');
-
 			const storesResponse = (await getStores(20, 1, value ?? '', false)) as StoreResponse;
 
 			console.log(storesResponse, 'stores response data');

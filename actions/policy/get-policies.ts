@@ -35,7 +35,7 @@ export const getPolicies = async (
 				countries: sql<Array<string>>`
 					json_agg(
 						DISTINCT ${storeGeolocation.country}
-					) FILTER (WHERE ${storeGeolocation.country} IS NOT NULL)
+					) FILTER (WHERE ${storeGeolocation.country} IS NOT NULL AND ${store.archivedAt} IS NULL)
 				`.as('countries'),
 				stores: sql<Array<Store>>`
 					json_agg(
@@ -50,7 +50,7 @@ export const getPolicies = async (
 							'openingTimes', ${store.openingTimes},
 							'updatedAt', ${store.updatedAt}
 						)
-					) FILTER (WHERE ${store.id} IS NOT NULL)
+					) FILTER (WHERE ${store.id} IS NOT NULL AND ${store.archivedAt} IS NULL)
 				`.as('stores'),
 				questions: sql<Array<Question>>`
 					json_agg(
@@ -63,7 +63,7 @@ export const getPolicies = async (
 							'updatedAt', ${question.updatedAt},
 							'archivedAt', ${question.archivedAt}
 						)
-					) FILTER (WHERE ${question.id} IS NOT NULL)
+					) FILTER (WHERE ${question.id} IS NOT NULL AND ${question.archivedAt} IS NULL)
 				`.as('questions'),
 			})
 			.from(policy)

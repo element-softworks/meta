@@ -29,7 +29,7 @@ export const getPolicyById = async (id: string) => {
 						'image', ${user.image}
 					)`.as('createdBy'),
 			},
-			positions: sql<Array<string>>`
+			positions: sql`
 					json_agg(
 						DISTINCT jsonb_build_object(
 							'id', ${storeGeolocation.id},
@@ -37,12 +37,12 @@ export const getPolicyById = async (id: string) => {
 							'latitude', ${storeGeolocation.latitude},
 							'country', ${storeGeolocation.country}
 						)
-					) FILTER (WHERE ${storeGeolocation.id} IS NOT NULL)
+					) FILTER (WHERE ${storeGeolocation.id} IS NOT NULL AND ${store.archivedAt} IS NULL)
 				`.as('stores'),
 			countries: sql<Array<string>>`
 					json_agg(
 						DISTINCT ${storeGeolocation.country}
-					) FILTER (WHERE ${storeGeolocation.country} IS NOT NULL)
+					) FILTER (WHERE ${storeGeolocation.country} IS NOT NULL AND ${store.archivedAt} IS NULL)
 				`.as('countries'),
 			stores: sql<Array<Store>>`
 					json_agg(
@@ -57,7 +57,7 @@ export const getPolicyById = async (id: string) => {
 							'openingTimes', ${store.openingTimes},
 							'updatedAt', ${store.updatedAt}
 						)
-					) FILTER (WHERE ${store.id} IS NOT NULL)
+					) FILTER (WHERE ${store.id} IS NOT NULL AND ${store.archivedAt} IS NULL)
 				`.as('stores'),
 			questions: sql<Array<Question>>`
 					json_agg(
@@ -70,7 +70,7 @@ export const getPolicyById = async (id: string) => {
 							'updatedAt', ${question.updatedAt},
 							'archivedAt', ${question.archivedAt}
 						)
-					) FILTER (WHERE ${question.id} IS NOT NULL)
+					) FILTER (WHERE ${question.id} IS NOT NULL AND ${question.archivedAt} IS NULL)
 				`.as('questions'),
 		})
 		.from(policy)
