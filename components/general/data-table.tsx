@@ -49,6 +49,8 @@ import {
 	SelectValue,
 } from '../ui/select';
 import { SelectSeparator } from '@radix-ui/react-select';
+import { currentUser } from '@/lib/auth';
+import { useCurrentUser } from '@/hooks/use-current-user';
 
 interface DataTableProps<TData, TValue> {
 	title?: string;
@@ -184,6 +186,10 @@ export function DataTable<TData, TValue>({
 
 	const archivedQuery = searchParams.get(`${!!id ? `${id}-` : ''}archived`);
 
+	const user = useCurrentUser();
+
+	const isAdmin = user?.role === 'ADMIN';
+
 	return (
 		<Suspense fallback={<>Loading....</>}>
 			<div className="w-full rounded-md border">
@@ -221,7 +227,7 @@ export function DataTable<TData, TValue>({
 						/>
 					) : null}
 					<div className="ml-auto flex gap-2">
-						{!!archivedFilterEnabled ? (
+						{!!archivedFilterEnabled && isAdmin ? (
 							<Button
 								onClick={() => {
 									mutateParam({
@@ -268,7 +274,9 @@ export function DataTable<TData, TValue>({
 				</div>
 				<div className={`overflow-hidden no-scrollbar ${maxHeightClassName} `}>
 					<Table maxHeight={maxHeight}>
-						<TableHeader className={`${stickyHeader && 'sticky'} z-10 top-0 `}>
+						<TableHeader
+							className={`${stickyHeader && 'sticky'} z-10 top-0 bg-background `}
+						>
 							{table.getHeaderGroups().map((headerGroup) => (
 								<TableRow key={headerGroup.id}>
 									{rowSelectionEnabled ? (

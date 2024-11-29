@@ -42,7 +42,7 @@ export const clusterLayer: LayerProps = {
 	source: 'points',
 	filter: ['has', 'point_count'],
 	paint: {
-		'circle-color': ['step', ['get', 'point_count'], '#8517FF', 10, '#8517FF', 20, '#A85CFF'],
+		'circle-color': ['step', ['get', 'point_count'], '#62beff', 10, '#2da8ff', 20, '#0597ff'],
 		'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
 	},
 };
@@ -162,7 +162,7 @@ export function Map(props: MapProps) {
 
 	return (
 		<div
-			className="relative [&_.mapboxgl-canvas]:rounded-md [&_.mapboxgl-canvas]:border"
+			className="relative [&_.mapboxgl-canvas]:rounded-md [&_.mapboxgl-canvas]:border "
 			style={{
 				height: !!props.height ? props.height : undefined,
 			}}
@@ -183,13 +183,18 @@ export function Map(props: MapProps) {
 				</Button>
 			) : null}
 			{!!props.directions || !!props.title?.length || !!props.description?.length ? (
-				<div className="flex gap-6 mb-4 items-center mt-5">
+				<div className="flex gap-6 mb-4 items-center">
 					<div className="flex-1">
-						{props.title && <p className="font-medium">{props.title}</p>}
+						{props.title && (
+							<p className="text-xl lg:text-2xl font-semibold">{props.title}</p>
+						)}
 						{props.description && (
-							<p className="text-sm text-muted-foreground">{props.description}</p>
+							<p className="text-sm font-medium text-muted-foreground">
+								{props.description}
+							</p>
 						)}
 					</div>
+
 					{props.directions && (
 						<Link
 							target="_blank"

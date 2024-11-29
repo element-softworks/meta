@@ -1,27 +1,20 @@
 'use client';
 
 import { ColumnDef } from '@tanstack/react-table';
-import { format } from 'date-fns';
-import { MoreHorizontal } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { DataTable } from '../general/data-table';
 
 import { Button } from '@/components/ui/button';
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Question } from '@/db/drizzle/schema/question';
 import Link from 'next/link';
-import { toast } from '../ui/use-toast';
 
 interface QuestionsTableProps {
 	questions: Question[] | undefined;
 	totalPages: number | undefined;
 	isLoading: boolean;
+	disableActions?: boolean;
+	title?: string;
+	description?: string;
 }
 
 export function QuestionsTable(props: QuestionsTableProps) {
@@ -75,36 +68,14 @@ export function QuestionsTable(props: QuestionsTableProps) {
 			cell: ({ row }) => {
 				const question = row.original;
 				return (
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" className="h-8 w-8 p-0">
-								<span className="sr-only">Open menu</span>
-								<MoreHorizontal className="h-4 w-4" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-							<DropdownMenuItem
-								className="cursor-pointer"
-								onClick={() => {
-									navigator.clipboard.writeText(question?.id ?? '');
-									toast({
-										description: 'Question ID copied to clipboard',
-									});
-								}}
-							>
-								Copy question ID
-							</DropdownMenuItem>
-							<DropdownMenuSeparator />
-							<Link
-								href={`/dashboard/admin/question-and-answers/questions/${question.id}`}
-							>
-								<DropdownMenuItem className="cursor-pointer">
-									View question
-								</DropdownMenuItem>
-							</Link>
-						</DropdownMenuContent>
-					</DropdownMenu>
+					<Link
+						className="text-foreground"
+						href={`/dashboard/question-and-answers/questions/${question.id}`}
+					>
+						<Button size="icon" variant="ghost">
+							<ArrowRight size={16} />
+						</Button>
+					</Link>
 				);
 			},
 		},
@@ -114,10 +85,11 @@ export function QuestionsTable(props: QuestionsTableProps) {
 
 	return (
 		<DataTable
-			title="Questions"
-			description="List of questions available in the system."
-			perPageSelectEnabled={true}
-			archivedFilterEnabled={true}
+			title={props.title ?? 'Questions'}
+			description={props.description ?? 'List of questions available in the system.'}
+			perPageSelectEnabled={props.disableActions ? false : true}
+			archivedFilterEnabled={props.disableActions ? false : true}
+			columnVisibilityEnabled={props.disableActions ? false : true}
 			isLoading={isLoading}
 			rowSelectionEnabled={false}
 			stickyHeader
@@ -125,7 +97,7 @@ export function QuestionsTable(props: QuestionsTableProps) {
 			maxHeight={600}
 			columns={columns}
 			data={rows}
-			search={{ useParams: true }}
+			search={props.disableActions ? '' : { useParams: true }}
 			defaultPerPage="100"
 			totalPages={props.totalPages}
 			id="questions"

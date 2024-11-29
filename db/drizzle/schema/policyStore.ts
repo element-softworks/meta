@@ -8,8 +8,12 @@ export const policyStore = pgTable('PolicyStore', {
 		.primaryKey()
 		.notNull()
 		.default(sql`gen_random_uuid()`),
-	storeId: text('questionId').notNull(),
-	policyId: text('policyId').notNull(),
+	storeId: text('questionId')
+		.notNull()
+		.references(() => store.id, { onDelete: 'cascade' }),
+	policyId: text('policyId')
+		.notNull()
+		.references(() => policy.id, { onDelete: 'cascade' }),
 });
 
 export const policyStoreRelations = relations(policyStore, ({ one, many }) => ({

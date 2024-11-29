@@ -1,6 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
 import { pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { answer } from './answer';
+import { policyQuestion } from './policyQuestion';
 
 export const answerType = pgEnum('AnswerType', [
 	'MULTISELECT',
@@ -37,6 +38,7 @@ export const question = pgTable('Question', {
 
 export const questionRelations = relations(question, ({ one, many }) => ({
 	answers: many(answer),
+	policyQuestions: many(policyQuestion),
 }));
 
 export type Question = typeof question.$inferSelect;

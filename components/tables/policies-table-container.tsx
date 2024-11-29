@@ -1,8 +1,6 @@
 'use server';
 
-import { QuestionResponse, getQuestions } from '@/actions/question-and-answers/get-questions';
-import { QuestionsTable } from './questions-table';
-import { CreatePolicyAction } from '../policies/create-policy-action';
+import { PoliciesResponse, getPolicies } from '@/actions/policy/get-policies';
 import { PoliciesTable } from './policies-table';
 
 interface PoliciesTableContainerProps {
@@ -11,20 +9,20 @@ interface PoliciesTableContainerProps {
 export default async function PoliciesTableContainer(props: PoliciesTableContainerProps) {
 	// Get the filters from the search params
 
-	const questionsResponse = (await getQuestions(
+	const policiesResponse = (await getPolicies(
 		Number(props.searchParams?.['policies-perPage'] ?? '100'),
 		Number(props.searchParams?.['policies-pageNum'] ?? '1'),
 		props.searchParams?.['policies-search'] ?? '',
 		props.searchParams?.['policies-archived'] === 'true'
-	)) as QuestionResponse;
+	)) as PoliciesResponse;
 
 	//Render the users table
 	return (
 		<>
 			<PoliciesTable
-				policies={questionsResponse?.questions ?? []}
-				totalPages={questionsResponse?.totalPages}
-				totalPolicies={questionsResponse?.total ?? 0}
+				policies={policiesResponse?.policies ?? []}
+				totalPages={policiesResponse?.totalPages}
+				totalPolicies={policiesResponse?.total ?? 0}
 				isLoading={false}
 			/>
 		</>

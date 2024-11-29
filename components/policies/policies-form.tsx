@@ -9,16 +9,20 @@ import * as z from 'zod';
 import { revalidateData } from '@/actions/system/revalidatePath';
 import { toast } from '@/components/ui/use-toast';
 import { Question } from '@/db/drizzle/schema/question';
-import { Store } from '@/db/drizzle/schema/store';
 import { useRouter } from 'next/navigation';
 import { Button } from '../ui/button';
 import { Combobox } from '../ui/combobox';
 import { Form } from '../ui/form';
-import { StoresInput } from '../inputs/stores-input';
 import { PoliciesSchema } from '@/schemas';
 import { FormInput } from '../auth/form-input';
 import { Input } from '../ui/input';
 import { QuestionsInput } from '../inputs/questions-input';
+import { Policy } from '@/db/drizzle/schema/policy';
+import { createPolicy } from '@/actions/policy/create-policy';
+import { StoresInput } from '../inputs/stores-input';
+import { PolicyResponse } from '@/actions/policy/get-policy-by-id';
+import { updatePolicy } from '@/actions/policy/update-policy';
+import { useEffect } from 'react';
 
 export type PoliciesFormInputProps = z.infer<typeof PoliciesSchema>;
 
@@ -28,7 +32,7 @@ type PoliciesResponse = {
 
 interface PoliciesFormProps {
 	isEditing?: boolean;
-	editingStore?: Store | null;
+	editingPolicy?: PolicyResponse | null;
 	onComplete?: () => void;
 }
 
@@ -36,24 +40,43 @@ export function PoliciesForm(props: PoliciesFormProps) {
 	const { update } = useSession();
 	const router = useRouter();
 
-	const defaultStore = props.isEditing ? props.editingStore : null;
+	const defaultPolicy = props.isEditing ? props.editingPolicy : null;
 
 	const form = useForm<PoliciesFormInputProps>({
 		resolver: zodResolver(PoliciesSchema),
 		defaultValues: {
-			stores: [],
+			name: defaultPolicy?.policy?.name ?? '',
+			stores: defaultPolicy?.stores?.map?.((store) => ({
+				id: store.id,
+				label: store.name,
+			})),
+			questions: defaultPolicy?.questions?.map?.((question) => ({
+				id: question.id,
+				label: question.questionText,
+			})),
 		},
 	});
 
-	const { query: createStoreQuery, isLoading: isCreating } = useMutation<
-		FormData,
+	useEffect(() => {
+		form.reset({
+			name: props.editingPolicy?.policy?.name ?? '',
+			stores: props.editingPolicy?.stores?.map?.((store) => ({
+				id: store.id,
+				label: store.name,
+			})),
+			questions: props.editingPolicy?.questions?.map?.((question) => ({
+				id: question.id,
+				label: question.questionText,
+			})),
+		});
+	}, [props.editingPolicy]);
+
+	const { query: createPolicyQuery, isLoading: isCreating } = useMutation<
+		PoliciesFormInputProps,
 		PoliciesResponse
 	>({
 		queryFn: async (values) => {
-			return await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/store`, {
-				method: 'POST',
-				body: values,
-			}).then((res) => res.json());
+			return await createPolicy(values!);
 		},
 
 		onCompleted: async (data) => {
@@ -63,24 +86,17 @@ export function PoliciesForm(props: PoliciesFormProps) {
 		},
 	});
 
-	const { query: updateStoreQuery, isLoading: isUpdating } = useMutation<
-		FormData,
+	const { query: updatePolicyQuery, isLoading: isUpdating } = useMutation<
+		PoliciesFormInputProps,
 		PoliciesResponse
 	>({
 		queryFn: async (values) => {
-			return await fetch(
-				`${process.env.NEXT_PUBLIC_APP_URL}/api/store?storeId=${props.editingStore?.id}`,
-				{
-					method: 'PUT',
-					body: values,
-				}
-			).then((res) => res.json());
+			return await updatePolicy(values!, props.editingPolicy?.policy?.id ?? '');
 		},
+
 		onCompleted: async (data) => {
 			form.reset();
-
-			router.push(`/dashboard/stores/${props.editingStore?.id}`);
-			await revalidateData(`/dashboard/stores/${props.editingStore?.id}`);
+			await revalidateData('/dashboard/stores');
 		},
 	});
 
@@ -90,8 +106,7 @@ export function PoliciesForm(props: PoliciesFormProps) {
 				description: 'Editing policy...',
 				variant: 'default',
 			});
-
-			await updateStoreQuery();
+			await updatePolicyQuery(body);
 			props.onComplete?.();
 		} else {
 			toast({
@@ -99,12 +114,10 @@ export function PoliciesForm(props: PoliciesFormProps) {
 				variant: 'default',
 			});
 
-			const newLocation = await createStoreQuery();
+			const newPolicy = await createPolicyQuery(body);
 			props.onComplete?.();
 		}
 	};
-
-	console.log(form.formState.errors, 'errors data');
 
 	return (
 		<div className="h-full flex flex-col ">
@@ -114,11 +127,7 @@ export function PoliciesForm(props: PoliciesFormProps) {
 						name="name"
 						label="Name"
 						render={({ field }) => (
-							<Input
-								{...field}
-								disabled={isCreating}
-								placeholder="United Kingdom stores"
-							/>
+							<Input {...field} disabled={isCreating} placeholder="Europe" />
 						)}
 					/>
 

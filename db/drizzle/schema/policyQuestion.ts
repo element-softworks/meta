@@ -8,8 +8,12 @@ export const policyQuestion = pgTable('PolicyQuestion', {
 		.primaryKey()
 		.notNull()
 		.default(sql`gen_random_uuid()`),
-	questionId: text('questionId').notNull(),
-	policyId: text('policyId').notNull(),
+	questionId: text('questionId')
+		.notNull()
+		.references(() => question.id, { onDelete: 'cascade' }),
+	policyId: text('policyId')
+		.notNull()
+		.references(() => policy.id, { onDelete: 'cascade' }),
 });
 
 export const policyQuestionRelations = relations(policyQuestion, ({ one, many }) => ({

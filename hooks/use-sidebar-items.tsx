@@ -60,7 +60,7 @@ export function useSidebarItems() {
 				},
 				{
 					text: 'Question and Answers',
-					link: '/dashboard/admin/question-and-answers',
+					link: '/dashboard/question-and-answers',
 					icon: <FileQuestion size={16} />,
 					visible: true,
 				},

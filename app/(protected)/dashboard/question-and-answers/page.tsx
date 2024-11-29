@@ -1,3 +1,4 @@
+import { GeneralLayout } from '@/components/layouts';
 import { AnswersTable } from '@/components/tables/answers-table';
 import AnswersTableContainer from '@/components/tables/answers-table-container';
 import { QuestionsTable } from '@/components/tables/questions-table';
@@ -24,23 +25,35 @@ export async function generateMetadata() {
 
 export default async function QuestionAndAnswersPage({ searchParams }: { searchParams: any }) {
 	return (
-		<main className="flex flex-col  gap-4">
-			<div className="">
-				<p className="text-xl font-bold">Question and Answers</p>
-				<p className="text-muted-foreground text-sm">
-					View and manage platform question and answers here
-				</p>
-			</div>
+		<GeneralLayout
+			crumbs={[
+				{
+					active: true,
+					text: `Question and Answers`,
+					default: 'Question and Answers',
+				},
+			]}
+		>
+			<main className="flex flex-col  gap-4">
+				<div className="">
+					<p className="text-xl font-bold">Question and Answers</p>
+					<p className="text-muted-foreground text-sm">
+						View and manage platform question and answers here
+					</p>
+				</div>
 
-			<Separator />
+				<Separator />
 
-			<Suspense fallback={<QuestionsTable questions={[]} totalPages={1} isLoading={true} />}>
-				<QuestionsTableContainer searchParams={searchParams} />
-			</Suspense>
+				<Suspense
+					fallback={<QuestionsTable questions={[]} totalPages={1} isLoading={true} />}
+				>
+					<QuestionsTableContainer searchParams={searchParams} />
+				</Suspense>
 
-			<Suspense fallback={<AnswersTable answers={[]} totalPages={1} isLoading={true} />}>
-				<AnswersTableContainer searchParams={searchParams} />
-			</Suspense>
-		</main>
+				<Suspense fallback={<AnswersTable answers={[]} totalPages={1} isLoading={true} />}>
+					<AnswersTableContainer searchParams={searchParams} />
+				</Suspense>
+			</main>
+		</GeneralLayout>
 	);
 }

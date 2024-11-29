@@ -5,7 +5,7 @@ import { AnswersTable } from './answers-table';
 
 interface AnswersTableContainerProps {
 	searchParams: any;
-	questionId: string;
+	questionId?: string;
 }
 export default async function AnswersTableContainer(props: AnswersTableContainerProps) {
 	// Get the filters from the search params
