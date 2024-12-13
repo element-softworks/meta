@@ -18,6 +18,10 @@ export const createFixtureType = async (formData: FormData) => {
 		let images = [];
 		const name = formData.get('name') as string;
 		const description = formData.get('description') as string;
+		const category = {
+			id: formData.get('category.id') as string,
+			label: formData.get('category.label') as string,
+		};
 
 		// Iterate through the formData to log its contents
 		for (let [key, value] of formData.entries()) {
@@ -30,6 +34,7 @@ export const createFixtureType = async (formData: FormData) => {
 			images,
 			name,
 			description,
+			category,
 		};
 
 		const validatedFields = FixtureTypeSchema.safeParse(values);
@@ -76,6 +81,7 @@ export const createFixtureType = async (formData: FormData) => {
 		await db.insert(fixtureType).values({
 			name,
 			description,
+			category: category?.id,
 			images: values.images.map((image, index) => {
 				if (typeof image === 'string') return image;
 				const foundUuid = uuids.find((uuid) => uuid.name === image.name);

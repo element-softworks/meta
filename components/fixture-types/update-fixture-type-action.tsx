@@ -7,11 +7,12 @@ import FormDrawer from '../general/form-drawer';
 import { Button } from '../ui/button';
 import { FixtureTypeForm } from './form/fixture-type-form';
 import { FixtureType } from '@/db/drizzle/schema/fixtureType';
+import { FixtureTypesResponse } from '@/actions/fixture-type/get-fixture-types';
 
 export function UpdateFixtureTypeAction(
 	props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
 		button?: React.ReactNode;
-		fixtureType?: FixtureType;
+		fixtureType?: FixtureTypesResponse['fixtureTypes'][0];
 	}
 ) {
 	const [open, setOpen] = useState(false);
