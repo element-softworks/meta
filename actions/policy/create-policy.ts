@@ -2,6 +2,7 @@
 
 import { db } from '@/db/drizzle/db';
 import { policy, policyQuestion, store } from '@/db/drizzle/schema';
+import { storeQuestion } from '@/db/drizzle/schema/storeQuestion';
 import { checkPermissions } from '@/lib/auth';
 import { PoliciesSchema } from '@/schemas';
 import { inArray } from 'drizzle-orm';
@@ -39,7 +40,21 @@ export const createPolicy = async (values: z.infer<typeof PoliciesSchema>) => {
 						store.id,
 						values?.stores?.map((store) => store.id)
 					)
-				);
+				)
+				.returning();
+
+			//Create the new storeQuestions
+			updatedStores?.forEach(async (store) => {
+				await trx
+					.insert(storeQuestion)
+					.values(
+						values?.questions?.map((question) => ({
+							storeId: store.id,
+							questionId: question.id,
+						}))
+					)
+					.returning();
+			});
 
 			//Create the new policyQuestions
 			const newPolicyQuestions = await trx

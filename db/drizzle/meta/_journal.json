@@ -274,6 +274,41 @@
       "when": 1732882713858,
       "tag": "0067_silly_talkback",
       "breakpoints": true
+    },
+    {
+      "idx": 68,
+      "version": "7",
+      "when": 1732889918815,
+      "tag": "0068_mature_thunderbolt_ross",
+      "breakpoints": true
+    },
+    {
+      "idx": 69,
+      "version": "7",
+      "when": 1732889977217,
+      "tag": "0069_luxuriant_kang",
+      "breakpoints": true
+    },
+    {
+      "idx": 70,
+      "version": "7",
+      "when": 1734011019515,
+      "tag": "0070_great_texas_twister",
+      "breakpoints": true
+    },
+    {
+      "idx": 71,
+      "version": "7",
+      "when": 1734081610269,
+      "tag": "0071_reflective_joystick",
+      "breakpoints": true
+    },
+    {
+      "idx": 72,
+      "version": "7",
+      "when": 1734082359024,
+      "tag": "0072_military_jimmy_woo",
+      "breakpoints": true
     }
   ]
 }

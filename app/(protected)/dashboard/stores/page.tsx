@@ -70,7 +70,9 @@ export default async function StoresPage({
 				<ShowArchivedButton adminOnly />
 
 				<div className="">
-					{!!storesResponse?.stores?.length || !!searchParams?.search?.length ? (
+					{!!storesResponse?.stores?.length ||
+					!!searchParams?.search?.length ||
+					searchParams.archived === 'true' ? (
 						<ClientInfiniteScroll
 							increment={20}
 							perPage={Number(perPage)}
@@ -122,7 +124,7 @@ export default async function StoresPage({
 							</div>
 						</ClientInfiniteScroll>
 					) : (
-						<div className="flex items-center justify-center mt-10">
+						<div className="flex mt-10">
 							<div className="max-w-lg mx-auto">
 								<CardWrapper
 									title="Add your first store"

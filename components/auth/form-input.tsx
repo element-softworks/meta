@@ -3,7 +3,6 @@
 import {
 	ControllerFieldState,
 	ControllerRenderProps,
-	FieldPath,
 	FieldValues,
 	UseFormStateReturn,
 	useFormContext,
@@ -16,9 +15,6 @@ import {
 	FormLabel,
 	FormMessage,
 } from '../ui/form';
-import { Input } from '../ui/input';
-import * as z from 'zod';
-import { LoginSchema } from '@/schemas';
 
 interface FormInputProps {
 	visible?: boolean;
@@ -36,7 +32,10 @@ interface FormInputProps {
 
 export function FormInput(props: FormInputProps) {
 	const { visible = true, required = false } = props;
-	const { control } = useFormContext();
+	const {
+		control,
+		formState: { errors },
+	} = useFormContext();
 
 	if (!visible) {
 		return null;

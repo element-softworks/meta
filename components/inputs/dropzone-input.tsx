@@ -1,10 +1,10 @@
 'use client';
-import { User } from 'lucide-react';
 import Image from 'next/image';
 import React, { useEffect } from 'react';
 import Dropzone, { Accept } from 'react-dropzone';
 import { Controller, useFormContext } from 'react-hook-form';
 import { FormLabel } from '../ui/form';
+import { ChevronDownCircle, Trash } from 'lucide-react';
 
 interface DropzoneInputProps {
 	name: string;
@@ -13,8 +13,6 @@ interface DropzoneInputProps {
 	defaultFiles?: string[];
 	isLoading?: boolean;
 	label?: string;
-	placeholder?: string;
-	icon?: React.ReactNode;
 	required?: boolean;
 }
 
@@ -28,6 +26,16 @@ export function DropzoneInput(props: DropzoneInputProps) {
 
 	const error = formState.errors[props.name];
 
+	useEffect(() => {
+		if (!watch(props.name)) {
+			setFiles(null);
+		}
+
+		if (props.defaultFiles && !watch(props.name)) {
+			setFiles(props.defaultFiles);
+		}
+	}, [watch(props.name), props.defaultFiles, props.name, watch]);
+
 	return (
 		<>
 			<Controller
@@ -37,12 +45,12 @@ export function DropzoneInput(props: DropzoneInputProps) {
 					<div className="">
 						{props.label ? (
 							<FormLabel
-								className={`text-sm flex font-normal ${
-									!!error ? 'text-destructive' : ''
-								}`}
+								className={`${!!error ? 'text-destructive' : ''} flex gap-0.5`}
 							>
-								{props.label}{' '}
-								{!!props.required ? <p className="text-destructive">*</p> : null}{' '}
+								{props.label}
+								{!!props.required ? (
+									<p className="text-destructive">*</p>
+								) : null}{' '}
 							</FormLabel>
 						) : null}
 
@@ -52,26 +60,105 @@ export function DropzoneInput(props: DropzoneInputProps) {
 								setFiles(acceptedFiles);
 								onChange(acceptedFiles);
 							}}
-							accept={
-								props.accept ?? {
-									'image/webp': [],
-									'image/png': [],
-									'image/jpeg': [],
-									'image/jpg': [],
-									'image/gif': [],
-								}
-							}
+							accept={{
+								'image/webp': [],
+								'image/png': [],
+								'image/jpeg': [],
+								'image/jpg': [],
+								'image/gif': [],
+							}}
 						>
 							{({ getRootProps, getInputProps, acceptedFiles }) => {
 								return (
 									<>
-										<section className="mt-1">
+										<div
+											className={`grid grid-cols-2 gap-2 ${
+												!!((files?.length ?? 0) > 0) ? 'mt-4' : ''
+											}`}
+										>
+											{(files?.length ?? 0) > 0
+												? files?.map?.((file, index) => {
+														const objectUrl =
+															typeof file === 'string'
+																? file
+																: URL.createObjectURL(file);
+														return (
+															<div className="relative aspect-square">
+																<Image
+																	className="w-full h-full object-cover rounded-md"
+																	key={index}
+																	src={objectUrl}
+																	alt={`Dropzone image ${index}`}
+																	width={100}
+																	height={100}
+																/>
+																<div className="bg-black opacity-50 absolute top-0 left-0 w-full h-full z-20 dark:opacity-50" />
+
+																<div className="w-full h-full flex flex-col justify-end py-1 px-2 mt-auto absolute bottom-0 z-30">
+																	<div>
+																		<p className=" z-30 mt-auto line-clamp-2 text-primary-foreground">
+																			{typeof file ===
+																			'string'
+																				? file
+																				: file.name}
+																		</p>
+																		<div className="flex gap-2">
+																			<Trash
+																				onClick={() => {
+																					setFiles(
+																						files?.filter(
+																							(
+																								_,
+																								i
+																							) =>
+																								i !==
+																								index
+																						) as File[]
+																					);
+																					onChange(
+																						files?.filter(
+																							(
+																								_,
+																								i
+																							) =>
+																								i !==
+																								index
+																						)
+																					);
+																				}}
+																				size={20}
+																				className="absolute top-2 cursor-pointer text-primary-foreground right-2"
+																			/>
+																			<p className="text-sm flex-1 z-30 mt-auto text-white dark:text-muted-foreground">
+																				Image
+																			</p>
+
+																			<p className="text-sm z-30 mt-auto text-white dark:text-muted-foreground">
+																				{typeof file ===
+																				'string'
+																					? ''
+																					: `${(
+																							file.size /
+																							1000
+																					  ).toFixed(
+																							0
+																					  )} kb`}
+																			</p>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														);
+												  })
+												: null}
+										</div>
+										<section className="mt-2 ">
 											<div
 												{...getRootProps()}
-												className={`group border flex-col gap-2 bg-background h-40 border-input rounded-2xl flex items-center justify-center transition cursor-pointer ${
+												className={`group/dropzone flex-col gap-2 h-32 rounded-lg border-border border bg-card flex items-center justify-center transition cursor-pointer ${
 													!!error
 														? 'border-destructive'
-														: 'hover:border-primary hover:bg-background/80'
+														: 'hover:border-primary hover:bg-card'
 												}`}
 											>
 												<input
@@ -81,72 +168,29 @@ export function DropzoneInput(props: DropzoneInputProps) {
 														},
 													})}
 												/>
-												{!props.multiple && (files?.length ?? 0) === 1 ? (
-													files?.map?.((file, index) => {
-														console.log(file, 'file repsonse data');
-														const objectUrl =
-															typeof file === 'string'
-																? file
-																: URL.createObjectURL(file);
-														return (
-															<Image
-																className="w-[40px] h-[40px] object-cover rounded-full"
-																key={index}
-																src={objectUrl}
-																alt="Dropzone image"
-																width={75}
-																height={75}
-															/>
-														);
-													})
-												) : (
-													<div className="bg-card w-[40px] h-[40px] flex justify-center items-center rounded-full">
-														{!!props.icon ? (
-															props.icon
-														) : (
-															<User className="text-muted-foreground" />
-														)}
-													</div>
-												)}
+
 												<p
-													className={`text-center text-sm font-sans font-light max-w-[34ch] px-2 ${
+													className={`text-center font-medium text-primary-500 dark:text-primary-100 px-2 ${
 														!!error
-															? 'text-destructive'
-															: `text-muted-foreground group-hover:text-primary`
+															? '!text-destructive'
+															: `text-muted-foreground group-hover/dropzone:text-primary`
 													} transition`}
 												>
 													{!!error
-														? (error as any)?.[props.name]?.message ??
-														  error?.message
-														: props?.placeholder ??
-														  'Drag and drop some files here, or click to select files'}
+														? (error as any)?.message ??
+														  (error as any)?.image?.message
+														: 'Drop an image here or click to select files.'}
 												</p>
+												<ChevronDownCircle
+													size={35}
+													className={`text-primary-500 transition ${
+														!!error
+															? '!text-destructive'
+															: `text-muted-foreground group-hover/dropzone:text-primary`
+													}`}
+												/>
 											</div>
 										</section>
-										<div
-											className={`flex gap-2 flex-wrap ${
-												!!((files?.length ?? 0) > 0) ? 'mt-4' : ''
-											}`}
-										>
-											{props.multiple && (files?.length ?? 0) > 0
-												? files?.map?.((file, index) => {
-														const objectUrl =
-															typeof file === 'string'
-																? file
-																: URL.createObjectURL(file);
-														return (
-															<Image
-																className="w-[105px] h-[105px] object-cover rounded-md"
-																key={index}
-																src={objectUrl}
-																alt={`Dropzone image ${index}`}
-																width={100}
-																height={100}
-															/>
-														);
-												  })
-												: null}
-										</div>
 									</>
 								);
 							}}

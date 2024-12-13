@@ -2,6 +2,7 @@
 
 import { db } from '@/db/drizzle/db';
 import { policy, policyQuestion, store } from '@/db/drizzle/schema';
+import { storeQuestion } from '@/db/drizzle/schema/storeQuestion';
 import { checkPermissions } from '@/lib/auth';
 import { PoliciesSchema } from '@/schemas';
 import { eq, inArray } from 'drizzle-orm';
@@ -24,6 +25,7 @@ export const updatePolicy = async (values: z.infer<typeof PoliciesSchema>, polic
 			//Reset the store ids
 			await trx.update(store).set({ policyId: null }).where(eq(store.policyId, policyId));
 			await trx.delete(policyQuestion).where(eq(policyQuestion.policyId, policyId));
+			await trx.delete(storeQuestion).where(inArray(storeQuestion.storeId, store.id));
 
 			//Create the new policy
 			const [foundPolicy] = await trx
@@ -45,7 +47,21 @@ export const updatePolicy = async (values: z.infer<typeof PoliciesSchema>, polic
 						store.id,
 						values?.stores?.map((store) => store.id)
 					)
-				);
+				)
+				.returning();
+
+			//Update the storeQuestions
+			updatedStores?.forEach(async (store) => {
+				await trx
+					.insert(storeQuestion)
+					.values(
+						values?.questions?.map((question) => ({
+							storeId: store.id,
+							questionId: question.id,
+						}))
+					)
+					.returning();
+			});
 
 			//Create the new policyQuestions
 			const newPolicyQuestions = await trx

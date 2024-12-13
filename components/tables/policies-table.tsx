@@ -114,7 +114,9 @@ export function PoliciesTable(props: PoliciesTableProps) {
 		<DataTable
 			actions={<CreatePolicyAction />}
 			title="Policies"
-			description={`Displaying ${rows?.length}/${props.totalPolicies} policies`}
+			description={`Displaying ${rows?.length}/${props.totalPolicies} ${
+				props.totalPolicies > 1 ? 'policies' : 'policy'
+			}`}
 			perPageSelectEnabled={true}
 			archivedFilterEnabled={true}
 			isLoading={isLoading}

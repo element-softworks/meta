@@ -1,7 +1,8 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import { policyQuestion, question } from '@/db/drizzle/schema';
+import { answer, policyQuestion, question } from '@/db/drizzle/schema';
+import { Answer } from '@/db/drizzle/schema/answer';
 import { PolicyQuestion } from '@/db/drizzle/schema/policyQuestion';
 import { Question } from '@/db/drizzle/schema/question';
 import { checkPermissions } from '@/lib/auth';
@@ -24,6 +25,7 @@ export const getPolicyQuestions = async (
 				.select({
 					question: question,
 					policyQuestion: policyQuestion,
+					answers: sql`json_agg(${answer}) as answers`,
 				})
 				.from(policyQuestion)
 				.where(
@@ -56,9 +58,11 @@ export const getPolicyQuestions = async (
 					)
 				)
 				.leftJoin(question, eq(policyQuestion.questionId, question.id))
+				.leftJoin(answer, eq(answer.questionId, question.metaQuestionId))
 				.limit(Number(perPage))
 				.offset((Number(pageNum) - 1) * Number(perPage))
-				.orderBy(desc(question.createdAt));
+				.orderBy(desc(question.createdAt))
+				.groupBy(question.id, policyQuestion.id);
 
 			const [totalQuestions] = await db
 				.select({ count: count() })
@@ -117,6 +121,7 @@ export interface PolicyQuestionsResponse {
 	questions: {
 		question: Question | null;
 		policyQuestion: PolicyQuestion;
+		answers: Answer[];
 	}[];
 	totalPages: number;
 	total: number;
