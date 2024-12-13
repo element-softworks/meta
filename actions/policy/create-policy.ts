@@ -43,18 +43,18 @@ export const createPolicy = async (values: z.infer<typeof PoliciesSchema>) => {
 				)
 				.returning();
 
-			//Create the new storeQuestions
-			updatedStores?.forEach(async (store) => {
-				await trx
-					.insert(storeQuestion)
-					.values(
-						values?.questions?.map((question) => ({
-							storeId: store.id,
-							questionId: question.id,
-						}))
-					)
-					.returning();
-			});
+			// //Create the new storeQuestions
+			// updatedStores?.forEach(async (store) => {
+			// 	await trx
+			// 		.insert(storeQuestion)
+			// 		.values(
+			// 			values?.questions?.map((question) => ({
+			// 				storeId: store.id,
+			// 				questionId: question.id,
+			// 			}))
+			// 		)
+			// 		.returning();
+			// });
 
 			//Create the new policyQuestions
 			const newPolicyQuestions = await trx

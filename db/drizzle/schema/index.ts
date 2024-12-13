@@ -9,7 +9,7 @@ export { answerType, question, questionRelations } from './question';
 export { session } from './session';
 export { store, storeRelations } from './store';
 export { storeGeolocation, storeGeolocationRelations } from './storeGeolocation';
-export { storeQuestion, storeQuestionRelations } from './storeQuestion';
+// export { storeQuestion, storeQuestionRelations } from './storeQuestion';
 export { twoFactorConfirmation, twoFactorConfirmationRelations } from './twoFactorConfirmation';
 export { twoFactorToken } from './twoFactorToken';
 export { user, userRelations, userRole } from './user';
