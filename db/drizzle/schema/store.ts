@@ -54,7 +54,7 @@ export const storeRelations = relations(store, ({ one, many }) => ({
 		fields: [store.policyId],
 		references: [policy.id],
 	}),
-	storeQuestions: many(storeQuestion),
+	// storeQuestions: many(storeQuestion),
 }));
 
 export type Store = typeof store.$inferSelect;

@@ -25,7 +25,7 @@ export const updatePolicy = async (values: z.infer<typeof PoliciesSchema>, polic
 			//Reset the store ids
 			await trx.update(store).set({ policyId: null }).where(eq(store.policyId, policyId));
 			await trx.delete(policyQuestion).where(eq(policyQuestion.policyId, policyId));
-			await trx.delete(storeQuestion).where(inArray(storeQuestion.storeId, store.id));
+			// await trx.delete(storeQuestion).where(inArray(storeQuestion.storeId, store.id));
 
 			//Create the new policy
 			const [foundPolicy] = await trx
@@ -51,17 +51,17 @@ export const updatePolicy = async (values: z.infer<typeof PoliciesSchema>, polic
 				.returning();
 
 			//Update the storeQuestions
-			updatedStores?.forEach(async (store) => {
-				await trx
-					.insert(storeQuestion)
-					.values(
-						values?.questions?.map((question) => ({
-							storeId: store.id,
-							questionId: question.id,
-						}))
-					)
-					.returning();
-			});
+			// updatedStores?.forEach(async (store) => {
+			// 	await trx
+			// 		.insert(storeQuestion)
+			// 		.values(
+			// 			values?.questions?.map((question) => ({
+			// 				storeId: store.id,
+			// 				questionId: question.id,
+			// 			}))
+			// 		)
+			// 		.returning();
+			// });
 
 			//Create the new policyQuestions
 			const newPolicyQuestions = await trx
