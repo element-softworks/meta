@@ -1,0 +1,44 @@
+{
+	"data": [
+		{
+			"id": "c7fd1ee4-18a0-4dca-b7e6-2c901e054298",
+			"createdAt": "2024-12-13T14:08:24.452Z",
+			"createdBy": "108a7ef8-696d-4127-9114-914cd263030a",
+			"archivedAt": null,
+			"archivedBy": null,
+			"name": "Countertop"
+		},
+		{
+			"id": "bf8932ab-83d9-4b86-8de3-108d58b24bca",
+			"createdAt": "2024-12-13T14:08:39.152Z",
+			"createdBy": "108a7ef8-696d-4127-9114-914cd263030a",
+			"archivedAt": null,
+			"archivedBy": null,
+			"name": "Endcap"
+		},
+		{
+			"id": "149b667a-f93c-4243-b810-c43697d789e7",
+			"createdAt": "2024-12-13T14:08:56.013Z",
+			"createdBy": "108a7ef8-696d-4127-9114-914cd263030a",
+			"archivedAt": null,
+			"archivedBy": null,
+			"name": "Playtable"
+		},
+		{
+			"id": "40292001-fbf8-4e7b-b7fe-a3310822e57f",
+			"createdAt": "2024-12-13T14:09:14.926Z",
+			"createdBy": "108a7ef8-696d-4127-9114-914cd263030a",
+			"archivedAt": null,
+			"archivedBy": null,
+			"name": "Shop-in-shop"
+		},
+		{
+			"id": "2cdc56a5-228f-4479-bf2a-293c122f2ea1",
+			"createdAt": "2024-12-13T14:09:33.881Z",
+			"createdBy": "108a7ef8-696d-4127-9114-914cd263030a",
+			"archivedAt": null,
+			"archivedBy": null,
+			"name": "Riser"
+		}
+	]
+}
