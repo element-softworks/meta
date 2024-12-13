@@ -1,13 +1,13 @@
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {
-		title: 'Terms of Service | Meta',
+		title: 'Terms of Service Meta Retail Manager',
 		description: 'Terms of Service for the Meta',
 		openGraph: {
-			title: 'Terms of Service | Meta',
+			title: 'Terms of Service Meta Retail Manager',
 			description: 'Terms of Service for the Meta',
 		},
 		twitter: {
-			title: 'Terms of Service | Meta',
+			title: 'Terms of Service Meta Retail Manager',
 			description: 'Terms of Service for the Meta',
 		},
 		alternates: {

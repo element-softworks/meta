@@ -4,15 +4,15 @@ import { getConciergeTokenByToken } from '@/data/concierge-token';
 
 export async function generateMetadata() {
 	return {
-		title: `Register | Meta`,
-		description: 'Register for an account on Meta.',
+		title: `Register Meta Retail Manager`,
+		description: 'Register for an account Meta Retail Manager.',
 		openGraph: {
-			title: `Register | Meta`,
-			description: 'Register for an account on Meta.',
+			title: `Register Meta Retail Manager`,
+			description: 'Register for an account Meta Retail Manager.',
 		},
 		twitter: {
-			title: `Register | Meta`,
-			description: 'Register for an account on Meta.',
+			title: `Register Meta Retail Manager`,
+			description: 'Register for an account Meta Retail Manager.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/auth/register`,

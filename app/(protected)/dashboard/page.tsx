@@ -3,14 +3,14 @@ import { currentUser } from '@/lib/auth';
 
 export async function generateMetadata() {
 	return {
-		title: `Dashboard | Meta`,
+		title: `Dashboard Meta Retail Manager`,
 		description: 'Dashboard for Meta.',
 		openGraph: {
-			title: `Dashboard | Meta`,
+			title: `Dashboard Meta Retail Manager`,
 			description: 'Dashboard for Meta.',
 		},
 		twitter: {
-			title: `Dashboard | Meta`,
+			title: `Dashboard Meta Retail Manager`,
 			description: 'Dashboard for Meta.',
 		},
 	};

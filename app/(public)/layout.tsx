@@ -9,7 +9,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Suspense } from 'react';
 export const metadata: Metadata = {
 	title: 'Meta',
-	description: 'This is a boilerplate for building SaaS applications with NextJS.',
+	description:
+		'Centralised platform for store management, fixture assessments, and real-time metrics with robust issue tracking and actionable insights.',
 };
 
 export default async function RootLayout({

@@ -9,14 +9,14 @@ export async function generateMetadata({ params }: { params: { question: string 
 	const questionResponse = await getQuestionById(params.question);
 
 	return {
-		title: `${questionResponse?.question?.questionText} Question and Answers | Admin | Dashboard | Meta`,
+		title: `${questionResponse?.question?.questionText} Question and Answers | Admin | Dashboard Meta Retail Manager`,
 		description: 'View and manage platform Question and Answers here',
 		openGraph: {
-			title: `${questionResponse?.question?.questionText} Question and Answers | Admin | Dashboard | Meta`,
+			title: `${questionResponse?.question?.questionText} Question and Answers | Admin | Dashboard Meta Retail Manager`,
 			description: 'View and manage platform Question and Answers here',
 		},
 		twitter: {
-			title: `${questionResponse?.question?.questionText} Question and Answers | Admin | Dashboard | Meta`,
+			title: `${questionResponse?.question?.questionText} Question and Answers | Admin | Dashboard Meta Retail Manager`,
 			description: 'View and manage platform users here',
 		},
 	};
