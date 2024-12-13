@@ -4,15 +4,15 @@ import Link from 'next/link';
 
 export async function generateMetadata() {
 	return {
-		title: `Error | Login | Meta`,
-		description: 'Failed logging in to your account on Meta.',
+		title: `Error | Login Meta Retail Manager`,
+		description: 'Failed logging in to your account Meta Retail Manager Retail Manager.',
 		openGraph: {
-			title: `Error | Login | Meta`,
-			description: 'Failed logging in to your account on Meta.',
+			title: `Error | Login Meta Retail Manager`,
+			description: 'Failed logging in to your account Meta Retail Manager Retail Manager.',
 		},
 		twitter: {
-			title: `Error | Login | Meta`,
-			description: 'Failed logging in to your account on Meta.',
+			title: `Error | Login Meta Retail Manager`,
+			description: 'Failed logging in to your account Meta Retail Manager Retail Manager.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/auth/error`,

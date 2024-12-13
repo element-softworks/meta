@@ -10,14 +10,14 @@ import { Suspense } from 'react';
 
 export async function generateMetadata() {
 	return {
-		title: `Question and Answers | Admin | Dashboard | Meta`,
+		title: `Question and Answers | Admin | Dashboard Meta Retail Manager`,
 		description: 'View and manage platform Question and Answers here',
 		openGraph: {
-			title: `Question and Answers | Admin | Dashboard | Meta`,
+			title: `Question and Answers | Admin | Dashboard Meta Retail Manager`,
 			description: 'View and manage platform Question and Answers here',
 		},
 		twitter: {
-			title: `Question and Answers | Admin | Dashboard | Meta`,
+			title: `Question and Answers | Admin | Dashboard Meta Retail Manager`,
 			description: 'View and manage platform users here',
 		},
 	};

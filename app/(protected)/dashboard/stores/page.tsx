@@ -13,15 +13,15 @@ import { ShowArchivedButton } from '@/components/general/show-archived-button';
 
 export async function generateMetadata() {
 	return {
-		title: `Stores | Dashboard | Meta`,
-		description: 'Manage and view stores for Meta.',
+		title: `Stores | Dashboard Meta Retail Manager`,
+		description: 'Manage and view stores for Meta Retail Manager.',
 		openGraph: {
-			title: `Stores | Dashboard | Meta`,
-			description: 'Manage and view stores for Meta.',
+			title: `Stores | Dashboard Meta Retail Manager`,
+			description: 'Manage and view stores for Meta Retail Manager.',
 		},
 		twitter: {
-			title: `Stores | Dashboard | Meta`,
-			description: 'Manage and view stores for Meta.',
+			title: `Stores | Dashboard Meta Retail Manager`,
+			description: 'Manage and view stores for Meta Retail Manager.',
 		},
 	};
 }

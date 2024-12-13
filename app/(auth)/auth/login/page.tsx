@@ -2,15 +2,15 @@ import { LoginForm } from '@/components/auth/login-form';
 
 export async function generateMetadata() {
 	return {
-		title: `Login | Meta`,
-		description: 'Login to your account on Meta.',
+		title: `Login Meta Retail Manager`,
+		description: 'Login to your account Meta Retail Manager Retail Manager.',
 		openGraph: {
-			title: `Login | Meta`,
-			description: 'Login to your account on Meta.',
+			title: `Login Meta Retail Manager`,
+			description: 'Login to your account Meta Retail Manager Retail Manager.',
 		},
 		twitter: {
-			title: `Login | Meta`,
-			description: 'Login to your account on Meta.',
+			title: `Login Meta Retail Manager`,
+			description: 'Login to your account Meta Retail Manager Retail Manager.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}/auth/login`,

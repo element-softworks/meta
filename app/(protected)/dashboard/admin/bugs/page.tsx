@@ -3,14 +3,14 @@ import { Separator } from '@/components/ui/separator';
 
 export async function generateMetadata() {
 	return {
-		title: `Bugs | Admin |  Dashboard | Meta`,
+		title: `Bugs | Admin |  Dashboard Meta Retail Manager`,
 		description: 'View and manage bugs for Meta.',
 		openGraph: {
-			title: `Bugs | Admin |  Dashboard | Meta`,
+			title: `Bugs | Admin |  Dashboard Meta Retail Manager`,
 			description: 'View and manage bugs for Meta.',
 		},
 		twitter: {
-			title: `Bugs | Admin |  Dashboard | Meta`,
+			title: `Bugs | Admin |  Dashboard Meta Retail Manager`,
 			description: 'View and manage bugs for Meta.',
 		},
 	};

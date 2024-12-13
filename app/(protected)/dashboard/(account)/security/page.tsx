@@ -10,15 +10,15 @@ import { AlertCircle, Info } from 'lucide-react';
 
 export async function generateMetadata() {
 	return {
-		title: `Account security | Meta`,
-		description: 'Manage your account security settings on Meta.',
+		title: `Account security Meta Retail Manager`,
+		description: 'Manage your account security settings Meta Retail Manager.',
 		openGraph: {
-			title: `Account security | Meta`,
-			description: 'Manage your account security settings on Meta.',
+			title: `Account security Meta Retail Manager`,
+			description: 'Manage your account security settings Meta Retail Manager.',
 		},
 		twitter: {
-			title: `Account security | Meta`,
-			description: 'Manage your account security settings on Meta.',
+			title: `Account security Meta Retail Manager`,
+			description: 'Manage your account security settings Meta Retail Manager.',
 		},
 	};
 }

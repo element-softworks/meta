@@ -3,14 +3,14 @@ import PoliciesTableContainer from '@/components/tables/policies-table-container
 
 export async function generateMetadata() {
 	return {
-		title: `Policies | Dashboard | Meta`,
+		title: `Policies | Dashboard Meta Retail Manager`,
 		description: 'Manage and view stores for Meta.',
 		openGraph: {
-			title: `Policies | Dashboard | Meta`,
+			title: `Policies | Dashboard Meta Retail Manager`,
 			description: 'Manage and view stores for Meta.',
 		},
 		twitter: {
-			title: `Policies | Dashboard | Meta`,
+			title: `Policies | Dashboard Meta Retail Manager`,
 			description: 'Manage and view stores for Meta.',
 		},
 	};

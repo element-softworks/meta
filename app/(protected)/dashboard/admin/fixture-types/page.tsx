@@ -6,14 +6,14 @@ import { Separator } from '@/components/ui/separator';
 
 export async function generateMetadata() {
 	return {
-		title: `Fixture Types | Admin |  Dashboard | Meta`,
+		title: `Fixture Types | Admin |  Dashboard Meta Retail Manager`,
 		description: 'View and manage bugs for Meta.',
 		openGraph: {
-			title: `Fixture Types | Admin |  Dashboard | Meta`,
+			title: `Fixture Types | Admin |  Dashboard Meta Retail Manager`,
 			description: 'View and manage bugs for Meta.',
 		},
 		twitter: {
-			title: `Fixture Types | Admin |  Dashboard | Meta`,
+			title: `Fixture Types | Admin |  Dashboard Meta Retail Manager`,
 			description: 'View and manage bugs for Meta.',
 		},
 	};

@@ -2,19 +2,21 @@ import { Navbar } from '@/components/layout/navbar';
 import { Button } from '@/components/ui/button';
 import { SessionProvider } from 'next-auth/react';
 import Link from 'next/link';
-import { Suspense } from 'react';
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {
-		title: `Meta`,
-		description: 'Meta is a modern boilerplate for building SaaS applications quickly.',
+		title: `Meta Retail Manager`,
+		description:
+			'Centralised platform for store management, fixture assessments, and real-time metrics with robust issue tracking and actionable insights.',
 		openGraph: {
-			title: `Meta`,
-			description: 'Meta is a modern boilerplate for building SaaS applications quickly.',
+			title: `Meta Retail Manager`,
+			description:
+				'Centralised platform for store management, fixture assessments, and real-time metrics with robust issue tracking and actionable insights.',
 		},
 		twitter: {
-			title: `Meta`,
-			description: 'Meta is a modern boilerplate for building SaaS applications quickly.',
+			title: `Meta Retail Manager`,
+			description:
+				'Centralised platform for store management, fixture assessments, and real-time metrics with robust issue tracking and actionable insights.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}`,

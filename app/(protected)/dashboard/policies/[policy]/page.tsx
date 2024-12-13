@@ -19,14 +19,14 @@ export async function generateMetadata({ params }: any) {
 	const [policyResponse] = await db.select().from(policy).where(eq(policy.id, params.policy));
 
 	return {
-		title: `${policyResponse?.name} | Policies | Dashboard | Meta`,
+		title: `${policyResponse?.name} | Policies | Dashboard Meta Retail Manager`,
 		description: `${policyResponse?.name}`,
 		openGraph: {
-			title: `${policyResponse?.name} | Policies | Dashboard | Meta`,
+			title: `${policyResponse?.name} | Policies | Dashboard Meta Retail Manager`,
 			description: `${policyResponse?.name}`,
 		},
 		twitter: {
-			title: `${policyResponse?.name} | Policies | Dashboard | Meta`,
+			title: `${policyResponse?.name} | Policies | Dashboard Meta Retail Manager`,
 			description: `${policyResponse?.name}`,
 		},
 	};

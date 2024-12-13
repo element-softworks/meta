@@ -11,14 +11,14 @@ import { getUserById } from '@/data/user';
 export async function generateMetadata({ params }: { params: { user: string } }) {
 	const user = await getUserById(params.user);
 	return {
-		title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | Meta`,
+		title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard Meta Retail Manager`,
 		description: `${user?.name ?? 'Users'} account settings for Meta.`,
 		openGraph: {
-			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | Meta`,
+			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard Meta Retail Manager`,
 			description: `${user?.name ?? 'Users'} account settings for Meta.`,
 		},
 		twitter: {
-			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard | Meta`,
+			title: `${user?.name ?? 'Users'} | Users | Admin | Dashboard Meta Retail Manager`,
 			description: `${user?.name ?? 'Users'} account settings for Meta.`,
 		},
 	};

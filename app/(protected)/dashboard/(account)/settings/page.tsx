@@ -6,15 +6,15 @@ import { currentUser } from '@/lib/auth';
 
 export async function generateMetadata() {
 	return {
-		title: `Account settings | Meta`,
-		description: 'Manage your account settings on Meta.',
+		title: `Account settings Meta Retail Manager`,
+		description: 'Manage your account settings Meta Retail Manager.',
 		openGraph: {
-			title: `Account settings | Meta`,
-			description: 'Manage your account settings on Meta.',
+			title: `Account settings Meta Retail Manager`,
+			description: 'Manage your account settings Meta Retail Manager.',
 		},
 		twitter: {
-			title: `Account settings | Meta`,
-			description: 'Manage your account settings on Meta.',
+			title: `Account settings Meta Retail Manager`,
+			description: 'Manage your account settings Meta Retail Manager.',
 		},
 	};
 }

@@ -1,13 +1,13 @@
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {
-		title: 'Privacy Policy | Meta',
+		title: 'Privacy Policy Meta Retail Manager',
 		description: 'Privacy Policy for the Meta',
 		openGraph: {
-			title: 'Privacy Policy | Meta',
+			title: 'Privacy Policy Meta Retail Manager',
 			description: 'Privacy Policy for the Meta',
 		},
 		twitter: {
-			title: 'Privacy Policy | Meta',
+			title: 'Privacy Policy Meta Retail Manager',
 			description: 'Privacy Policy for the Meta',
 		},
 		alternates: {

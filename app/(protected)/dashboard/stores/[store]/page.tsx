@@ -20,14 +20,14 @@ export async function generateMetadata({ params }: any) {
 	const [storeResponse] = await db.select().from(store).where(eq(store.id, params.store));
 
 	return {
-		title: `${storeResponse?.name} | Stores | Dashboard | Meta`,
+		title: `${storeResponse?.name} | Stores | Dashboard Meta Retail Manager`,
 		description: `${storeResponse?.name}`,
 		openGraph: {
-			title: `${storeResponse?.name} | Stores | Dashboard | Meta`,
+			title: `${storeResponse?.name} | Stores | Dashboard Meta Retail Manager`,
 			description: `${storeResponse?.name}`,
 		},
 		twitter: {
-			title: `${storeResponse?.name} | Stores | Dashboard | Meta`,
+			title: `${storeResponse?.name} | Stores | Dashboard Meta Retail Manager`,
 			description: `${storeResponse?.name}`,
 		},
 	};

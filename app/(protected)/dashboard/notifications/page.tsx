@@ -3,14 +3,14 @@ import { GeneralLayout } from '@/components/layouts';
 
 export async function generateMetadata() {
 	return {
-		title: `Notifications | Dashboard | Meta`,
+		title: `Notifications | Dashboard Meta Retail Manager`,
 		description: 'Manage notifications for Meta.',
 		openGraph: {
-			title: `Notifications | Dashboard | Meta`,
+			title: `Notifications | Dashboard Meta Retail Manager`,
 			description: 'Manage notifications for Meta.',
 		},
 		twitter: {
-			title: `Notifications | Dashboard | Meta`,
+			title: `Notifications | Dashboard Meta Retail Manager`,
 			description: 'Manage notifications for Meta.',
 		},
 	};
