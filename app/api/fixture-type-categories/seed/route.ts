@@ -1,5 +1,4 @@
 import { seedFixtureTypeCategories } from '@/actions/fixture-type-categories/seed-fixture-type-categories';
-import { seedStores } from '@/actions/store/seed-stores';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest, res: Response) {
