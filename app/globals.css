@@ -36,6 +36,26 @@ body {
 	a {
 		@apply text-primary hover:text-primary/60 transition-all;
 	}
+	:root {
+		--sidebar-background: 0 0% 98%;
+		--sidebar-foreground: 240 5.3% 26.1%;
+		--sidebar-primary: 240 5.9% 10%;
+		--sidebar-primary-foreground: 0 0% 98%;
+		--sidebar-accent: 240 4.8% 95.9%;
+		--sidebar-accent-foreground: 240 5.9% 10%;
+		--sidebar-border: 220 13% 91%;
+		--sidebar-ring: 217.2 91.2% 59.8%;
+	}
+	.dark {
+		--sidebar-background: 240 5.9% 10%;
+		--sidebar-foreground: 240 4.8% 95.9%;
+		--sidebar-primary: 224.3 76.3% 48%;
+		--sidebar-primary-foreground: 0 0% 100%;
+		--sidebar-accent: 240 3.7% 15.9%;
+		--sidebar-accent-foreground: 240 4.8% 95.9%;
+		--sidebar-border: 240 3.7% 15.9%;
+		--sidebar-ring: 217.2 91.2% 59.8%;
+	}
 }
 
 /* Ensure the correct font-family is applied for different font weights */
@@ -56,24 +76,24 @@ body {
 
 @layer base {
 	:root {
-		--nav-background: 25, 100%, 96%, 0.8;
-		--background: 25 100% 96%;
+		--nav-background: 200 14% 96%;
+		--background: 200 14% 96%;
 		--foreground: 20 14.3% 4.1%;
-		--card: 0 0% 100%;
-		--card-foreground: 20 14.3% 4.1%;
+		--card: 220 20% 97%;
+		--card-foreground: 210 17% 9%;
 		--popover: 0 0% 100%;
 		--popover-foreground: 20 14.3% 4.1%;
-		--primary: 246 79% 51%;
+		--primary: 205 100% 51%;
 		--primary-foreground: 0 0% 100%;
-		--secondary: 60 4.8% 95.9%;
-		--secondary-foreground: 24 9.8% 10%;
-		--muted: 60 4.8% 95.9%;
-		--muted-foreground: 25 5.3% 44.7%;
+		--secondary: 210 18% 89%;
+		--secondary-foreground: 209 16% 37%;
+		--muted: 210 18% 89%;
+		--muted-foreground: 207 16% 57%;
 		--accent: 60 4.8% 95.9%;
 		--accent-foreground: 24 9.8% 10%;
 		--destructive: 0 72% 51%;
 		--destructive-foreground: 60 9.1% 97.8%;
-		--border: 20 5.9% 90%;
+		--border: 257 19% 93%;
 		--input: 0 0 83%;
 		--ring: 20 14.3% 4.1%;
 		--radius: 0.5rem;
@@ -99,7 +119,7 @@ body {
 		--card-foreground: 60 9.1% 97.8%;
 		--popover: 20 14.3% 4.1%;
 		--popover-foreground: 60 9.1% 97.8%;
-		--primary: 60 9.1% 97.8%;
+		--primary: 205 100% 51%;
 		--primary-foreground: 24 9.8% 10%;
 		--secondary: 12 6.5% 15.1%;
 		--secondary-foreground: 60 9.1% 97.8%;
@@ -127,36 +147,34 @@ body {
 	}
 }
 
-.noise {
-	height: 100%;
-	background: linear-gradient(-90deg, hsl(var(--primary)), transparent),
-		url(https://grainy-gradients.vercel.app/noise.svg);
-	filter: contrast(100%) brightness(190%);
+h1 {
+	@apply text-3xl font-bold;
 }
 
-/* Chrome-specific */
-@media all and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
-	.noise {
-		filter: contrast(100%) brightness(190%);
-	}
+h2 {
+	@apply text-2xl font-bold;
 }
 
-.isolate {
-	isolation: isolate;
-	position: relative;
-	width: 100%;
-	height: 100%;
+blockquote {
+	@apply border-l-4 border-primary/40 pl-4 my-4;
 }
 
-.overlay {
-	position: absolute;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	background: #ffcab9;
-	mix-blend-mode: multiply;
+ol {
+	@apply list-decimal flex flex-col gap-1;
 }
 
-.rdp-vhidden {
-	@apply hidden;
+ul {
+	@apply list-disc flex flex-col gap-1;
+}
+
+li {
+	@apply my-2 ml-4;
+}
+
+mark {
+	@apply bg-primary/20;
+}
+
+code {
+	@apply bg-primary/10 p-1 rounded;
 }

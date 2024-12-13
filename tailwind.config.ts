@@ -11,7 +11,7 @@ export const config = {
 	prefix: '',
 	theme: {
 		container: {
-			center: true,
+			center: 'true',
 			padding: {
 				DEFAULT: '1rem',
 				sm: '2rem',
@@ -20,11 +20,11 @@ export const config = {
 				'2xl': '6rem',
 			},
 		},
+
 		extend: {
 			fontFamily: {
-				sans: 'var(--font-open-sans)',
-				display: 'var(--font-fredoka)',
-				// body: 'var(--font-open-sans)',
+				sans: 'var(--font-inter)',
+				display: 'var(--font-inter)',
 			},
 			backgroundImage: {
 				'brand-gradient':
@@ -34,15 +34,15 @@ export const config = {
 				thin: '100',
 				extralight: '200',
 				light: '300',
-				normal: '400', // Open Sans
-				medium: '500', // Fredoka
-				semibold: '600', // Fredoka
-				bold: '700', // Fredoka
-				extrabold: '800', // Fredoka
-				black: '900', // Fredoka
+				normal: '400',
+				medium: '500',
+				semibold: '600',
+				bold: '700',
+				extrabold: '800',
+				black: '900',
 			},
-
 			colors: {
+				white: '#F3F5F6',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -80,6 +80,16 @@ export const config = {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))',
 				},
+				sidebar: {
+					DEFAULT: 'hsl(var(--sidebar-background))',
+					foreground: 'hsl(var(--sidebar-foreground))',
+					primary: 'hsl(var(--sidebar-primary))',
+					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+					accent: 'hsl(var(--sidebar-accent))',
+					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+					border: 'hsl(var(--sidebar-border))',
+					ring: 'hsl(var(--sidebar-ring))',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -88,12 +98,20 @@ export const config = {
 			},
 			keyframes: {
 				marquee: {
-					'0%': { transform: 'translateX(0%)' },
-					'100%': { transform: 'translateX(-100%)' },
+					'0%': {
+						transform: 'translateX(0%)',
+					},
+					'100%': {
+						transform: 'translateX(-100%)',
+					},
 				},
 				marquee2: {
-					'0%': { transform: 'translateX(100%)' },
-					'100%': { transform: 'translateX(0%)' },
+					'0%': {
+						transform: 'translateX(100%)',
+					},
+					'100%': {
+						transform: 'translateX(0%)',
+					},
 				},
 				'accordion-down': {
 					from: {
@@ -111,7 +129,6 @@ export const config = {
 						height: '0',
 					},
 				},
-
 				glow: {
 					from: {
 						filter: 'hue-rotate(-10deg)',

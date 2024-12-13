@@ -6,18 +6,15 @@ import { Suspense } from 'react';
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
 	return {
-		title: `SaaSphere Meta`,
-		description:
-			'SaaSphere Meta is a modern boilerplate for building SaaS applications quickly.',
+		title: `Meta`,
+		description: 'Meta is a modern boilerplate for building SaaS applications quickly.',
 		openGraph: {
-			title: `SaaSphere Meta`,
-			description:
-				'SaaSphere Meta is a modern boilerplate for building SaaS applications quickly.',
+			title: `Meta`,
+			description: 'Meta is a modern boilerplate for building SaaS applications quickly.',
 		},
 		twitter: {
-			title: `SaaSphere Meta`,
-			description:
-				'SaaSphere Meta is a modern boilerplate for building SaaS applications quickly.',
+			title: `Meta`,
+			description: 'Meta is a modern boilerplate for building SaaS applications quickly.',
 		},
 		alternates: {
 			canonical: `${process.env.NEXT_PUBLIC_APP_URL}`,

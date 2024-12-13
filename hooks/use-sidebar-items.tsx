@@ -1,7 +1,18 @@
 'use client';
 
-import { BugPlay, ChartPie, LayoutDashboard, Users } from 'lucide-react';
+import {
+	BugPlay,
+	ChartPie,
+	File,
+	FileQuestion,
+	Hammer,
+	Home,
+	LayoutDashboard,
+	LocateIcon,
+	Users,
+} from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
+import { FaQuestion } from 'react-icons/fa';
 
 export function useSidebarItems() {
 	const user = useCurrentUser();
@@ -11,9 +22,21 @@ export function useSidebarItems() {
 			name: 'General',
 			items: [
 				{
-					text: 'Home',
+					text: 'Dashboard',
 					link: '/dashboard',
-					icon: <LayoutDashboard size={20} />,
+					icon: <Home size={16} />,
+					visible: true,
+				},
+				{
+					text: 'Stores',
+					link: '/dashboard/stores',
+					icon: <LocateIcon size={16} />,
+					visible: true,
+				},
+				{
+					text: 'Policies',
+					link: '/dashboard/policies',
+					icon: <File size={16} />,
 					visible: true,
 				},
 			],
@@ -27,20 +50,31 @@ export function useSidebarItems() {
 				{
 					text: 'Analytics',
 					link: '/dashboard/admin/analytics',
-					icon: <ChartPie size={20} />,
+					icon: <ChartPie size={16} />,
 					visible: true,
 				},
 				{
 					text: 'Users',
 					link: '/dashboard/admin/users',
-					icon: <Users size={20} />,
+					icon: <Users size={16} />,
 					visible: true,
 				},
-
+				{
+					text: 'Question and Answers',
+					link: '/dashboard/question-and-answers',
+					icon: <FileQuestion size={16} />,
+					visible: true,
+				},
+				{
+					text: 'Fixture Types',
+					link: '/dashboard/admin/fixture-types',
+					icon: <Hammer size={16} />,
+					visible: true,
+				},
 				{
 					text: 'Reported bugs',
 					link: '/dashboard/admin/bugs',
-					icon: <BugPlay size={20} />,
+					icon: <BugPlay size={16} />,
 					visible: true,
 				},
 			],

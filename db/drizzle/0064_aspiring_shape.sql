@@ -1,0 +1,1 @@
+ALTER TABLE "Policy" ADD COLUMN "name" text NOT NULL;

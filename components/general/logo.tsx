@@ -6,6 +6,7 @@ import Image from 'next/image';
 interface LogoProps {
 	width: number;
 	height: number;
+	noTitle?: boolean;
 }
 export function Logo(props: LogoProps) {
 	const { theme } = useTheme();
@@ -13,20 +14,26 @@ export function Logo(props: LogoProps) {
 	return (
 		<>
 			<Image
-				src={'/meta-logos/positive-primary/RGB/Meta_lockup_positive primary_RGB.svg'}
-				alt="Coaching hours logo"
+				src={
+					props.noTitle
+						? '/meta-logos/meta-logo.svg'
+						: '/meta-logos/positive-primary/RGB/Meta_lockup_positive primary_RGB.svg'
+				}
+				alt="Meta logo"
 				width={props.width}
 				height={props.height}
-				className="dark:hidden -ml-4"
+				className="dark:hidden "
 			/>
 			<Image
 				src={
-					'/public/meta-logos/negative-primary/RGB/Meta_lockup_negative primary_white_RGB.svg'
+					props.noTitle
+						? '/meta-logos/meta-logo.svg'
+						: '/public/meta-logos/negative-primary/RGB/Meta_lockup_negative primary_white_RGB.svg'
 				}
-				alt="Coaching hours logo"
+				alt="Meta logo"
 				width={props.width}
 				height={props.height}
-				className="hidden dark:block -ml-4"
+				className="hidden dark:block"
 			/>
 		</>
 	);

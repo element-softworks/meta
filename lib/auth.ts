@@ -11,3 +11,17 @@ export async function currentRole() {
 
 	return session?.user?.role;
 }
+
+export async function checkPermissions({ admin }: { admin: boolean }) {
+	const authUser = await currentUser();
+
+	if (!authUser?.email) {
+		return { error: 'You are not authenticated.' };
+	}
+
+	if (authUser?.role !== 'ADMIN' && admin) {
+		return { error: 'You must be an administrator to perform this action.' };
+	}
+
+	return { success: 'Authorized', user: authUser };
+}

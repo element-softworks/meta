@@ -3,7 +3,6 @@
 import {
 	ControllerFieldState,
 	ControllerRenderProps,
-	FieldPath,
 	FieldValues,
 	UseFormStateReturn,
 	useFormContext,
@@ -16,15 +15,13 @@ import {
 	FormLabel,
 	FormMessage,
 } from '../ui/form';
-import { Input } from '../ui/input';
-import * as z from 'zod';
-import { LoginSchema } from '@/schemas';
 
 interface FormInputProps {
 	visible?: boolean;
 	disabled?: boolean;
 	name: string;
 	label?: string;
+	required?: boolean;
 	description?: string;
 	render: (props: {
 		field: ControllerRenderProps<FieldValues, string>;
@@ -34,8 +31,11 @@ interface FormInputProps {
 }
 
 export function FormInput(props: FormInputProps) {
-	const { visible = true } = props;
-	const { control } = useFormContext();
+	const { visible = true, required = false } = props;
+	const {
+		control,
+		formState: { errors },
+	} = useFormContext();
 
 	if (!visible) {
 		return null;
@@ -49,7 +49,10 @@ export function FormInput(props: FormInputProps) {
 			render={(inputProps) => (
 				<FormItem className="[&_input]:!mt-1">
 					{props.label ? (
-						<FormLabel className="text-sm font-normal">{props.label}</FormLabel>
+						<FormLabel className="text-sm font-normal flex">
+							{props.label}{' '}
+							{!!props.required ? <p className="text-destructive">*</p> : null}{' '}
+						</FormLabel>
 					) : null}
 					<FormControl>{props.render({ ...inputProps })}</FormControl>
 

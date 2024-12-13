@@ -1,0 +1,1 @@
+ALTER TABLE "Store" ADD COLUMN "compliance_acceptance_percentage" double precision;

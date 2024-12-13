@@ -55,13 +55,13 @@ export function SidebarItem(props: SidebarItemProps) {
 		>
 			<Link href={props.link} prefetch={prefetch} className="h-9">
 				<Button
-					size="sm"
-					className={`w-full !font-sans hover:text-primary/70 justify-start font-medium px-4 flex items-center gap-2 ${
-						isActive ? 'text-primary' : 'text-foreground '
+					size="lg"
+					className={`w-full !font-sans hover:text-primary/70 justify-start !text-sm font-medium px-4 flex items-center gap-2 ${
+						isActive ? 'text-foreground' : 'text-muted-foreground '
 					} 
 					${props.size === 'sm' ? 'text-[0.8rem] h-7 font-normal' : 'text-sm'}
 					`}
-					variant="ghost"
+					variant={isActive ? 'secondary' : 'ghost'}
 				>
 					{props.icon}
 					{props.text}
@@ -128,7 +128,7 @@ export function Sidebar({ children, fixed }: { children: React.ReactNode; fixed?
 	return (
 		<aside
 			style={{}}
-			className={`w-0 lg:w-[270px] shadow bg-primary-foreground transition-all px-0 py-3 lg:px-4 lg:border-r`}
+			className={`w-0 lg:w-[270px] bg-card transition-all px-0 py-3 lg:px-4 lg:border-r border-border`}
 		>
 			<div
 				className={`flex flex-col gap-4 flex-1 ${
