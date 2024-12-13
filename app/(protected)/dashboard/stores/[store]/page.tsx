@@ -3,6 +3,8 @@ import { Map } from '@/components/general/map';
 import { StoresLayout } from '@/components/layouts';
 import { ArchiveStoreAction } from '@/components/store/archive-store-action';
 import { EditStoreAction } from '@/components/store/edit-store-action';
+import { ReviewStoreAction } from '@/components/store/review-store-action';
+import { ReviewStoreActionContainer } from '@/components/store/review-store-action-container';
 import { Separator } from '@/components/ui/separator';
 import { db } from '@/db/drizzle/db';
 import { store } from '@/db/drizzle/schema';
@@ -12,6 +14,7 @@ import { getDay } from 'date-fns';
 import { eq } from 'drizzle-orm';
 import { Lock, LockOpen } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export async function generateMetadata({ params }: any) {
 	const [storeResponse] = await db.select().from(store).where(eq(store.id, params.store));
@@ -70,6 +73,7 @@ export default async function LocationPage({
 					<div className="flex gap-2">
 						<ArchiveStoreAction store={storeResponse?.store} />
 						<EditStoreAction store={storeResponse?.store} />
+						<ReviewStoreActionContainer store={storeResponse} />
 					</div>
 				</div>
 
@@ -93,7 +97,7 @@ export default async function LocationPage({
 						</div>
 
 						<div>
-							<p className="font-medium text-muted-foreground">Opening Times</p>
+							<p className="font-medium text-muted-foreground">Opening times</p>
 							<div className="flex gap-2 items-center">
 								{locationClosed ? (
 									<Lock size={14} className="text-destructive" />
@@ -115,6 +119,17 @@ export default async function LocationPage({
 							</div>
 						</div>
 					</div>
+
+					{!!storeResponse?.linkedPolicy?.id ? (
+						<div>
+							<p className="font-medium text-muted-foreground">Linked policy</p>
+							<Link href={`/dashboard/policies/${storeResponse?.linkedPolicy?.id}`}>
+								<p className="max-w-[35ch]">
+									{storeResponse?.linkedPolicy?.name ?? ''}
+								</p>
+							</Link>
+						</div>
+					) : null}
 				</section>
 
 				<div>

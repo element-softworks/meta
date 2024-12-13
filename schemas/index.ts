@@ -15,6 +15,33 @@ export const ContactSchema = z.object({
 	message: z.string().min(1, { message: 'Message is required' }),
 });
 
+export const FixtureTypeSchema = z.object({
+	name: z.string().min(1, { message: 'Name is required' }),
+	images: z.array(
+		z
+			.unknown()
+			.transform((value) => {
+				return value as FileList;
+			})
+			.refine(
+				(data) => {
+					const fileSize = data?.[0]?.size;
+
+					//1Mb = 1000000 bytes
+					if (fileSize > 4000000) {
+						return false;
+					}
+					return true;
+				},
+				{
+					message: "File size can't exceed 4MB",
+					path: ['image'],
+				}
+			)
+	),
+	description: z.string().min(1, { message: 'Description is required' }),
+});
+
 export const ReportBugSchema = z.object({
 	title: z.string().min(1, { message: 'Title is required' }),
 	description: z.string().min(1, { message: 'Description is required' }),

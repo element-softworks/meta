@@ -146,3 +146,35 @@ body {
 		--background-navbar: 20, 14.3%, 4.1%, 0.85;
 	}
 }
+
+h1 {
+	@apply text-3xl font-bold;
+}
+
+h2 {
+	@apply text-2xl font-bold;
+}
+
+blockquote {
+	@apply border-l-4 border-primary/40 pl-4 my-4;
+}
+
+ol {
+	@apply list-decimal;
+}
+
+ul {
+	@apply list-disc;
+}
+
+li {
+	@apply my-2 ml-4;
+}
+
+mark {
+	@apply bg-primary/20;
+}
+
+code {
+	@apply bg-primary/10 p-1 rounded;
+}

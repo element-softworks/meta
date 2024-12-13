@@ -5,6 +5,7 @@ import {
 	ChartPie,
 	File,
 	FileQuestion,
+	Hammer,
 	Home,
 	LayoutDashboard,
 	LocateIcon,
@@ -62,6 +63,12 @@ export function useSidebarItems() {
 					text: 'Question and Answers',
 					link: '/dashboard/question-and-answers',
 					icon: <FileQuestion size={16} />,
+					visible: true,
+				},
+				{
+					text: 'Fixture Types',
+					link: '/dashboard/admin/fixture-types',
+					icon: <Hammer size={16} />,
 					visible: true,
 				},
 				{
