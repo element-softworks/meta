@@ -25,6 +25,7 @@ export function RichTextInput(props: RichTextInputProps) {
 	const error = errors[props.name];
 
 	const editor = useEditor({
+		content: watch(props.name),
 		extensions: [
 			StarterKit.configure(),
 			Highlight,

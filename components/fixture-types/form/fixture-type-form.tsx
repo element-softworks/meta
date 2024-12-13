@@ -14,27 +14,37 @@ import { Input } from '../../ui/input';
 import { Textarea } from '../../ui/textarea';
 import { RichTextInput } from '@/components/inputs/rich-text-input';
 import { createFixtureType } from '@/actions/fixture-type/create-fixture-type';
+import { FixtureType } from '@/db/drizzle/schema/fixtureType';
+import { updateFixtureType } from '@/actions/fixture-type/update-fixture-type';
+import { useEffect } from 'react';
 
 type FixtureTypeFormInputProps = z.infer<typeof FixtureTypeSchema>;
 
 interface FixtureTypeFormProps {
 	onComplete?: () => void;
+	fixtureType?: FixtureType;
 }
 
 export function FixtureTypeForm(props: FixtureTypeFormProps) {
 	const form = useForm<FixtureTypeFormInputProps>({
 		resolver: zodResolver(FixtureTypeSchema),
 		defaultValues: {
-			name: '',
-			images: [],
-			description: '',
+			name: props.fixtureType?.name ?? '',
+			images: !!props.fixtureType?.images ? [...props.fixtureType?.images] : ([] as any),
+			description: props.fixtureType?.description ?? '',
 		},
 	});
 
 	const { query: createFixtureTypeQuery, isLoading: isCreating } = useMutation<FormData, {}>({
 		queryFn: async (values) => await createFixtureType(values!),
 		onCompleted: async (data) => {
-			form.reset();
+			props.onComplete?.();
+		},
+	});
+
+	const { query: updateFixtureTypeQuery, isLoading: isUpdating } = useMutation<FormData, {}>({
+		queryFn: async (values) => await updateFixtureType(values!),
+		onCompleted: async (data) => {
 			props.onComplete?.();
 		},
 	});
@@ -49,8 +59,23 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 		formData.append('name', values.name);
 		formData.append('description', values.description);
 
-		createFixtureTypeQuery(formData);
+		if (!!props.fixtureType?.id) {
+			// Update fixture type
+			formData.append('id', props.fixtureType?.id);
+			updateFixtureTypeQuery(formData);
+		} else {
+			// Create fixture type
+			createFixtureTypeQuery(formData);
+		}
 	}
+
+	useEffect(() => {
+		form.reset({
+			name: props.fixtureType?.name ?? '',
+			images: !!props.fixtureType?.images ? [...props.fixtureType?.images] : ([] as any),
+			description: props.fixtureType?.description ?? '',
+		});
+	}, [props.fixtureType]);
 
 	return (
 		<div className="h-full">
@@ -65,20 +90,33 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 							name="name"
 							label="Fixture name"
 							render={({ field }) => (
-								<Input {...field} disabled={isCreating} placeholder="Bug title" />
+								<Input
+									{...field}
+									disabled={isCreating || isUpdating}
+									placeholder="Bug title"
+								/>
 							)}
 						/>
 
-						<DropzoneInput multiple label="Images" name="images" />
+						<DropzoneInput
+							multiple
+							label="Images"
+							name="images"
+							defaultFiles={
+								!!props.fixtureType?.images
+									? [...props.fixtureType?.images]
+									: (undefined as any)
+							}
+						/>
 
 						<RichTextInput name="description" label="Description" />
 						<Button
 							className="!mt-auto"
 							type="submit"
-							isLoading={isCreating}
-							disabled={isCreating || !form.formState.isDirty}
+							isLoading={isCreating || isUpdating}
+							disabled={isCreating || !form.formState.isDirty || isUpdating}
 						>
-							Create fixture type
+							{props.fixtureType ? 'Update' : 'Create'} fixture type
 						</Button>
 					</form>
 				</Form>

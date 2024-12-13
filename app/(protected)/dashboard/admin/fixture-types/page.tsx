@@ -1,5 +1,6 @@
 import { FixtureTypesResponse, getFixtureTypes } from '@/actions/fixture-type/get-fixture-types';
 import { CreateFixtureTypeAction } from '@/components/fixture-types/create-fixture-type-action';
+import { UpdateFixtureTypeAction } from '@/components/fixture-types/update-fixture-type-action';
 import { RichTextRenderer } from '@/components/general/rich-text-renderer';
 import { Separator } from '@/components/ui/separator';
 
@@ -34,7 +35,15 @@ export default async function AdminTeamsPage({ searchParams }: { searchParams: a
 			<CreateFixtureTypeAction />
 
 			{response?.fixtureTypes?.map?.((fixture, index) => {
-				return <RichTextRenderer key={index} content={fixture.description} />;
+				return (
+					<div className="border p-4 rounded-lg relative">
+						<div className="absolute top-4 right-4">
+							<UpdateFixtureTypeAction fixtureType={fixture} />
+						</div>
+						<p className="text-xl font-bold">{fixture.name}</p>
+						<RichTextRenderer key={index} content={fixture.description} />
+					</div>
+				);
 			})}
 		</main>
 	);

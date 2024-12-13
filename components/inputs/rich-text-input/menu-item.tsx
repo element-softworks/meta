@@ -13,7 +13,7 @@ export default function MenuItem({
 }) {
 	return (
 		<TooltipProvider>
-			<Tooltip delayDuration={0}>
+			<Tooltip delayDuration={250}>
 				<TooltipTrigger>
 					<button
 						className={`flex items-center justify-center
