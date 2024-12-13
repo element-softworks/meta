@@ -155,7 +155,7 @@ export function DropzoneInput(props: DropzoneInputProps) {
 										<section className="mt-2 ">
 											<div
 												{...getRootProps()}
-												className={`group/dropzone border-2 flex-col gap-2 h-32 rounded-lg border-dashed flex items-center justify-center transition cursor-pointer ${
+												className={`group/dropzone flex-col gap-2 h-32 rounded-lg border-border border bg-card flex items-center justify-center transition cursor-pointer ${
 													!!error
 														? 'border-destructive'
 														: 'hover:border-primary hover:bg-card'

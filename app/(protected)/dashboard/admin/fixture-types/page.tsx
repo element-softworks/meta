@@ -1,7 +1,10 @@
 import { FixtureTypesResponse, getFixtureTypes } from '@/actions/fixture-type/get-fixture-types';
+import { ArchiveFixtureTypeAction } from '@/components/fixture-types/archive-fixture-type-action';
 import { CreateFixtureTypeAction } from '@/components/fixture-types/create-fixture-type-action';
+import { FixtureTypeCard } from '@/components/fixture-types/fixture-type-card';
 import { UpdateFixtureTypeAction } from '@/components/fixture-types/update-fixture-type-action';
 import { RichTextRenderer } from '@/components/general/rich-text-renderer';
+import { ShowArchivedButton } from '@/components/general/show-archived-button';
 import { Separator } from '@/components/ui/separator';
 
 export async function generateMetadata() {
@@ -20,9 +23,13 @@ export async function generateMetadata() {
 }
 
 export default async function AdminTeamsPage({ searchParams }: { searchParams: any }) {
-	const response = (await getFixtureTypes(10, 1, undefined, false)) as FixtureTypesResponse;
+	const response = (await getFixtureTypes(
+		10,
+		1,
+		undefined,
+		searchParams.archived === 'true'
+	)) as FixtureTypesResponse;
 
-	console.log(response, 'response data');
 	return (
 		<main className="flex flex-col  gap-4">
 			<div className="">
@@ -31,19 +38,12 @@ export default async function AdminTeamsPage({ searchParams }: { searchParams: a
 			</div>
 
 			<Separator />
+			<ShowArchivedButton />
 
 			<CreateFixtureTypeAction />
 
 			{response?.fixtureTypes?.map?.((fixture, index) => {
-				return (
-					<div className="border p-4 rounded-lg relative">
-						<div className="absolute top-4 right-4">
-							<UpdateFixtureTypeAction fixtureType={fixture} />
-						</div>
-						<p className="text-xl font-bold">{fixture.name}</p>
-						<RichTextRenderer key={index} content={fixture.description} />
-					</div>
-				);
+				return <FixtureTypeCard key={index} fixtureType={fixture} />;
 			})}
 		</main>
 	);

@@ -1,9 +1,13 @@
 'use client';
 
-import { reportBug } from '@/actions/system/report-bug';
+import { createFixtureType } from '@/actions/fixture-type/create-fixture-type';
+import { updateFixtureType } from '@/actions/fixture-type/update-fixture-type';
+import { RichTextInput } from '@/components/inputs/rich-text-input';
+import { FixtureType } from '@/db/drizzle/schema/fixtureType';
 import { useMutation } from '@/hooks/use-mutation';
 import { FixtureTypeSchema } from '@/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { FormInput } from '../../auth/form-input';
@@ -11,12 +15,6 @@ import { DropzoneInput } from '../../inputs/dropzone-input';
 import { Button } from '../../ui/button';
 import { Form } from '../../ui/form';
 import { Input } from '../../ui/input';
-import { Textarea } from '../../ui/textarea';
-import { RichTextInput } from '@/components/inputs/rich-text-input';
-import { createFixtureType } from '@/actions/fixture-type/create-fixture-type';
-import { FixtureType } from '@/db/drizzle/schema/fixtureType';
-import { updateFixtureType } from '@/actions/fixture-type/update-fixture-type';
-import { useEffect } from 'react';
 
 type FixtureTypeFormInputProps = z.infer<typeof FixtureTypeSchema>;
 
@@ -93,11 +91,10 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 								<Input
 									{...field}
 									disabled={isCreating || isUpdating}
-									placeholder="Bug title"
+									placeholder=""
 								/>
 							)}
 						/>
-
 						<DropzoneInput
 							multiple
 							label="Images"
@@ -108,16 +105,18 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 									: (undefined as any)
 							}
 						/>
-
 						<RichTextInput name="description" label="Description" />
-						<Button
-							className="!mt-auto"
-							type="submit"
-							isLoading={isCreating || isUpdating}
-							disabled={isCreating || !form.formState.isDirty || isUpdating}
-						>
-							{props.fixtureType ? 'Update' : 'Create'} fixture type
-						</Button>
+
+						<div className="!mt-auto">
+							<Button
+								className="mt-4 w-full"
+								type="submit"
+								isLoading={isCreating || isUpdating}
+								disabled={isCreating || !form.formState.isDirty || isUpdating}
+							>
+								{props.fixtureType ? 'Update' : 'Create'} fixture type
+							</Button>
+						</div>
 					</form>
 				</Form>
 			</div>

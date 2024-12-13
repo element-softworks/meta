@@ -160,11 +160,11 @@ blockquote {
 }
 
 ol {
-	@apply list-decimal;
+	@apply list-decimal flex flex-col gap-1;
 }
 
 ul {
-	@apply list-disc;
+	@apply list-disc flex flex-col gap-1;
 }
 
 li {
