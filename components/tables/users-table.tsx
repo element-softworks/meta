@@ -55,7 +55,13 @@ export function UsersTable(props: UsersTableProps) {
 					<div className="flex items-center">
 						{!!user?.image ? (
 							<Avatar className="size-7">
-								<Image width={35} height={35} src={user?.image} alt="user avatar" />
+								<Image
+									width={35}
+									className="object-cover"
+									height={35}
+									src={user?.image}
+									alt="user avatar"
+								/>
 							</Avatar>
 						) : null}
 						<div className="ml-2">{user.name}</div>
