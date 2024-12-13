@@ -1,9 +1,6 @@
 import { FixtureTypesResponse, getFixtureTypes } from '@/actions/fixture-type/get-fixture-types';
-import { ArchiveFixtureTypeAction } from '@/components/fixture-types/archive-fixture-type-action';
 import { CreateFixtureTypeAction } from '@/components/fixture-types/create-fixture-type-action';
 import { FixtureTypeCard } from '@/components/fixture-types/fixture-type-card';
-import { UpdateFixtureTypeAction } from '@/components/fixture-types/update-fixture-type-action';
-import { RichTextRenderer } from '@/components/general/rich-text-renderer';
 import { ShowArchivedButton } from '@/components/general/show-archived-button';
 import { Separator } from '@/components/ui/separator';
 

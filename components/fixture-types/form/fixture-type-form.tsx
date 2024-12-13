@@ -15,21 +15,30 @@ import { DropzoneInput } from '../../inputs/dropzone-input';
 import { Button } from '../../ui/button';
 import { Form } from '../../ui/form';
 import { Input } from '../../ui/input';
+import { FixtureTypeCategoriesInput } from '@/components/inputs/fixture-type-categories-input';
+import { FixtureTypesResponse } from '@/actions/fixture-type/get-fixture-types';
 
-type FixtureTypeFormInputProps = z.infer<typeof FixtureTypeSchema>;
+export type FixtureTypeFormInputProps = z.infer<typeof FixtureTypeSchema>;
 
 interface FixtureTypeFormProps {
 	onComplete?: () => void;
-	fixtureType?: FixtureType;
+	fixtureType?: FixtureTypesResponse['fixtureTypes'][0];
 }
 
 export function FixtureTypeForm(props: FixtureTypeFormProps) {
+	console.log(props.fixtureType, 'fixture type data');
 	const form = useForm<FixtureTypeFormInputProps>({
 		resolver: zodResolver(FixtureTypeSchema),
 		defaultValues: {
-			name: props.fixtureType?.name ?? '',
-			images: !!props.fixtureType?.images ? [...props.fixtureType?.images] : ([] as any),
-			description: props.fixtureType?.description ?? '',
+			name: props.fixtureType?.fixtureType?.name ?? '',
+			images: !!props.fixtureType?.fixtureType?.images
+				? [...props.fixtureType?.fixtureType?.images]
+				: ([] as any),
+			description: props.fixtureType?.fixtureType?.description ?? '',
+			category: {
+				id: props.fixtureType?.category.id ?? '',
+				label: props.fixtureType?.category?.name ?? '',
+			},
 		},
 	});
 
@@ -56,10 +65,12 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 
 		formData.append('name', values.name);
 		formData.append('description', values.description);
+		formData.append('category.id', values.category?.id);
+		formData.append('category.label', values.category?.label);
 
-		if (!!props.fixtureType?.id) {
+		if (!!props.fixtureType?.fixtureType?.id) {
 			// Update fixture type
-			formData.append('id', props.fixtureType?.id);
+			formData.append('id', props.fixtureType?.fixtureType?.id);
 			updateFixtureTypeQuery(formData);
 		} else {
 			// Create fixture type
@@ -67,11 +78,15 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 		}
 	}
 
+	console.log(form.watch(), 'form watch data');
+
 	useEffect(() => {
 		form.reset({
-			name: props.fixtureType?.name ?? '',
-			images: !!props.fixtureType?.images ? [...props.fixtureType?.images] : ([] as any),
-			description: props.fixtureType?.description ?? '',
+			name: props.fixtureType?.fixtureType.name ?? '',
+			images: !!props.fixtureType?.fixtureType.images
+				? [...props.fixtureType?.fixtureType.images]
+				: ([] as any),
+			description: props.fixtureType?.fixtureType.description ?? '',
 		});
 	}, [props.fixtureType]);
 
@@ -95,13 +110,14 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 								/>
 							)}
 						/>
+						<FixtureTypeCategoriesInput name="category" label="Fixture category" />
 						<DropzoneInput
 							multiple
 							label="Images"
 							name="images"
 							defaultFiles={
-								!!props.fixtureType?.images
-									? [...props.fixtureType?.images]
+								!!props.fixtureType?.fixtureType.images
+									? [...props.fixtureType?.fixtureType.images]
 									: (undefined as any)
 							}
 						/>

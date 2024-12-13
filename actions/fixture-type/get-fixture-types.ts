@@ -1,6 +1,14 @@
 import { FixtureType } from './../../db/drizzle/schema/fixtureType';
 import { db } from '@/db/drizzle/db';
-import { fixtureType, policy, policyQuestion, storeGeolocation, user } from '@/db/drizzle/schema';
+import {
+	fixtureType,
+	fixtureTypeCategory,
+	policy,
+	policyQuestion,
+	storeGeolocation,
+	user,
+} from '@/db/drizzle/schema';
+import { FixtureTypeCategory } from '@/db/drizzle/schema/fixtureTypeCategory';
 import { Policy } from '@/db/drizzle/schema/policy';
 import { Question, question } from '@/db/drizzle/schema/question';
 import { Store, store } from '@/db/drizzle/schema/store';
@@ -23,7 +31,10 @@ export const getFixtureTypes = async (
 	try {
 		// Main query to fetch policies with aggregated stores and questions
 		const foundFixtures = await db
-			.select()
+			.select({
+				fixtureType: fixtureType,
+				category: fixtureTypeCategory,
+			})
 			.from(fixtureType)
 			.where(
 				and(
@@ -37,6 +48,7 @@ export const getFixtureTypes = async (
 						: undefined
 				)
 			)
+			.leftJoin(fixtureTypeCategory, eq(fixtureType.category, fixtureTypeCategory.id))
 			.orderBy(desc(fixtureType.createdAt))
 			.limit(Number(perPage))
 			.offset((Number(pageNum) - 1) * Number(perPage));
@@ -76,7 +88,7 @@ export const getFixtureTypes = async (
 
 export interface FixtureTypesResponse {
 	success: boolean;
-	fixtureTypes: FixtureType[];
+	fixtureTypes: { fixtureType: FixtureType; category: FixtureTypeCategory }[];
 	totalPages: number;
 	total: number;
 }

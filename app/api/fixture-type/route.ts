@@ -2,11 +2,6 @@ import { archiveFixtureTypes } from '@/actions/fixture-type/archive-fixture-type
 import { createFixtureType } from '@/actions/fixture-type/create-fixture-type';
 import { getFixtureTypes } from '@/actions/fixture-type/get-fixture-types';
 import { updateFixtureType } from '@/actions/fixture-type/update-fixture-type';
-import { archiveStores } from '@/actions/store/archive-stores';
-import { getStores } from '@/actions/store/get-stores';
-import { updateStore } from '@/actions/store/update-store';
-import { formDataToNestedObject } from '@/lib/utils';
-import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest, res: Response) {
@@ -16,6 +11,8 @@ export async function POST(req: NextRequest, res: Response) {
 	parasedFormData.append('name', String(values.get('name')));
 	parasedFormData.append('description', String(values.get('description')));
 	parasedFormData.append('images', values.get('image') as any);
+	parasedFormData.append('category.id', String(values.get('category')));
+	parasedFormData.append('category.label', 'label');
 
 	try {
 		const response: any = await createFixtureType(parasedFormData);
@@ -43,6 +40,8 @@ export async function PUT(req: NextRequest, res: Response) {
 	parasedFormData.append('description', String(values.get('description')));
 	parasedFormData.append('images', values.get('image') as any);
 	parasedFormData.append('id', fixtureTypeId);
+	parasedFormData.append('category.id', String(values.get('category')));
+	parasedFormData.append('category.label', 'label');
 
 	try {
 		const response: any = await updateFixtureType(parasedFormData);

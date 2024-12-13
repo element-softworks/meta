@@ -17,6 +17,12 @@ export const ContactSchema = z.object({
 
 export const FixtureTypeSchema = z.object({
 	name: z.string().min(1, { message: 'Name is required' }),
+	category: z
+		.object({
+			id: z.string().min(1),
+			label: z.string().min(1),
+		})
+		.required(),
 	images: z.array(
 		z
 			.unknown()

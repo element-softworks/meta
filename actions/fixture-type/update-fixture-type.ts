@@ -28,7 +28,10 @@ export const updateFixtureType = async (formData: FormData) => {
 		let images = [];
 		const name = formData.get('name') as string;
 		const description = formData.get('description') as string;
-
+		const category = {
+			id: formData.get('category.id') as string,
+			label: formData.get('category.label') as string,
+		};
 		// Iterate through the formData to log its contents
 		for (let [key, value] of formData.entries()) {
 			if (key.includes('images')) {
@@ -39,10 +42,13 @@ export const updateFixtureType = async (formData: FormData) => {
 		const values = {
 			images,
 			name,
+			category,
 			description,
 		};
 
 		const validatedFields = FixtureTypeSchema.safeParse(values);
+
+		console.log(validatedFields?.error?.message, 'validated fields');
 
 		if (!validatedFields.success) {
 			return { error: 'There was a problem creating fixture type, please try again later' };
@@ -94,6 +100,7 @@ export const updateFixtureType = async (formData: FormData) => {
 			.set({
 				name,
 				description,
+				category: category.id,
 				images: values.images.map((image, index) => {
 					if (typeof image === 'string') return image;
 					const foundUuid = uuids.find((uuid) => uuid.name === image.name);

@@ -15,4 +15,5 @@ export { twoFactorToken } from './twoFactorToken';
 export { user, userRelations, userRole } from './user';
 export { userNotification, userNotificationRelations } from './userNotification';
 export { verificationToken } from './verificationToken';
-export { fixtureType } from './fixtureType';
+export { fixtureType, fixtureTypeRelations } from './fixtureType';
+export { fixtureTypeCategory } from './fixtureTypeCategory';
