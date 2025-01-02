@@ -71,6 +71,41 @@ export const ChannelSchema = z.object({
 		),
 });
 
+export const CSVSchema = z.object({
+	csv: z
+		.unknown()
+		.transform((value) => {
+			return value as FileList;
+		})
+		.refine(
+			(data) => {
+				if (!data?.[0]?.size) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: 'File is required',
+				path: ['csv'],
+			}
+		),
+});
+
+export const CSVFormatSchema = z.object({
+	Week_ending_date: z.string(),
+	'Visit Id': z.string(),
+	'Visit date': z.string().min(1, 'Visit date is required'),
+	'Visit duration': z.string(),
+	'Partner Name': z.string(),
+	'Store ID': z.string().min(1, 'Store ID is required'),
+	'Rep Id': z.string(),
+	'Rep Type': z.string(),
+	Fixture: z.string(),
+	'Question Id': z.string().min(1, 'Question ID is required'),
+	'Answer Choice Id': z.string(),
+	'Answer Text': z.string(),
+});
+
 export const ReportBugSchema = z.object({
 	title: z.string().min(1, { message: 'Title is required' }),
 	description: z.string().min(1, { message: 'Description is required' }),
