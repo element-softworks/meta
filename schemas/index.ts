@@ -48,6 +48,29 @@ export const FixtureTypeSchema = z.object({
 	description: z.string().min(1, { message: 'Description is required' }),
 });
 
+export const ChannelSchema = z.object({
+	name: z.string().min(1, { message: 'Name is required' }),
+	country: z.string().min(1, { message: 'Country is required' }),
+	image: z
+		.unknown()
+		.transform((value) => {
+			return value as FileList;
+		})
+		.refine(
+			(data) => {
+				const fileSize = data?.[0]?.size;
+				if (fileSize > 4000000) {
+					return false;
+				}
+				return true;
+			},
+			{
+				message: "File size can't exceed 4MB",
+				path: ['image'],
+			}
+		),
+});
+
 export const ReportBugSchema = z.object({
 	title: z.string().min(1, { message: 'Title is required' }),
 	description: z.string().min(1, { message: 'Description is required' }),

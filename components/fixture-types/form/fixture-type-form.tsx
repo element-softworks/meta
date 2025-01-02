@@ -36,7 +36,7 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 				: ([] as any),
 			description: props.fixtureType?.fixtureType?.description ?? '',
 			category: {
-				id: props.fixtureType?.category.id ?? '',
+				id: props.fixtureType?.category?.id ?? '',
 				label: props.fixtureType?.category?.name ?? '',
 			},
 		},
@@ -82,11 +82,11 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 
 	useEffect(() => {
 		form.reset({
-			name: props.fixtureType?.fixtureType.name ?? '',
-			images: !!props.fixtureType?.fixtureType.images
-				? [...props.fixtureType?.fixtureType.images]
+			name: props.fixtureType?.fixtureType?.name ?? '',
+			images: !!props.fixtureType?.fixtureType?.images
+				? [...props.fixtureType?.fixtureType?.images]
 				: ([] as any),
-			description: props.fixtureType?.fixtureType.description ?? '',
+			description: props.fixtureType?.fixtureType?.description ?? '',
 		});
 	}, [props.fixtureType]);
 
@@ -116,7 +116,7 @@ export function FixtureTypeForm(props: FixtureTypeFormProps) {
 							label="Images"
 							name="images"
 							defaultFiles={
-								!!props.fixtureType?.fixtureType.images
+								!!props.fixtureType?.fixtureType?.images
 									? [...props.fixtureType?.fixtureType.images]
 									: (undefined as any)
 							}

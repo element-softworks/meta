@@ -1,0 +1,1 @@
+ALTER TABLE "Channel" ADD COLUMN "updatedBy" text;
