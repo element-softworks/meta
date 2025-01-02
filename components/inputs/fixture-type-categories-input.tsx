@@ -65,8 +65,6 @@ export function FixtureTypeCategoriesInput<T extends FieldValues>(
 		return !fixtureTypeCategoryData?.some((storeData) => storeData.id === store?.id);
 	});
 
-	console.log(errors, 'error data');
-
 	return (
 		<div className="relative">
 			{!!autocompleteOpen && (

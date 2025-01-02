@@ -1,0 +1,1 @@
+ALTER TABLE "Policy" ADD COLUMN "countries" jsonb DEFAULT '[]'::jsonb NOT NULL;

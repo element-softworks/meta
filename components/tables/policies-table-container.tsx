@@ -16,7 +16,8 @@ export default async function PoliciesTableContainer(props: PoliciesTableContain
 		props.searchParams?.['policies-archived'] === 'true'
 	)) as PoliciesResponse;
 
-	//Render the users table
+	console.log(policiesResponse, 'policiesResponse');
+
 	return (
 		<>
 			<PoliciesTable

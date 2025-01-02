@@ -5,6 +5,7 @@ import {
 	ChartPie,
 	File,
 	FileQuestion,
+	Group,
 	Hammer,
 	Home,
 	LayoutDashboard,
@@ -69,6 +70,12 @@ export function useSidebarItems() {
 					text: 'Fixture Types',
 					link: '/dashboard/admin/fixture-types',
 					icon: <Hammer size={16} />,
+					visible: true,
+				},
+				{
+					text: 'Channels',
+					link: '/dashboard/admin/channels',
+					icon: <Group size={16} />,
 					visible: true,
 				},
 				{

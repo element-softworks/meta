@@ -1,7 +1,7 @@
 import { relations, sql } from 'drizzle-orm';
-import { pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { policyQuestion } from './policyQuestion';
 import { store } from './store';
+import { pgTable, text, timestamp, PgArray, jsonb } from 'drizzle-orm/pg-core';
 
 export const policy = pgTable('Policy', {
 	id: text('id')
@@ -9,7 +9,9 @@ export const policy = pgTable('Policy', {
 		.notNull()
 		.default(sql`gen_random_uuid()`),
 	name: text('name').notNull(),
-
+	countries: jsonb('countries')
+		.notNull()
+		.default(sql`'[]'::jsonb`),
 	createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
 		.default(sql`CURRENT_TIMESTAMP`)
 		.notNull(),

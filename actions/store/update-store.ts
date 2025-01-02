@@ -110,7 +110,6 @@ export const updateStore = async (values: z.infer<typeof StoresSubmitSchema>, st
 					...meta,
 				})
 				.where(eq(storeGeolocation.storeId, storeId));
-			console.log('updating 7...');
 
 			return updatedStore;
 		});

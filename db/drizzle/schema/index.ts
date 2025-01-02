@@ -17,3 +17,4 @@ export { userNotification, userNotificationRelations } from './userNotification'
 export { verificationToken } from './verificationToken';
 export { fixtureType, fixtureTypeRelations } from './fixtureType';
 export { fixtureTypeCategory } from './fixtureTypeCategory';
+export { channel } from './channel';

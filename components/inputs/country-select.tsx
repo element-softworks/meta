@@ -9,7 +9,7 @@ import {
 	CommandItem,
 	CommandList,
 } from '../ui/command';
-import { FormLabel } from '../ui/form';
+import { FormLabel, FormMessage } from '../ui/form';
 type CountrySelectProps<T extends FieldValues> = {
 	name: Path<T>;
 };
@@ -32,17 +32,32 @@ const CountrySelect = <T extends FieldValues>(props: CountrySelectProps<T>) => {
 			country.name?.toLowerCase() === field?.value?.toLowerCase()
 	);
 
+	console.log(field.value, 'selectedCountry');
+
 	const [value, setAutocompleteValue] = useState(selectedCountry?.name);
 
 	const [autocompleteOpen, setAutocompleteOpen] = useState(false);
 
 	return (
-		<div>
-			<FormLabel className="flex gap-0.5 mb-2">
+		<div className="relative">
+			{!!autocompleteOpen && (
+				<div
+					className="w-full h-screen fixed top-0 left-0  z-50"
+					onClick={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						setAutocompleteOpen(false);
+					}}
+				></div>
+			)}
+			<FormLabel className={`flex gap-0.5 mb-2 ${!!error ? 'text-destructive' : ''}`}>
 				Country <p className="text-destructive">*</p>
 			</FormLabel>
-			<Command className="mb-4 bg-card h-fit">
+			<Command className={`bg-card h-fit ${!!error ? '' : 'mb-4'}`}>
 				<CommandInput
+					onClick={() => {
+						setAutocompleteOpen((prev) => !prev);
+					}}
 					defaultValue={selectedCountry?.name}
 					value={value ?? selectedCountry?.name}
 					onValueChange={(search) => {
@@ -51,7 +66,12 @@ const CountrySelect = <T extends FieldValues>(props: CountrySelectProps<T>) => {
 					}}
 					placeholder="Search a country..."
 				/>
-				<CommandList className={`${autocompleteOpen ? 'block' : 'hidden'}`}>
+				<CommandList
+					className={`z-[60] bg-card w-full ${
+						autocompleteOpen ? 'block absolute top-16 left-0' : 'hidden'
+					}`}
+				>
+					{' '}
 					{autocompleteOpen ? (
 						<>
 							<CommandEmpty> No counties found.</CommandEmpty>
@@ -62,7 +82,13 @@ const CountrySelect = <T extends FieldValues>(props: CountrySelectProps<T>) => {
 										onSelect={(currentValue) => {
 											setAutocompleteValue(currentValue);
 
-											field.onChange(selectedCountry?.code ?? currentValue);
+											const selectedCountry = countries.find(
+												(country) =>
+													country.name?.toLowerCase() ===
+													currentValue.toLowerCase()
+											);
+
+											field.onChange(selectedCountry?.code);
 											setAutocompleteOpen(false);
 										}}
 									>
@@ -74,9 +100,7 @@ const CountrySelect = <T extends FieldValues>(props: CountrySelectProps<T>) => {
 												src={`https://flagcdn.com/w20/${country?.code?.toLowerCase()}.png`}
 												alt={`${country?.name} country flag`}
 											/>
-											<p>
-												{country?.name} ({country?.code})
-											</p>
+											<p>{country?.name}</p>
 										</div>
 									</CommandItem>
 								))}
@@ -85,6 +109,7 @@ const CountrySelect = <T extends FieldValues>(props: CountrySelectProps<T>) => {
 					) : null}
 				</CommandList>
 			</Command>
+			<FormMessage className="mb-4 text-destructive">{error?.message}</FormMessage>
 		</div>
 	);
 };

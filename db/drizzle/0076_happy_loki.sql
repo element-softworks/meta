@@ -1,0 +1,1 @@
+ALTER TABLE "Policy" ALTER COLUMN "countries" SET DEFAULT '[]'::jsonb;
