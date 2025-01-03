@@ -43,6 +43,7 @@ export const createStore = async (values: z.infer<typeof StoresSubmitSchema>) =>
 
 			// Insert into locations table
 			const insertValues: StoreInsert = {
+				metaStoreId: validatedFields?.data?.metaStoreId,
 				name: validatedFields?.data?.name,
 				maxCapacity: isNaN(validatedFields?.data?.maxCapacity!)
 					? 0

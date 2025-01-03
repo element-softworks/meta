@@ -14,6 +14,7 @@ interface DropzoneInputProps {
 	isLoading?: boolean;
 	label?: string;
 	required?: boolean;
+	placeholder?: string;
 }
 
 export function DropzoneInput(props: DropzoneInputProps) {
@@ -25,6 +26,8 @@ export function DropzoneInput(props: DropzoneInputProps) {
 	);
 
 	const error = formState.errors[props.name];
+
+	console.log(error, 'form error');
 
 	useEffect(() => {
 		if (!watch(props.name)) {
@@ -60,13 +63,17 @@ export function DropzoneInput(props: DropzoneInputProps) {
 								setFiles(acceptedFiles);
 								onChange(acceptedFiles);
 							}}
-							accept={{
-								'image/webp': [],
-								'image/png': [],
-								'image/jpeg': [],
-								'image/jpg': [],
-								'image/gif': [],
-							}}
+							accept={
+								!!props?.accept
+									? props.accept
+									: {
+											'image/webp': [],
+											'image/png': [],
+											'image/jpeg': [],
+											'image/jpg': [],
+											'image/gif': [],
+									  }
+							}
 						>
 							{({ getRootProps, getInputProps, acceptedFiles }) => {
 								return (
@@ -82,16 +89,26 @@ export function DropzoneInput(props: DropzoneInputProps) {
 															typeof file === 'string'
 																? file
 																: URL.createObjectURL(file);
+
+														const fileExtension = (file as File)?.name
+															?.split('.')
+															?.pop();
+
 														return (
 															<div className="relative aspect-square">
-																<Image
-																	className="w-full h-full object-cover rounded-md"
-																	key={index}
-																	src={objectUrl}
-																	alt={`Dropzone image ${index}`}
-																	width={100}
-																	height={100}
-																/>
+																{fileExtension === 'csv' ? (
+																	<></>
+																) : (
+																	<Image
+																		className="w-full h-full object-cover rounded-md"
+																		key={index}
+																		src={objectUrl}
+																		alt={`Dropzone image ${index}`}
+																		width={100}
+																		height={100}
+																	/>
+																)}
+
 																<div className="bg-black opacity-50 absolute top-0 left-0 w-full h-full z-20 dark:opacity-50" />
 
 																<div className="w-full h-full flex flex-col justify-end py-1 px-2 mt-auto absolute bottom-0 z-30">
@@ -178,8 +195,9 @@ export function DropzoneInput(props: DropzoneInputProps) {
 												>
 													{!!error
 														? (error as any)?.message ??
-														  (error as any)?.image?.message
-														: 'Drop an image here or click to select files.'}
+														  (error as any)?.[props.name]?.message
+														: props?.placeholder ??
+														  'Drop an image here or click to select files.'}
 												</p>
 												<ChevronDownCircle
 													size={35}

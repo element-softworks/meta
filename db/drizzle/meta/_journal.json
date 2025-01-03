@@ -372,6 +372,34 @@
       "when": 1735825869990,
       "tag": "0081_tough_hannibal_king",
       "breakpoints": true
+    },
+    {
+      "idx": 82,
+      "version": "7",
+      "when": 1735897281740,
+      "tag": "0082_outgoing_firebird",
+      "breakpoints": true
+    },
+    {
+      "idx": 83,
+      "version": "7",
+      "when": 1735897590408,
+      "tag": "0083_free_the_renegades",
+      "breakpoints": true
+    },
+    {
+      "idx": 84,
+      "version": "7",
+      "when": 1735898812068,
+      "tag": "0084_sleepy_romulus",
+      "breakpoints": true
+    },
+    {
+      "idx": 85,
+      "version": "7",
+      "when": 1735904684321,
+      "tag": "0085_absent_smiling_tiger",
+      "breakpoints": true
     }
   ]
 }

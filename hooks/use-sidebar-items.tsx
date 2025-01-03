@@ -10,6 +10,7 @@ import {
 	Home,
 	LayoutDashboard,
 	LocateIcon,
+	Upload,
 	Users,
 } from 'lucide-react';
 import { useCurrentUser } from './use-current-user';
@@ -38,6 +39,12 @@ export function useSidebarItems() {
 					text: 'Policies',
 					link: '/dashboard/policies',
 					icon: <File size={16} />,
+					visible: true,
+				},
+				{
+					text: 'Uploads',
+					link: '/dashboard/uploads',
+					icon: <Upload size={16} />,
 					visible: true,
 				},
 			],

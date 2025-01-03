@@ -13,7 +13,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "0344 561 0000"
+			"contactPhone": "0344 561 0000",
+			"metaStoreId": "MSH-S001"
 		},
 		{
 			"id": "edbb3be8-10a0-431e-b835-b2176703e8cb",
@@ -28,7 +29,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "0344 561 0000"
+			"contactPhone": "0344 561 0000",
+			"metaStoreId": "MSH-S002"
 		},
 		{
 			"id": "0bbc0d0c-8983-434c-8328-c8f50bf86920",
@@ -43,7 +45,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "0344 561 0000"
+			"contactPhone": "0344 561 0000",
+			"metaStoreId": "MSH-S003"
 		},
 		{
 			"id": "0c250d55-bfa6-44cb-ac03-ab8e3585ee34",
@@ -58,7 +61,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "0344 561 0000"
+			"contactPhone": "0344 561 0000",
+			"metaStoreId": "MSH-S004"
 		},
 		{
 			"id": "9e1aa248-d581-47de-a8e2-ea4ec269a2c5",
@@ -73,7 +77,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "0344 561 0000"
+			"contactPhone": "0344 561 0000",
+			"metaStoreId": "MSH-S005"
 		},
 		{
 			"id": "2de0dcc8-a9a4-4193-8891-d8511899d8d3",
@@ -88,7 +93,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "0344 561 0000"
+			"contactPhone": "0344 561 0000",
+			"metaStoreId": "MSH-S006"
 		},
 		{
 			"id": "9c988bc9-ce1e-47fd-a4bc-49eaa31235c1",
@@ -103,7 +109,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "0344 561 0000"
+			"contactPhone": "0344 561 0000",
+			"metaStoreId": "MSH-S007"
 		},
 		{
 			"id": "b62acc3f-fdfd-468a-bb7f-16598dc07c56",
@@ -118,7 +125,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "0344 561 0000"
+			"contactPhone": "0344 561 0000",
+			"metaStoreId": "MSH-S008"
 		},
 		{
 			"id": "88400c44-632e-406a-ac58-99f56294178f",
@@ -133,7 +141,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": ""
+			"contactPhone": "",
+			"metaStoreId": "MSH-S009"
 		},
 		{
 			"id": "38093bb4-a817-49b5-a3f9-84e91c3ba697",
@@ -148,7 +157,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "+49 221 22243333"
+			"contactPhone": "+49 221 22243333",
+			"metaStoreId": "MSH-S010"
 		},
 		{
 			"id": "96b96631-fcc6-41e7-8c37-61cb0fcd3da8",
@@ -163,7 +173,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "+43 57 009 999"
+			"contactPhone": "+43 57 009 999",
+			"metaStoreId": "MSH-S011"
 		},
 		{
 			"id": "54dcf42e-c458-4261-96db-ca4d84faaee9",
@@ -178,7 +189,8 @@
 			"updatedBy": "108a7ef8-696d-4127-9114-914cd263030a",
 			"archivedAt": null,
 			"archivedBy": null,
-			"contactPhone": "020 7629 7711"
+			"contactPhone": "020 7629 7711",
+			"metaStoreId": "MSH-S012"
 		}
 	]
 }
