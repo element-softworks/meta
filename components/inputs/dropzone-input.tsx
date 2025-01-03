@@ -90,9 +90,9 @@ export function DropzoneInput(props: DropzoneInputProps) {
 																? file
 																: URL.createObjectURL(file);
 
-														const fileExtension = (file as File).name
-															.split('.')
-															.pop();
+														const fileExtension = (file as File)?.name
+															?.split('.')
+															?.pop();
 
 														return (
 															<div className="relative aspect-square">

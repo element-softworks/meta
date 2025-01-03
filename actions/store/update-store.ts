@@ -26,7 +26,7 @@ export const updateStore = async (values: z.infer<typeof StoresSubmitSchema>, st
 
 	if (!validatedFields.success) {
 		console.error('Error validating fields:', validatedFields.error);
-		return { error: 'Error validating fields' };
+		return { error: validatedFields?.error?.message ?? 'Error validating fields' };
 	} else {
 	}
 
@@ -70,6 +70,7 @@ export const updateStore = async (values: z.infer<typeof StoresSubmitSchema>, st
 
 			// Insert into locations table
 			const updateValues = {
+				metaStoreId: validatedFields?.data?.metaStoreId,
 				name: validatedFields?.data?.name,
 				maxCapacity: isNaN(validatedFields?.data?.maxCapacity!)
 					? 0

@@ -1,7 +1,7 @@
 'use server';
 
 import { db } from '@/db/drizzle/db';
-import { question } from '@/db/drizzle/schema';
+import { question, store } from '@/db/drizzle/schema';
 import { checkPermissions } from '@/lib/auth';
 import { CSVFormatSchema, CSVSchema } from '@/schemas';
 import { eq } from 'drizzle-orm';
@@ -42,9 +42,10 @@ export const uploadCsv = async (formData: FormData) => {
 			})
 			.from(question);
 
+		const validMetaStoreIds = await db.select({ metaStoreId: store.metaStoreId }).from(store);
+
 		parsedData?.data?.map?.(async (item, index) => {
 			const isValid = CSVFormatSchema.safeParse(item);
-			console.log(isValid?.error?.errors, 'is valid data');
 			const errors = isValid?.error?.errors?.map?.(
 				(error) => `${error.path} - ${error.message}`
 			);
@@ -54,14 +55,21 @@ export const uploadCsv = async (formData: FormData) => {
 					validQuestionId.metaQuestionId === isValid?.data?.['Question Id']
 			);
 
-			if (!isValid.success && !isValidQuestionId) {
+			const isValidMetaStoreId = validMetaStoreIds.some(
+				(validMetaStoreId) => validMetaStoreId.metaStoreId === isValid?.data?.['Store ID']
+			);
+
+			if (!isValid.success || !isValidQuestionId || !isValidMetaStoreId) {
 				log?.push(`Row ${index + 2}: ${errors}`);
 				logErrors.push({
 					row: index + 2,
-					errors: !isValidQuestionId
-						? ['Invalid question ID', ...(errors ?? [])]
-						: errors ?? [],
+					errors: [...(errors ?? [])],
 				});
+
+				!isValidQuestionId &&
+					logErrors[logErrors.length - 1].errors.push('Invalid question ID');
+				!isValidMetaStoreId &&
+					logErrors[logErrors.length - 1].errors.push('Invalid store ID');
 			} else {
 				log.push(`Row ${index + 2}: Successfully parsed`);
 				logSuccess.push({
@@ -71,10 +79,12 @@ export const uploadCsv = async (formData: FormData) => {
 			}
 		});
 
-		// console.log(log, 'errors data test');
-		// console.log(parsedData.data, 'parsed data response');
+		if (!logErrors.length) {
+			//Operation was successful
+		}
+
 		return {
-			success: 'CSV uploaded successfully',
+			success: 'CSV analysis complete',
 			data: parsedData.data, // Parsed JSON data
 			log,
 			logErrors,

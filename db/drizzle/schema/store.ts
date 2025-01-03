@@ -20,6 +20,7 @@ export const store = pgTable(
 			.primaryKey()
 			.notNull()
 			.default(sql`gen_random_uuid()`),
+		metaStoreId: text('meta_store_id'),
 		name: varchar('name', { length: 256 }).notNull(),
 		policyId: text('policyId').references(() => policy.id, { onDelete: 'cascade' }),
 		compliancePercentage: doublePrecision('compliance_percentage'),
@@ -29,19 +30,20 @@ export const store = pgTable(
 		coverImageAsset: text('cover_image_asset'),
 		contactEmail: varchar('contact_email', { length: 256 }),
 		openingTimes: jsonb('opening_times').$type<number[][][]>(),
-		createdAt: timestamp('createdAt', { precision: 3, mode: 'date' })
+		createdAt: timestamp('created_at', { precision: 3, mode: 'date' })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
-		createdBy: text('createdBy').notNull(),
-		updatedAt: timestamp('updatedAt', { precision: 3, mode: 'date' })
+		createdBy: text('created_by').notNull(),
+		updatedAt: timestamp('updated_at', { precision: 3, mode: 'date' })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
-		updatedBy: text('updatedBy').notNull(),
-		archivedAt: timestamp('archivedAt', { precision: 3, mode: 'date' }),
-		archivedBy: text('archivedBy'),
+		updatedBy: text('updated_by').notNull(),
+		archivedAt: timestamp('archived_at', { precision: 3, mode: 'date' }),
+		archivedBy: text('archived_by'),
 	},
 	(store) => ({
 		nameTextIndex: index('store_name_index').on(store.name),
+		metaStoreIdUnique: index('store_meta_store_id_unique').on(store.metaStoreId),
 	})
 );
 

@@ -1,0 +1,1 @@
+ALTER TABLE "Store" DROP CONSTRAINT "Store_meta_store_id_unique";

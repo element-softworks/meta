@@ -113,6 +113,7 @@ export function StoresForm(props: StoresFormProps) {
 
 		const formData = serialize(
 			{
+				metaStoreId: body.metaStoreId,
 				name: body.name,
 				contactEmail: body.contactEmail,
 				contactPhone: body.contactPhone,
@@ -165,6 +166,8 @@ export function StoresForm(props: StoresFormProps) {
 		}
 	};
 
+	console.log(form.watch(), 'watch data');
+
 	const [step, setStep] = useState<'details' | 'map' | 'address'>('details');
 
 	let descriptionText = '';
@@ -202,6 +205,7 @@ export function StoresForm(props: StoresFormProps) {
 									form.setValue('contactEmail', values.contactEmail);
 									form.setValue('contactPhone', values.contactPhone);
 									form.setValue('maxCapacity', values.maxCapacity);
+									form.setValue('metaStoreId', values.metaStoreId);
 
 									setStep('map');
 								}}

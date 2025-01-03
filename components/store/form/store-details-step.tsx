@@ -35,8 +35,6 @@ export function StoreDetailsStep(props: StoreDetailsStepProps) {
 		props.onSubmit(values);
 	}
 
-	console.log(form.watch(), 'form wathc ');
-
 	return (
 		<div className="h-full">
 			<div className="space-y-4 h-full">
@@ -45,6 +43,18 @@ export function StoreDetailsStep(props: StoreDetailsStepProps) {
 						onSubmit={form.handleSubmit(onSubmit)}
 						className="space-y-4 h-full flex flex-col "
 					>
+						<FormInput
+							required
+							name="metaStoreId"
+							label="Meta Store Id"
+							render={({ field }) => (
+								<Input
+									{...field}
+									disabled={props.isLoading}
+									placeholder="MSH-S003"
+								/>
+							)}
+						/>
 						<FormInput
 							required
 							name="name"
@@ -153,6 +163,7 @@ export const detailsStepDefaultValues = (store?: Store | null) => {
 	const { getValues, watch, formState } = methods || {};
 
 	return {
+		metaStoreId: getValues?.('metaStoreId') ?? store?.metaStoreId ?? '',
 		name: getValues?.('name') ?? store?.name ?? '',
 		contactEmail: getValues?.('contactEmail') ?? store?.contactEmail ?? '',
 		contactPhone: getValues?.('contactPhone') ?? store?.contactPhone ?? '',

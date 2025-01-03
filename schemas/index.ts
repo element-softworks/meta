@@ -461,6 +461,7 @@ export const PoliciesSchema = z.object({
 });
 
 export const StoresSchema = z.object({
+	metaStoreId: z.string().min(1, { message: 'Meta store ID is required' }),
 	name: z
 		.string()
 		.min(1, { message: 'Name is required' })
@@ -576,6 +577,7 @@ export const StoreMapSchema = z.object({
 });
 
 export const StoreDetailsSchema = z.object({
+	metaStoreId: z.string().min(1, { message: 'Meta store ID is required' }),
 	name: z
 		.string()
 		.min(1, { message: 'Name is required' })
@@ -666,6 +668,7 @@ export const StoreAddressValidationSchema = z.object({
 });
 
 export const StoresSubmitSchema = z.object({
+	metaStoreId: z.string().min(1, { message: 'Meta store ID is required' }),
 	name: z
 		.string()
 		.min(1, { message: 'Name is required' })
